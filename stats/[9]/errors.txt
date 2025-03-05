@@ -4,3 +4,9 @@ The average relative error of label: 9  is:  0.11466072485103716
 The average relative error of label: 9  is:  0.021398084156054074
 The average relative error of label: 9  is:  0.05789871161759959
 The average relative error of label: 9  is:  -0.04085862555020994
+The average relative error of label: 9  is:  3.390754148216609
+The average relative error of label: 9  is:  0.20699661800188435
+The average relative error of label: 9  is:  0.00028174407962029083
+The average relative error of label: 9  is:  0.008213325617968257
+The standard deviation of the relative error of label: 9  is:  0.007876923644038624
+The standard deviation of the relative error of label: 9  is:  0.011042442694740702

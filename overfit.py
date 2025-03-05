@@ -30,7 +30,7 @@ class CSVDataset(Dataset):
         return torch.tensor(x, dtype=torch.float32), torch.tensor(y, dtype=torch.float32)
     
 class NeuralNetwork(nn.Module):
-    def __init__(self, input_size=8, output_size=3, nr_hidden_layers=3, nr_neurons=64, activation=nn.Tanh()):
+    def __init__(self, input_size=9, output_size=3, nr_hidden_layers=3, nr_neurons=64, activation=nn.Tanh()):
         super(NeuralNetwork, self).__init__()
         
         self.input_size = input_size
@@ -86,7 +86,7 @@ class NeuralNetwork(nn.Module):
         
         return x
 
-def load_data(csv_file,labels=[9,10,11]):
+def load_data(csv_file,labels=[9,10,11],rows=10):
     # Load data
     df = pd.read_csv(csv_file)
     
@@ -94,6 +94,10 @@ def load_data(csv_file,labels=[9,10,11]):
     X = df.iloc[:, [0,1,3,4,5,6,7,8,12] ].values  # Ignore column with real Temperature and use isotherm temperature
     y = df.iloc[:, labels].values # Three outputs to predict
 
+
+    X = X[:rows]
+    y = y[:rows]
+        
     os.makedirs(f"plots/%s"%str(labels), exist_ok=True)
     
     for label in range(len(labels)):
@@ -125,8 +129,8 @@ def load_data(csv_file,labels=[9,10,11]):
     plt.close()
 
     # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, shuffle=False)
-    return X_train, X_test, X_scaler, y_train, y_test, y_scaler
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.0, random_state=42, shuffle=False)
+    return X, X, X_scaler, y, y, y_scaler
 
 def plot_results(x_loss,y_loss,true_values,predictions,labels):
     
@@ -152,18 +156,16 @@ def relative_error(pred,true,label,name):
     dir = f"stats/%s"%name
     os.makedirs(dir,exist_ok=True)
     err_rel = (pred - true) / true
-    avg = np.mean(err_rel)
+    avg = np.std(err_rel)
     with open(dir + "/errors.txt","a") as file:
-        print("The average relative error of label:",label," is: ", avg, file=file)
-    print("after whith")
+        print("The standard deviation of the relative error of label:",label," is: ", avg, file=file)
     print(type(pred))
     plt.hist(err_rel,bins=200)
     plt.title(f"Relative Error for label:%s"%label)
     plt.savefig(dir + "/plot")
     plt.close()
-    print("after error plt")
 
-def main(csv_file='../Daten/Clean_Results_Isotherm.csv', num_epochs=1000, batch_size=4096, learning_rate=0.01,labels=[9,10,11],nr_hidden_layers=3,nr_neurons=16):
+def main(csv_file='../Daten/Clean_Results_Isotherm.csv', num_epochs=10000, batch_size=4096, learning_rate=0.01,labels=[9,10,11],nr_hidden_layers=3,nr_neurons=16):
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device:', device)
@@ -249,13 +251,7 @@ if __name__ == "__main__":
 
     filename = '../Daten/Clean_Results_Isotherm.csv'
     os.makedirs("Models/",exist_ok=True)
-    model9 = main(csv_file=filename, labels=[9])
+    model9 = main(csv_file=filename, labels=[9,10,11])
     torch.save(model9.state_dict(),"Models/9.pt")
-    model10 = main(csv_file=filename, labels=[10])
-    torch.save(model10.state_dict(), "Models/10.pt")
-    model11 = main(csv_file=filename, labels=[11])
-    torch.save(model11.state_dict(), "Models/11.pt")
-    modeltotal = main(csv_file=filename, labels=[9,10,11])
-    torch.save(modeltotal.state_dict(), "Models/total.pt")
 
 

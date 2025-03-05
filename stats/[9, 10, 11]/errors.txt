@@ -10,3 +10,15 @@ The average relative error of label: 11  is:  -0.11551102873394245
 The average relative error of label: 9  is:  0.11085080143576802
 The average relative error of label: 10  is:  0.11085080143576802
 The average relative error of label: 11  is:  0.11085080143576802
+The average relative error of label: 9  is:  55.211562401937734
+The average relative error of label: 10  is:  55.211562401937734
+The average relative error of label: 11  is:  55.211562401937734
+The average relative error of label: 9  is:  -0.0003326761484078091
+The average relative error of label: 10  is:  -0.0003326761484078091
+The average relative error of label: 11  is:  -0.0003326761484078091
+The standard deviation of the relative error of label: 9  is:  0.020918303211157858
+The standard deviation of the relative error of label: 10  is:  0.020918303211157858
+The standard deviation of the relative error of label: 11  is:  0.020918303211157858
+The standard deviation of the relative error of label: 9  is:  0.006328966931984799
+The standard deviation of the relative error of label: 10  is:  0.006328966931984799
+The standard deviation of the relative error of label: 11  is:  0.006328966931984799

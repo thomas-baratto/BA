@@ -4,3 +4,5 @@ The average relative error of label: 10  is:  0.5678105768216836
 The average relative error of label: 10  is:  -0.06638172852755286
 The average relative error of label: 10  is:  0.0023833045057033743
 The average relative error of label: 10  is:  0.05680301322171722
+The average relative error of label: 10  is:  7.400223448228358
+The average relative error of label: 10  is:  -0.0004399294938174967
