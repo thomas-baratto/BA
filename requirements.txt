@@ -4,3 +4,7 @@ pandas
 torch
 torchsummary
 scikit-learn
+optuna
+optuna-dashboard
+psutil
+pynvml
