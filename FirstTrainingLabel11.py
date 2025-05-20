@@ -7,7 +7,7 @@ import torch
 from torchsummary import summary
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.tensorboard import SummaryWriter
-import tortch.utils.tensorboard
+import torch.utils.tensorboard
 import torch.nn as nn
 import torch.optim as optim
 
@@ -41,7 +41,7 @@ class CSVDataset(Dataset):
         return torch.tensor(x, dtype=torch.float32), torch.tensor(y, dtype=torch.float32)
 
 class NeuralNetwork(nn.Module):
-    def __init__(self, input_size=8, output_size=3, nr_hidden_layers=10, nr_neurons=128, activation=nn.ReLU(),exp_layers=False,con_layers=False):
+    def __init__(self, input_size=8, output_size=3, nr_hidden_layers=10, nr_neurons=128, activation="ReLU",exp_layers=False,con_layers=False):
         super(NeuralNetwork, self).__init__()
         
         self.input_size = input_size
@@ -50,7 +50,14 @@ class NeuralNetwork(nn.Module):
         self.exp_layers = exp_layers
         self.con_layers = con_layers
         self.nr_neurons = nr_neurons
-        self.activation = activation
+        if activation == "ReLU":
+            self.activation = nn.ReLU()
+        elif activation == "LeakyReLU":
+            self.activation = nn.LeakyReLU()
+        elif activation == "Sigmoid":
+            self.activation = nn.Sigmoid()
+        elif activation == "Tanh":
+            self.activation = nn.Tanh()
         
         neurons = 2 ** math.ceil(math.log2(self.input_size))
 
@@ -106,7 +113,7 @@ class NeuralNetwork(nn.Module):
         
         return x
 
-def load_data(rf,csv_file, labels=[9, 10, 11],plots = False):
+def load_data(rf,csv_file, labels=[9, 10, 11],plots = False,log_preprocessing = True, normalization = True):
     # Load data
     df = pd.read_csv(csv_file)
 
@@ -121,9 +128,9 @@ def load_data(rf,csv_file, labels=[9, 10, 11],plots = False):
         plt.title("Before Transformation")
         plt.savefig(rf + f"plots/%s/before.png" % str(labels))
         plt.close()
-
-    X = np.log1p(X)
-    y = np.log1p(y)
+    if log_preprocessing:
+        X = np.log1p(X)
+        y = np.log1p(y)
     if plots:
         for label in range(len(labels)):
             plt.hist(y[:, label], bins=200)
@@ -135,8 +142,9 @@ def load_data(rf,csv_file, labels=[9, 10, 11],plots = False):
     X_scaler = MinMaxScaler((0,1))
     y_scaler = MinMaxScaler((0,1))
 
-    X = X_scaler.fit_transform(X)
-    y = y_scaler.fit_transform(y)
+    if normalization:
+        X = X_scaler.fit_transform(X)
+        y = y_scaler.fit_transform(y)
     
     if plots:
         for label in range(len(labels)):
@@ -286,9 +294,8 @@ def log_resources(writer, step):
     
 def objective(trial):
     # Define hyperparameters to optimize
-    #num_epochs = trial.suggest_int("num_epochs", 200, 500, step=100)
-    num_epochs = 10
-    #batch_size = trial.suggest_categorical("batch_size", [ 64, 128, 256, 512])
+    num_epochs = trial.suggest_int("num_epochs", 200, 500, step=100)
+    batch_size = trial.suggest_categorical("batch_size", [ 64, 128, 256, 512])
     learning_rate = trial.suggest_float("learning_rate", 1e-3, 5e-2, log=True)
     nr_hidden_layers = trial.suggest_int("nr_hidden_layers", 1,5)
     expanding_layers = trial.suggest_categorical("expanding_layers",[True,False])
@@ -297,28 +304,32 @@ def objective(trial):
     nr_of_steps = trial.suggest_int("nr_of_steps",1,4)
     #lr_scheduler_epoch_step = trial.suggest_int("lr_scheduler_epoch_step", num_epochs/5, num_epochs/2, step=num_epochs/10)
     lr_scheduler_epoch_step = num_epochs//nr_of_steps
-    lr_scheduler_gamma = trial.suggest_float("lr_scheduler_gamma", 0.4, 0.8,log=True)
-
-    rf = "optuna_results/"
-    csv_file = './Daten/Clean_Results_Isotherm.csv'
-    # Load Data
-    X_train, X_test, X_scaler, y_train, y_test, y_scaler = load_data(rf, csv_file, labels=[11])
-
-    # Convert to PyTorch datasets and DataLoader
-    train_dataset = CSVDataset(X_train, y_train)
-    train_loader = DataLoader(train_dataset, batch_size=4096, shuffle=True)
-
-    test_dataset = CSVDataset(X_test, y_test)
-    test_loader = DataLoader(test_dataset, batch_size=4096, shuffle=False)
-
-    # Initialize model
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = NeuralNetwork(input_size=X_train.shape[1], output_size = y_train.shape[1], nr_hidden_layers=nr_hidden_layers, nr_neurons=nr_neurons, exp_layers= expanding_layers, con_layers=contracting_layers).to(device)
+    lr_scheduler_gamma = trial.suggest_float("lr_scheduler_gamma", 0.1, 0.9,log=True)
+    activation = trial.suggest_categorical("activation", ["ReLU", "LeakyReLU", "Sigmoid", "Tanh"])
+    log_preprocessing = trial.suggest_categorical("log_preprocessing", [True, False])
+    normalization = trial.suggest_categorical("normalization", [True, False])
     loss_name = trial.suggest_categorical("criterion", ["MSE", "L1"])
     if loss_name == "MSE":
         criterion = nn.MSELoss()
     elif loss_name == "L1":
         criterion = nn.L1Loss()
+
+    rf = "optuna_results/"
+    csv_file = './Daten/Clean_Results_Isotherm.csv'
+    # Load Data
+    X_train, X_test, X_scaler, y_train, y_test, y_scaler = load_data(rf, csv_file, labels=[11],normalization=normalization,log_preprocessing=log_preprocessing)
+
+    # Convert to PyTorch datasets and DataLoader
+    train_dataset = CSVDataset(X_train, y_train)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
+    test_dataset = CSVDataset(X_test, y_test)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    # Initialize model
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    model = NeuralNetwork(input_size=X_train.shape[1], output_size = y_train.shape[1], nr_hidden_layers=nr_hidden_layers, nr_neurons=nr_neurons, exp_layers= expanding_layers, con_layers=contracting_layers,activation=activation).to(device)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=lr_scheduler_epoch_step, gamma=lr_scheduler_gamma)
 
@@ -378,13 +389,13 @@ if __name__ == "__main__":
     print(f"CUDA Available: {torch.cuda.is_available()}")
     
     filename = './Daten/Clean_Results_Isotherm.csv'
-    rootfolder = str(datetime.datetime.now()) + "/"
+    rootfolder = "Preliminary_Training_of_Label_11" + str(datetime.datetime.now()) + "/"
     os.makedirs(f"%sModels/"%rootfolder)
     
     
-    storage_url = f"sqlite:///%soptuna_study.db"%rootfolder
-    study = optuna.create_study(study_name="idk",direction="minimize", storage=storage_url, load_if_exists=True)
-    study.optimize(objective, n_trials=10)
+    storage_url = f"sqlite:///%prelim_label11_optuna_study.db"%rootfolder
+    study = optuna.create_study(study_name="prelim_label_11",direction="minimize", storage=storage_url, load_if_exists=True)
+    study.optimize(objective, n_trials=1000)
     
     best_params = study.best_params
     final_model = main(
@@ -392,7 +403,7 @@ if __name__ == "__main__":
     csv_file=filename,
     num_epochs=1000,
     learning_rate=best_params["learning_rate"],
-    labels=[9],
+    labels=[11],
     nr_hidden_layers=best_params["nr_hidden_layers"],
     nr_neurons=best_params["nr_neurons"],
     plots=True,
