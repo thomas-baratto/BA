@@ -393,7 +393,7 @@ if __name__ == "__main__":
     os.makedirs(f"%sModels/"%rootfolder)
     
     
-    storage_url = f"sqlite:///%prelim_label11_optuna_study.db"%rootfolder
+    storage_url = f"sqlite:///{rootfolder}prelim_label11_optuna_study.db"
     study = optuna.create_study(study_name="prelim_label_11",direction="minimize", storage=storage_url, load_if_exists=True)
     study.optimize(objective, n_trials=1000)
     
