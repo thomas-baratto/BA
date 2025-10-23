@@ -7,7 +7,6 @@ import torch
 from torchsummary import summary
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.tensorboard import SummaryWriter
-import tortch.utils.tensorboard
 import torch.nn as nn
 import torch.optim as optim
 
