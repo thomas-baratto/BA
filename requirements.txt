@@ -1,10 +1,12 @@
 numpy
 matplotlib
 pandas
+tensorboard
 torch
+torchinfo
 torchsummary
 scikit-learn
 optuna
 optuna-dashboard
 psutil
-pynvml
+nvidia-ml-py
