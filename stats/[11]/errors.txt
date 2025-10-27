@@ -1,6 +1,0 @@
-The average relative error of label: 11  is:  2.1392418489355958
-The average relative error of label: 11  is:  1.296238642218773
-The average relative error of label: 11  is:  0.259158921359709
-The average relative error of label: 11  is:  0.04575547454113827
-The average relative error of label: 11  is:  65.66556174768202
-The average relative error of label: 11  is:  0.05347274896318864
