@@ -89,6 +89,15 @@ def main_train(config: Dict[str, Any],
     """
     logging.info(f"Starting main training for labels {label_cols}...")
     
+    if config.get("loss_criterion") == "L1":
+        criterion = nn.L1Loss()
+        logging.info("Using L1Loss (MAE)")
+    elif config.get("loss_criterion") == "SmoothL1":
+        criterion = nn.SmoothL1Loss()
+        logging.info("Using SmoothL1Loss")
+    else:
+        criterion = nn.MSELoss()
+        logging.info("Using MSELoss")
     
     # Load data
     X_train_full, X_test, X_scaler, y_train_full, y_test, y_scaler = load_data(
