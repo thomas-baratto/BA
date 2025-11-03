@@ -12,6 +12,7 @@ import datetime
 from functools import partial
 from typing import Dict, Any, List
 import argparse
+from sklearn.metrics import mean_squared_error
 
 # --- Import from own project files ---
 from data_loader import load_data, CSVDataset
@@ -61,7 +62,7 @@ def objective(trial: optuna.Trial,
     dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.5)
     weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
     activation_name = trial.suggest_categorical("activation_name", ["ReLU", "LeakyReLU", "GELU", "ELU"])
-    loss_name = trial.suggest_categorical("loss_criterion", ["MSE", "L1"])
+    loss_name = trial.suggest_categorical("loss_criterion", ["MSE", "L1","SmoothL1"])
 
     # --- Data Loaders ---
     train_dataset = CSVDataset(data["X_train"], data["y_train"])
@@ -82,7 +83,12 @@ def objective(trial: optuna.Trial,
         dropout_rate=dropout_rate,
     ).to(DEVICE)
     
-    criterion = nn.MSELoss() if loss_name == "MSE" else nn.L1Loss()
+    if loss_name == "MSE":
+        criterion = nn.MSELoss()
+    elif loss_name == "L1":
+        criterion = nn.L1Loss()
+    else:
+        criterion = nn.SmoothL1Loss()
     optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=MAX_EPOCHS)
 
@@ -91,20 +97,23 @@ def objective(trial: optuna.Trial,
     start_time = time.time()
 
     # --- Training & Pruning Loop ---
-    best_val_loss = float('inf')
+    best_val_rmse = float('inf')
     patience_counter = 0
     
     for epoch in range(MAX_EPOCHS):
         train_loss = train_epoch(model, train_loader, criterion, optimizer, DEVICE)
         scheduler.step()
-        val_loss, _, _ = evaluate(model, val_loader, criterion, DEVICE)
+        
+        val_loss, predictions, true_values = evaluate(model, val_loader, criterion, DEVICE)
+        current_val_rmse = mean_squared_error(true_values, predictions, squared=False)
         
         writer.add_scalar("Training/Loss", train_loss, epoch)
         writer.add_scalar("Validation/Loss", val_loss, epoch)
+        writer.add_scalar("Validation/RMSE", current_val_rmse, epoch)
         log_resources(writer, epoch)
         
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
+        if current_val_rmse < best_val_loss:
+            best_val_loss = current_val_rmse
             patience_counter = 0
         else:
             patience_counter += 1
@@ -113,17 +122,17 @@ def objective(trial: optuna.Trial,
             logging.info(f"Trial {trial.number}: Early stopping at epoch {epoch}.")
             break
 
-        trial.report(val_loss, epoch)
+        trial.report(current_val_rmse, epoch)
         if trial.should_prune():
             writer.close()
             raise optuna.TrialPruned()
 
     # --- End of Trial ---
     writer.add_scalar("System/Total_Train_Time_sec", time.time() - start_time, 0)
-    writer.add_hparams(trial.params, {"hparam/best_val_loss": best_val_loss})
+    writer.add_hparams(trial.params, {"hparam/best_val_rmse": best_val_rmse})
     writer.close()
 
-    return best_val_loss 
+    return best_val_rmse 
 
 # --- Main Execution ---
 
@@ -157,7 +166,7 @@ if __name__ == "__main__":
     
     OPTUNA_DB_PATH = "sqlite:///runs/optuna_study.db" 
     OPTUNA_STUDY_NAME = f"nn_study_{str(OPTUNA_LABEL_NAMES)}"
-    OPTUNA_N_TRIALS = 100 
+    OPTUNA_N_TRIALS = 1000 
     
     # --- 1. Load Data ONCE for Optuna ---
     logging.info(f"Loading data for Optuna study (Labels: {OPTUNA_LABEL_NAMES})...")
