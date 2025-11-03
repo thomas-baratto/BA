@@ -1,30 +1,38 @@
 #!/bin/bash
 
 # --- Job Configuration ---
-#SBATCH --job-name="optuna_BA_barattts"        # Name for your job
-#SBATCH --output=slurm-job-%j.out   # Output file, %j expands to job ID
-#SBATCH -w argon-tesla2             # Request the specific node 'argon-tesla2'
+#SBATCH --job-name="optuna_BA_parallel"          # Name for the wholejob
+#SBATCH --output=./slurm_jobs/slurm-job-%A_%a.out # Output file
+                                               # %A = Main Job ID, %a = Task ID
+#SBATCH -w argon-gtx                           # Request the specific node 'argon-gtx'
 
-# --- Resource Allocation ---
-#SBATCH --nodes=1                   # Use one node
-#SBATCH --ntasks=1                  # Run a single task (python script)
-#SBATCH --cpus-per-task=8           # Give 8 CPUs to that task (for dataloaders, etc.)
-#SBATCH --gpus=1                    # Request 1 GPU (argon-tesla2 has 2)
-#SBATCH --time=12:00:00             # 12 hours
+# --- Job Array ---
+#SBATCH --array=0-3                            # Run 4 tasks, with IDs 0, 1, 2, 3
+
+# --- Resource Allocation (PER TASK) ---
+# Each of the 4 tasks in the array will get these resources
+# Total resources used: 4 GPUs, 16 CPUs. (argon-gtx has 8 GPUs & 56 CPUs)
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --gpus=1
+#SBATCH --time=24:00:00                         # 24 hours (for each task)
 
 # --- Environment Setup ---
+echo "--- SLURM JOB ---"
+echo "Job Array ID: $SLURM_ARRAY_JOB_ID"
+echo "Task ID: $SLURM_ARRAY_TASK_ID"
 echo "Job started on $(hostname)"
-echo "Job ID: $SLURM_JOB_ID"
 echo "Working directory: $SLURM_SUBMIT_DIR"
 echo "---"
 
-# TODO: Load the modules your cluster provides
-# These are EXAMPLES. You MUST check your cluster's documentation.
-module purge
-module load anaconda/2023.03  # Example for loading Conda
-module load cuda/12.2.2         # Example for loading the correct CUDA version
+# Create directory for slurm job outputs if it doesn't exist
+mkdir -p ./slurm_jobs
 
-# If using a virtualenv (venv):
+# Load the modules
+module purge
+module load cuda/12.4.1
+# Activate the virtualenv
 source /home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/bin/activate
 
 # --- Run the Program ---
@@ -33,8 +41,17 @@ echo "Starting Python script..."
 # Navigate to the directory where you submitted the job
 cd $SLURM_SUBMIT_DIR
 
-# Run your main Optuna script
-# We just use 'python', not 'srun', because it's a single-task job.
-python run_optuna.py
+# --- Map Array ID to Target ---
+# 1. Define a bash array with your targets
+TARGETS=("all" "Area" "Iso_distance" "Iso_width")
 
-echo "Job finished."
+# 2. Get the target for this specific task ID
+CURRENT_TARGET=${TARGETS[$SLURM_ARRAY_TASK_ID]}
+
+echo "This task is running: python run_optuna.py --target $CURRENT_TARGET"
+
+# 3. Run your main Optuna script with the selected target
+python run_optuna.py --target $CURRENT_TARGET
+
+echo "---"
+echo "Task $SLURM_ARRAY_TASK_ID ($CURRENT_TARGET) finished."

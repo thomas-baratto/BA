@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from sklearn.model_selection import train_test_split
 import optuna
 import logging
 import os
@@ -10,6 +11,7 @@ import time
 import datetime
 from functools import partial
 from typing import Dict, Any, List
+import argparse
 
 # --- Import from own project files ---
 from data_loader import load_data, CSVDataset
@@ -25,7 +27,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 logging.info(f"Using device: {DEVICE}")
 
-
 # --- Column Definitions ---
 FEATURE_COLUMN_NAMES = [
     "Flow_well",
@@ -40,38 +41,34 @@ FEATURE_COLUMN_NAMES = [
     "Isotherm"
 ]
 
-# Define the label(s) you want to tune for.
-# Common options based on your data: ["Iso_width"], ["Iso_distance"], or ["Area"]
-OPTUNA_LABEL_NAMES = ["Area"]
-
+# --- Optuna Settings ---
+MAX_EPOCHS = 500 # Max epochs for Optuna trials
+PATIENCE = 25   # Early stopping patience
 
 # --- Optuna Objective Function ---
-
 def objective(trial: optuna.Trial,
               data: Dict[str, Any],
               base_log_dir: str) -> float:
     """Optuna objective function."""
     
     # --- Hyperparameters ---
-    num_epochs = trial.suggest_int("num_epochs", 100, 500)
     batch_size = trial.suggest_categorical("batch_size", [64, 128, 256, 512, 1024, 4096])
     learning_rate = trial.suggest_float("learning_rate", 1e-4, 1e-2, log=True)
     nr_hidden_layers = trial.suggest_int("nr_hidden_layers", 1, 5)
-    expanding_layers = trial.suggest_categorical("expanding_layers", [True, False])
-    contracting_layers = trial.suggest_categorical("contracting_layers", [True, False])
+    #expanding_layers = trial.suggest_categorical("expanding_layers", [True, False]) These parameters seemed to be unnecessary during training
+    #contracting_layers = trial.suggest_categorical("contracting_layers", [True, False])
     nr_neurons = trial.suggest_int("nr_neurons", 16, 256, log=True)
-    nr_of_steps = trial.suggest_int("nr_of_steps", 1, 5)
-    lr_scheduler_epoch_step = max(1, num_epochs // nr_of_steps) # Ensure step_size >= 1
-    lr_scheduler_gamma = trial.suggest_float("lr_scheduler_gamma", 0.1, 0.9, log=True)
-    loss_name = trial.suggest_categorical("criterion", ["MSE", "L1"])
+    dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.5)
+    weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
+    activation_name = trial.suggest_categorical("activation_name", ["ReLU", "LeakyReLU", "GELU", "ELU"])
+    loss_name = trial.suggest_categorical("loss_criterion", ["MSE", "L1"])
 
     # --- Data Loaders ---
-    # Data is pre-loaded and passed via 'data' dict
     train_dataset = CSVDataset(data["X_train"], data["y_train"])
-    test_dataset = CSVDataset(data["X_test"], data["y_test"])
+    val_dataset = CSVDataset(data["X_val"], data["y_val"])
     
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     # --- Model, Loss, Optimizer ---
     model = NeuralNetwork(
@@ -79,62 +76,88 @@ def objective(trial: optuna.Trial,
         output_size=data["y_train"].shape[1],
         nr_hidden_layers=nr_hidden_layers,
         nr_neurons=nr_neurons,
-        exp_layers=expanding_layers,
-        con_layers=contracting_layers
+        activation_name=activation_name,
+        exp_layers=False,
+        con_layers=False,
+        dropout_rate=dropout_rate,
     ).to(DEVICE)
     
     criterion = nn.MSELoss() if loss_name == "MSE" else nn.L1Loss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    scheduler = optim.lr_scheduler.StepLR(
-        optimizer, step_size=lr_scheduler_epoch_step, gamma=lr_scheduler_gamma
-    )
+    optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=MAX_EPOCHS)
 
     # --- TensorBoard ---
     writer = SummaryWriter(log_dir=os.path.join(base_log_dir, f"trial_{trial.number}"))
     start_time = time.time()
 
     # --- Training & Pruning Loop ---
-    for epoch in range(num_epochs):
+    best_val_loss = float('inf')
+    patience_counter = 0
+    
+    for epoch in range(MAX_EPOCHS):
         train_loss = train_epoch(model, train_loader, criterion, optimizer, DEVICE)
         scheduler.step()
+        val_loss, _, _ = evaluate(model, val_loader, criterion, DEVICE)
         
         writer.add_scalar("Training/Loss", train_loss, epoch)
+        writer.add_scalar("Validation/Loss", val_loss, epoch)
         log_resources(writer, epoch)
+        
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            
+        if patience_counter >= PATIENCE:
+            logging.info(f"Trial {trial.number}: Early stopping at epoch {epoch}.")
+            break
 
-        # Report intermediate result to Optuna
-        trial.report(train_loss, epoch)
-
-        # Prune the trial if it's performing badly
+        trial.report(val_loss, epoch)
         if trial.should_prune():
             writer.close()
             raise optuna.TrialPruned()
 
-    # --- Final Evaluation ---
-    test_loss, _, _ = evaluate(model, test_loader, criterion, DEVICE)
-    
-    writer.add_scalar("Test/Final_Loss", test_loss, 0)
+    # --- End of Trial ---
     writer.add_scalar("System/Total_Train_Time_sec", time.time() - start_time, 0)
-    writer.add_hparams(trial.params, {"hparam/test_loss": test_loss})
+    writer.add_hparams(trial.params, {"hparam/best_val_loss": best_val_loss})
     writer.close()
 
-    return test_loss # Optuna minimizes this value
+    return best_val_loss 
 
 # --- Main Execution ---
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Run Optuna hyperparameter optimization for a NN.")
+    parser.add_argument(
+        '--target', 
+        type=str, 
+        default='all', 
+        choices=['Area', 'Iso_distance', 'Iso_width', 'all'],
+        help="The target label to train on, or 'all' for all three. (Default: 'all')"
+    )
+    args = parser.parse_args()
+
+    all_labels = ["Area", "Iso_distance", "Iso_width"]
+    
+    if args.target == 'all':
+        OPTUNA_LABEL_NAMES = all_labels
+    else:
+        OPTUNA_LABEL_NAMES = [args.target]
+    
+    logging.info(f"Target labels for this run: {OPTUNA_LABEL_NAMES}")
     
     # --- Configuration ---
     CSV_FILE = './data/Clean_Results_Isotherm.csv'
     
-    # Create a single root folder for this entire run
     RUN_TIMESTAMP = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    ROOT_FOLDER = f"runs/run_{RUN_TIMESTAMP}/"
+    ROOT_FOLDER = f"runs/run_{RUN_TIMESTAMP}_{str(OPTUNA_LABEL_NAMES)}/"
     os.makedirs(ROOT_FOLDER, exist_ok=True)
     
-    # Store DB in the parent 'runs' folder to persist across runs
     OPTUNA_DB_PATH = "sqlite:///runs/optuna_study.db" 
-    OPTUNA_STUDY_NAME = "nn_hyperparam_study"
-    OPTUNA_N_TRIALS = 50 # Number of trials to run
+    OPTUNA_STUDY_NAME = f"nn_study_{str(OPTUNA_LABEL_NAMES)}"
+    OPTUNA_N_TRIALS = 100 
     
     # --- 1. Load Data ONCE for Optuna ---
     logging.info(f"Loading data for Optuna study (Labels: {OPTUNA_LABEL_NAMES})...")
@@ -142,12 +165,18 @@ if __name__ == "__main__":
         csv_file=CSV_FILE, 
         feature_cols=FEATURE_COLUMN_NAMES,
         label_cols=OPTUNA_LABEL_NAMES,
-        plots=False, # No plots during tuning
+        plots=False, 
         rf=ROOT_FOLDER
     )
-    # Pack data to pass to objective
+    
+    #Create validation set from training data
+    X_train_main, X_val, y_train_main, y_val = train_test_split(
+        X_train, y_train, test_size=0.2, random_state=42
+    )
+    
     optuna_data = {
-        "X_train": X_train, "y_train": y_train,
+        "X_train": X_train_main, "y_train": y_train_main,
+        "X_val": X_val, "y_val": y_val,
         "X_test": X_test, "y_test": y_test
     }
     
@@ -161,7 +190,6 @@ if __name__ == "__main__":
         pruner=optuna.pruners.MedianPruner(n_warmup_steps=10)
     )
     
-    # Use functools.partial to pass static data to the objective
     objective_with_data = partial(
         objective,
         data=optuna_data,
@@ -179,18 +207,21 @@ if __name__ == "__main__":
     
     best_params = study.best_params
     
-    # Build the config for the final training run
     final_model_config = {
-        "num_epochs": 1000, # Train final model for longer
+        "num_epochs": 1000, 
         "batch_size": best_params["batch_size"],
         "learning_rate": best_params["learning_rate"],
         "nr_hidden_layers": best_params["nr_hidden_layers"],
         "nr_neurons": best_params["nr_neurons"],
-        "expanding_layers": best_params["expanding_layers"],
-        "contracting_layers": best_params["contracting_layers"],
-        "lr_scheduler_epoch_step": max(1, 1000 // best_params["nr_of_steps"]),
-        "lr_scheduler_gamma": best_params["lr_scheduler_gamma"],
-        "plots": True # Enable plots for final model
+        "expanding_layers": False,
+        "contracting_layers": False,
+        "activation_name": best_params.get("activation_name", "ReLU"),
+        "dropout_rate": best_params.get("dropout_rate", 0.0),
+        "weight_decay": best_params.get("weight_decay", 0.0),
+        "loss_criterion": best_params["loss_criterion"],
+        "scheduler_type": "CosineAnnealingLR",
+        "scheduler_T_max": 1000,
+        "plots": True 
     }
 
     final_model_rf = os.path.join(ROOT_FOLDER, "final_model")

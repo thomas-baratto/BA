@@ -11,7 +11,6 @@ from sklearn.preprocessing import MinMaxScaler
 import warnings
 from sklearn.exceptions import DataConversionWarning
 
-# Suppress DataConversionWarning from sklearn
 warnings.filterwarnings(action='ignore', category=DataConversionWarning)
 
 # --- Dataset Class ---
@@ -22,7 +21,6 @@ class CSVDataset(Dataset):
     Data is converted to tensors upon initialization.
     """
     def __init__(self, data: np.ndarray, labels: np.ndarray):
-        # Convert to tensors once during initialization for efficiency
         self.data = torch.tensor(data, dtype=torch.float32)
         self.labels = torch.tensor(labels, dtype=torch.float32)
 
@@ -55,13 +53,12 @@ def load_data(csv_file: str,
         logging.error(f"Failed to read CSV file: {e}")
         raise
     
-    # Step 2: Try to select columns (df is guaranteed to exist here)
+    # Step 2: Try to select columns
     try:
         X = df[feature_cols].values
         y = df[label_cols].values
     except KeyError as e:
         logging.error(f"Column not found: {e}. Check your column names.")
-        # This line is now safe, as df is not None
         logging.error(f"Available columns: {df.columns.tolist()}")
         raise
     
@@ -69,14 +66,13 @@ def load_data(csv_file: str,
     if y.ndim == 1:
         y = y.reshape(-1, 1)
 
-    # Create a unique, filesystem-friendly name for the plot directory
     plot_dir_name = "_".join(label_cols).replace(" ", "_").replace("/", "_")
     plot_dir = os.path.join(rf, "plots", plot_dir_name)
     
     if plots:
         os.makedirs(plot_dir, exist_ok=True)
         
-        # --- 1. "Before Transformation" Plot ---
+        # "Before Transformation" Plot
         plt.figure()
         for label_idx in range(y.shape[1]):
             plt.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
@@ -90,7 +86,7 @@ def load_data(csv_file: str,
     y = np.log1p(y)
 
     if plots:
-        # --- 2. "After Log-Transformation" Plot ---
+        # "After Log-Transformation" Plot
         plt.figure()
         for label_idx in range(y.shape[1]):
             plt.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
@@ -99,7 +95,7 @@ def load_data(csv_file: str,
         plt.savefig(os.path.join(plot_dir, "after_log_transform.png"))
         plt.close()
 
-    # Train-test split *before* scaling
+    # Train-test split before scaling
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size, random_state=random_state, shuffle=True
     )
@@ -108,7 +104,7 @@ def load_data(csv_file: str,
     X_scaler = MinMaxScaler((0, 1))
     y_scaler = MinMaxScaler((0, 1))
 
-    # --- FIX: Fit on training data ONLY to prevent data leakage ---
+    #Fit on training data ONLY to prevent data leakage
     X_train = X_scaler.fit_transform(X_train)
     X_test = X_scaler.transform(X_test)  # Use transform only
 
@@ -117,7 +113,7 @@ def load_data(csv_file: str,
     
     if plots:
         # --- 3. "After Standardization" Plot ---
-        # IMPORTANT: We plot y_train here!
+        #y_train plot
         plt.figure()
         for label_idx in range(y_train.shape[1]):
             plt.hist(y_train[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')

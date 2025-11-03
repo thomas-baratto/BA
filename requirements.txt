@@ -2,7 +2,7 @@ numpy
 matplotlib
 pandas
 tensorboard
-torch
+torch==2.6.0
 torchinfo
 torchsummary
 scikit-learn
