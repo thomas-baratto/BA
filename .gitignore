@@ -6,3 +6,5 @@ stats
 runs
 .venv
 .DS_Store
+runs
+__pycache__

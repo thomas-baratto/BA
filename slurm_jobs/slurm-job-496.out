@@ -1,0 +1,43 @@
+Job started on argon-gtx
+Job ID: 496
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target Iso_distance
+2025-11-04 14:41:16,503 - INFO - Using device: cuda
+2025-11-04 14:41:16,505 - INFO - Target labels for this run: ['Iso_distance']
+2025-11-04 14:41:16,506 - INFO - Loading data for Optuna study (Labels: ['Iso_distance'])...
+2025-11-04 14:41:16,677 - INFO - Starting Optuna study: nn_study_['Iso_distance']...
+[I 2025-11-04 14:41:17,446] Using an existing study with name 'nn_study_['Iso_distance']' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+[I 2025-11-04 14:41:43,687] Trial 1000 pruned. 
+[I 2025-11-04 14:42:02,206] Trial 1001 pruned. 
+[I 2025-11-04 14:42:20,427] Trial 1002 pruned. 
+[I 2025-11-04 14:42:39,114] Trial 1003 pruned. 
+[I 2025-11-04 14:42:57,742] Trial 1004 pruned. 
+[I 2025-11-04 14:43:37,052] Trial 1005 pruned. 
+[I 2025-11-04 14:43:55,810] Trial 1006 pruned. 
+[I 2025-11-04 14:44:14,375] Trial 1007 pruned. 
+[I 2025-11-04 14:44:21,259] Trial 1008 pruned. 
+[I 2025-11-04 14:44:39,824] Trial 1009 pruned. 
+2025-11-04 14:47:59,516 - INFO - Trial 1010: Early stopping at epoch 113.
+[I 2025-11-04 14:47:59,633] Trial 1010 finished with value: 0.0034172292798757553 and parameters: {'batch_size': 64, 'learning_rate': 0.0008648071672126965, 'nr_hidden_layers': 2, 'nr_neurons': 208, 'dropout_rate': 0.0002956572218347919, 'weight_decay': 1.813198322144916e-05, 'activation_name': 'ReLU', 'loss_criterion': 'SmoothL1'}. Best is trial 124 with value: 0.0014025710088954345.
+[I 2025-11-04 14:48:33,314] Trial 1011 pruned. 
+[I 2025-11-04 14:48:55,363] Trial 1012 pruned. 
+[I 2025-11-04 14:49:14,103] Trial 1013 pruned. 
+[I 2025-11-04 14:49:25,660] Trial 1014 pruned. 
+[I 2025-11-04 14:49:44,880] Trial 1015 pruned. 
+[I 2025-11-04 14:50:03,622] Trial 1016 pruned. 
+[I 2025-11-04 14:50:22,437] Trial 1017 pruned. 
+[I 2025-11-04 14:50:41,140] Trial 1018 pruned. 
+[I 2025-11-04 14:50:47,006] Trial 1019 pruned. 
+[I 2025-11-04 14:50:55,401] Trial 1020 pruned. 
+[I 2025-11-04 14:51:14,101] Trial 1021 pruned. 
+[I 2025-11-04 14:51:33,207] Trial 1022 pruned. 
+[I 2025-11-04 14:51:51,906] Trial 1023 pruned. 
+[I 2025-11-04 14:51:59,095] Trial 1024 pruned. 
+[I 2025-11-04 14:52:17,840] Trial 1025 pruned. 
+[I 2025-11-04 14:52:41,888] Trial 1026 pruned. 
+[I 2025-11-04 14:53:00,856] Trial 1027 pruned. 
+[I 2025-11-04 14:53:19,895] Trial 1028 pruned. 
