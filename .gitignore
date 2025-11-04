@@ -4,6 +4,7 @@ Models
 plots
 stats
 runs
+slurm_jobs
 .venv
 .DS_Store
 runs

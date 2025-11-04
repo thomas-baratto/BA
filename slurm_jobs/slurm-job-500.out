@@ -30,3 +30,9 @@ Running: python run_optuna.py --target Area
 2025-11-04 14:51:48,909 - INFO - Trial 560: Early stopping at epoch 59.
 [I 2025-11-04 14:51:49,015] Trial 560 finished with value: 0.0064196474850177765 and parameters: {'batch_size': 64, 'learning_rate': 0.002031603782918198, 'nr_hidden_layers': 2, 'nr_neurons': 207, 'dropout_rate': 0.024308764487557335, 'weight_decay': 0.00028116701787431984, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
 [I 2025-11-04 14:52:07,770] Trial 563 pruned. 
+2025-11-04 14:54:42,667 - INFO - Trial 564: Early stopping at epoch 91.
+[I 2025-11-04 14:54:42,766] Trial 564 finished with value: 0.005085404962301254 and parameters: {'batch_size': 64, 'learning_rate': 0.0023749076803748926, 'nr_hidden_layers': 2, 'nr_neurons': 179, 'dropout_rate': 0.007665176677991029, 'weight_decay': 0.00022674587707680936, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 14:55:05,986] Trial 566 pruned. 
+[I 2025-11-04 14:55:24,750] Trial 567 pruned. 
+2025-11-04 14:57:52,832 - INFO - Trial 568: Early stopping at epoch 87.
+[I 2025-11-04 14:57:52,941] Trial 568 finished with value: 0.0035205401945859194 and parameters: {'batch_size': 64, 'learning_rate': 0.0022214061796251125, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 0.0007066524221101678, 'weight_decay': 0.00038199089080869636, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.

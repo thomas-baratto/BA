@@ -41,3 +41,6 @@ Running: python run_optuna.py --target Iso_distance
 [I 2025-11-04 14:52:41,888] Trial 1026 pruned. 
 [I 2025-11-04 14:53:00,856] Trial 1027 pruned. 
 [I 2025-11-04 14:53:19,895] Trial 1028 pruned. 
+2025-11-04 14:58:29,222 - INFO - Trial 1029: Early stopping at epoch 179.
+[I 2025-11-04 14:58:29,317] Trial 1029 finished with value: 0.002384205348789692 and parameters: {'batch_size': 64, 'learning_rate': 0.0009104096022773421, 'nr_hidden_layers': 2, 'nr_neurons': 165, 'dropout_rate': 5.2848770291778624e-05, 'weight_decay': 0.00015990237131902502, 'activation_name': 'ReLU', 'loss_criterion': 'SmoothL1'}. Best is trial 124 with value: 0.0014025710088954345.
+[I 2025-11-04 14:58:48,000] Trial 1030 pruned. 

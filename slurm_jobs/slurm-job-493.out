@@ -778,3 +778,5 @@ Running: python run_optuna.py --target Area
 [I 2025-11-04 14:50:32,883] Trial 561 pruned. 
 2025-11-04 14:53:42,812 - INFO - Trial 562: Early stopping at epoch 112.
 [I 2025-11-04 14:53:42,907] Trial 562 finished with value: 0.003310855893517774 and parameters: {'batch_size': 64, 'learning_rate': 0.0016458879117734024, 'nr_hidden_layers': 2, 'nr_neurons': 228, 'dropout_rate': 0.0004852594592591309, 'weight_decay': 0.0002448429143239357, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 14:57:08,245 - INFO - Trial 565: Early stopping at epoch 118.
+[I 2025-11-04 14:57:08,341] Trial 565 finished with value: 0.0032375210626602647 and parameters: {'batch_size': 64, 'learning_rate': 0.0022995277264815962, 'nr_hidden_layers': 2, 'nr_neurons': 180, 'dropout_rate': 0.00042526760409478093, 'weight_decay': 0.00048846350869058, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
