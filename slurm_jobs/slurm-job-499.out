@@ -1,0 +1,26 @@
+Job started on argon-gtx
+Job ID: 499
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target all
+2025-11-04 14:41:16,480 - INFO - Using device: cuda
+2025-11-04 14:41:16,481 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-04 14:41:16,481 - INFO - Loading data for Optuna study (Labels: ['Area', 'Iso_distance', 'Iso_width'])...
+2025-11-04 14:41:16,678 - INFO - Starting Optuna study: nn_study_['Area', 'Iso_distance', 'Iso_width']...
+[I 2025-11-04 14:41:17,423] Using an existing study with name 'nn_study_['Area', 'Iso_distance', 'Iso_width']' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+[I 2025-11-04 14:41:51,796] Trial 668 pruned. 
+[I 2025-11-04 14:42:13,721] Trial 669 pruned. 
+[I 2025-11-04 14:42:34,657] Trial 670 pruned. 
+2025-11-04 14:44:29,606 - INFO - Trial 671: Early stopping at epoch 59.
+[I 2025-11-04 14:44:29,713] Trial 671 finished with value: 0.004568200558423996 and parameters: {'batch_size': 64, 'learning_rate': 0.0016337005468975378, 'nr_hidden_layers': 3, 'nr_neurons': 141, 'dropout_rate': 1.0818190028379565e-05, 'weight_decay': 6.03210822312196e-06, 'activation_name': 'GELU', 'loss_criterion': 'L1'}. Best is trial 587 with value: 0.0007413936528887068.
+[I 2025-11-04 14:44:50,578] Trial 673 pruned. 
+[I 2025-11-04 14:45:11,638] Trial 674 pruned. 
+2025-11-04 14:48:00,477 - INFO - Trial 675: Early stopping at epoch 88.
+[I 2025-11-04 14:48:00,573] Trial 675 finished with value: 0.006514762062579393 and parameters: {'batch_size': 64, 'learning_rate': 0.0017440810159839574, 'nr_hidden_layers': 3, 'nr_neurons': 122, 'dropout_rate': 0.015841532295752567, 'weight_decay': 5.288581167177362e-06, 'activation_name': 'GELU', 'loss_criterion': 'L1'}. Best is trial 587 with value: 0.0007413936528887068.
+2025-11-04 14:52:13,221 - INFO - Trial 679: Early stopping at epoch 131.
+[I 2025-11-04 14:52:13,343] Trial 679 finished with value: 0.0032308928202837706 and parameters: {'batch_size': 64, 'learning_rate': 0.0014561099661512529, 'nr_hidden_layers': 3, 'nr_neurons': 134, 'dropout_rate': 0.00012381743095093433, 'weight_decay': 0.0014917280724443015, 'activation_name': 'ReLU', 'loss_criterion': 'L1'}. Best is trial 587 with value: 0.0007413936528887068.
+[I 2025-11-04 14:52:34,576] Trial 680 pruned. 
+[I 2025-11-04 14:52:55,671] Trial 681 pruned. 

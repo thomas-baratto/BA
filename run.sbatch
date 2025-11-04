@@ -10,7 +10,7 @@
 #SBATCH --ntasks=1                  # Run a single task (python script)
 #SBATCH --cpus-per-task=4           # Give 4 CPUs to that task
 #SBATCH --gpus=1                    # Request 1 GPU (argon-gtx has 8 GPUs)
-#SBATCH --time=24:00:00             # 24 hours
+#SBATCH --time=2-00:00:00             # 24 hours
 
 # --- Environment Setup ---
 echo "Job started on $(hostname)"
@@ -37,7 +37,7 @@ echo "Starting Python script..."
 cd $SLURM_SUBMIT_DIR
 
 # --- Run your main Optuna script ---
-# This will run the --target specified when you submit the job
+# This will run the --target specified when you submit the job (Iso_distance, Iso_width, Area, all).
 # If you don't specify one, it will default to 'all'
 echo "Running: python run_optuna.py --target $TARGET_LABEL"
 python run_optuna.py --target $TARGET_LABEL

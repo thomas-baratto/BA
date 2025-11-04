@@ -1,0 +1,10 @@
+Job started on argon-gtx
+Job ID: 498
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target area
+2025-11-04 14:41:16,589 - INFO - Using device: cuda
+usage: run_optuna.py [-h] [--target {Area,Iso_distance,Iso_width,all}]
+run_optuna.py: error: argument --target: invalid choice: 'area' (choose from 'Area', 'Iso_distance', 'Iso_width', 'all')
+Job finished.

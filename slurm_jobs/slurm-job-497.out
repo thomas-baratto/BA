@@ -1,0 +1,28 @@
+Job started on argon-gtx
+Job ID: 497
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target Iso_width
+2025-11-04 14:41:16,465 - INFO - Using device: cuda
+2025-11-04 14:41:16,465 - INFO - Target labels for this run: ['Iso_width']
+2025-11-04 14:41:16,466 - INFO - Loading data for Optuna study (Labels: ['Iso_width'])...
+2025-11-04 14:41:16,649 - INFO - Starting Optuna study: nn_study_['Iso_width']...
+[I 2025-11-04 14:41:17,416] Using an existing study with name 'nn_study_['Iso_width']' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+2025-11-04 14:43:06,685 - INFO - Trial 534: Early stopping at epoch 68.
+[I 2025-11-04 14:43:06,789] Trial 534 finished with value: 0.0076433452777564526 and parameters: {'batch_size': 64, 'learning_rate': 0.005580433106853029, 'nr_hidden_layers': 1, 'nr_neurons': 203, 'dropout_rate': 0.017891839860515516, 'weight_decay': 1.8563155266579262e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 192 with value: 0.0016149684023931267.
+[I 2025-11-04 14:43:14,736] Trial 535 pruned. 
+[I 2025-11-04 14:43:44,621] Trial 536 pruned. 
+[I 2025-11-04 14:44:14,489] Trial 538 pruned. 
+2025-11-04 14:46:10,287 - INFO - Trial 539: Early stopping at epoch 75.
+[I 2025-11-04 14:46:10,381] Trial 539 finished with value: 0.005347693804651499 and parameters: {'batch_size': 64, 'learning_rate': 0.0060449725186759225, 'nr_hidden_layers': 1, 'nr_neurons': 157, 'dropout_rate': 0.0005937252381873233, 'weight_decay': 1.0890170278416654e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 192 with value: 0.0016149684023931267.
+[I 2025-11-04 14:46:26,822] Trial 541 pruned. 
+[I 2025-11-04 14:46:43,240] Trial 542 pruned. 
+[I 2025-11-04 14:49:35,265] Trial 543 pruned. 
+[I 2025-11-04 14:50:25,035] Trial 545 pruned. 
+2025-11-04 14:52:45,733 - INFO - Trial 546: Early stopping at epoch 94.
+[I 2025-11-04 14:52:45,825] Trial 546 finished with value: 0.002946458524093032 and parameters: {'batch_size': 64, 'learning_rate': 0.006259914784514736, 'nr_hidden_layers': 1, 'nr_neurons': 167, 'dropout_rate': 0.0001287579114500365, 'weight_decay': 1.7668646973683585e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 192 with value: 0.0016149684023931267.
+[I 2025-11-04 14:53:02,371] Trial 547 pruned. 
+[I 2025-11-04 14:53:21,823] Trial 548 pruned. 

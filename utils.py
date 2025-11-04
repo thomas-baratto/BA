@@ -9,7 +9,7 @@ from matplotlib.figure import Figure # Import Figure for type hinting
 
 # --- Import scikit-learn metrics ---
 from sklearn.metrics import (
-    mean_squared_error, 
+    root_mean_squared_error, 
     r2_score, 
     mean_absolute_percentage_error, 
     median_absolute_error,
@@ -41,7 +41,7 @@ def compute_regression_metrics(y_true: np.ndarray,
     
     # Calculate metrics that are safe (don't divide by zero)
     metrics["mae"] = mean_absolute_error(y_true, y_pred)
-    metrics["rmse"] = mean_squared_error(y_true, y_pred, squared=False)
+    metrics["rmse"] = root_mean_squared_error(y_true, y_pred)
     metrics["r2"] = r2_score(y_true, y_pred)
     metrics["medae"] = median_absolute_error(y_true, y_pred)
     
