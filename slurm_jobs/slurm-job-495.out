@@ -830,3 +830,15 @@ Running: python run_optuna.py --target Iso_width
 [I 2025-11-04 14:49:21,732] Trial 540 pruned. 
 2025-11-04 14:53:48,147 - INFO - Trial 544: Early stopping at epoch 179.
 [I 2025-11-04 14:53:48,243] Trial 544 finished with value: 0.0023688912005030414 and parameters: {'batch_size': 64, 'learning_rate': 0.005903093017678991, 'nr_hidden_layers': 1, 'nr_neurons': 175, 'dropout_rate': 1.109190962006847e-05, 'weight_decay': 2.0966821644469248e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 192 with value: 0.0016149684023931267.
+[I 2025-11-04 14:54:04,716] Trial 550 pruned. 
+[I 2025-11-04 14:54:11,924] Trial 551 pruned. 
+2025-11-04 14:55:41,114 - INFO - Trial 552: Early stopping at epoch 58.
+[I 2025-11-04 14:55:41,208] Trial 552 finished with value: 0.008431561862471867 and parameters: {'batch_size': 64, 'learning_rate': 0.0049423684090827745, 'nr_hidden_layers': 1, 'nr_neurons': 48, 'dropout_rate': 0.010430621284345494, 'weight_decay': 2.4328103990025143e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 192 with value: 0.0016149684023931267.
+[I 2025-11-04 14:57:07,424] Trial 553 pruned. 
+[I 2025-11-04 14:57:24,015] Trial 554 pruned. 
+[I 2025-11-04 14:57:40,660] Trial 555 pruned. 
+[I 2025-11-04 14:57:46,499] Trial 556 pruned. 
+[I 2025-11-04 14:58:03,445] Trial 557 pruned. 
+[I 2025-11-04 14:58:33,187] Trial 559 pruned. 
+[I 2025-11-04 14:58:49,654] Trial 561 pruned. 
+[I 2025-11-04 14:58:56,168] Trial 562 pruned. 

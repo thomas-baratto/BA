@@ -970,3 +970,6 @@ Running: python run_optuna.py --target all
 [I 2025-11-04 14:52:54,415] Trial 682 pruned. 
 [I 2025-11-04 14:53:15,977] Trial 683 pruned. 
 [I 2025-11-04 14:53:37,739] Trial 685 pruned. 
+2025-11-04 14:55:39,338 - INFO - Trial 686: Early stopping at epoch 61.
+[I 2025-11-04 14:55:39,432] Trial 686 finished with value: 0.007034752980239064 and parameters: {'batch_size': 64, 'learning_rate': 0.0019795563489963235, 'nr_hidden_layers': 3, 'nr_neurons': 161, 'dropout_rate': 0.009443879361981248, 'weight_decay': 8.675102307063672e-06, 'activation_name': 'GELU', 'loss_criterion': 'L1'}. Best is trial 587 with value: 0.0007413936528887068.
+[I 2025-11-04 14:55:46,037] Trial 688 pruned. 

@@ -24,3 +24,4 @@ Running: python run_optuna.py --target all
 [I 2025-11-04 14:52:13,343] Trial 679 finished with value: 0.0032308928202837706 and parameters: {'batch_size': 64, 'learning_rate': 0.0014561099661512529, 'nr_hidden_layers': 3, 'nr_neurons': 134, 'dropout_rate': 0.00012381743095093433, 'weight_decay': 0.0014917280724443015, 'activation_name': 'ReLU', 'loss_criterion': 'L1'}. Best is trial 587 with value: 0.0007413936528887068.
 [I 2025-11-04 14:52:34,576] Trial 680 pruned. 
 [I 2025-11-04 14:52:55,671] Trial 681 pruned. 
+[I 2025-11-04 14:54:02,010] Trial 684 pruned. 
