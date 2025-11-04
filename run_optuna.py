@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
+import numpy as np
 from torch.utils.tensorboard import SummaryWriter
 from sklearn.model_selection import train_test_split
 import optuna
@@ -12,7 +13,7 @@ import datetime
 from functools import partial
 from typing import Dict, Any, List
 import argparse
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 
 # --- Import from own project files ---
 from data_loader import load_data, CSVDataset
@@ -105,15 +106,15 @@ def objective(trial: optuna.Trial,
         scheduler.step()
         
         val_loss, predictions, true_values = evaluate(model, val_loader, criterion, DEVICE)
-        current_val_rmse = mean_squared_error(true_values, predictions, squared=False)
+        current_val_rmse = root_mean_squared_error(true_values, predictions)
         
         writer.add_scalar("Training/Loss", train_loss, epoch)
         writer.add_scalar("Validation/Loss", val_loss, epoch)
         writer.add_scalar("Validation/RMSE", current_val_rmse, epoch)
         log_resources(writer, epoch)
         
-        if current_val_rmse < best_val_loss:
-            best_val_loss = current_val_rmse
+        if current_val_rmse < best_val_rmse:
+            best_val_rmse = current_val_rmse
             patience_counter = 0
         else:
             patience_counter += 1
