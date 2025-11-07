@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from torch.optim.lr_scheduler import StepLR, CosineAnnealingLR
+from torch.optim.lr_scheduler import StepLR, CosineAnnealingLR, LinearLR, SequentialLR
 from torchinfo import summary
 import numpy as np 
 import logging
@@ -13,7 +13,8 @@ import time
 import copy
 from sklearn.model_selection import train_test_split
 
-# --- REMOVED old sklearn imports ---
+# --- Import scikit-learn metrics ---
+from sklearn.metrics import root_mean_squared_error
 
 # Import from your other project files
 from model import NeuralNetwork
@@ -22,17 +23,29 @@ from utils import (
     plot_results, 
     compute_regression_metrics,
     plot_error_histograms,
-    log_resources, 
-    create_scatter_plot
+    log_resources
 )
 
-# --- Training & Evaluation Functions ---
 def train_epoch(model: nn.Module,
                 loader: DataLoader,
                 criterion: nn.Module,
                 optimizer: optim.Optimizer,
-                device: torch.device) -> float:
-    # (This function is unchanged)
+                device: torch.device,
+                max_grad_norm: float = 1.0) -> float:
+    """
+    Train for one epoch with optional gradient clipping.
+    
+    Args:
+        model: Neural network model
+        loader: DataLoader for training data
+        criterion: Loss function
+        optimizer: Optimizer
+        device: Device to train on
+        max_grad_norm: Maximum gradient norm for clipping (0 to disable)
+    
+    Returns:
+        Average loss for the epoch
+    """
     model.train()
     epoch_loss = 0.0
     for batch_data, batch_labels in loader:
@@ -41,6 +54,11 @@ def train_epoch(model: nn.Module,
         outputs = model(batch_data)
         loss = criterion(outputs, batch_labels)
         loss.backward()
+        
+        # Gradient clipping to prevent exploding gradients
+        if max_grad_norm > 0:
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+        
         optimizer.step()
         epoch_loss += loss.item()
     return epoch_loss / len(loader)
@@ -49,7 +67,6 @@ def evaluate(model: nn.Module,
              loader: DataLoader,
              criterion: nn.Module,
              device: torch.device) -> Tuple[float, np.ndarray, np.ndarray]:
-    # (This function is unchanged)
     model.eval()
     total_loss = 0.0
     all_predictions = []
@@ -75,7 +92,6 @@ def main_train(config: Dict[str, Any],
                label_cols: List[str],
                device: torch.device) -> nn.Module:
     
-    # (Setup is unchanged)
     logging.info(f"Starting main training for labels {label_cols}...")
     X_train_full, X_test, X_scaler, y_train_full, y_test, y_scaler = load_data(
         csv_file,
@@ -94,6 +110,7 @@ def main_train(config: Dict[str, Any],
     train_loader = DataLoader(train_dataset, batch_size=config["batch_size"], shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=config["batch_size"], shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=config["batch_size"], shuffle=False)
+    
     model = NeuralNetwork(
         input_size=X_train.shape[1],
         output_size=y_train.shape[1],
@@ -105,7 +122,7 @@ def main_train(config: Dict[str, Any],
         dropout_rate=config.get("dropout_rate", 0.0)
     ).to(device)
     
-    loss_name = config.get("loss_criterion", "MSE")
+    loss_name = config.get("loss_criterion", "SmoothL1")
     if loss_name == "L1":
         criterion = nn.L1Loss()
         logging.info("Using L1Loss (MAE)")
@@ -122,9 +139,17 @@ def main_train(config: Dict[str, Any],
         weight_decay=config.get("weight_decay", 0.0)
     )
 
+    # Learning rate scheduler with optional warmup
+    warmup_epochs = config.get("warmup_epochs", 0)
     if config.get("scheduler_type") == "CosineAnnealingLR":
-        scheduler = CosineAnnealingLR(optimizer, T_max=config.get("scheduler_T_max", 1000))
+        main_scheduler = CosineAnnealingLR(optimizer, T_max=config.get("scheduler_T_max", 1000))
         logging.info(f"Using CosineAnnealingLR with T_max={config.get('scheduler_T_max', 1000)}")
+        if warmup_epochs > 0:
+            warmup_scheduler = LinearLR(optimizer, start_factor=0.1, end_factor=1.0, total_iters=warmup_epochs)
+            scheduler = SequentialLR(optimizer, schedulers=[warmup_scheduler, main_scheduler], milestones=[warmup_epochs])
+            logging.info(f"Added warmup for {warmup_epochs} epochs")
+        else:
+            scheduler = main_scheduler
     else:
         step_size = config.get("lr_scheduler_epoch_step", 100)
         gamma = config.get("lr_scheduler_gamma", 0.1)
@@ -142,11 +167,10 @@ def main_train(config: Dict[str, Any],
         except Exception as e:
             f.write(f"\n\n(Could not run torchinfo summary: {e})")
 
-    # (Training loop is unchanged)
     train_losses = []
     val_losses = []
     x_loss_epochs = []
-    patience = config.get("patience", 25)
+    patience = config.get("patience", 100)
     patience_counter = 0
     best_val_loss = float("inf")
     best_model_state = None
@@ -188,8 +212,6 @@ def main_train(config: Dict[str, Any],
     logging.info(f"Final Test Loss ({loss_name}): {test_loss:.6f}")
     writer.add_scalar(f"Final_Run/Test_Loss_{loss_name}", test_loss, 0)
     
-    # --- METRICS AND PLOTTING (THIS IS THE FIXED SECTION) ---
-
     if config["plots"]:
         logging.info("Inverting transforms and generating plots...")
         inverted_predictions = y_scaler.inverse_transform(predictions)
@@ -197,34 +219,52 @@ def main_train(config: Dict[str, Any],
         inverted_predictions = np.expm1(inverted_predictions)
         inverted_true_values = np.expm1(inverted_true_values)
         
-        # --- 1. Call compute_regression_metrics ---
         logging.info("Calculating final metrics...")
+        
+        # Calculate overall metrics (aggregated across all features)
         final_metrics = compute_regression_metrics(inverted_true_values, inverted_predictions)
         
         stats_dir = os.path.join(rf, "stats")
         os.makedirs(stats_dir, exist_ok=True)
+        
         with open(os.path.join(stats_dir, "final_metrics.txt"), "w") as f:
+            f.write("="*60 + "\n")
+            f.write("OVERALL METRICS (All Features Combined)\n")
+            f.write("="*60 + "\n")
             for key, value in final_metrics.items():
-                logging.info(f"Final Test {key.upper()}: {value:.6f}")
+                logging.info(f"Overall Test {key.upper()} (unscaled): {value:.6f}")
                 f.write(f"{key}: {value}\n")
                 if not np.isnan(value):
-                    writer.add_scalar(f"Final_Run/Test_{key.upper()}", value, 0)
-
-        # --- 2. Call plot_results (unchanged) ---
+                    writer.add_scalar(f"Final_Run/Test_{key.upper()}_Overall", value, 0)
+            
+            # Calculate metrics for each feature separately
+            if inverted_true_values.shape[1] > 1:
+                f.write("\n" + "="*60 + "\n")
+                f.write("PER-FEATURE METRICS\n")
+                f.write("="*60 + "\n")
+                
+                for idx, label in enumerate(label_cols):
+                    logging.info(f"\nCalculating metrics for feature: {label}")
+                    f.write(f"\n--- {label} ---\n")
+                    
+                    # Extract single feature
+                    y_true_single = inverted_true_values[:, idx:idx+1]
+                    y_pred_single = inverted_predictions[:, idx:idx+1]
+                    
+                    # Calculate metrics for this feature
+                    feature_metrics = compute_regression_metrics(y_true_single, y_pred_single)
+                    
+                    for key, value in feature_metrics.items():
+                        logging.info(f"  {label} - {key.upper()}: {value:.6f}")
+                        f.write(f"{key}: {value}\n")
+                        if not np.isnan(value):
+                            writer.add_scalar(f"Final_Run/Test_{key.upper()}_{label}", value, 0)
+        
+        logging.info("Generating plots and logging to TensorBoard...")
         plot_results(rf, np.array(x_loss_epochs), train_losses, val_losses,
-                     inverted_true_values, inverted_predictions, label_cols)
+                     inverted_true_values, inverted_predictions, label_cols, writer=writer)
         
-        # --- 3. Call plot_error_histograms (RENAMED) ---
-        plot_error_histograms(rf, inverted_true_values, inverted_predictions, label_cols)
-        
-        # --- 4. Call create_scatter_plot (unchanged) ---
-        logging.info("Logging plots to tensorboard...")
-        scatter_plots_for_tensorboard = create_scatter_plot(
-            inverted_true_values, inverted_predictions, label_cols
-        )
-        
-        for label, fig in scatter_plots_for_tensorboard:
-            writer.add_figure(label,fig)
+        plot_error_histograms(rf, inverted_predictions, inverted_true_values, label_cols, writer=writer)
             
     writer.add_scalar("Final_Run/Total_Train_Time_sec", time.time() - start_time, 0)        
     writer.close()

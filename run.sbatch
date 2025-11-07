@@ -36,10 +36,14 @@ echo "Starting Python script..."
 # Navigate to the directory where you submitted the job
 cd $SLURM_SUBMIT_DIR
 
-# --- Run your main Optuna script ---
-# This will run the --target specified when you submit the job (Iso_distance, Iso_width, Area, all).
-# If you don't specify one, it will default to 'all'
-echo "Running: python run_optuna.py --target $TARGET_LABEL"
-python run_optuna.py --target $TARGET_LABEL
+# Show GPU info
+nvidia-smi
 
-echo "Job finished."
+# --- Run your main Optuna script ---
+# Pass all arguments to the Python script
+echo "Running: python run_optuna.py $@"
+python run_optuna.py $@
+
+EXIT_CODE=$?
+echo "Job finished with exit code: $EXIT_CODE"
+exit $EXIT_CODE
