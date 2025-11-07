@@ -1,0 +1,40 @@
+Job started on argon-gtx
+Job ID: 534
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target Iso_distance
+2025-11-06 23:24:55,973 - INFO - Using device: cuda
+2025-11-06 23:24:55,975 - INFO - Target labels for this run: ['Iso_distance']
+2025-11-06 23:24:55,975 - INFO - Skip Optuna: False
+2025-11-06 23:24:55,976 - INFO - Starting Optuna study: nn_study_['Iso_distance']...
+2025-11-06 23:24:55,976 - INFO - Loading data for Optuna study (Labels: ['Iso_distance'])...
+[I 2025-11-06 23:24:56,822] Using an existing study with name 'nn_study_['Iso_distance']' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+[I 2025-11-06 23:25:25,365] Trial 2000 pruned. 
+[I 2025-11-06 23:25:45,108] Trial 2001 pruned. 
+[I 2025-11-06 23:26:04,666] Trial 2002 pruned. 
+[I 2025-11-06 23:26:24,266] Trial 2003 pruned. 
+[I 2025-11-06 23:26:43,928] Trial 2004 pruned. 
+[I 2025-11-06 23:27:03,608] Trial 2005 pruned. 
+[I 2025-11-06 23:27:23,262] Trial 2006 pruned. 
+[I 2025-11-06 23:27:42,936] Trial 2007 pruned. 
+2025-11-06 23:30:20,334 - INFO - Trial 2008: Early stopping at epoch 87.
+[I 2025-11-06 23:30:20,479] Trial 2008 finished with value: 0.0023194593377411366 and parameters: {'learning_rate': 0.0012974828258801945, 'nr_neurons': 194, 'dropout_rate': 4.086029106148021e-06, 'weight_decay': 1.6186183673965005e-05}. Best is trial 124 with value: 0.0014025710088954345.
+[I 2025-11-06 23:30:40,665] Trial 2009 pruned. 
+[I 2025-11-06 23:31:00,363] Trial 2010 pruned. 
+[I 2025-11-06 23:31:20,131] Trial 2011 pruned. 
+[I 2025-11-06 23:31:46,983] Trial 2012 pruned. 
+[I 2025-11-06 23:32:06,904] Trial 2013 pruned. 
+[I 2025-11-06 23:32:27,066] Trial 2014 pruned. 
+[I 2025-11-06 23:32:47,310] Trial 2015 pruned. 
+[I 2025-11-06 23:33:07,732] Trial 2016 pruned. 
+[I 2025-11-06 23:33:28,157] Trial 2017 pruned. 
+[I 2025-11-06 23:33:48,514] Trial 2018 pruned. 
+[I 2025-11-06 23:34:08,930] Trial 2019 pruned. 
+[I 2025-11-06 23:34:29,293] Trial 2020 pruned. 
+[I 2025-11-06 23:35:41,021] Trial 2021 pruned. 
+[I 2025-11-06 23:36:08,797] Trial 2022 pruned. 
+[I 2025-11-06 23:36:29,171] Trial 2023 pruned. 
+slurmstepd-argon-gtx: error: *** JOB 534 ON argon-gtx CANCELLED AT 2025-11-06T23:38:41 ***

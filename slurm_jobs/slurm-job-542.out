@@ -1,0 +1,64 @@
+Job started on argon-gtx
+Job ID: 542
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Unable to determine the device handle for GPU0000:61:00.0: Unknown Error
+Running: python run_optuna.py --target Iso_distance --skip-optuna
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-07 18:35:30,946 - INFO - Using device: cuda
+2025-11-07 18:35:30,947 - INFO - Target labels for this run: ['Iso_distance']
+2025-11-07 18:35:30,947 - INFO - Skip Optuna: True
+2025-11-07 18:35:30,948 - INFO - Skipping Optuna. Loading best parameters from study: nn_study_Iso_distance...
+2025-11-07 18:35:31,689 - ERROR - Study 'nn_study_Iso_distance' not found in database. Available studies:
+2025-11-07 18:35:59,990 - ERROR -   - nn_study_['Iso_distance']
+2025-11-07 18:35:59,991 - ERROR -   - nn_study_['Area']
+2025-11-07 18:35:59,991 - ERROR -   - nn_study_['Iso_width']
+2025-11-07 18:35:59,991 - ERROR -   - nn_study_['Area', 'Iso_distance', 'Iso_width']
+2025-11-07 18:35:59,991 - INFO - Falling back to default parameters...
+2025-11-07 18:35:59,991 - INFO - Training final model with parameters...
+2025-11-07 18:35:59,991 - INFO - Starting main training for labels ['Iso_distance']...
+2025-11-07 18:36:01,057 - INFO - Final training: 47896 train samples, 11975 val samples, 25660 test samples.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+2025-11-07 18:36:01,643 - INFO - Using SmoothL1Loss (Huber Loss)
+2025-11-07 18:36:04,370 - INFO - Using CosineAnnealingLR with T_max=1000
+2025-11-07 18:36:04,370 - INFO - Added warmup for 10 epochs
+2025-11-07 18:36:04,444 - INFO - Starting final training loop for max 1000 epochs (Patience=100)...
+2025-11-07 18:36:06,777 - INFO - Epoch [1/1000], Train Loss: 0.027592, Val Loss: 0.005651, LR: 0.000190
+2025-11-07 18:36:06,778 - INFO - New best model found at epoch 1 with val_loss: 0.005651
+2025-11-07 18:36:08,807 - INFO - New best model found at epoch 2 with val_loss: 0.005371
+2025-11-07 18:36:10,788 - INFO - New best model found at epoch 3 with val_loss: 0.005210
+2025-11-07 18:36:12,787 - INFO - New best model found at epoch 4 with val_loss: 0.005094
+2025-11-07 18:36:14,707 - INFO - New best model found at epoch 5 with val_loss: 0.004851
+2025-11-07 18:36:16,699 - INFO - New best model found at epoch 6 with val_loss: 0.004559
+2025-11-07 18:36:18,687 - INFO - New best model found at epoch 7 with val_loss: 0.003815
+2025-11-07 18:36:20,688 - INFO - New best model found at epoch 8 with val_loss: 0.003146
+2025-11-07 18:36:22,690 - INFO - New best model found at epoch 9 with val_loss: 0.002534
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/optim/lr_scheduler.py:243: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+2025-11-07 18:36:24,689 - INFO - New best model found at epoch 10 with val_loss: 0.002293
+2025-11-07 18:36:26,680 - INFO - New best model found at epoch 11 with val_loss: 0.001855
+2025-11-07 18:36:28,678 - INFO - New best model found at epoch 12 with val_loss: 0.001442
+2025-11-07 18:36:30,673 - INFO - New best model found at epoch 13 with val_loss: 0.001130
+2025-11-07 18:36:32,673 - INFO - New best model found at epoch 14 with val_loss: 0.000764
+2025-11-07 18:36:34,671 - INFO - New best model found at epoch 15 with val_loss: 0.000570
+2025-11-07 18:36:36,673 - INFO - New best model found at epoch 16 with val_loss: 0.000371
+2025-11-07 18:36:38,671 - INFO - New best model found at epoch 17 with val_loss: 0.000361
+2025-11-07 18:36:40,664 - INFO - New best model found at epoch 18 with val_loss: 0.000266
+2025-11-07 18:36:42,659 - INFO - New best model found at epoch 19 with val_loss: 0.000209
+2025-11-07 18:36:44,651 - INFO - New best model found at epoch 20 with val_loss: 0.000174
+2025-11-07 18:36:54,604 - INFO - New best model found at epoch 25 with val_loss: 0.000164
+2025-11-07 18:37:02,252 - INFO - New best model found at epoch 28 with val_loss: 0.000121
+2025-11-07 18:37:24,151 - INFO - New best model found at epoch 34 with val_loss: 0.000098
+2025-11-07 18:37:42,421 - INFO - New best model found at epoch 39 with val_loss: 0.000088
+2025-11-07 18:38:04,839 - INFO - New best model found at epoch 46 with val_loss: 0.000054
+2025-11-07 18:38:12,809 - INFO - Epoch [50/1000], Train Loss: 0.000316, Val Loss: 0.000106, LR: 0.000996
+2025-11-07 18:38:23,722 - INFO - New best model found at epoch 54 with val_loss: 0.000046
+2025-11-07 18:38:55,588 - INFO - New best model found at epoch 70 with val_loss: 0.000046
+2025-11-07 18:39:47,279 - INFO - New best model found at epoch 95 with val_loss: 0.000036
+2025-11-07 18:39:57,238 - INFO - Epoch [100/1000], Train Loss: 0.000237, Val Loss: 0.000052, LR: 0.000980
+2025-11-07 18:40:29,103 - INFO - New best model found at epoch 116 with val_loss: 0.000035
+2025-11-07 18:41:54,847 - INFO - Epoch [150/1000], Train Loss: 0.000204, Val Loss: 0.000036, LR: 0.000952
+slurmstepd-argon-gtx: error: *** JOB 542 ON argon-gtx CANCELLED AT 2025-11-07T18:41:55 ***

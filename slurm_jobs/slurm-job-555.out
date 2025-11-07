@@ -1,0 +1,142 @@
+Job started on argon-gtx
+Job ID: 555
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Unable to determine the device handle for GPU0000:61:00.0: Unknown Error
+Running: python run_optuna.py --target Iso_width --skip-optuna
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-07 18:47:42,792 - INFO - Using device: cuda
+2025-11-07 18:47:42,793 - INFO - Target labels for this run: ['Iso_width']
+2025-11-07 18:47:42,794 - INFO - Skip Optuna: True
+2025-11-07 18:47:42,794 - INFO - Skipping Optuna. Loading best parameters from study: nn_study_Iso_width...
+2025-11-07 18:47:43,773 - INFO - Successfully loaded best parameters from trial 1616:
+2025-11-07 18:47:43,799 - INFO -   Best value (RMSE): 0.001146
+2025-11-07 18:47:51,165 - INFO -   Number of trials completed: 2743
+2025-11-07 18:47:51,165 - INFO -   Optimized parameters:
+2025-11-07 18:47:51,286 - INFO -     batch_size: 64
+2025-11-07 18:47:51,286 - INFO -     learning_rate: 0.003384871040990215
+2025-11-07 18:47:51,286 - INFO -     nr_hidden_layers: 1
+2025-11-07 18:47:51,286 - INFO -     nr_neurons: 112
+2025-11-07 18:47:51,286 - INFO -     dropout_rate: 0.00014697292771531992
+2025-11-07 18:47:51,286 - INFO -     weight_decay: 4.3897138187438567e-05
+2025-11-07 18:47:51,286 - INFO -     activation_name: GELU
+2025-11-07 18:47:51,286 - INFO -     loss_criterion: SmoothL1
+2025-11-07 18:47:51,286 - INFO - Training final model with parameters...
+2025-11-07 18:47:51,286 - INFO - Starting main training for labels ['Iso_width']...
+2025-11-07 18:47:52,377 - INFO - Final training: 47896 train samples, 11975 val samples, 25660 test samples.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+2025-11-07 18:47:52,805 - INFO - Using SmoothL1Loss (Huber Loss)
+2025-11-07 18:47:54,778 - INFO - Using CosineAnnealingLR with T_max=1000
+2025-11-07 18:47:54,779 - INFO - Added warmup for 10 epochs
+2025-11-07 18:47:54,836 - INFO - Starting final training loop for max 1000 epochs (Patience=100)...
+2025-11-07 18:47:56,696 - INFO - Epoch [1/1000], Train Loss: 0.006617, Val Loss: 0.003218, LR: 0.000643
+2025-11-07 18:47:56,697 - INFO - New best model found at epoch 1 with val_loss: 0.003218
+2025-11-07 18:47:58,359 - INFO - New best model found at epoch 2 with val_loss: 0.002936
+2025-11-07 18:48:00,000 - INFO - New best model found at epoch 3 with val_loss: 0.002057
+2025-11-07 18:48:01,627 - INFO - New best model found at epoch 4 with val_loss: 0.001714
+2025-11-07 18:48:03,270 - INFO - New best model found at epoch 5 with val_loss: 0.001227
+2025-11-07 18:48:04,901 - INFO - New best model found at epoch 6 with val_loss: 0.000870
+2025-11-07 18:48:06,596 - INFO - New best model found at epoch 7 with val_loss: 0.000617
+2025-11-07 18:48:09,198 - INFO - New best model found at epoch 8 with val_loss: 0.000363
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/optim/lr_scheduler.py:243: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+2025-11-07 18:48:14,806 - INFO - New best model found at epoch 11 with val_loss: 0.000193
+2025-11-07 18:48:25,903 - INFO - New best model found at epoch 16 with val_loss: 0.000108
+2025-11-07 18:48:29,165 - INFO - New best model found at epoch 18 with val_loss: 0.000062
+2025-11-07 18:48:34,049 - INFO - New best model found at epoch 21 with val_loss: 0.000055
+2025-11-07 18:48:37,308 - INFO - New best model found at epoch 23 with val_loss: 0.000038
+2025-11-07 18:48:45,444 - INFO - New best model found at epoch 28 with val_loss: 0.000031
+2025-11-07 18:48:53,593 - INFO - New best model found at epoch 33 with val_loss: 0.000022
+2025-11-07 18:49:18,056 - INFO - New best model found at epoch 47 with val_loss: 0.000021
+2025-11-07 18:49:22,944 - INFO - Epoch [50/1000], Train Loss: 0.000039, Val Loss: 0.000064, LR: 0.003372
+2025-11-07 18:49:34,334 - INFO - New best model found at epoch 57 with val_loss: 0.000020
+2025-11-07 18:49:48,288 - INFO - New best model found at epoch 65 with val_loss: 0.000015
+2025-11-07 18:49:49,915 - INFO - New best model found at epoch 66 with val_loss: 0.000014
+2025-11-07 18:50:09,465 - INFO - New best model found at epoch 78 with val_loss: 0.000013
+2025-11-07 18:50:22,509 - INFO - New best model found at epoch 86 with val_loss: 0.000012
+2025-11-07 18:50:29,020 - INFO - New best model found at epoch 90 with val_loss: 0.000010
+2025-11-07 18:50:43,641 - INFO - New best model found at epoch 99 with val_loss: 0.000007
+2025-11-07 18:50:45,263 - INFO - Epoch [100/1000], Train Loss: 0.000023, Val Loss: 0.000009, LR: 0.003318
+2025-11-07 18:50:51,770 - INFO - New best model found at epoch 104 with val_loss: 0.000007
+2025-11-07 18:51:24,327 - INFO - New best model found at epoch 124 with val_loss: 0.000006
+2025-11-07 18:51:45,488 - INFO - New best model found at epoch 137 with val_loss: 0.000005
+2025-11-07 18:51:48,741 - INFO - New best model found at epoch 139 with val_loss: 0.000005
+2025-11-07 18:52:05,041 - INFO - New best model found at epoch 149 with val_loss: 0.000003
+2025-11-07 18:52:06,667 - INFO - Epoch [150/1000], Train Loss: 0.000017, Val Loss: 0.000012, LR: 0.003224
+2025-11-07 18:53:24,146 - INFO - New best model found at epoch 197 with val_loss: 0.000003
+2025-11-07 18:53:29,020 - INFO - Epoch [200/1000], Train Loss: 0.000010, Val Loss: 0.000010, LR: 0.003092
+2025-11-07 18:54:25,661 - INFO - New best model found at epoch 229 with val_loss: 0.000003
+2025-11-07 18:54:38,701 - INFO - New best model found at epoch 237 with val_loss: 0.000003
+2025-11-07 18:54:51,733 - INFO - New best model found at epoch 245 with val_loss: 0.000002
+2025-11-07 18:54:59,860 - INFO - Epoch [250/1000], Train Loss: 0.000007, Val Loss: 0.000026, LR: 0.002926
+2025-11-07 18:56:19,559 - INFO - New best model found at epoch 299 with val_loss: 0.000002
+2025-11-07 18:56:21,184 - INFO - Epoch [300/1000], Train Loss: 0.000009, Val Loss: 0.000018, LR: 0.002730
+2025-11-07 18:56:32,570 - INFO - New best model found at epoch 307 with val_loss: 0.000002
+2025-11-07 18:57:42,230 - INFO - Epoch [350/1000], Train Loss: 0.000006, Val Loss: 0.000002, LR: 0.002508
+2025-11-07 18:58:27,490 - INFO - New best model found at epoch 378 with val_loss: 0.000002
+2025-11-07 18:58:29,111 - INFO - New best model found at epoch 379 with val_loss: 0.000001
+2025-11-07 18:59:04,249 - INFO - Epoch [400/1000], Train Loss: 0.000006, Val Loss: 0.000026, LR: 0.002266
+2025-11-07 18:59:12,090 - INFO - New best model found at epoch 403 with val_loss: 0.000001
+2025-11-07 18:59:25,784 - INFO - New best model found at epoch 409 with val_loss: 0.000001
+2025-11-07 19:00:19,262 - INFO - New best model found at epoch 442 with val_loss: 0.000001
+2025-11-07 19:00:32,241 - INFO - Epoch [450/1000], Train Loss: 0.000005, Val Loss: 0.000002, LR: 0.002010
+2025-11-07 19:00:54,044 - INFO - New best model found at epoch 464 with val_loss: 0.000001
+2025-11-07 19:01:49,699 - INFO - Epoch [500/1000], Train Loss: 0.000004, Val Loss: 0.000005, LR: 0.001746
+2025-11-07 19:03:10,046 - INFO - Epoch [550/1000], Train Loss: 0.000003, Val Loss: 0.000002, LR: 0.001480
+2025-11-07 19:03:34,035 - INFO - Early stopping at epoch 564.
+2025-11-07 19:03:34,036 - INFO - Training complete. Evaluating on test set...
+2025-11-07 19:03:34,313 - INFO - Final Test Loss (SmoothL1): 0.000001
+2025-11-07 19:03:34,313 - INFO - Inverting transforms and generating plots...
+2025-11-07 19:03:34,315 - INFO - Calculating final metrics...
+2025-11-07 19:03:34,325 - INFO - Overall Test MAE (unscaled): 0.215169
+2025-11-07 19:03:34,326 - INFO - Overall Test RMSE (unscaled): 0.426417
+2025-11-07 19:03:34,326 - INFO - Overall Test R2 (unscaled): 0.999879
+2025-11-07 19:03:34,326 - INFO - Overall Test MEDAE (unscaled): 0.099205
+2025-11-07 19:03:34,326 - INFO - Overall Test MSE (unscaled): 0.181832
+2025-11-07 19:03:34,326 - INFO - Overall Test EXPLAINED_VARIANCE (unscaled): 0.999893
+2025-11-07 19:03:34,326 - INFO - Overall Test MAX_ERROR (unscaled): 9.250992
+2025-11-07 19:03:34,326 - INFO - Overall Test MAPE (unscaled): 0.005643
+2025-11-07 19:03:34,326 - INFO - Overall Test REL_ERR_STD (unscaled): 0.008849
+2025-11-07 19:03:34,326 - INFO - Overall Test REL_ERR_MEAN_ABS (unscaled): 0.005643
+2025-11-07 19:03:34,326 - INFO - Overall Test RESIDUAL_MEAN (unscaled): -0.140134
+2025-11-07 19:03:34,326 - INFO - Overall Test RESIDUAL_STD (unscaled): 0.402733
+2025-11-07 19:03:34,328 - INFO - Overall Test RESIDUAL_SKEW (unscaled): -3.706738
+2025-11-07 19:03:34,328 - INFO - Overall Test RESIDUAL_KURTOSIS (unscaled): 52.872726
+2025-11-07 19:03:34,329 - INFO - Overall Test RESIDUAL_P95 (unscaled): 0.182016
+2025-11-07 19:03:34,330 - INFO - Overall Test RESIDUAL_P99 (unscaled): 0.498364
+2025-11-07 19:03:34,331 - INFO - Generating plots and logging to TensorBoard...
+2025-11-07 19:03:35,809 - INFO - Main training function finished.
+2025-11-07 19:03:35,813 - INFO - Final model saved to runs/run_20251107-184742_Iso_width/final_model/best_model.pt
+2025-11-07 19:03:35,814 - INFO - Model configuration saved to runs/run_20251107-184742_Iso_width/final_model/model_config.json
+2025-11-07 19:03:35,814 - INFO - --- Run complete ---
+2025-11-07 19:03:35,814 - INFO - To view Optuna results: optuna-dashboard sqlite:///runs/optuna_study.db
+2025-11-07 19:03:35,814 - INFO - To view TensorBoard logs: tensorboard --logdir runs/run_20251107-184742_Iso_width/
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+NeuralNetwork                            [64, 1]                   --
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-1                       [64, 112]                 1,120
+│    └─GELU: 2-2                         [64, 112]                 --
+├─Dropout: 1-2                           [64, 112]                 --
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-3                       [64, 112]                 12,656
+│    └─GELU: 2-4                         [64, 112]                 --
+├─Dropout: 1-4                           [64, 112]                 --
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-5                       [64, 1]                   113
+==========================================================================================
+Total params: 13,889
+Trainable params: 13,889
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.89
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.12
+Params size (MB): 0.06
+Estimated Total Size (MB): 0.17
+==========================================================================================
+Job finished with exit code: 0

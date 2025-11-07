@@ -1,0 +1,9 @@
+Job started on argon-gtx
+Job ID: 515
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target Area --skip-optuna
+usage: run_optuna.py [-h] [--target {Area,Iso_distance,Iso_width,all}]
+run_optuna.py: error: unrecognized arguments: --skip-optuna
+Job finished.

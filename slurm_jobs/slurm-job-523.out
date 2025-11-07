@@ -1,0 +1,93 @@
+Job started on argon-gtx
+Job ID: 523
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target all --skip-optuna
+2025-11-06 16:52:54,305 - INFO - Using device: cuda
+2025-11-06 16:52:54,306 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-06 16:52:54,306 - INFO - Skip Optuna: True
+2025-11-06 16:52:54,307 - INFO - Skipping Optuna. Loading best parameters from study: nn_study_['Area', 'Iso_distance', 'Iso_width']...
+2025-11-06 16:52:55,344 - INFO - Loaded best parameters from trial 587:
+2025-11-06 16:52:55,370 - INFO - Best value (RMSE): 0.0007413936528887068
+2025-11-06 16:52:55,370 - INFO - Parameters: {'batch_size': 64, 'learning_rate': 0.0011537697650495493, 'nr_hidden_layers': 3, 'nr_neurons': 152, 'dropout_rate': 0.0007055009826885291, 'weight_decay': 1.3078059031292613e-05, 'activation_name': 'GELU', 'loss_criterion': 'L1'}
+2025-11-06 16:52:55,370 - INFO - Training final model with parameters...
+2025-11-06 16:52:55,370 - INFO - Starting main training for labels ['Area', 'Iso_distance', 'Iso_width']...
+2025-11-06 16:52:57,995 - INFO - Final training: 47896 train samples, 11975 val samples, 25660 test samples.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+2025-11-06 16:52:58,451 - INFO - Using L1Loss (MAE)
+2025-11-06 16:53:01,437 - INFO - Using CosineAnnealingLR with T_max=1000
+2025-11-06 16:53:01,577 - INFO - Starting final training loop for max 1000 epochs (Patience=25)...
+2025-11-06 16:53:04,354 - INFO - Epoch [1/1000], Train Loss: 0.079322, Val Loss: 0.076701, LR: 0.001154
+2025-11-06 16:53:04,357 - INFO - New best model found at epoch 1 with val_loss: 0.076701
+2025-11-06 16:53:06,918 - INFO - New best model found at epoch 2 with val_loss: 0.051035
+2025-11-06 16:53:10,182 - INFO - New best model found at epoch 3 with val_loss: 0.037456
+2025-11-06 16:53:16,059 - INFO - New best model found at epoch 5 with val_loss: 0.026671
+2025-11-06 16:53:18,286 - INFO - New best model found at epoch 6 with val_loss: 0.020504
+2025-11-06 16:53:20,408 - INFO - New best model found at epoch 7 with val_loss: 0.016229
+2025-11-06 16:53:24,864 - INFO - New best model found at epoch 9 with val_loss: 0.012078
+2025-11-06 16:53:31,770 - INFO - New best model found at epoch 12 with val_loss: 0.008337
+2025-11-06 16:53:38,661 - INFO - New best model found at epoch 15 with val_loss: 0.007840
+2025-11-06 16:53:40,922 - INFO - New best model found at epoch 16 with val_loss: 0.007606
+2025-11-06 16:53:47,542 - INFO - New best model found at epoch 19 with val_loss: 0.006763
+2025-11-06 16:53:49,751 - INFO - New best model found at epoch 20 with val_loss: 0.006201
+2025-11-06 16:53:58,938 - INFO - New best model found at epoch 24 with val_loss: 0.004584
+2025-11-06 16:54:09,050 - INFO - New best model found at epoch 29 with val_loss: 0.004339
+2025-11-06 16:54:20,120 - INFO - New best model found at epoch 35 with val_loss: 0.002792
+2025-11-06 16:54:47,299 - INFO - Epoch [50/1000], Train Loss: 0.005386, Val Loss: 0.003880, LR: 0.001147
+2025-11-06 16:55:05,317 - INFO - New best model found at epoch 60 with val_loss: 0.002725
+2025-11-06 16:55:15,958 - INFO - New best model found at epoch 66 with val_loss: 0.002398
+2025-11-06 16:55:23,163 - INFO - New best model found at epoch 70 with val_loss: 0.002229
+2025-11-06 16:56:07,664 - INFO - Early stopping at epoch 95.
+2025-11-06 16:56:07,664 - INFO - Training complete. Evaluating on test set...
+2025-11-06 16:56:08,005 - INFO - Final Test Loss (L1): 0.002226
+2025-11-06 16:56:08,005 - INFO - Inverting transforms and generating plots...
+2025-11-06 16:56:08,012 - INFO - Calculating final metrics...
+2025-11-06 16:56:08,025 - INFO - Final Test MAE (unscaled): 188.264511
+2025-11-06 16:56:08,025 - INFO - Final Test RMSE (unscaled): 492.732391
+2025-11-06 16:56:08,025 - INFO - Final Test R2 (unscaled): 0.998880
+2025-11-06 16:56:08,025 - INFO - Final Test MEDAE (unscaled): 15.525105
+2025-11-06 16:56:08,025 - INFO - Final Test MAPE (unscaled): 0.021628
+2025-11-06 16:56:08,025 - INFO - Final Test REL_ERR_STD (unscaled): 0.069512
+2025-11-06 16:56:08,026 - INFO - Final Test REL_ERR_MEAN_ABS (unscaled): 0.021628
+2025-11-06 16:56:09,674 - INFO - Logging scatter plots to tensorboard...
+2025-11-06 16:56:10,105 - INFO - Main training function finished.
+2025-11-06 16:56:10,111 - INFO - Final model saved to runs/run_20251106-165254_['Area', 'Iso_distance', 'Iso_width']/final_model/best_model.pt
+2025-11-06 16:56:10,111 - INFO - --- Run complete ---
+2025-11-06 16:56:10,111 - INFO - To view Optuna results: optuna-dashboard sqlite:///runs/optuna_study.db
+2025-11-06 16:56:10,111 - INFO - To view TensorBoard logs: tensorboard --logdir runs/run_20251106-165254_['Area', 'Iso_distance', 'Iso_width']/
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+NeuralNetwork                            [64, 3]                   --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-1                       [64, 152]                 1,520
+│    └─GELU: 2-2                         [64, 152]                 --
+├─Dropout: 1-2                           [64, 152]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-3                       [64, 152]                 23,256
+│    └─GELU: 2-4                         [64, 152]                 --
+├─Dropout: 1-4                           [64, 152]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-5                       [64, 152]                 23,256
+│    └─GELU: 2-6                         [64, 152]                 --
+├─Dropout: 1-6                           [64, 152]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-7                       [64, 152]                 23,256
+│    └─GELU: 2-8                         [64, 152]                 --
+├─Dropout: 1-8                           [64, 152]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-9                       [64, 3]                   459
+==========================================================================================
+Total params: 71,747
+Trainable params: 71,747
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 4.59
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.31
+Params size (MB): 0.29
+Estimated Total Size (MB): 0.60
+==========================================================================================
+Job finished.

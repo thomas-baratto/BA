@@ -1,0 +1,29 @@
+Job started on argon-gtx
+Job ID: 550
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Unable to determine the device handle for GPU0000:61:00.0: Unknown Error
+Running: python run_optuna.py --target Iso_distance --skip-optuna
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-07 18:42:10,801 - INFO - Using device: cuda
+2025-11-07 18:42:10,802 - INFO - Target labels for this run: ['Iso_distance']
+2025-11-07 18:42:10,802 - INFO - Skip Optuna: True
+2025-11-07 18:42:10,803 - INFO - Skipping Optuna. Loading best parameters from study: nn_study_Iso_distance...
+2025-11-07 18:42:11,835 - INFO - Successfully loaded best parameters from trial 2836:
+2025-11-07 18:42:11,860 - INFO -   Best value (RMSE): 0.001377
+2025-11-07 18:42:17,354 - INFO -   Number of trials completed: 3025
+2025-11-07 18:42:17,354 - INFO -   Optimized parameters:
+2025-11-07 18:42:17,459 - INFO -     learning_rate: 0.0022699424575588693
+2025-11-07 18:42:17,459 - INFO -     nr_neurons: 158
+2025-11-07 18:42:17,460 - INFO -     dropout_rate: 1.714286550115525e-05
+2025-11-07 18:42:17,460 - INFO -     weight_decay: 5.1658474685160833e-05
+2025-11-07 18:42:17,460 - INFO -   Hardcoded parameters:
+2025-11-07 18:42:17,460 - INFO - Training final model with parameters...
+Traceback (most recent call last):
+  File "/home/barattts/lavoltabuona/BA/run_optuna.py", line 285, in <module>
+    "batch_size": best_params["batch_size"],
+                  ~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'batch_size'
+Job finished with exit code: 1
