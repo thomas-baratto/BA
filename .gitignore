@@ -1,8 +1,6 @@
 env
 ellipse
 Models
-plots
-stats
 .venv
 .DS_Store
 __pycache__
