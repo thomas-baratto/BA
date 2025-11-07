@@ -36,3 +36,1229 @@ Running: python run_optuna.py --target Area
 [I 2025-11-04 14:55:24,750] Trial 567 pruned. 
 2025-11-04 14:57:52,832 - INFO - Trial 568: Early stopping at epoch 87.
 [I 2025-11-04 14:57:52,941] Trial 568 finished with value: 0.0035205401945859194 and parameters: {'batch_size': 64, 'learning_rate': 0.0022214061796251125, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 0.0007066524221101678, 'weight_decay': 0.00038199089080869636, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:00:43,098] Trial 570 pruned. 
+2025-11-04 15:04:27,542 - INFO - Trial 575: Early stopping at epoch 120.
+[I 2025-11-04 15:04:27,638] Trial 575 finished with value: 0.0026817787438631058 and parameters: {'batch_size': 64, 'learning_rate': 0.0025737460984474043, 'nr_hidden_layers': 3, 'nr_neurons': 153, 'dropout_rate': 0.00020154064221490455, 'weight_decay': 0.00045332517120280993, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:04:36,944] Trial 578 pruned. 
+2025-11-04 15:08:07,046 - INFO - Trial 579: Early stopping at epoch 125.
+[I 2025-11-04 15:08:07,142] Trial 579 finished with value: 0.0026184937451034784 and parameters: {'batch_size': 64, 'learning_rate': 0.002048463424434697, 'nr_hidden_layers': 2, 'nr_neurons': 191, 'dropout_rate': 4.885720017279982e-05, 'weight_decay': 0.0004010399723616306, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:08:34,108] Trial 583 pruned. 
+[I 2025-11-04 15:09:41,633] Trial 584 pruned. 
+[I 2025-11-04 15:10:00,198] Trial 585 pruned. 
+[I 2025-11-04 15:10:18,844] Trial 586 pruned. 
+[I 2025-11-04 15:10:35,519] Trial 589 pruned. 
+2025-11-04 15:13:40,739 - INFO - Trial 590: Early stopping at epoch 109.
+[I 2025-11-04 15:13:40,833] Trial 590 finished with value: 0.004579687491059303 and parameters: {'batch_size': 64, 'learning_rate': 0.001551661156351038, 'nr_hidden_layers': 2, 'nr_neurons': 165, 'dropout_rate': 0.009350626222780743, 'weight_decay': 0.00034413322041446017, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:14:48,246] Trial 593 pruned. 
+[I 2025-11-04 15:15:06,964] Trial 594 pruned. 
+2025-11-04 15:17:34,641 - INFO - Trial 595: Early stopping at epoch 86.
+[I 2025-11-04 15:17:34,735] Trial 595 finished with value: 0.005287787411361933 and parameters: {'batch_size': 64, 'learning_rate': 0.0017298916290459012, 'nr_hidden_layers': 2, 'nr_neurons': 228, 'dropout_rate': 0.016944630486630887, 'weight_decay': 0.0005719988895902892, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:17:53,444] Trial 598 pruned. 
+[I 2025-11-04 15:18:00,867] Trial 599 pruned. 
+[I 2025-11-04 15:18:20,675] Trial 600 pruned. 
+2025-11-04 15:20:54,046 - INFO - Trial 601: Early stopping at epoch 85.
+[I 2025-11-04 15:20:54,140] Trial 601 finished with value: 0.005170511081814766 and parameters: {'batch_size': 64, 'learning_rate': 0.0018799683088239726, 'nr_hidden_layers': 2, 'nr_neurons': 184, 'dropout_rate': 0.009115702849080828, 'weight_decay': 0.0010659025511480437, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:21:31,103] Trial 603 pruned. 
+[I 2025-11-04 15:22:21,472] Trial 604 pruned. 
+2025-11-04 15:26:42,808 - INFO - Trial 605: Early stopping at epoch 150.
+[I 2025-11-04 15:26:42,933] Trial 605 finished with value: 0.0035247302148491144 and parameters: {'batch_size': 64, 'learning_rate': 0.0021052673122413674, 'nr_hidden_layers': 2, 'nr_neurons': 228, 'dropout_rate': 0.008679388149599655, 'weight_decay': 0.0005021911781970497, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:27:01,889] Trial 609 pruned. 
+[I 2025-11-04 15:27:08,427] Trial 610 pruned. 
+[I 2025-11-04 15:27:15,589] Trial 612 pruned. 
+2025-11-04 15:30:21,282 - INFO - Trial 614: Early stopping at epoch 110.
+[I 2025-11-04 15:30:21,379] Trial 614 finished with value: 0.003950795624405146 and parameters: {'batch_size': 64, 'learning_rate': 0.0019905059570665628, 'nr_hidden_layers': 2, 'nr_neurons': 204, 'dropout_rate': 0.010162046622572108, 'weight_decay': 0.00032965261571591493, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:30:40,359] Trial 615 pruned. 
+[I 2025-11-04 15:31:56,768] Trial 617 pruned. 
+[I 2025-11-04 15:32:16,930] Trial 621 pruned. 
+[I 2025-11-04 15:32:37,991] Trial 623 pruned. 
+2025-11-04 15:36:15,338 - INFO - Trial 624: Early stopping at epoch 125.
+[I 2025-11-04 15:36:15,440] Trial 624 finished with value: 0.002133813453838229 and parameters: {'batch_size': 64, 'learning_rate': 0.0019487935982223437, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 2.7447468675242106e-05, 'weight_decay': 0.00045282166004539806, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:37:11,466] Trial 633 pruned. 
+[I 2025-11-04 15:37:48,896] Trial 636 pruned. 
+2025-11-04 15:40:22,131 - INFO - Trial 637: Early stopping at epoch 85.
+[I 2025-11-04 15:40:22,228] Trial 637 finished with value: 0.0034739018883556128 and parameters: {'batch_size': 64, 'learning_rate': 0.002349525294096639, 'nr_hidden_layers': 2, 'nr_neurons': 227, 'dropout_rate': 0.0005636289582108052, 'weight_decay': 0.0004595114553869057, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 15:42:52,642 - INFO - Trial 642: Early stopping at epoch 85.
+[I 2025-11-04 15:42:52,738] Trial 642 finished with value: 0.005106064956635237 and parameters: {'batch_size': 64, 'learning_rate': 0.0018465770855982525, 'nr_hidden_layers': 2, 'nr_neurons': 199, 'dropout_rate': 0.016506240682401307, 'weight_decay': 0.0007155673918424215, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:43:18,387] Trial 644 pruned. 
+[I 2025-11-04 15:43:36,735] Trial 645 pruned. 
+2025-11-04 15:46:55,808 - INFO - Trial 646: Early stopping at epoch 112.
+[I 2025-11-04 15:46:55,908] Trial 646 finished with value: 0.004478694871068001 and parameters: {'batch_size': 64, 'learning_rate': 0.002658132203785684, 'nr_hidden_layers': 2, 'nr_neurons': 251, 'dropout_rate': 0.009066631822614095, 'weight_decay': 0.0008303923114428668, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:47:23,998] Trial 648 pruned. 
+[I 2025-11-04 15:47:42,459] Trial 650 pruned. 
+2025-11-04 15:50:02,550 - INFO - Trial 651: Early stopping at epoch 81.
+[I 2025-11-04 15:50:02,662] Trial 651 finished with value: 0.0038080017548054457 and parameters: {'batch_size': 64, 'learning_rate': 0.0015946815424498655, 'nr_hidden_layers': 2, 'nr_neurons': 209, 'dropout_rate': 0.00026352139962252145, 'weight_decay': 0.00044814250332877173, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:50:14,234] Trial 652 pruned. 
+2025-11-04 15:53:39,981 - INFO - Trial 653: Early stopping at epoch 121.
+[I 2025-11-04 15:53:40,080] Trial 653 finished with value: 0.0042328364215791225 and parameters: {'batch_size': 64, 'learning_rate': 0.0019582589854265546, 'nr_hidden_layers': 2, 'nr_neurons': 221, 'dropout_rate': 0.010357815681432483, 'weight_decay': 0.0006376228997892016, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 15:56:35,944 - INFO - Trial 656: Early stopping at epoch 103.
+[I 2025-11-04 15:56:36,041] Trial 656 finished with value: 0.004528606776148081 and parameters: {'batch_size': 64, 'learning_rate': 0.0022324161821895222, 'nr_hidden_layers': 2, 'nr_neurons': 200, 'dropout_rate': 0.008532891282835069, 'weight_decay': 0.00037516957206172716, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 15:56:44,442] Trial 661 pruned. 
+[I 2025-11-04 15:57:04,613] Trial 662 pruned. 
+[I 2025-11-04 15:57:23,156] Trial 663 pruned. 
+[I 2025-11-04 15:57:43,434] Trial 664 pruned. 
+[I 2025-11-04 15:57:50,183] Trial 667 pruned. 
+2025-11-04 16:00:27,476 - INFO - Trial 668: Early stopping at epoch 92.
+[I 2025-11-04 16:00:27,576] Trial 668 finished with value: 0.0045557464472949505 and parameters: {'batch_size': 64, 'learning_rate': 0.002096628643315399, 'nr_hidden_layers': 2, 'nr_neurons': 236, 'dropout_rate': 0.009293605059444354, 'weight_decay': 2.5570805424187536e-06, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:00:46,951] Trial 669 pruned. 
+[I 2025-11-04 16:01:11,001] Trial 670 pruned. 
+2025-11-04 16:04:45,988 - INFO - Trial 671: Early stopping at epoch 119.
+[I 2025-11-04 16:04:46,086] Trial 671 finished with value: 0.001634447486139834 and parameters: {'batch_size': 64, 'learning_rate': 0.0019106746006957985, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 3.476176236853689e-05, 'weight_decay': 0.0003595332631950916, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:05:04,629] Trial 673 pruned. 
+[I 2025-11-04 16:09:05,726] Trial 674 pruned. 
+[I 2025-11-04 16:09:24,369] Trial 678 pruned. 
+[I 2025-11-04 16:10:44,121] Trial 679 pruned. 
+[I 2025-11-04 16:10:55,754] Trial 680 pruned. 
+[I 2025-11-04 16:11:14,405] Trial 681 pruned. 
+2025-11-04 16:14:25,104 - INFO - Trial 682: Early stopping at epoch 113.
+[I 2025-11-04 16:14:25,203] Trial 682 finished with value: 0.002582515124231577 and parameters: {'batch_size': 64, 'learning_rate': 0.0019062324159918342, 'nr_hidden_layers': 2, 'nr_neurons': 232, 'dropout_rate': 0.00011190161374433352, 'weight_decay': 0.0003405991311647699, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:14:45,730] Trial 688 pruned. 
+[I 2025-11-04 16:15:03,168] Trial 689 pruned. 
+[I 2025-11-04 16:15:11,821] Trial 690 pruned. 
+[I 2025-11-04 16:15:35,761] Trial 691 pruned. 
+[I 2025-11-04 16:15:54,681] Trial 692 pruned. 
+[I 2025-11-04 16:16:13,552] Trial 693 pruned. 
+[I 2025-11-04 16:16:19,605] Trial 695 pruned. 
+2025-11-04 16:18:40,014 - INFO - Trial 697: Early stopping at epoch 72.
+[I 2025-11-04 16:18:40,124] Trial 697 finished with value: 0.004768284037709236 and parameters: {'batch_size': 64, 'learning_rate': 0.0017523873166818283, 'nr_hidden_layers': 2, 'nr_neurons': 240, 'dropout_rate': 0.0004721808303709492, 'weight_decay': 0.004137487206289797, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:18:58,987] Trial 701 pruned. 
+[I 2025-11-04 16:19:17,902] Trial 702 pruned. 
+2025-11-04 16:21:06,360 - INFO - Trial 703: Early stopping at epoch 63.
+[I 2025-11-04 16:21:06,469] Trial 703 finished with value: 0.006803975906223059 and parameters: {'batch_size': 64, 'learning_rate': 0.0013086038728731535, 'nr_hidden_layers': 2, 'nr_neurons': 215, 'dropout_rate': 0.017870608780029187, 'weight_decay': 0.00030876851715099245, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 16:26:14,191 - INFO - Trial 705: Early stopping at epoch 181.
+[I 2025-11-04 16:26:14,293] Trial 705 finished with value: 0.002244859002530575 and parameters: {'batch_size': 64, 'learning_rate': 0.0018998093931617255, 'nr_hidden_layers': 2, 'nr_neurons': 229, 'dropout_rate': 0.0003087294776639223, 'weight_decay': 0.0008177461177811976, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:26:37,759] Trial 708 pruned. 
+[I 2025-11-04 16:26:51,066] Trial 709 pruned. 
+[I 2025-11-04 16:27:09,526] Trial 710 pruned. 
+[I 2025-11-04 16:27:27,830] Trial 711 pruned. 
+[I 2025-11-04 16:27:34,852] Trial 712 pruned. 
+[I 2025-11-04 16:27:58,290] Trial 713 pruned. 
+[I 2025-11-04 16:28:16,762] Trial 714 pruned. 
+[I 2025-11-04 16:28:35,373] Trial 715 pruned. 
+2025-11-04 16:33:32,901 - INFO - Trial 716: Early stopping at epoch 173.
+[I 2025-11-04 16:33:33,005] Trial 716 finished with value: 0.0019738732371479273 and parameters: {'batch_size': 64, 'learning_rate': 0.0012582527754261576, 'nr_hidden_layers': 2, 'nr_neurons': 217, 'dropout_rate': 7.983437672556389e-05, 'weight_decay': 0.00018650650752746048, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:33:39,280] Trial 724 pruned. 
+[I 2025-11-04 16:33:46,255] Trial 725 pruned. 
+2025-11-04 16:37:34,769 - INFO - Trial 726: Early stopping at epoch 105.
+[I 2025-11-04 16:37:34,872] Trial 726 finished with value: 0.003167955670505762 and parameters: {'batch_size': 64, 'learning_rate': 0.0011883328880910977, 'nr_hidden_layers': 5, 'nr_neurons': 209, 'dropout_rate': 0.00011374245615417912, 'weight_decay': 0.00012878754362510551, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:37:55,413] Trial 729 pruned. 
+[I 2025-11-04 16:39:21,346] Trial 730 pruned. 
+[I 2025-11-04 16:39:39,912] Trial 734 pruned. 
+[I 2025-11-04 16:39:58,491] Trial 736 pruned. 
+[I 2025-11-04 16:40:17,151] Trial 738 pruned. 
+[I 2025-11-04 16:40:31,341] Trial 739 pruned. 
+[I 2025-11-04 16:40:39,710] Trial 741 pruned. 
+[I 2025-11-04 16:40:58,180] Trial 743 pruned. 
+[I 2025-11-04 16:41:21,894] Trial 745 pruned. 
+[I 2025-11-04 16:41:40,510] Trial 747 pruned. 
+[I 2025-11-04 16:41:59,141] Trial 749 pruned. 
+2025-11-04 16:45:05,804 - INFO - Trial 750: Early stopping at epoch 110.
+[I 2025-11-04 16:45:05,908] Trial 750 finished with value: 0.0044388738460838795 and parameters: {'batch_size': 64, 'learning_rate': 0.0015603714764002804, 'nr_hidden_layers': 2, 'nr_neurons': 232, 'dropout_rate': 0.011605660540652216, 'weight_decay': 0.0002814041747740286, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:45:14,774] Trial 751 pruned. 
+[I 2025-11-04 16:45:21,885] Trial 753 pruned. 
+[I 2025-11-04 16:45:40,579] Trial 755 pruned. 
+[I 2025-11-04 16:45:59,792] Trial 758 pruned. 
+[I 2025-11-04 16:46:18,502] Trial 759 pruned. 
+[I 2025-11-04 16:46:44,593] Trial 760 pruned. 
+[I 2025-11-04 16:47:03,191] Trial 761 pruned. 
+[I 2025-11-04 16:47:21,843] Trial 762 pruned. 
+[I 2025-11-04 16:50:07,105] Trial 763 pruned. 
+[I 2025-11-04 16:52:28,118] Trial 764 pruned. 
+[I 2025-11-04 16:52:46,996] Trial 767 pruned. 
+[I 2025-11-04 16:52:58,752] Trial 769 pruned. 
+[I 2025-11-04 16:56:32,316] Trial 770 pruned. 
+2025-11-04 16:59:30,461 - INFO - Trial 773: Early stopping at epoch 104.
+[I 2025-11-04 16:59:30,563] Trial 773 finished with value: 0.004409861285239458 and parameters: {'batch_size': 64, 'learning_rate': 0.0014920666784214271, 'nr_hidden_layers': 2, 'nr_neurons': 177, 'dropout_rate': 0.009163076328683243, 'weight_decay': 0.000692649401824364, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 16:59:49,157] Trial 774 pruned. 
+2025-11-04 17:04:17,072 - INFO - Trial 775: Early stopping at epoch 131.
+[I 2025-11-04 17:04:17,183] Trial 775 finished with value: 0.0028377606067806482 and parameters: {'batch_size': 64, 'learning_rate': 0.0014101120834502203, 'nr_hidden_layers': 4, 'nr_neurons': 209, 'dropout_rate': 0.00021849791264328392, 'weight_decay': 0.0014311791544464954, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:04:36,602] Trial 779 pruned. 
+[I 2025-11-04 17:04:55,563] Trial 780 pruned. 
+[I 2025-11-04 17:05:14,552] Trial 781 pruned. 
+[I 2025-11-04 17:05:35,339] Trial 782 pruned. 
+[I 2025-11-04 17:08:15,949] Trial 783 pruned. 
+[I 2025-11-04 17:08:36,851] Trial 785 pruned. 
+[I 2025-11-04 17:08:43,308] Trial 786 pruned. 
+[I 2025-11-04 17:10:01,345] Trial 787 pruned. 
+[I 2025-11-04 17:10:20,170] Trial 789 pruned. 
+[I 2025-11-04 17:10:39,027] Trial 791 pruned. 
+[I 2025-11-04 17:13:49,051] Trial 793 pruned. 
+[I 2025-11-04 17:14:07,891] Trial 797 pruned. 
+[I 2025-11-04 17:14:26,559] Trial 799 pruned. 
+[I 2025-11-04 17:14:45,360] Trial 801 pruned. 
+[I 2025-11-04 17:15:09,691] Trial 804 pruned. 
+[I 2025-11-04 17:17:31,198] Trial 806 pruned. 
+[I 2025-11-04 17:17:50,190] Trial 810 pruned. 
+[I 2025-11-04 17:18:09,257] Trial 811 pruned. 
+[I 2025-11-04 17:18:26,329] Trial 812 pruned. 
+2025-11-04 17:20:28,723 - INFO - Trial 813: Early stopping at epoch 64.
+[I 2025-11-04 17:20:28,866] Trial 813 finished with value: 0.00572854233905673 and parameters: {'batch_size': 64, 'learning_rate': 0.0018441130329774301, 'nr_hidden_layers': 3, 'nr_neurons': 235, 'dropout_rate': 0.000611789351208121, 'weight_decay': 0.00045529585098896786, 'activation_name': 'LeakyReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:20:47,728] Trial 816 pruned. 
+[I 2025-11-04 17:21:06,678] Trial 818 pruned. 
+[I 2025-11-04 17:21:55,617] Trial 820 pruned. 
+[I 2025-11-04 17:22:03,025] Trial 824 pruned. 
+[I 2025-11-04 17:22:25,517] Trial 826 pruned. 
+2025-11-04 17:23:55,226 - INFO - Trial 828: Early stopping at epoch 52.
+[I 2025-11-04 17:23:55,331] Trial 828 finished with value: 0.007023741491138935 and parameters: {'batch_size': 64, 'learning_rate': 0.001787164921192502, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 0.015028115692406887, 'weight_decay': 0.00022511806855114058, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 17:26:12,517 - INFO - Trial 829: Early stopping at epoch 79.
+[I 2025-11-04 17:26:12,636] Trial 829 finished with value: 0.00582869490608573 and parameters: {'batch_size': 64, 'learning_rate': 0.0019356076962721914, 'nr_hidden_layers': 2, 'nr_neurons': 211, 'dropout_rate': 0.024405563595198496, 'weight_decay': 0.0005407115522039454, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:26:20,272] Trial 835 pruned. 
+[I 2025-11-04 17:26:43,005] Trial 836 pruned. 
+[I 2025-11-04 17:26:49,220] Trial 838 pruned. 
+[I 2025-11-04 17:27:08,152] Trial 839 pruned. 
+[I 2025-11-04 17:27:27,112] Trial 841 pruned. 
+2025-11-04 17:30:23,810 - INFO - Trial 843: Early stopping at epoch 100.
+[I 2025-11-04 17:30:23,913] Trial 843 finished with value: 0.003755314741283655 and parameters: {'batch_size': 64, 'learning_rate': 0.002265893002670951, 'nr_hidden_layers': 2, 'nr_neurons': 59, 'dropout_rate': 8.228549834818374e-05, 'weight_decay': 0.0012203659961004792, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:32:05,513] Trial 846 pruned. 
+[I 2025-11-04 17:32:26,144] Trial 848 pruned. 
+[I 2025-11-04 17:32:45,186] Trial 849 pruned. 
+2025-11-04 17:35:14,084 - INFO - Trial 850: Early stopping at epoch 87.
+[I 2025-11-04 17:35:14,190] Trial 850 finished with value: 0.005128188990056515 and parameters: {'batch_size': 64, 'learning_rate': 0.0016251607255687664, 'nr_hidden_layers': 2, 'nr_neurons': 242, 'dropout_rate': 0.017660959957616375, 'weight_decay': 0.0009431835047395705, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:35:22,864] Trial 857 pruned. 
+[I 2025-11-04 17:35:41,820] Trial 858 pruned. 
+[I 2025-11-04 17:37:00,279] Trial 859 pruned. 
+2025-11-04 17:39:38,466 - INFO - Trial 862: Early stopping at epoch 91.
+[I 2025-11-04 17:39:38,598] Trial 862 finished with value: 0.004386136308312416 and parameters: {'batch_size': 64, 'learning_rate': 0.0013844200556623705, 'nr_hidden_layers': 2, 'nr_neurons': 184, 'dropout_rate': 0.008902434144566604, 'weight_decay': 0.000387134274380723, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 17:46:08,732 - INFO - Trial 867: Early stopping at epoch 230.
+[I 2025-11-04 17:46:08,847] Trial 867 finished with value: 0.0015142038464546204 and parameters: {'batch_size': 64, 'learning_rate': 0.0015750916504883308, 'nr_hidden_layers': 2, 'nr_neurons': 203, 'dropout_rate': 3.250915464272217e-05, 'weight_decay': 0.00022372790459817003, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:46:27,475] Trial 873 pruned. 
+2025-11-04 17:48:54,022 - INFO - Trial 874: Early stopping at epoch 83.
+[I 2025-11-04 17:48:54,125] Trial 874 finished with value: 0.005972497630864382 and parameters: {'batch_size': 64, 'learning_rate': 0.0017316132203408778, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.0090825168351819, 'weight_decay': 0.0003546839563471314, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 17:49:06,128] Trial 876 pruned. 
+[I 2025-11-04 17:49:25,130] Trial 877 pruned. 
+[I 2025-11-04 17:49:32,323] Trial 879 pruned. 
+[I 2025-11-04 17:49:51,278] Trial 881 pruned. 
+[I 2025-11-04 17:50:14,731] Trial 882 pruned. 
+[I 2025-11-04 17:50:33,855] Trial 885 pruned. 
+[I 2025-11-04 17:50:52,759] Trial 887 pruned. 
+[I 2025-11-04 17:51:01,430] Trial 888 pruned. 
+[I 2025-11-04 17:51:20,300] Trial 889 pruned. 
+[I 2025-11-04 17:51:39,715] Trial 890 pruned. 
+[I 2025-11-04 17:51:46,531] Trial 891 pruned. 
+[I 2025-11-04 17:51:52,788] Trial 892 pruned. 
+[I 2025-11-04 17:52:13,429] Trial 893 pruned. 
+[I 2025-11-04 17:52:32,417] Trial 894 pruned. 
+[I 2025-11-04 17:52:51,499] Trial 896 pruned. 
+[I 2025-11-04 17:56:30,299] Trial 898 pruned. 
+[I 2025-11-04 17:56:49,270] Trial 901 pruned. 
+[I 2025-11-04 17:57:08,235] Trial 902 pruned. 
+[I 2025-11-04 17:57:27,097] Trial 904 pruned. 
+[I 2025-11-04 17:57:46,046] Trial 906 pruned. 
+[I 2025-11-04 17:58:05,002] Trial 908 pruned. 
+2025-11-04 18:00:41,843 - INFO - Trial 910: Early stopping at epoch 88.
+[I 2025-11-04 18:00:41,965] Trial 910 finished with value: 0.004560539964586496 and parameters: {'batch_size': 64, 'learning_rate': 0.007143853424992501, 'nr_hidden_layers': 2, 'nr_neurons': 214, 'dropout_rate': 0.0003158515374930288, 'weight_decay': 0.000251507020580619, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:01:01,012] Trial 919 pruned. 
+2025-11-04 18:04:01,464 - INFO - Trial 922: Early stopping at epoch 116.
+[I 2025-11-04 18:04:01,570] Trial 922 finished with value: 0.0034335972741246223 and parameters: {'batch_size': 64, 'learning_rate': 0.0013554262598255748, 'nr_hidden_layers': 1, 'nr_neurons': 181, 'dropout_rate': 0.0002606381893271465, 'weight_decay': 0.00030741154426568336, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 18:05:57,917 - INFO - Trial 927: Early stopping at epoch 67.
+[I 2025-11-04 18:05:58,021] Trial 927 finished with value: 0.006832743063569069 and parameters: {'batch_size': 64, 'learning_rate': 0.0020579252905953077, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.015351301657779723, 'weight_decay': 0.0005722923748353464, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:06:16,861] Trial 929 pruned. 
+[I 2025-11-04 18:06:35,768] Trial 930 pruned. 
+[I 2025-11-04 18:06:54,709] Trial 931 pruned. 
+[I 2025-11-04 18:07:06,351] Trial 932 pruned. 
+[I 2025-11-04 18:07:13,595] Trial 933 pruned. 
+[I 2025-11-04 18:07:34,197] Trial 934 pruned. 
+[I 2025-11-04 18:07:56,320] Trial 935 pruned. 
+[I 2025-11-04 18:08:15,265] Trial 936 pruned. 
+2025-11-04 18:11:16,545 - INFO - Trial 938: Early stopping at epoch 105.
+[I 2025-11-04 18:11:16,650] Trial 938 finished with value: 0.0023672895040363073 and parameters: {'batch_size': 64, 'learning_rate': 0.0014315428189135102, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 8.280736240155014e-05, 'weight_decay': 0.0002785239762121737, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 18:15:29,372 - INFO - Trial 941: Early stopping at epoch 147.
+[I 2025-11-04 18:15:29,483] Trial 941 finished with value: 0.00236634467728436 and parameters: {'batch_size': 64, 'learning_rate': 0.0024057197923998096, 'nr_hidden_layers': 2, 'nr_neurons': 195, 'dropout_rate': 0.00013944708321977312, 'weight_decay': 0.0007730186047542187, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:15:36,676] Trial 946 pruned. 
+[I 2025-11-04 18:15:55,922] Trial 947 pruned. 
+[I 2025-11-04 18:16:02,208] Trial 948 pruned. 
+[I 2025-11-04 18:16:21,177] Trial 949 pruned. 
+2025-11-04 18:20:37,967 - INFO - Trial 950: Early stopping at epoch 146.
+[I 2025-11-04 18:20:38,075] Trial 950 finished with value: 0.002310082083567977 and parameters: {'batch_size': 64, 'learning_rate': 0.00151255382030521, 'nr_hidden_layers': 2, 'nr_neurons': 225, 'dropout_rate': 1.423766971810982e-05, 'weight_decay': 0.0008752260100839043, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:20:50,495] Trial 961 pruned. 
+[I 2025-11-04 18:21:09,448] Trial 962 pruned. 
+[I 2025-11-04 18:21:28,453] Trial 963 pruned. 
+[I 2025-11-04 18:21:54,328] Trial 964 pruned. 
+[I 2025-11-04 18:22:16,819] Trial 965 pruned. 
+[I 2025-11-04 18:22:35,878] Trial 966 pruned. 
+[I 2025-11-04 18:25:21,721] Trial 967 pruned. 
+[I 2025-11-04 18:25:40,710] Trial 971 pruned. 
+2025-11-04 18:29:53,832 - INFO - Trial 972: Early stopping at epoch 146.
+[I 2025-11-04 18:29:53,952] Trial 972 finished with value: 0.002812591614201665 and parameters: {'batch_size': 64, 'learning_rate': 0.0012884937810671837, 'nr_hidden_layers': 2, 'nr_neurons': 205, 'dropout_rate': 0.00025292141789715034, 'weight_decay': 0.00019027049819579772, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:30:12,923] Trial 985 pruned. 
+2025-11-04 18:32:53,548 - INFO - Trial 986: Early stopping at epoch 88.
+[I 2025-11-04 18:32:53,680] Trial 986 finished with value: 0.0029590961057692766 and parameters: {'batch_size': 64, 'learning_rate': 0.0015993385929259814, 'nr_hidden_layers': 2, 'nr_neurons': 237, 'dropout_rate': 5.4582010648257273e-05, 'weight_decay': 0.0005667000222958055, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:33:40,804] Trial 987 pruned. 
+[I 2025-11-04 18:33:48,879] Trial 989 pruned. 
+[I 2025-11-04 18:34:04,207] Trial 991 pruned. 
+[I 2025-11-04 18:34:51,878] Trial 993 pruned. 
+[I 2025-11-04 18:35:11,021] Trial 995 pruned. 
+[I 2025-11-04 18:35:40,384] Trial 996 pruned. 
+[I 2025-11-04 18:38:31,152] Trial 997 pruned. 
+2025-11-04 18:43:02,407 - INFO - Trial 1006: Early stopping at epoch 156.
+[I 2025-11-04 18:43:02,515] Trial 1006 finished with value: 0.0018212069990113378 and parameters: {'batch_size': 64, 'learning_rate': 0.0013763493186952577, 'nr_hidden_layers': 2, 'nr_neurons': 192, 'dropout_rate': 6.897968282926047e-05, 'weight_decay': 0.0004819361372164832, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:43:21,564] Trial 1011 pruned. 
+[I 2025-11-04 18:43:40,655] Trial 1012 pruned. 
+2025-11-04 18:48:42,964 - INFO - Trial 1013: Early stopping at epoch 175.
+[I 2025-11-04 18:48:43,082] Trial 1013 finished with value: 0.0018710283329710364 and parameters: {'batch_size': 64, 'learning_rate': 0.0013638728745245623, 'nr_hidden_layers': 2, 'nr_neurons': 195, 'dropout_rate': 8.317937333718916e-05, 'weight_decay': 0.0006739777341845297, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:49:02,156] Trial 1026 pruned. 
+[I 2025-11-04 18:49:21,335] Trial 1028 pruned. 
+[I 2025-11-04 18:49:40,417] Trial 1030 pruned. 
+[I 2025-11-04 18:49:46,905] Trial 1032 pruned. 
+2025-11-04 18:53:27,234 - INFO - Trial 1033: Early stopping at epoch 125.
+[I 2025-11-04 18:53:27,358] Trial 1033 finished with value: 0.002510913647711277 and parameters: {'batch_size': 64, 'learning_rate': 0.001409395001852733, 'nr_hidden_layers': 2, 'nr_neurons': 167, 'dropout_rate': 0.00012117671628852442, 'weight_decay': 0.0009253972303474256, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:53:39,157] Trial 1046 pruned. 
+[I 2025-11-04 18:54:11,746] Trial 1048 pruned. 
+2025-11-04 18:57:18,331 - INFO - Trial 1050: Early stopping at epoch 108.
+[I 2025-11-04 18:57:18,439] Trial 1050 finished with value: 0.002549674827605486 and parameters: {'batch_size': 64, 'learning_rate': 0.0017219182477660785, 'nr_hidden_layers': 2, 'nr_neurons': 179, 'dropout_rate': 4.1461852967167426e-05, 'weight_decay': 0.0006420458453488748, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 18:57:37,499] Trial 1056 pruned. 
+[I 2025-11-04 18:57:56,568] Trial 1057 pruned. 
+[I 2025-11-04 18:58:04,011] Trial 1058 pruned. 
+[I 2025-11-04 18:58:23,068] Trial 1059 pruned. 
+[I 2025-11-04 18:58:29,542] Trial 1060 pruned. 
+2025-11-04 19:01:20,489 - INFO - Trial 1061: Early stopping at epoch 99.
+[I 2025-11-04 19:01:20,600] Trial 1061 finished with value: 0.004312684293836355 and parameters: {'batch_size': 64, 'learning_rate': 0.0015984707521824676, 'nr_hidden_layers': 2, 'nr_neurons': 207, 'dropout_rate': 0.009423911615161767, 'weight_decay': 0.0007676776004827018, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:01:43,889] Trial 1069 pruned. 
+2025-11-04 19:05:15,347 - INFO - Trial 1071: Early stopping at epoch 111.
+[I 2025-11-04 19:05:15,488] Trial 1071 finished with value: 0.0023281192407011986 and parameters: {'batch_size': 64, 'learning_rate': 0.0010193612012142992, 'nr_hidden_layers': 3, 'nr_neurons': 231, 'dropout_rate': 0.00034432802739800165, 'weight_decay': 0.0005087148633022439, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:05:23,319] Trial 1072 pruned. 
+[I 2025-11-04 19:05:42,598] Trial 1073 pruned. 
+2025-11-04 19:08:40,483 - INFO - Trial 1074: Early stopping at epoch 101.
+[I 2025-11-04 19:08:40,604] Trial 1074 finished with value: 0.0030719635542482138 and parameters: {'batch_size': 64, 'learning_rate': 0.0020089696957644085, 'nr_hidden_layers': 2, 'nr_neurons': 181, 'dropout_rate': 0.0005525723537000912, 'weight_decay': 0.00013446931032582468, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:08:49,372] Trial 1080 pruned. 
+2025-11-04 19:11:45,911 - INFO - Trial 1081: Early stopping at epoch 103.
+[I 2025-11-04 19:11:46,022] Trial 1081 finished with value: 0.0025008972734212875 and parameters: {'batch_size': 64, 'learning_rate': 0.00183205882830971, 'nr_hidden_layers': 2, 'nr_neurons': 127, 'dropout_rate': 0.00017933461497026868, 'weight_decay': 0.00012409153754784234, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:14:39,640] Trial 1084 pruned. 
+[I 2025-11-04 19:14:46,075] Trial 1087 pruned. 
+[I 2025-11-04 19:15:06,631] Trial 1088 pruned. 
+[I 2025-11-04 19:15:25,654] Trial 1089 pruned. 
+[I 2025-11-04 19:15:44,488] Trial 1091 pruned. 
+[I 2025-11-04 19:16:03,499] Trial 1092 pruned. 
+[I 2025-11-04 19:16:22,569] Trial 1093 pruned. 
+2025-11-04 19:18:15,359 - INFO - Trial 1094: Early stopping at epoch 65.
+[I 2025-11-04 19:18:15,513] Trial 1094 finished with value: 0.0036223717033863068 and parameters: {'batch_size': 64, 'learning_rate': 0.001892010557165459, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 8.586109867002398e-05, 'weight_decay': 0.00011770293314379435, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:18:27,299] Trial 1098 pruned. 
+[I 2025-11-04 19:18:34,976] Trial 1099 pruned. 
+[I 2025-11-04 19:18:53,956] Trial 1100 pruned. 
+[I 2025-11-04 19:21:40,822] Trial 1101 pruned. 
+[I 2025-11-04 19:21:59,921] Trial 1104 pruned. 
+[I 2025-11-04 19:22:18,998] Trial 1105 pruned. 
+[I 2025-11-04 19:22:38,020] Trial 1106 pruned. 
+2025-11-04 19:25:23,746 - INFO - Trial 1107: Early stopping at epoch 96.
+[I 2025-11-04 19:25:23,880] Trial 1107 finished with value: 0.004725703038275242 and parameters: {'batch_size': 64, 'learning_rate': 0.001782521155966765, 'nr_hidden_layers': 2, 'nr_neurons': 185, 'dropout_rate': 0.009227138110433984, 'weight_decay': 0.00030939162343460955, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:25:31,035] Trial 1113 pruned. 
+[I 2025-11-04 19:25:50,012] Trial 1114 pruned. 
+[I 2025-11-04 19:25:56,668] Trial 1115 pruned. 
+2025-11-04 19:29:37,153 - INFO - Trial 1116: Early stopping at epoch 127.
+[I 2025-11-04 19:29:37,265] Trial 1116 finished with value: 0.0024218338076025248 and parameters: {'batch_size': 64, 'learning_rate': 0.0015343135682918234, 'nr_hidden_layers': 2, 'nr_neurons': 211, 'dropout_rate': 0.00036773921125221885, 'weight_decay': 0.00039558742552688953, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:29:56,340] Trial 1119 pruned. 
+[I 2025-11-04 19:30:15,453] Trial 1120 pruned. 
+2025-11-04 19:33:59,189 - INFO - Trial 1121: Early stopping at epoch 125.
+[I 2025-11-04 19:33:59,304] Trial 1121 finished with value: 0.00244030449539423 and parameters: {'batch_size': 64, 'learning_rate': 0.0019581935287822966, 'nr_hidden_layers': 2, 'nr_neurons': 195, 'dropout_rate': 0.0002960756224902774, 'weight_decay': 4.419707113898578e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:34:24,491] Trial 1122 pruned. 
+[I 2025-11-04 19:34:43,136] Trial 1124 pruned. 
+[I 2025-11-04 19:34:57,973] Trial 1126 pruned. 
+[I 2025-11-04 19:35:17,273] Trial 1128 pruned. 
+2025-11-04 19:39:26,491 - INFO - Trial 1131: Early stopping at epoch 144.
+[I 2025-11-04 19:39:26,605] Trial 1131 finished with value: 0.001661921851336956 and parameters: {'batch_size': 64, 'learning_rate': 0.0016117488270418168, 'nr_hidden_layers': 2, 'nr_neurons': 234, 'dropout_rate': 0.00012658941536704897, 'weight_decay': 0.00047234122871408417, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:39:45,666] Trial 1140 pruned. 
+[I 2025-11-04 19:40:04,649] Trial 1141 pruned. 
+[I 2025-11-04 19:40:11,916] Trial 1142 pruned. 
+[I 2025-11-04 19:40:30,874] Trial 1143 pruned. 
+[I 2025-11-04 19:41:08,587] Trial 1144 pruned. 
+[I 2025-11-04 19:41:14,910] Trial 1145 pruned. 
+[I 2025-11-04 19:41:33,934] Trial 1146 pruned. 
+[I 2025-11-04 19:41:56,283] Trial 1147 pruned. 
+[I 2025-11-04 19:42:15,243] Trial 1148 pruned. 
+2025-11-04 19:44:21,819 - INFO - Trial 1150: Early stopping at epoch 73.
+[I 2025-11-04 19:44:21,937] Trial 1150 finished with value: 0.005832672584801912 and parameters: {'batch_size': 64, 'learning_rate': 0.0015539550964198375, 'nr_hidden_layers': 2, 'nr_neurons': 219, 'dropout_rate': 0.009223596141784071, 'weight_decay': 0.0004400751272875294, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:46:30,501] Trial 1153 pruned. 
+2025-11-04 19:49:31,035 - INFO - Trial 1158: Early stopping at epoch 89.
+[I 2025-11-04 19:49:31,145] Trial 1158 finished with value: 0.0028019275050610304 and parameters: {'batch_size': 64, 'learning_rate': 0.0017233265694838993, 'nr_hidden_layers': 3, 'nr_neurons': 214, 'dropout_rate': 6.620259367884033e-05, 'weight_decay': 0.0006827771443805614, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:50:18,926] Trial 1167 pruned. 
+[I 2025-11-04 19:50:26,169] Trial 1168 pruned. 
+[I 2025-11-04 19:52:38,964] Trial 1169 pruned. 
+[I 2025-11-04 19:52:45,330] Trial 1170 pruned. 
+[I 2025-11-04 19:53:04,490] Trial 1171 pruned. 
+2025-11-04 19:55:02,292 - INFO - Trial 1172: Early stopping at epoch 66.
+[I 2025-11-04 19:55:02,403] Trial 1172 finished with value: 0.004231950268149376 and parameters: {'batch_size': 64, 'learning_rate': 0.0017789870715193268, 'nr_hidden_layers': 2, 'nr_neurons': 220, 'dropout_rate': 0.00021283535240677111, 'weight_decay': 0.0004624675272938266, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 19:55:21,697] Trial 1173 pruned. 
+2025-11-04 19:57:06,256 - INFO - Trial 1174: Early stopping at epoch 60.
+[I 2025-11-04 19:57:06,365] Trial 1174 finished with value: 0.00518940482288599 and parameters: {'batch_size': 64, 'learning_rate': 0.001397619897573649, 'nr_hidden_layers': 2, 'nr_neurons': 232, 'dropout_rate': 0.009368064919651201, 'weight_decay': 0.000614936647047602, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 20:00:40,290 - INFO - Trial 1178: Early stopping at epoch 124.
+[I 2025-11-04 20:00:40,410] Trial 1178 finished with value: 0.0028877018485218287 and parameters: {'batch_size': 64, 'learning_rate': 0.0014957167192517714, 'nr_hidden_layers': 2, 'nr_neurons': 214, 'dropout_rate': 0.00018885923997279285, 'weight_decay': 0.0014479669062567014, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:00:59,523] Trial 1181 pruned. 
+[I 2025-11-04 20:01:11,418] Trial 1182 pruned. 
+2025-11-04 20:04:19,696 - INFO - Trial 1183: Early stopping at epoch 109.
+[I 2025-11-04 20:04:19,807] Trial 1183 finished with value: 0.004292870871722698 and parameters: {'batch_size': 64, 'learning_rate': 0.0016405272396236088, 'nr_hidden_layers': 2, 'nr_neurons': 239, 'dropout_rate': 0.009232194704493978, 'weight_decay': 0.0016965832410345192, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:04:47,354] Trial 1189 pruned. 
+[I 2025-11-04 20:05:47,838] Trial 1190 pruned. 
+[I 2025-11-04 20:06:06,914] Trial 1194 pruned. 
+[I 2025-11-04 20:06:15,846] Trial 1196 pruned. 
+[I 2025-11-04 20:06:22,907] Trial 1197 pruned. 
+[I 2025-11-04 20:06:41,918] Trial 1199 pruned. 
+[I 2025-11-04 20:09:00,228] Trial 1201 pruned. 
+[I 2025-11-04 20:09:27,640] Trial 1204 pruned. 
+[I 2025-11-04 20:09:46,706] Trial 1205 pruned. 
+[I 2025-11-04 20:10:05,803] Trial 1206 pruned. 
+[I 2025-11-04 20:10:24,794] Trial 1208 pruned. 
+[I 2025-11-04 20:10:36,596] Trial 1210 pruned. 
+[I 2025-11-04 20:10:55,643] Trial 1211 pruned. 
+[I 2025-11-04 20:11:03,222] Trial 1212 pruned. 
+[I 2025-11-04 20:11:22,346] Trial 1213 pruned. 
+2025-11-04 20:15:11,823 - INFO - Trial 1214: Early stopping at epoch 134.
+[I 2025-11-04 20:15:11,937] Trial 1214 finished with value: 0.0019183370750397444 and parameters: {'batch_size': 64, 'learning_rate': 0.0014766497710771368, 'nr_hidden_layers': 2, 'nr_neurons': 201, 'dropout_rate': 4.699361234729944e-08, 'weight_decay': 0.00042777011528698347, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:15:31,000] Trial 1217 pruned. 
+[I 2025-11-04 20:18:12,112] Trial 1218 pruned. 
+[I 2025-11-04 20:18:31,211] Trial 1219 pruned. 
+[I 2025-11-04 20:18:40,082] Trial 1220 pruned. 
+[I 2025-11-04 20:19:05,372] Trial 1221 pruned. 
+[I 2025-11-04 20:19:27,463] Trial 1222 pruned. 
+[I 2025-11-04 20:19:46,640] Trial 1223 pruned. 
+[I 2025-11-04 20:20:05,731] Trial 1224 pruned. 
+[I 2025-11-04 20:20:24,935] Trial 1225 pruned. 
+[I 2025-11-04 20:20:31,075] Trial 1226 pruned. 
+[I 2025-11-04 20:20:38,145] Trial 1227 pruned. 
+[I 2025-11-04 20:20:57,189] Trial 1229 pruned. 
+2025-11-04 20:24:11,814 - INFO - Trial 1231: Early stopping at epoch 113.
+[I 2025-11-04 20:24:11,952] Trial 1231 finished with value: 0.002473055850714445 and parameters: {'batch_size': 64, 'learning_rate': 0.004838560073085559, 'nr_hidden_layers': 2, 'nr_neurons': 185, 'dropout_rate': 4.230167463150824e-05, 'weight_decay': 0.001092302973728449, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:24:31,140] Trial 1234 pruned. 
+[I 2025-11-04 20:24:50,287] Trial 1236 pruned. 
+[I 2025-11-04 20:25:09,296] Trial 1238 pruned. 
+2025-11-04 20:27:59,708 - INFO - Trial 1241: Early stopping at epoch 98.
+[I 2025-11-04 20:27:59,832] Trial 1241 finished with value: 0.002904052846133709 and parameters: {'batch_size': 64, 'learning_rate': 0.001451732130790984, 'nr_hidden_layers': 2, 'nr_neurons': 188, 'dropout_rate': 3.091326453439186e-05, 'weight_decay': 0.0004116238225877096, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:28:22,328] Trial 1248 pruned. 
+[I 2025-11-04 20:28:31,076] Trial 1250 pruned. 
+[I 2025-11-04 20:28:50,142] Trial 1251 pruned. 
+[I 2025-11-04 20:29:09,128] Trial 1253 pruned. 
+[I 2025-11-04 20:29:15,376] Trial 1255 pruned. 
+[I 2025-11-04 20:29:34,408] Trial 1256 pruned. 
+[I 2025-11-04 20:29:53,424] Trial 1258 pruned. 
+[I 2025-11-04 20:30:12,455] Trial 1260 pruned. 
+[I 2025-11-04 20:30:31,497] Trial 1262 pruned. 
+[I 2025-11-04 20:30:50,560] Trial 1264 pruned. 
+[I 2025-11-04 20:31:09,619] Trial 1266 pruned. 
+[I 2025-11-04 20:31:34,328] Trial 1269 pruned. 
+[I 2025-11-04 20:31:46,114] Trial 1271 pruned. 
+[I 2025-11-04 20:32:05,173] Trial 1273 pruned. 
+[I 2025-11-04 20:32:22,264] Trial 1275 pruned. 
+[I 2025-11-04 20:32:43,044] Trial 1276 pruned. 
+[I 2025-11-04 20:33:05,341] Trial 1278 pruned. 
+[I 2025-11-04 20:33:24,355] Trial 1282 pruned. 
+[I 2025-11-04 20:33:30,770] Trial 1284 pruned. 
+[I 2025-11-04 20:33:49,843] Trial 1286 pruned. 
+[I 2025-11-04 20:34:08,944] Trial 1288 pruned. 
+[I 2025-11-04 20:34:27,852] Trial 1290 pruned. 
+[I 2025-11-04 20:36:37,112] Trial 1291 pruned. 
+[I 2025-11-04 20:37:26,171] Trial 1293 pruned. 
+[I 2025-11-04 20:37:48,297] Trial 1294 pruned. 
+[I 2025-11-04 20:37:55,828] Trial 1295 pruned. 
+[I 2025-11-04 20:38:07,705] Trial 1296 pruned. 
+[I 2025-11-04 20:38:31,794] Trial 1297 pruned. 
+[I 2025-11-04 20:38:50,820] Trial 1298 pruned. 
+[I 2025-11-04 20:39:09,866] Trial 1299 pruned. 
+[I 2025-11-04 20:39:31,773] Trial 1300 pruned. 
+[I 2025-11-04 20:39:50,760] Trial 1303 pruned. 
+2025-11-04 20:42:57,448 - INFO - Trial 1304: Early stopping at epoch 108.
+[I 2025-11-04 20:42:57,561] Trial 1304 finished with value: 0.0041897655464708805 and parameters: {'batch_size': 64, 'learning_rate': 0.0013306704411513233, 'nr_hidden_layers': 2, 'nr_neurons': 209, 'dropout_rate': 0.009156718734219053, 'weight_decay': 0.0005653830978835266, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:43:16,444] Trial 1308 pruned. 
+[I 2025-11-04 20:43:35,476] Trial 1309 pruned. 
+[I 2025-11-04 20:43:56,263] Trial 1310 pruned. 
+[I 2025-11-04 20:44:15,292] Trial 1311 pruned. 
+[I 2025-11-04 20:44:22,536] Trial 1312 pruned. 
+2025-11-04 20:47:40,599 - INFO - Trial 1313: Early stopping at epoch 114.
+[I 2025-11-04 20:47:40,719] Trial 1313 finished with value: 0.0025067883543670177 and parameters: {'batch_size': 64, 'learning_rate': 0.001252170402747902, 'nr_hidden_layers': 2, 'nr_neurons': 195, 'dropout_rate': 0.00021651534863139618, 'weight_decay': 0.00029919533720293353, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:47:59,776] Trial 1317 pruned. 
+[I 2025-11-04 20:48:18,851] Trial 1318 pruned. 
+2025-11-04 20:50:49,746 - INFO - Trial 1319: Early stopping at epoch 87.
+[I 2025-11-04 20:50:49,881] Trial 1319 finished with value: 0.00311985588632524 and parameters: {'batch_size': 64, 'learning_rate': 0.0014511880701541392, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 5.844152755890878e-05, 'weight_decay': 0.0008023550593448305, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:51:08,902] Trial 1325 pruned. 
+[I 2025-11-04 20:51:31,681] Trial 1327 pruned. 
+[I 2025-11-04 20:51:50,717] Trial 1329 pruned. 
+[I 2025-11-04 20:51:59,457] Trial 1331 pruned. 
+[I 2025-11-04 20:52:18,472] Trial 1333 pruned. 
+[I 2025-11-04 20:52:51,337] Trial 1335 pruned. 
+[I 2025-11-04 20:52:58,369] Trial 1337 pruned. 
+2025-11-04 20:55:56,527 - INFO - Trial 1338: Early stopping at epoch 103.
+[I 2025-11-04 20:55:56,643] Trial 1338 finished with value: 0.00408566277474165 and parameters: {'batch_size': 64, 'learning_rate': 0.0016175180993125895, 'nr_hidden_layers': 2, 'nr_neurons': 226, 'dropout_rate': 0.009438914331202648, 'weight_decay': 0.00022454382995947518, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 20:56:16,032] Trial 1341 pruned. 
+[I 2025-11-04 20:56:35,079] Trial 1342 pruned. 
+[I 2025-11-04 20:57:46,453] Trial 1344 pruned. 
+[I 2025-11-04 20:58:05,360] Trial 1346 pruned. 
+2025-11-04 21:00:17,667 - INFO - Trial 1347: Early stopping at epoch 76.
+[I 2025-11-04 21:00:17,790] Trial 1347 finished with value: 0.00412384606897831 and parameters: {'batch_size': 64, 'learning_rate': 0.001295588204024315, 'nr_hidden_layers': 2, 'nr_neurons': 235, 'dropout_rate': 6.886588096737618e-05, 'weight_decay': 0.004944941351649885, 'activation_name': 'LeakyReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:00:28,669] Trial 1350 pruned. 
+2025-11-04 21:03:02,131 - INFO - Trial 1351: Early stopping at epoch 87.
+[I 2025-11-04 21:03:02,244] Trial 1351 finished with value: 0.002945465035736561 and parameters: {'batch_size': 64, 'learning_rate': 0.001545764784783322, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 6.275875662982753e-05, 'weight_decay': 0.0005313722516081296, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:03:21,258] Trial 1352 pruned. 
+[I 2025-11-04 21:03:28,600] Trial 1354 pruned. 
+[I 2025-11-04 21:03:47,645] Trial 1355 pruned. 
+2025-11-04 21:07:09,228 - INFO - Trial 1356: Early stopping at epoch 117.
+[I 2025-11-04 21:07:09,343] Trial 1356 finished with value: 0.0040494538843631744 and parameters: {'batch_size': 64, 'learning_rate': 0.0016239250429153852, 'nr_hidden_layers': 2, 'nr_neurons': 207, 'dropout_rate': 0.009344149953960882, 'weight_decay': 0.0006017294201995222, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:07:28,193] Trial 1359 pruned. 
+[I 2025-11-04 21:07:47,193] Trial 1360 pruned. 
+2025-11-04 21:11:06,106 - INFO - Trial 1361: Early stopping at epoch 115.
+[I 2025-11-04 21:11:06,220] Trial 1361 finished with value: 0.0024252303410321474 and parameters: {'batch_size': 64, 'learning_rate': 0.0015297733911990414, 'nr_hidden_layers': 2, 'nr_neurons': 243, 'dropout_rate': 0.00011862580298553302, 'weight_decay': 0.0003382546303147328, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:11:25,258] Trial 1367 pruned. 
+2025-11-04 21:13:21,487 - INFO - Trial 1368: Early stopping at epoch 67.
+[I 2025-11-04 21:13:21,602] Trial 1368 finished with value: 0.006326121278107166 and parameters: {'batch_size': 64, 'learning_rate': 0.001715804506225675, 'nr_hidden_layers': 2, 'nr_neurons': 182, 'dropout_rate': 0.022688770354119297, 'weight_decay': 0.0007107536093741419, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:13:41,104] Trial 1369 pruned. 
+[I 2025-11-04 21:14:00,187] Trial 1370 pruned. 
+[I 2025-11-04 21:14:19,094] Trial 1371 pruned. 
+[I 2025-11-04 21:14:38,167] Trial 1372 pruned. 
+[I 2025-11-04 21:14:57,167] Trial 1373 pruned. 
+[I 2025-11-04 21:15:16,057] Trial 1374 pruned. 
+[I 2025-11-04 21:15:27,828] Trial 1376 pruned. 
+2025-11-04 21:18:33,843 - INFO - Trial 1377: Early stopping at epoch 107.
+[I 2025-11-04 21:18:33,959] Trial 1377 finished with value: 0.002708773361518979 and parameters: {'batch_size': 64, 'learning_rate': 0.0016888103285657373, 'nr_hidden_layers': 2, 'nr_neurons': 244, 'dropout_rate': 8.526690253312248e-05, 'weight_decay': 0.0005675976966019014, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:18:41,332] Trial 1378 pruned. 
+2025-11-04 21:21:46,980 - INFO - Trial 1379: Early stopping at epoch 106.
+[I 2025-11-04 21:21:47,094] Trial 1379 finished with value: 0.004657222889363766 and parameters: {'batch_size': 64, 'learning_rate': 0.0016162576751345159, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.009335029123766915, 'weight_decay': 0.0005264420036109306, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 21:26:45,199 - INFO - Trial 1384: Early stopping at epoch 171.
+[I 2025-11-04 21:26:45,315] Trial 1384 finished with value: 0.002515462227165699 and parameters: {'batch_size': 64, 'learning_rate': 0.0012860129418261184, 'nr_hidden_layers': 2, 'nr_neurons': 236, 'dropout_rate': 0.00015475340615135326, 'weight_decay': 0.00018325769980680228, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:27:04,677] Trial 1389 pruned. 
+[I 2025-11-04 21:29:57,418] Trial 1390 pruned. 
+[I 2025-11-04 21:30:16,559] Trial 1395 pruned. 
+[I 2025-11-04 21:30:37,594] Trial 1396 pruned. 
+[I 2025-11-04 21:31:06,949] Trial 1397 pruned. 
+[I 2025-11-04 21:31:26,023] Trial 1398 pruned. 
+[I 2025-11-04 21:31:45,092] Trial 1399 pruned. 
+2025-11-04 21:34:33,221 - INFO - Trial 1400: Early stopping at epoch 97.
+[I 2025-11-04 21:34:33,335] Trial 1400 finished with value: 0.0045386976562440395 and parameters: {'batch_size': 64, 'learning_rate': 0.0019992521695181326, 'nr_hidden_layers': 2, 'nr_neurons': 225, 'dropout_rate': 0.008600915204252338, 'weight_decay': 0.00045043460729551064, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:34:52,474] Trial 1404 pruned. 
+[I 2025-11-04 21:35:11,621] Trial 1405 pruned. 
+[I 2025-11-04 21:35:23,521] Trial 1406 pruned. 
+[I 2025-11-04 21:35:31,171] Trial 1407 pruned. 
+[I 2025-11-04 21:35:50,272] Trial 1408 pruned. 
+[I 2025-11-04 21:36:09,425] Trial 1409 pruned. 
+[I 2025-11-04 21:36:32,414] Trial 1411 pruned. 
+[I 2025-11-04 21:36:41,314] Trial 1414 pruned. 
+[I 2025-11-04 21:37:00,402] Trial 1416 pruned. 
+[I 2025-11-04 21:38:46,687] Trial 1418 pruned. 
+[I 2025-11-04 21:39:05,712] Trial 1425 pruned. 
+[I 2025-11-04 21:39:24,804] Trial 1427 pruned. 
+[I 2025-11-04 21:39:43,933] Trial 1428 pruned. 
+[I 2025-11-04 21:40:03,197] Trial 1430 pruned. 
+2025-11-04 21:41:51,141 - INFO - Trial 1431: Early stopping at epoch 62.
+[I 2025-11-04 21:41:51,259] Trial 1431 finished with value: 0.006358052138239145 and parameters: {'batch_size': 64, 'learning_rate': 0.0017967923078832696, 'nr_hidden_layers': 2, 'nr_neurons': 221, 'dropout_rate': 0.00908075467458461, 'weight_decay': 0.00037163108792201676, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:42:03,110] Trial 1432 pruned. 
+[I 2025-11-04 21:42:22,123] Trial 1433 pruned. 
+[I 2025-11-04 21:42:29,977] Trial 1434 pruned. 
+[I 2025-11-04 21:42:49,149] Trial 1435 pruned. 
+[I 2025-11-04 21:43:09,989] Trial 1436 pruned. 
+[I 2025-11-04 21:43:29,096] Trial 1437 pruned. 
+[I 2025-11-04 21:43:48,147] Trial 1439 pruned. 
+[I 2025-11-04 21:44:07,206] Trial 1440 pruned. 
+[I 2025-11-04 21:47:48,094] Trial 1441 pruned. 
+2025-11-04 21:49:53,319 - INFO - Trial 1446: Early stopping at epoch 72.
+[I 2025-11-04 21:49:53,437] Trial 1446 finished with value: 0.006073853466659784 and parameters: {'batch_size': 64, 'learning_rate': 0.0018551923683815944, 'nr_hidden_layers': 2, 'nr_neurons': 179, 'dropout_rate': 0.008424852242464052, 'weight_decay': 0.0025182829697204534, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:50:00,131] Trial 1449 pruned. 
+[I 2025-11-04 21:50:18,733] Trial 1450 pruned. 
+[I 2025-11-04 21:50:38,204] Trial 1452 pruned. 
+[I 2025-11-04 21:51:05,421] Trial 1454 pruned. 
+2025-11-04 21:53:27,047 - INFO - Trial 1456: Early stopping at epoch 81.
+[I 2025-11-04 21:53:27,183] Trial 1456 finished with value: 0.003559558652341366 and parameters: {'batch_size': 64, 'learning_rate': 0.0011015833124680156, 'nr_hidden_layers': 2, 'nr_neurons': 226, 'dropout_rate': 2.4460072307354297e-06, 'weight_decay': 0.0003229662413706086, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 21:55:50,217] Trial 1458 pruned. 
+[I 2025-11-04 21:55:57,615] Trial 1460 pruned. 
+[I 2025-11-04 21:56:21,559] Trial 1461 pruned. 
+[I 2025-11-04 21:56:42,317] Trial 1462 pruned. 
+[I 2025-11-04 21:57:01,311] Trial 1463 pruned. 
+[I 2025-11-04 21:57:20,364] Trial 1464 pruned. 
+[I 2025-11-04 21:57:39,390] Trial 1465 pruned. 
+[I 2025-11-04 21:57:58,447] Trial 1466 pruned. 
+[I 2025-11-04 21:58:17,552] Trial 1467 pruned. 
+[I 2025-11-04 21:58:26,131] Trial 1468 pruned. 
+[I 2025-11-04 21:58:45,011] Trial 1469 pruned. 
+[I 2025-11-04 21:59:03,886] Trial 1470 pruned. 
+[I 2025-11-04 21:59:22,828] Trial 1471 pruned. 
+[I 2025-11-04 21:59:42,212] Trial 1472 pruned. 
+[I 2025-11-04 22:00:01,172] Trial 1473 pruned. 
+[I 2025-11-04 22:00:07,247] Trial 1474 pruned. 
+[I 2025-11-04 22:00:14,218] Trial 1475 pruned. 
+[I 2025-11-04 22:00:33,094] Trial 1476 pruned. 
+[I 2025-11-04 22:00:52,051] Trial 1477 pruned. 
+2025-11-04 22:03:42,505 - INFO - Trial 1478: Early stopping at epoch 99.
+[I 2025-11-04 22:03:42,621] Trial 1478 finished with value: 0.004941401071846485 and parameters: {'batch_size': 64, 'learning_rate': 0.0016011767325958774, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 0.017601710177037398, 'weight_decay': 0.0004632926576622729, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:06:33,432] Trial 1479 pruned. 
+[I 2025-11-04 22:06:52,325] Trial 1480 pruned. 
+[I 2025-11-04 22:07:11,266] Trial 1481 pruned. 
+[I 2025-11-04 22:07:30,132] Trial 1482 pruned. 
+[I 2025-11-04 22:07:48,886] Trial 1483 pruned. 
+2025-11-04 22:09:42,176 - INFO - Trial 1484: Early stopping at epoch 66.
+[I 2025-11-04 22:09:42,299] Trial 1484 finished with value: 0.00561536056920886 and parameters: {'batch_size': 64, 'learning_rate': 0.0020440221055751037, 'nr_hidden_layers': 2, 'nr_neurons': 230, 'dropout_rate': 0.008653448508846555, 'weight_decay': 0.0006854129606201981, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:09:53,828] Trial 1485 pruned. 
+[I 2025-11-04 22:10:12,350] Trial 1486 pruned. 
+2025-11-04 22:13:50,541 - INFO - Trial 1487: Early stopping at epoch 130.
+[I 2025-11-04 22:13:50,660] Trial 1487 finished with value: 0.0029805328231304884 and parameters: {'batch_size': 64, 'learning_rate': 0.0015726689463112353, 'nr_hidden_layers': 2, 'nr_neurons': 235, 'dropout_rate': 0.00032450488381975884, 'weight_decay': 0.0004495979995914248, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:13:57,626] Trial 1488 pruned. 
+[I 2025-11-04 22:14:16,223] Trial 1489 pruned. 
+[I 2025-11-04 22:14:34,884] Trial 1490 pruned. 
+[I 2025-11-04 22:14:53,480] Trial 1491 pruned. 
+[I 2025-11-04 22:15:12,425] Trial 1492 pruned. 
+[I 2025-11-04 22:15:30,987] Trial 1493 pruned. 
+[I 2025-11-04 22:15:51,196] Trial 1494 pruned. 
+2025-11-04 22:18:21,130 - INFO - Trial 1495: Early stopping at epoch 89.
+[I 2025-11-04 22:18:21,248] Trial 1495 finished with value: 0.005459674634039402 and parameters: {'batch_size': 64, 'learning_rate': 0.0016586658100953297, 'nr_hidden_layers': 2, 'nr_neurons': 200, 'dropout_rate': 0.01570136002481704, 'weight_decay': 0.0006949075065028233, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:18:29,867] Trial 1496 pruned. 
+[I 2025-11-04 22:18:48,418] Trial 1497 pruned. 
+[I 2025-11-04 22:19:06,987] Trial 1498 pruned. 
+[I 2025-11-04 22:19:25,814] Trial 1499 pruned. 
+[I 2025-11-04 22:19:32,777] Trial 1500 pruned. 
+[I 2025-11-04 22:20:51,280] Trial 1501 pruned. 
+[I 2025-11-04 22:20:57,395] Trial 1502 pruned. 
+[I 2025-11-04 22:21:15,959] Trial 1503 pruned. 
+2025-11-04 22:26:10,820 - INFO - Trial 1504: Early stopping at epoch 176.
+[I 2025-11-04 22:26:10,938] Trial 1504 finished with value: 0.0019391606329008937 and parameters: {'batch_size': 64, 'learning_rate': 0.0016142290611428133, 'nr_hidden_layers': 2, 'nr_neurons': 244, 'dropout_rate': 0.00010515620898798597, 'weight_decay': 0.0008199630638933606, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:26:29,325] Trial 1505 pruned. 
+[I 2025-11-04 22:26:47,934] Trial 1506 pruned. 
+2025-11-04 22:28:48,090 - INFO - Trial 1507: Early stopping at epoch 71.
+[I 2025-11-04 22:28:48,208] Trial 1507 finished with value: 0.00520404614508152 and parameters: {'batch_size': 64, 'learning_rate': 0.001925963059185914, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.008813585822917054, 'weight_decay': 0.0012265706129637676, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:29:06,853] Trial 1508 pruned. 
+[I 2025-11-04 22:29:25,425] Trial 1509 pruned. 
+[I 2025-11-04 22:29:43,961] Trial 1510 pruned. 
+[I 2025-11-04 22:30:02,499] Trial 1511 pruned. 
+[I 2025-11-04 22:30:21,093] Trial 1512 pruned. 
+[I 2025-11-04 22:31:26,130] Trial 1513 pruned. 
+[I 2025-11-04 22:31:33,473] Trial 1514 pruned. 
+[I 2025-11-04 22:31:45,016] Trial 1515 pruned. 
+[I 2025-11-04 22:32:06,809] Trial 1516 pruned. 
+[I 2025-11-04 22:32:30,411] Trial 1517 pruned. 
+2025-11-04 22:35:05,459 - INFO - Trial 1518: Early stopping at epoch 92.
+[I 2025-11-04 22:35:05,601] Trial 1518 finished with value: 0.0050486489199101925 and parameters: {'batch_size': 64, 'learning_rate': 0.001497523184688244, 'nr_hidden_layers': 2, 'nr_neurons': 193, 'dropout_rate': 0.02707391696669887, 'weight_decay': 0.0004970067786745821, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-04 22:41:17,853 - INFO - Trial 1519: Early stopping at epoch 202.
+[I 2025-11-04 22:41:17,972] Trial 1519 finished with value: 0.0015401412965729833 and parameters: {'batch_size': 64, 'learning_rate': 0.0019596891871172775, 'nr_hidden_layers': 3, 'nr_neurons': 217, 'dropout_rate': 0.0001695122373605805, 'weight_decay': 0.0007166672672935499, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:41:40,189] Trial 1520 pruned. 
+[I 2025-11-04 22:44:12,661] Trial 1521 pruned. 
+[I 2025-11-04 22:44:29,347] Trial 1522 pruned. 
+2025-11-04 22:47:21,533 - INFO - Trial 1523: Early stopping at epoch 79.
+[I 2025-11-04 22:47:21,662] Trial 1523 finished with value: 0.0037298554088920355 and parameters: {'batch_size': 64, 'learning_rate': 0.001939142282087979, 'nr_hidden_layers': 4, 'nr_neurons': 236, 'dropout_rate': 0.0002810857449385399, 'weight_decay': 0.0005404425431037649, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:47:31,760] Trial 1524 pruned. 
+2025-11-04 22:49:24,061 - INFO - Trial 1525: Early stopping at epoch 60.
+[I 2025-11-04 22:49:24,179] Trial 1525 finished with value: 0.005673995241522789 and parameters: {'batch_size': 64, 'learning_rate': 0.002227122042078073, 'nr_hidden_layers': 3, 'nr_neurons': 215, 'dropout_rate': 0.009219115353851542, 'weight_decay': 0.00037723372785214177, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:49:46,339] Trial 1526 pruned. 
+2025-11-04 22:52:55,407 - INFO - Trial 1527: Early stopping at epoch 102.
+[I 2025-11-04 22:52:55,524] Trial 1527 finished with value: 0.0027349055744707584 and parameters: {'batch_size': 64, 'learning_rate': 0.002027226306266242, 'nr_hidden_layers': 3, 'nr_neurons': 244, 'dropout_rate': 9.552640092750603e-05, 'weight_decay': 0.00045595472218866754, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:53:15,955] Trial 1528 pruned. 
+[I 2025-11-04 22:53:23,076] Trial 1529 pruned. 
+[I 2025-11-04 22:53:28,943] Trial 1530 pruned. 
+[I 2025-11-04 22:53:55,186] Trial 1531 pruned. 
+[I 2025-11-04 22:54:15,555] Trial 1532 pruned. 
+[I 2025-11-04 22:54:37,498] Trial 1533 pruned. 
+[I 2025-11-04 22:54:56,415] Trial 1534 pruned. 
+2025-11-04 22:57:15,854 - INFO - Trial 1535: Early stopping at epoch 75.
+[I 2025-11-04 22:57:15,972] Trial 1535 finished with value: 0.003357043256983161 and parameters: {'batch_size': 64, 'learning_rate': 0.001142882479162181, 'nr_hidden_layers': 3, 'nr_neurons': 206, 'dropout_rate': 0.00013695252398480647, 'weight_decay': 0.000281463795755533, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 22:58:02,167] Trial 1536 pruned. 
+[I 2025-11-04 22:58:31,677] Trial 1537 pruned. 
+[I 2025-11-04 22:58:53,741] Trial 1538 pruned. 
+2025-11-04 23:01:11,395 - INFO - Trial 1539: Early stopping at epoch 81.
+[I 2025-11-04 23:01:11,519] Trial 1539 finished with value: 0.00594038562849164 and parameters: {'batch_size': 64, 'learning_rate': 0.0017147719797938929, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 0.017346508264371473, 'weight_decay': 0.0007122920385775414, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:01:35,307] Trial 1540 pruned. 
+[I 2025-11-04 23:01:57,490] Trial 1541 pruned. 
+[I 2025-11-04 23:02:08,973] Trial 1542 pruned. 
+[I 2025-11-04 23:02:29,357] Trial 1543 pruned. 
+[I 2025-11-04 23:02:36,828] Trial 1544 pruned. 
+[I 2025-11-04 23:03:22,154] Trial 1545 pruned. 
+[I 2025-11-04 23:03:40,652] Trial 1546 pruned. 
+[I 2025-11-04 23:07:15,457] Trial 1547 pruned. 
+2025-11-04 23:08:55,071 - INFO - Trial 1548: Early stopping at epoch 53.
+[I 2025-11-04 23:08:55,191] Trial 1548 finished with value: 0.006104594096541405 and parameters: {'batch_size': 64, 'learning_rate': 0.0020133213990929416, 'nr_hidden_layers': 3, 'nr_neurons': 203, 'dropout_rate': 0.009137784289857365, 'weight_decay': 0.000575853293204757, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:09:13,811] Trial 1549 pruned. 
+[I 2025-11-04 23:09:32,368] Trial 1550 pruned. 
+[I 2025-11-04 23:09:50,948] Trial 1551 pruned. 
+[I 2025-11-04 23:10:10,027] Trial 1552 pruned. 
+[I 2025-11-04 23:10:18,996] Trial 1553 pruned. 
+[I 2025-11-04 23:10:37,524] Trial 1554 pruned. 
+[I 2025-11-04 23:10:44,636] Trial 1555 pruned. 
+[I 2025-11-04 23:13:04,836] Trial 1556 pruned. 
+[I 2025-11-04 23:13:10,965] Trial 1557 pruned. 
+[I 2025-11-04 23:13:29,512] Trial 1558 pruned. 
+[I 2025-11-04 23:13:48,057] Trial 1559 pruned. 
+2025-11-04 23:17:57,462 - INFO - Trial 1560: Early stopping at epoch 148.
+[I 2025-11-04 23:17:57,582] Trial 1560 finished with value: 0.0020524519495666027 and parameters: {'batch_size': 64, 'learning_rate': 0.0017110556836477987, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 3.8804751825458196e-05, 'weight_decay': 0.0006382345296722861, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:19:14,254] Trial 1561 pruned. 
+[I 2025-11-04 23:19:30,877] Trial 1562 pruned. 
+[I 2025-11-04 23:19:49,541] Trial 1563 pruned. 
+[I 2025-11-04 23:20:08,135] Trial 1564 pruned. 
+2025-11-04 23:22:52,388 - INFO - Trial 1565: Early stopping at epoch 97.
+[I 2025-11-04 23:22:52,508] Trial 1565 finished with value: 0.0026219356805086136 and parameters: {'batch_size': 64, 'learning_rate': 0.001509887205181774, 'nr_hidden_layers': 2, 'nr_neurons': 224, 'dropout_rate': 1.4173114777733231e-05, 'weight_decay': 0.0001288941666654626, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:23:14,469] Trial 1566 pruned. 
+[I 2025-11-04 23:23:33,057] Trial 1567 pruned. 
+[I 2025-11-04 23:23:44,754] Trial 1568 pruned. 
+[I 2025-11-04 23:24:03,333] Trial 1569 pruned. 
+[I 2025-11-04 23:24:22,114] Trial 1570 pruned. 
+[I 2025-11-04 23:24:29,445] Trial 1571 pruned. 
+[I 2025-11-04 23:24:48,125] Trial 1572 pruned. 
+[I 2025-11-04 23:25:06,722] Trial 1573 pruned. 
+[I 2025-11-04 23:25:27,182] Trial 1574 pruned. 
+[I 2025-11-04 23:26:45,975] Trial 1575 pruned. 
+[I 2025-11-04 23:29:05,883] Trial 1576 pruned. 
+[I 2025-11-04 23:29:25,008] Trial 1577 pruned. 
+[I 2025-11-04 23:29:43,569] Trial 1578 pruned. 
+[I 2025-11-04 23:29:52,945] Trial 1579 pruned. 
+[I 2025-11-04 23:30:11,463] Trial 1580 pruned. 
+[I 2025-11-04 23:30:31,705] Trial 1581 pruned. 
+2025-11-04 23:32:40,269 - INFO - Trial 1582: Early stopping at epoch 75.
+[I 2025-11-04 23:32:40,469] Trial 1582 finished with value: 0.005734191741794348 and parameters: {'batch_size': 64, 'learning_rate': 0.002197883349676857, 'nr_hidden_layers': 2, 'nr_neurons': 227, 'dropout_rate': 0.018121223744281354, 'weight_decay': 0.00022363394632357123, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:32:47,441] Trial 1583 pruned. 
+[I 2025-11-04 23:33:06,090] Trial 1584 pruned. 
+[I 2025-11-04 23:33:12,083] Trial 1585 pruned. 
+[I 2025-11-04 23:33:32,320] Trial 1586 pruned. 
+[I 2025-11-04 23:33:50,836] Trial 1587 pruned. 
+[I 2025-11-04 23:34:09,612] Trial 1588 pruned. 
+[I 2025-11-04 23:34:28,262] Trial 1589 pruned. 
+[I 2025-11-04 23:34:48,800] Trial 1590 pruned. 
+[I 2025-11-04 23:35:09,181] Trial 1591 pruned. 
+[I 2025-11-04 23:35:27,784] Trial 1592 pruned. 
+[I 2025-11-04 23:35:46,305] Trial 1593 pruned. 
+[I 2025-11-04 23:37:53,155] Trial 1594 pruned. 
+[I 2025-11-04 23:38:13,435] Trial 1595 pruned. 
+2025-11-04 23:40:53,841 - INFO - Trial 1596: Early stopping at epoch 95.
+[I 2025-11-04 23:40:53,961] Trial 1596 finished with value: 0.002628093585371971 and parameters: {'batch_size': 64, 'learning_rate': 0.0017463102732353064, 'nr_hidden_layers': 2, 'nr_neurons': 204, 'dropout_rate': 1.5486356041922115e-05, 'weight_decay': 0.0008542264620953023, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:41:05,758] Trial 1597 pruned. 
+2025-11-04 23:44:37,433 - INFO - Trial 1598: Early stopping at epoch 126.
+[I 2025-11-04 23:44:37,555] Trial 1598 finished with value: 0.0027273448649793863 and parameters: {'batch_size': 64, 'learning_rate': 0.0016044021731154998, 'nr_hidden_layers': 2, 'nr_neurons': 217, 'dropout_rate': 0.00018253441288317544, 'weight_decay': 0.000508202386696757, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:44:44,855] Trial 1599 pruned. 
+[I 2025-11-04 23:45:03,451] Trial 1600 pruned. 
+[I 2025-11-04 23:45:23,755] Trial 1601 pruned. 
+[I 2025-11-04 23:45:42,311] Trial 1602 pruned. 
+[I 2025-11-04 23:46:00,937] Trial 1603 pruned. 
+[I 2025-11-04 23:46:24,978] Trial 1604 pruned. 
+[I 2025-11-04 23:46:34,096] Trial 1605 pruned. 
+[I 2025-11-04 23:46:54,431] Trial 1606 pruned. 
+[I 2025-11-04 23:47:14,707] Trial 1607 pruned. 
+[I 2025-11-04 23:47:33,310] Trial 1608 pruned. 
+[I 2025-11-04 23:47:51,873] Trial 1609 pruned. 
+[I 2025-11-04 23:47:58,782] Trial 1610 pruned. 
+[I 2025-11-04 23:48:17,486] Trial 1611 pruned. 
+[I 2025-11-04 23:48:23,574] Trial 1612 pruned. 
+[I 2025-11-04 23:48:42,102] Trial 1613 pruned. 
+[I 2025-11-04 23:49:00,677] Trial 1614 pruned. 
+[I 2025-11-04 23:49:35,995] Trial 1615 pruned. 
+[I 2025-11-04 23:50:06,972] Trial 1616 pruned. 
+[I 2025-11-04 23:50:25,441] Trial 1617 pruned. 
+[I 2025-11-04 23:50:44,474] Trial 1618 pruned. 
+[I 2025-11-04 23:51:02,953] Trial 1619 pruned. 
+2025-11-04 23:53:20,802 - INFO - Trial 1620: Early stopping at epoch 79.
+[I 2025-11-04 23:53:20,925] Trial 1620 finished with value: 0.005257864482700825 and parameters: {'batch_size': 64, 'learning_rate': 0.001834433065412681, 'nr_hidden_layers': 2, 'nr_neurons': 230, 'dropout_rate': 0.017295356740296967, 'weight_decay': 0.0007472253143725002, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-04 23:53:39,484] Trial 1621 pruned. 
+[I 2025-11-04 23:55:46,696] Trial 1622 pruned. 
+[I 2025-11-04 23:56:15,476] Trial 1623 pruned. 
+[I 2025-11-04 23:56:27,007] Trial 1624 pruned. 
+[I 2025-11-04 23:56:34,005] Trial 1625 pruned. 
+[I 2025-11-04 23:56:55,938] Trial 1626 pruned. 
+[I 2025-11-04 23:57:14,502] Trial 1627 pruned. 
+2025-11-05 00:02:17,206 - INFO - Trial 1628: Early stopping at epoch 180.
+[I 2025-11-05 00:02:17,330] Trial 1628 finished with value: 0.0022358864080160856 and parameters: {'batch_size': 64, 'learning_rate': 0.001376871092126989, 'nr_hidden_layers': 2, 'nr_neurons': 227, 'dropout_rate': 0.000403417983532784, 'weight_decay': 0.00040408933672133934, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 00:04:22,179 - INFO - Trial 1629: Early stopping at epoch 74.
+[I 2025-11-05 00:04:22,300] Trial 1629 finished with value: 0.005389954894781113 and parameters: {'batch_size': 64, 'learning_rate': 0.0017038936068991528, 'nr_hidden_layers': 2, 'nr_neurons': 201, 'dropout_rate': 0.009172213849468898, 'weight_decay': 0.0012758409979755142, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:04:40,788] Trial 1630 pruned. 
+[I 2025-11-05 00:07:25,230] Trial 1631 pruned. 
+[I 2025-11-05 00:07:43,690] Trial 1632 pruned. 
+[I 2025-11-05 00:11:28,312] Trial 1633 pruned. 
+[I 2025-11-05 00:11:51,684] Trial 1634 pruned. 
+[I 2025-11-05 00:12:00,338] Trial 1635 pruned. 
+[I 2025-11-05 00:12:20,612] Trial 1636 pruned. 
+[I 2025-11-05 00:12:39,056] Trial 1637 pruned. 
+[I 2025-11-05 00:13:07,555] Trial 1638 pruned. 
+[I 2025-11-05 00:13:14,149] Trial 1639 pruned. 
+[I 2025-11-05 00:13:20,194] Trial 1640 pruned. 
+[I 2025-11-05 00:13:38,630] Trial 1641 pruned. 
+[I 2025-11-05 00:13:57,081] Trial 1642 pruned. 
+[I 2025-11-05 00:14:13,665] Trial 1643 pruned. 
+[I 2025-11-05 00:14:32,141] Trial 1644 pruned. 
+[I 2025-11-05 00:14:50,635] Trial 1645 pruned. 
+2025-11-05 00:18:09,561 - INFO - Trial 1646: Early stopping at epoch 119.
+[I 2025-11-05 00:18:09,686] Trial 1646 finished with value: 0.0023644138127565384 and parameters: {'batch_size': 64, 'learning_rate': 0.0014421089698826786, 'nr_hidden_layers': 2, 'nr_neurons': 212, 'dropout_rate': 0.00014404406074380318, 'weight_decay': 0.0005345351253690197, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:18:28,113] Trial 1647 pruned. 
+[I 2025-11-05 00:19:42,594] Trial 1648 pruned. 
+[I 2025-11-05 00:20:01,050] Trial 1649 pruned. 
+2025-11-05 00:21:49,270 - INFO - Trial 1650: Early stopping at epoch 64.
+[I 2025-11-05 00:21:49,392] Trial 1650 finished with value: 0.006057276390492916 and parameters: {'batch_size': 64, 'learning_rate': 0.0015512495703274504, 'nr_hidden_layers': 2, 'nr_neurons': 232, 'dropout_rate': 0.009549719447911637, 'weight_decay': 0.0013902222400502431, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:22:00,843] Trial 1651 pruned. 
+2025-11-05 00:24:30,417 - INFO - Trial 1652: Early stopping at epoch 85.
+[I 2025-11-05 00:24:30,542] Trial 1652 finished with value: 0.0054845851846039295 and parameters: {'batch_size': 64, 'learning_rate': 0.0016936691131146505, 'nr_hidden_layers': 2, 'nr_neurons': 211, 'dropout_rate': 0.017343813029316466, 'weight_decay': 0.0002467957574543947, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:24:37,601] Trial 1653 pruned. 
+[I 2025-11-05 00:24:56,243] Trial 1654 pruned. 
+[I 2025-11-05 00:25:14,698] Trial 1655 pruned. 
+2025-11-05 00:27:59,084 - INFO - Trial 1656: Early stopping at epoch 98.
+[I 2025-11-05 00:27:59,206] Trial 1656 finished with value: 0.004959577228873968 and parameters: {'batch_size': 64, 'learning_rate': 0.001961792107822294, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.010262699893807443, 'weight_decay': 0.0005242554639495597, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:28:17,665] Trial 1657 pruned. 
+2025-11-05 00:30:45,882 - INFO - Trial 1658: Early stopping at epoch 86.
+[I 2025-11-05 00:30:46,005] Trial 1658 finished with value: 0.005871883127838373 and parameters: {'batch_size': 64, 'learning_rate': 0.0015726193414023028, 'nr_hidden_layers': 2, 'nr_neurons': 233, 'dropout_rate': 0.009090514138690046, 'weight_decay': 0.0009198245948087123, 'activation_name': 'LeakyReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:31:04,509] Trial 1659 pruned. 
+[I 2025-11-05 00:31:12,970] Trial 1660 pruned. 
+[I 2025-11-05 00:31:32,515] Trial 1661 pruned. 
+[I 2025-11-05 00:31:50,927] Trial 1662 pruned. 
+[I 2025-11-05 00:32:09,406] Trial 1663 pruned. 
+[I 2025-11-05 00:32:27,794] Trial 1664 pruned. 
+[I 2025-11-05 00:32:46,249] Trial 1665 pruned. 
+[I 2025-11-05 00:32:52,382] Trial 1666 pruned. 
+[I 2025-11-05 00:32:59,182] Trial 1667 pruned. 
+[I 2025-11-05 00:33:17,602] Trial 1668 pruned. 
+[I 2025-11-05 00:33:36,087] Trial 1669 pruned. 
+[I 2025-11-05 00:33:56,051] Trial 1670 pruned. 
+2025-11-05 00:36:25,933 - INFO - Trial 1671: Early stopping at epoch 88.
+[I 2025-11-05 00:36:26,058] Trial 1671 finished with value: 0.0032326735090464354 and parameters: {'batch_size': 64, 'learning_rate': 0.0015534442811236699, 'nr_hidden_layers': 2, 'nr_neurons': 236, 'dropout_rate': 1.28949270540376e-05, 'weight_decay': 0.00046376794015964, 'activation_name': 'ReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:36:44,499] Trial 1672 pruned. 
+[I 2025-11-05 00:37:03,062] Trial 1673 pruned. 
+[I 2025-11-05 00:37:21,613] Trial 1674 pruned. 
+[I 2025-11-05 00:37:43,754] Trial 1675 pruned. 
+2025-11-05 00:42:24,761 - INFO - Trial 1676: Early stopping at epoch 166.
+[I 2025-11-05 00:42:24,886] Trial 1676 finished with value: 0.001897854614071548 and parameters: {'batch_size': 64, 'learning_rate': 0.0019090442063386592, 'nr_hidden_layers': 2, 'nr_neurons': 226, 'dropout_rate': 2.9413301071280456e-05, 'weight_decay': 0.0007668972312516385, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:42:43,439] Trial 1677 pruned. 
+[I 2025-11-05 00:42:54,917] Trial 1678 pruned. 
+2025-11-05 00:45:29,339 - INFO - Trial 1679: Early stopping at epoch 92.
+[I 2025-11-05 00:45:29,462] Trial 1679 finished with value: 0.0029682964086532593 and parameters: {'batch_size': 64, 'learning_rate': 0.0021187110801742627, 'nr_hidden_layers': 2, 'nr_neurons': 198, 'dropout_rate': 6.0501385462886025e-06, 'weight_decay': 0.0014730550724568689, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:45:36,707] Trial 1680 pruned. 
+[I 2025-11-05 00:46:05,328] Trial 1681 pruned. 
+[I 2025-11-05 00:46:30,465] Trial 1682 pruned. 
+[I 2025-11-05 00:46:48,964] Trial 1683 pruned. 
+[I 2025-11-05 00:47:07,478] Trial 1684 pruned. 
+[I 2025-11-05 00:47:24,597] Trial 1685 pruned. 
+2025-11-05 00:49:59,466 - INFO - Trial 1686: Early stopping at epoch 84.
+[I 2025-11-05 00:49:59,591] Trial 1686 finished with value: 0.004577082581818104 and parameters: {'batch_size': 64, 'learning_rate': 0.001256329476267406, 'nr_hidden_layers': 3, 'nr_neurons': 256, 'dropout_rate': 0.009391297851161138, 'weight_decay': 0.00026312033169631146, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:50:28,008] Trial 1687 pruned. 
+2025-11-05 00:52:01,037 - INFO - Trial 1688: Early stopping at epoch 55.
+[I 2025-11-05 00:52:01,158] Trial 1688 finished with value: 0.007243335247039795 and parameters: {'batch_size': 64, 'learning_rate': 0.0022342845105306716, 'nr_hidden_layers': 2, 'nr_neurons': 217, 'dropout_rate': 0.022732173418978232, 'weight_decay': 0.0005083557909065391, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 00:52:36,445] Trial 1689 pruned. 
+[I 2025-11-05 00:52:44,966] Trial 1690 pruned. 
+[I 2025-11-05 00:53:03,470] Trial 1691 pruned. 
+[I 2025-11-05 00:53:27,294] Trial 1692 pruned. 
+[I 2025-11-05 00:53:45,746] Trial 1693 pruned. 
+[I 2025-11-05 00:54:04,234] Trial 1694 pruned. 
+[I 2025-11-05 00:54:10,311] Trial 1695 pruned. 
+[I 2025-11-05 00:54:17,127] Trial 1696 pruned. 
+[I 2025-11-05 00:54:35,635] Trial 1697 pruned. 
+[I 2025-11-05 00:54:54,040] Trial 1698 pruned. 
+[I 2025-11-05 00:55:12,490] Trial 1699 pruned. 
+[I 2025-11-05 00:55:39,985] Trial 1700 pruned. 
+2025-11-05 01:01:27,115 - INFO - Trial 1701: Early stopping at epoch 208.
+[I 2025-11-05 01:01:27,250] Trial 1701 finished with value: 0.0016386584611609578 and parameters: {'batch_size': 64, 'learning_rate': 0.001782451617469198, 'nr_hidden_layers': 2, 'nr_neurons': 244, 'dropout_rate': 3.84295667388926e-05, 'weight_decay': 0.0007273535759696266, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:01:47,508] Trial 1702 pruned. 
+[I 2025-11-05 01:02:07,716] Trial 1703 pruned. 
+2025-11-05 01:05:37,192 - INFO - Trial 1704: Early stopping at epoch 125.
+[I 2025-11-05 01:05:37,316] Trial 1704 finished with value: 0.0026596386451274157 and parameters: {'batch_size': 64, 'learning_rate': 0.0019727258353522026, 'nr_hidden_layers': 2, 'nr_neurons': 188, 'dropout_rate': 0.00017168267225456808, 'weight_decay': 0.001047409160384027, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:05:56,260] Trial 1705 pruned. 
+[I 2025-11-05 01:06:07,729] Trial 1706 pruned. 
+[I 2025-11-05 01:06:26,268] Trial 1707 pruned. 
+[I 2025-11-05 01:06:49,742] Trial 1708 pruned. 
+[I 2025-11-05 01:06:57,007] Trial 1709 pruned. 
+[I 2025-11-05 01:07:20,527] Trial 1710 pruned. 
+[I 2025-11-05 01:07:39,010] Trial 1711 pruned. 
+[I 2025-11-05 01:07:57,392] Trial 1712 pruned. 
+2025-11-05 01:11:07,168 - INFO - Trial 1713: Early stopping at epoch 111.
+[I 2025-11-05 01:11:07,293] Trial 1713 finished with value: 0.003326168516650796 and parameters: {'batch_size': 64, 'learning_rate': 0.0017319273491764728, 'nr_hidden_layers': 2, 'nr_neurons': 203, 'dropout_rate': 0.0002745999463709498, 'weight_decay': 0.0009412032869778675, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:11:33,945] Trial 1714 pruned. 
+[I 2025-11-05 01:11:55,696] Trial 1715 pruned. 
+[I 2025-11-05 01:12:04,209] Trial 1716 pruned. 
+2025-11-05 01:14:01,065 - INFO - Trial 1717: Early stopping at epoch 63.
+[I 2025-11-05 01:14:01,188] Trial 1717 finished with value: 0.005202931817620993 and parameters: {'batch_size': 64, 'learning_rate': 0.00189695922201075, 'nr_hidden_layers': 3, 'nr_neurons': 236, 'dropout_rate': 0.009472259557261963, 'weight_decay': 0.0007088187167101271, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:14:19,630] Trial 1718 pruned. 
+[I 2025-11-05 01:14:38,057] Trial 1719 pruned. 
+[I 2025-11-05 01:14:44,875] Trial 1720 pruned. 
+[I 2025-11-05 01:18:09,526] Trial 1721 pruned. 
+[I 2025-11-05 01:18:15,422] Trial 1722 pruned. 
+[I 2025-11-05 01:18:33,865] Trial 1723 pruned. 
+[I 2025-11-05 01:18:52,404] Trial 1724 pruned. 
+[I 2025-11-05 01:19:10,897] Trial 1725 pruned. 
+2025-11-05 01:20:49,166 - INFO - Trial 1726: Early stopping at epoch 57.
+[I 2025-11-05 01:20:49,329] Trial 1726 finished with value: 0.005266272462904453 and parameters: {'batch_size': 64, 'learning_rate': 0.0014332321605186817, 'nr_hidden_layers': 2, 'nr_neurons': 244, 'dropout_rate': 0.009027790003180295, 'weight_decay': 0.00021387512790386538, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:21:15,527] Trial 1727 pruned. 
+[I 2025-11-05 01:21:34,422] Trial 1728 pruned. 
+[I 2025-11-05 01:21:54,575] Trial 1729 pruned. 
+[I 2025-11-05 01:22:13,067] Trial 1730 pruned. 
+[I 2025-11-05 01:22:38,288] Trial 1731 pruned. 
+[I 2025-11-05 01:22:56,811] Trial 1732 pruned. 
+2025-11-05 01:24:48,394 - INFO - Trial 1733: Early stopping at epoch 66.
+[I 2025-11-05 01:24:48,520] Trial 1733 finished with value: 0.004536186344921589 and parameters: {'batch_size': 64, 'learning_rate': 0.0020189672967035363, 'nr_hidden_layers': 2, 'nr_neurons': 197, 'dropout_rate': 0.00038343217590161257, 'weight_decay': 0.0006038353804053874, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:25:01,717] Trial 1734 pruned. 
+[I 2025-11-05 01:25:08,942] Trial 1735 pruned. 
+[I 2025-11-05 01:25:27,342] Trial 1736 pruned. 
+[I 2025-11-05 01:25:47,419] Trial 1737 pruned. 
+2025-11-05 01:27:59,173 - INFO - Trial 1738: Early stopping at epoch 79.
+[I 2025-11-05 01:27:59,305] Trial 1738 finished with value: 0.00381636549718678 and parameters: {'batch_size': 64, 'learning_rate': 0.001249017839924504, 'nr_hidden_layers': 2, 'nr_neurons': 222, 'dropout_rate': 0.0001568667173069897, 'weight_decay': 0.00030876555844786495, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:28:17,408] Trial 1739 pruned. 
+[I 2025-11-05 01:28:35,366] Trial 1740 pruned. 
+2025-11-05 01:30:31,967 - INFO - Trial 1741: Early stopping at epoch 71.
+[I 2025-11-05 01:30:32,119] Trial 1741 finished with value: 0.005499945022165775 and parameters: {'batch_size': 64, 'learning_rate': 0.0021840176613051256, 'nr_hidden_layers': 2, 'nr_neurons': 190, 'dropout_rate': 0.01680031453246195, 'weight_decay': 0.00016011471839261172, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 01:33:20,399 - INFO - Trial 1742: Early stopping at epoch 101.
+[I 2025-11-05 01:33:20,530] Trial 1742 finished with value: 0.004668517038226128 and parameters: {'batch_size': 64, 'learning_rate': 0.0016975564511625474, 'nr_hidden_layers': 2, 'nr_neurons': 176, 'dropout_rate': 0.009306042465967274, 'weight_decay': 0.00025778753628162717, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:33:44,685] Trial 1743 pruned. 
+[I 2025-11-05 01:33:52,847] Trial 1744 pruned. 
+[I 2025-11-05 01:34:38,974] Trial 1745 pruned. 
+[I 2025-11-05 01:34:56,697] Trial 1746 pruned. 
+[I 2025-11-05 01:35:12,795] Trial 1747 pruned. 
+[I 2025-11-05 01:35:19,380] Trial 1748 pruned. 
+[I 2025-11-05 01:35:39,148] Trial 1749 pruned. 
+[I 2025-11-05 01:35:45,050] Trial 1750 pruned. 
+[I 2025-11-05 01:36:02,930] Trial 1751 pruned. 
+2025-11-05 01:39:26,165 - INFO - Trial 1752: Early stopping at epoch 126.
+[I 2025-11-05 01:39:26,298] Trial 1752 finished with value: 0.0025860804598778486 and parameters: {'batch_size': 64, 'learning_rate': 0.0020168592240787197, 'nr_hidden_layers': 2, 'nr_neurons': 213, 'dropout_rate': 8.89417434411326e-05, 'weight_decay': 2.8265856748075297e-05, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:39:44,193] Trial 1753 pruned. 
+[I 2025-11-05 01:40:24,840] Trial 1754 pruned. 
+[I 2025-11-05 01:40:42,638] Trial 1755 pruned. 
+2025-11-05 01:45:08,310 - INFO - Trial 1756: Early stopping at epoch 165.
+[I 2025-11-05 01:45:08,447] Trial 1756 finished with value: 0.0019316094694659114 and parameters: {'batch_size': 64, 'learning_rate': 0.0017864876138253545, 'nr_hidden_layers': 2, 'nr_neurons': 219, 'dropout_rate': 7.342599795851499e-05, 'weight_decay': 0.00018801089528333524, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 01:45:26,270] Trial 1757 pruned. 
+[I 2025-11-05 01:45:44,289] Trial 1758 pruned. 
+[I 2025-11-05 01:48:40,562] Trial 1759 pruned. 
+[I 2025-11-05 01:48:58,741] Trial 1760 pruned. 
+[I 2025-11-05 01:49:09,790] Trial 1761 pruned. 
+[I 2025-11-05 01:49:27,746] Trial 1762 pruned. 
+[I 2025-11-05 01:49:34,755] Trial 1763 pruned. 
+[I 2025-11-05 01:49:57,409] Trial 1764 pruned. 
+[I 2025-11-05 01:50:15,214] Trial 1765 pruned. 
+[I 2025-11-05 01:50:33,049] Trial 1766 pruned. 
+[I 2025-11-05 01:53:13,647] Trial 1767 pruned. 
+[I 2025-11-05 01:56:32,375] Trial 1768 pruned. 
+[I 2025-11-05 01:59:24,598] Trial 1769 pruned. 
+[I 2025-11-05 01:59:32,822] Trial 1770 pruned. 
+[I 2025-11-05 01:59:50,663] Trial 1771 pruned. 
+[I 2025-11-05 02:00:08,593] Trial 1772 pruned. 
+[I 2025-11-05 02:00:26,874] Trial 1773 pruned. 
+[I 2025-11-05 02:03:37,816] Trial 1774 pruned. 
+[I 2025-11-05 02:03:44,535] Trial 1775 pruned. 
+2025-11-05 02:09:50,076 - INFO - Trial 1776: Early stopping at epoch 227.
+[I 2025-11-05 02:09:50,216] Trial 1776 finished with value: 0.0016115392791107297 and parameters: {'batch_size': 64, 'learning_rate': 0.0021649035465069457, 'nr_hidden_layers': 2, 'nr_neurons': 215, 'dropout_rate': 6.241686232042434e-05, 'weight_decay': 0.0006636256739604024, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:11:54,271] Trial 1777 pruned. 
+2025-11-05 02:13:41,986 - INFO - Trial 1778: Early stopping at epoch 64.
+[I 2025-11-05 02:13:42,123] Trial 1778 finished with value: 0.004013017751276493 and parameters: {'batch_size': 64, 'learning_rate': 0.0020211191628033954, 'nr_hidden_layers': 2, 'nr_neurons': 225, 'dropout_rate': 0.00011027323302501522, 'weight_decay': 0.0003495802769523108, 'activation_name': 'LeakyReLU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 02:16:04,507 - INFO - Trial 1779: Early stopping at epoch 85.
+[I 2025-11-05 02:16:04,644] Trial 1779 finished with value: 0.003225548192858696 and parameters: {'batch_size': 64, 'learning_rate': 0.0022484259441419223, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 8.59183455956376e-05, 'weight_decay': 0.00020998301813315328, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:16:23,144] Trial 1780 pruned. 
+[I 2025-11-05 02:16:29,229] Trial 1781 pruned. 
+[I 2025-11-05 02:16:47,657] Trial 1782 pruned. 
+2025-11-05 02:19:38,172 - INFO - Trial 1783: Early stopping at epoch 94.
+[I 2025-11-05 02:19:38,304] Trial 1783 finished with value: 0.005082536488771439 and parameters: {'batch_size': 64, 'learning_rate': 0.0025926471868637506, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.009048449685102666, 'weight_decay': 0.0007463648047909272, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:20:03,291] Trial 1784 pruned. 
+2025-11-05 02:23:39,728 - INFO - Trial 1785: Early stopping at epoch 130.
+[I 2025-11-05 02:23:39,861] Trial 1785 finished with value: 0.002290702424943447 and parameters: {'batch_size': 64, 'learning_rate': 0.0023352094194089403, 'nr_hidden_layers': 2, 'nr_neurons': 212, 'dropout_rate': 0.00015424448005374577, 'weight_decay': 0.0011373928281333996, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:25:08,504] Trial 1786 pruned. 
+[I 2025-11-05 02:27:51,537] Trial 1787 pruned. 
+[I 2025-11-05 02:28:18,911] Trial 1788 pruned. 
+[I 2025-11-05 02:28:29,930] Trial 1789 pruned. 
+2025-11-05 02:31:11,350 - INFO - Trial 1790: Early stopping at epoch 100.
+[I 2025-11-05 02:31:11,492] Trial 1790 finished with value: 0.004305231850594282 and parameters: {'batch_size': 64, 'learning_rate': 0.002414165157725865, 'nr_hidden_layers': 2, 'nr_neurons': 215, 'dropout_rate': 0.00903458757746534, 'weight_decay': 0.000599561763598236, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:31:29,358] Trial 1791 pruned. 
+[I 2025-11-05 02:31:36,452] Trial 1792 pruned. 
+[I 2025-11-05 02:31:56,241] Trial 1793 pruned. 
+2025-11-05 02:35:42,477 - INFO - Trial 1794: Early stopping at epoch 136.
+[I 2025-11-05 02:35:42,610] Trial 1794 finished with value: 0.002196073532104492 and parameters: {'batch_size': 64, 'learning_rate': 0.002777721611694486, 'nr_hidden_layers': 2, 'nr_neurons': 224, 'dropout_rate': 0.0001581762918338602, 'weight_decay': 0.0013340053954663813, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:36:01,409] Trial 1795 pruned. 
+2025-11-05 02:39:16,384 - INFO - Trial 1796: Early stopping at epoch 117.
+[I 2025-11-05 02:39:16,516] Trial 1796 finished with value: 0.0021863789297640324 and parameters: {'batch_size': 64, 'learning_rate': 0.002063775015798683, 'nr_hidden_layers': 2, 'nr_neurons': 243, 'dropout_rate': 5.505163519767186e-05, 'weight_decay': 4.3780668654611426e-06, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:39:34,888] Trial 1797 pruned. 
+[I 2025-11-05 02:39:44,488] Trial 1798 pruned. 
+[I 2025-11-05 02:40:02,899] Trial 1799 pruned. 
+2025-11-05 02:42:37,455 - INFO - Trial 1800: Early stopping at epoch 84.
+[I 2025-11-05 02:42:37,585] Trial 1800 finished with value: 0.002824625000357628 and parameters: {'batch_size': 64, 'learning_rate': 0.0021386352721346974, 'nr_hidden_layers': 3, 'nr_neurons': 244, 'dropout_rate': 9.12071742053154e-05, 'weight_decay': 0.00021913017437286787, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:43:00,943] Trial 1801 pruned. 
+[I 2025-11-05 02:43:19,340] Trial 1802 pruned. 
+[I 2025-11-05 02:43:26,120] Trial 1803 pruned. 
+[I 2025-11-05 02:43:49,827] Trial 1804 pruned. 
+[I 2025-11-05 02:43:55,830] Trial 1805 pruned. 
+[I 2025-11-05 02:44:55,460] Trial 1806 pruned. 
+2025-11-05 02:47:58,568 - INFO - Trial 1807: Early stopping at epoch 110.
+[I 2025-11-05 02:47:58,700] Trial 1807 finished with value: 0.002200755989179015 and parameters: {'batch_size': 64, 'learning_rate': 0.001827333925733058, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.00010072052955514081, 'weight_decay': 0.00039266515302198966, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:48:16,401] Trial 1808 pruned. 
+2025-11-05 02:50:14,410 - INFO - Trial 1809: Early stopping at epoch 71.
+[I 2025-11-05 02:50:14,540] Trial 1809 finished with value: 0.00562455877661705 and parameters: {'batch_size': 64, 'learning_rate': 0.0017501082916184312, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 0.01745973946337404, 'weight_decay': 0.000686563300521409, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 02:53:35,373 - INFO - Trial 1810: Early stopping at epoch 121.
+[I 2025-11-05 02:53:35,509] Trial 1810 finished with value: 0.0026516802608966827 and parameters: {'batch_size': 64, 'learning_rate': 0.0019581928465065798, 'nr_hidden_layers': 2, 'nr_neurons': 213, 'dropout_rate': 2.302579786282296e-05, 'weight_decay': 0.00024373941749551362, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 02:53:53,288] Trial 1811 pruned. 
+[I 2025-11-05 02:54:12,819] Trial 1812 pruned. 
+[I 2025-11-05 02:56:54,922] Trial 1813 pruned. 
+[I 2025-11-05 02:59:25,940] Trial 1814 pruned. 
+[I 2025-11-05 02:59:49,320] Trial 1815 pruned. 
+[I 2025-11-05 03:00:25,254] Trial 1816 pruned. 
+[I 2025-11-05 03:00:36,875] Trial 1817 pruned. 
+[I 2025-11-05 03:00:44,081] Trial 1818 pruned. 
+2025-11-05 03:04:25,131 - INFO - Trial 1819: Early stopping at epoch 133.
+[I 2025-11-05 03:04:25,274] Trial 1819 finished with value: 0.0019527215044945478 and parameters: {'batch_size': 64, 'learning_rate': 0.0016234933768729087, 'nr_hidden_layers': 2, 'nr_neurons': 217, 'dropout_rate': 5.3730545057848494e-05, 'weight_decay': 0.00028637670331026346, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:04:42,935] Trial 1820 pruned. 
+[I 2025-11-05 03:05:07,103] Trial 1821 pruned. 
+2025-11-05 03:06:46,779 - INFO - Trial 1822: Early stopping at epoch 61.
+[I 2025-11-05 03:06:46,913] Trial 1822 finished with value: 0.006599621381610632 and parameters: {'batch_size': 64, 'learning_rate': 0.0022660858810135197, 'nr_hidden_layers': 2, 'nr_neurons': 196, 'dropout_rate': 0.024178423278997396, 'weight_decay': 0.0005918001726884509, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:09:28,126] Trial 1823 pruned. 
+[I 2025-11-05 03:09:50,776] Trial 1824 pruned. 
+2025-11-05 03:11:33,335 - INFO - Trial 1825: Early stopping at epoch 61.
+[I 2025-11-05 03:11:33,468] Trial 1825 finished with value: 0.00565942469984293 and parameters: {'batch_size': 64, 'learning_rate': 0.001564545755275736, 'nr_hidden_layers': 2, 'nr_neurons': 221, 'dropout_rate': 0.009228048911251393, 'weight_decay': 0.00010822773729250001, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:11:41,921] Trial 1826 pruned. 
+[I 2025-11-05 03:12:00,263] Trial 1827 pruned. 
+[I 2025-11-05 03:12:18,274] Trial 1828 pruned. 
+[I 2025-11-05 03:13:23,928] Trial 1829 pruned. 
+[I 2025-11-05 03:14:00,505] Trial 1830 pruned. 
+[I 2025-11-05 03:14:19,025] Trial 1831 pruned. 
+[I 2025-11-05 03:14:25,029] Trial 1832 pruned. 
+[I 2025-11-05 03:14:45,503] Trial 1833 pruned. 
+[I 2025-11-05 03:15:05,535] Trial 1834 pruned. 
+[I 2025-11-05 03:15:12,091] Trial 1835 pruned. 
+[I 2025-11-05 03:15:34,543] Trial 1836 pruned. 
+2025-11-05 03:20:11,086 - INFO - Trial 1837: Early stopping at epoch 172.
+[I 2025-11-05 03:20:11,218] Trial 1837 finished with value: 0.0015892995288595557 and parameters: {'batch_size': 64, 'learning_rate': 0.0015323559814451855, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 2.0563493697780834e-05, 'weight_decay': 0.0004823932697101846, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 03:22:42,114 - INFO - Trial 1838: Early stopping at epoch 93.
+[I 2025-11-05 03:22:42,243] Trial 1838 finished with value: 0.003177028149366379 and parameters: {'batch_size': 64, 'learning_rate': 0.001829777109175104, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.00012939582183270598, 'weight_decay': 0.0004747772245629303, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:23:00,116] Trial 1839 pruned. 
+[I 2025-11-05 03:23:33,282] Trial 1840 pruned. 
+2025-11-05 03:25:23,808 - INFO - Trial 1841: Early stopping at epoch 66.
+[I 2025-11-05 03:25:23,966] Trial 1841 finished with value: 0.0043517895974218845 and parameters: {'batch_size': 64, 'learning_rate': 0.0016626233293446319, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.0001606138666810611, 'weight_decay': 0.0005607018942974649, 'activation_name': 'ReLU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:25:42,175] Trial 1842 pruned. 
+[I 2025-11-05 03:25:59,936] Trial 1843 pruned. 
+[I 2025-11-05 03:26:10,975] Trial 1844 pruned. 
+[I 2025-11-05 03:26:33,607] Trial 1845 pruned. 
+[I 2025-11-05 03:26:51,317] Trial 1846 pruned. 
+[I 2025-11-05 03:27:09,089] Trial 1847 pruned. 
+[I 2025-11-05 03:27:16,077] Trial 1848 pruned. 
+[I 2025-11-05 03:27:43,498] Trial 1849 pruned. 
+[I 2025-11-05 03:28:01,715] Trial 1850 pruned. 
+[I 2025-11-05 03:28:46,639] Trial 1851 pruned. 
+2025-11-05 03:30:53,097 - INFO - Trial 1852: Early stopping at epoch 76.
+[I 2025-11-05 03:30:53,251] Trial 1852 finished with value: 0.00577557273209095 and parameters: {'batch_size': 64, 'learning_rate': 0.002161924785111532, 'nr_hidden_layers': 2, 'nr_neurons': 237, 'dropout_rate': 0.0097941213771435, 'weight_decay': 0.0007937139061358786, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 03:33:15,663 - INFO - Trial 1853: Early stopping at epoch 87.
+[I 2025-11-05 03:33:15,797] Trial 1853 finished with value: 0.005309095606207848 and parameters: {'batch_size': 64, 'learning_rate': 0.0014940986079999504, 'nr_hidden_layers': 2, 'nr_neurons': 242, 'dropout_rate': 0.017356040726091423, 'weight_decay': 0.0005790528188769399, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:33:23,982] Trial 1854 pruned. 
+[I 2025-11-05 03:33:41,779] Trial 1855 pruned. 
+[I 2025-11-05 03:33:59,751] Trial 1856 pruned. 
+[I 2025-11-05 03:34:41,471] Trial 1857 pruned. 
+[I 2025-11-05 03:34:59,934] Trial 1858 pruned. 
+2025-11-05 03:36:55,179 - INFO - Trial 1859: Early stopping at epoch 69.
+[I 2025-11-05 03:36:55,313] Trial 1859 finished with value: 0.006380748935043812 and parameters: {'batch_size': 64, 'learning_rate': 0.0020464729845901426, 'nr_hidden_layers': 2, 'nr_neurons': 231, 'dropout_rate': 0.008893649626029248, 'weight_decay': 1.984765735686903e-06, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:37:02,078] Trial 1860 pruned. 
+[I 2025-11-05 03:37:26,428] Trial 1861 pruned. 
+[I 2025-11-05 03:37:32,330] Trial 1862 pruned. 
+2025-11-05 03:40:17,212 - INFO - Trial 1863: Early stopping at epoch 102.
+[I 2025-11-05 03:40:17,348] Trial 1863 finished with value: 0.0028748917393386364 and parameters: {'batch_size': 64, 'learning_rate': 0.0018232820791331311, 'nr_hidden_layers': 2, 'nr_neurons': 228, 'dropout_rate': 9.221226517497333e-05, 'weight_decay': 0.0004900482740734891, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:40:33,487] Trial 1864 pruned. 
+[I 2025-11-05 03:40:51,328] Trial 1865 pruned. 
+[I 2025-11-05 03:41:11,323] Trial 1866 pruned. 
+[I 2025-11-05 03:41:29,139] Trial 1867 pruned. 
+2025-11-05 03:43:37,812 - INFO - Trial 1868: Early stopping at epoch 78.
+[I 2025-11-05 03:43:37,949] Trial 1868 finished with value: 0.005134644918143749 and parameters: {'batch_size': 64, 'learning_rate': 0.0019769788822151884, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.008451533043953125, 'weight_decay': 0.0006945743753605942, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 03:45:17,696 - INFO - Trial 1869: Early stopping at epoch 61.
+[I 2025-11-05 03:45:17,832] Trial 1869 finished with value: 0.0070695350877940655 and parameters: {'batch_size': 64, 'learning_rate': 0.001575583138406176, 'nr_hidden_layers': 2, 'nr_neurons': 224, 'dropout_rate': 0.018146610154510787, 'weight_decay': 0.0004452460928696093, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:45:35,865] Trial 1870 pruned. 
+[I 2025-11-05 03:45:53,709] Trial 1871 pruned. 
+2025-11-05 03:48:53,519 - INFO - Trial 1872: Early stopping at epoch 111.
+[I 2025-11-05 03:48:53,655] Trial 1872 finished with value: 0.003075291635468602 and parameters: {'batch_size': 64, 'learning_rate': 0.0020771601998674514, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.0003139943603194409, 'weight_decay': 0.0009767410860603229, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:49:04,703] Trial 1873 pruned. 
+[I 2025-11-05 03:49:11,694] Trial 1874 pruned. 
+[I 2025-11-05 03:49:32,660] Trial 1875 pruned. 
+[I 2025-11-05 03:50:05,198] Trial 1876 pruned. 
+[I 2025-11-05 03:50:23,139] Trial 1877 pruned. 
+2025-11-05 03:52:02,552 - INFO - Trial 1878: Early stopping at epoch 61.
+[I 2025-11-05 03:52:02,690] Trial 1878 finished with value: 0.006030564196407795 and parameters: {'batch_size': 64, 'learning_rate': 0.0016910935255687526, 'nr_hidden_layers': 2, 'nr_neurons': 256, 'dropout_rate': 0.017890555146834488, 'weight_decay': 0.0005089859525011094, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:52:20,877] Trial 1879 pruned. 
+2025-11-05 03:55:45,749 - INFO - Trial 1880: Early stopping at epoch 126.
+[I 2025-11-05 03:55:45,884] Trial 1880 finished with value: 0.0021169069223105907 and parameters: {'batch_size': 64, 'learning_rate': 0.001912807079777897, 'nr_hidden_layers': 2, 'nr_neurons': 242, 'dropout_rate': 6.68351317388302e-06, 'weight_decay': 0.0005958613597920095, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:56:03,780] Trial 1881 pruned. 
+[I 2025-11-05 03:56:21,784] Trial 1882 pruned. 
+2025-11-05 03:57:57,886 - INFO - Trial 1883: Early stopping at epoch 59.
+[I 2025-11-05 03:57:58,033] Trial 1883 finished with value: 0.006216044537723064 and parameters: {'batch_size': 64, 'learning_rate': 0.0017995184711673002, 'nr_hidden_layers': 2, 'nr_neurons': 147, 'dropout_rate': 0.0168393484701423, 'weight_decay': 0.00042398245023206777, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 03:58:20,627] Trial 1884 pruned. 
+[I 2025-11-05 03:58:28,774] Trial 1885 pruned. 
+2025-11-05 04:00:03,719 - INFO - Trial 1886: Early stopping at epoch 57.
+[I 2025-11-05 04:00:03,858] Trial 1886 finished with value: 0.006625725422054529 and parameters: {'batch_size': 64, 'learning_rate': 0.002047565287577261, 'nr_hidden_layers': 2, 'nr_neurons': 218, 'dropout_rate': 0.008655049797512249, 'weight_decay': 0.0003710353764149571, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:00:09,797] Trial 1887 pruned. 
+[I 2025-11-05 04:00:16,574] Trial 1888 pruned. 
+[I 2025-11-05 04:00:35,083] Trial 1889 pruned. 
+[I 2025-11-05 04:01:06,802] Trial 1890 pruned. 
+[I 2025-11-05 04:01:30,513] Trial 1891 pruned. 
+[I 2025-11-05 04:01:48,945] Trial 1892 pruned. 
+[I 2025-11-05 04:02:13,947] Trial 1893 pruned. 
+[I 2025-11-05 04:02:32,412] Trial 1894 pruned. 
+2025-11-05 04:07:11,889 - INFO - Trial 1895: Early stopping at epoch 168.
+[I 2025-11-05 04:07:12,023] Trial 1895 finished with value: 0.002014406491070986 and parameters: {'batch_size': 64, 'learning_rate': 0.001573677036793488, 'nr_hidden_layers': 2, 'nr_neurons': 234, 'dropout_rate': 0.00010796516265334885, 'weight_decay': 0.0006260892311920527, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:07:30,382] Trial 1896 pruned. 
+[I 2025-11-05 04:07:48,759] Trial 1897 pruned. 
+[I 2025-11-05 04:08:07,100] Trial 1898 pruned. 
+[I 2025-11-05 04:08:25,496] Trial 1899 pruned. 
+[I 2025-11-05 04:08:36,978] Trial 1900 pruned. 
+[I 2025-11-05 04:08:43,984] Trial 1901 pruned. 
+[I 2025-11-05 04:09:02,426] Trial 1902 pruned. 
+[I 2025-11-05 04:09:20,935] Trial 1903 pruned. 
+[I 2025-11-05 04:09:39,769] Trial 1904 pruned. 
+[I 2025-11-05 04:09:58,038] Trial 1905 pruned. 
+[I 2025-11-05 04:10:15,917] Trial 1906 pruned. 
+[I 2025-11-05 04:10:33,776] Trial 1907 pruned. 
+[I 2025-11-05 04:10:51,632] Trial 1908 pruned. 
+[I 2025-11-05 04:11:09,364] Trial 1909 pruned. 
+[I 2025-11-05 04:11:17,126] Trial 1910 pruned. 
+[I 2025-11-05 04:11:36,726] Trial 1911 pruned. 
+2025-11-05 04:14:43,731 - INFO - Trial 1912: Early stopping at epoch 116.
+[I 2025-11-05 04:14:43,864] Trial 1912 finished with value: 0.0024223304353654385 and parameters: {'batch_size': 64, 'learning_rate': 0.0012217217839658654, 'nr_hidden_layers': 2, 'nr_neurons': 244, 'dropout_rate': 0.00026682411222680904, 'weight_decay': 0.0007553438524809857, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+2025-11-05 04:19:19,446 - INFO - Trial 1913: Early stopping at epoch 168.
+[I 2025-11-05 04:19:19,586] Trial 1913 finished with value: 0.002404667902737856 and parameters: {'batch_size': 64, 'learning_rate': 0.0021964598504626695, 'nr_hidden_layers': 2, 'nr_neurons': 195, 'dropout_rate': 0.00030982982105613765, 'weight_decay': 0.0003319304385006651, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:19:26,497] Trial 1914 pruned. 
+2025-11-05 04:22:47,788 - INFO - Trial 1915: Early stopping at epoch 122.
+[I 2025-11-05 04:22:47,933] Trial 1915 finished with value: 0.002350551076233387 and parameters: {'batch_size': 64, 'learning_rate': 0.0018188990627797488, 'nr_hidden_layers': 2, 'nr_neurons': 205, 'dropout_rate': 9.27498791971534e-05, 'weight_decay': 0.0005519577001869558, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:22:53,854] Trial 1916 pruned. 
+[I 2025-11-05 04:23:11,726] Trial 1917 pruned. 
+[I 2025-11-05 04:23:29,520] Trial 1918 pruned. 
+[I 2025-11-05 04:23:47,292] Trial 1919 pruned. 
+[I 2025-11-05 04:24:14,163] Trial 1920 pruned. 
+[I 2025-11-05 04:24:31,960] Trial 1921 pruned. 
+[I 2025-11-05 04:24:49,783] Trial 1922 pruned. 
+[I 2025-11-05 04:25:14,018] Trial 1923 pruned. 
+[I 2025-11-05 04:25:31,938] Trial 1924 pruned. 
+[I 2025-11-05 04:25:50,520] Trial 1925 pruned. 
+2025-11-05 04:28:00,860 - INFO - Trial 1926: Early stopping at epoch 75.
+[I 2025-11-05 04:28:00,996] Trial 1926 finished with value: 0.0058717126958072186 and parameters: {'batch_size': 64, 'learning_rate': 0.0037412263324844534, 'nr_hidden_layers': 2, 'nr_neurons': 243, 'dropout_rate': 0.009252867193057405, 'weight_decay': 0.0006504859448945976, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:28:19,358] Trial 1927 pruned. 
+[I 2025-11-05 04:28:30,704] Trial 1928 pruned. 
+[I 2025-11-05 04:28:37,519] Trial 1929 pruned. 
+[I 2025-11-05 04:28:55,770] Trial 1930 pruned. 
+[I 2025-11-05 04:29:14,160] Trial 1931 pruned. 
+2025-11-05 04:31:28,819 - INFO - Trial 1932: Early stopping at epoch 81.
+[I 2025-11-05 04:31:28,954] Trial 1932 finished with value: 0.005161717999726534 and parameters: {'batch_size': 64, 'learning_rate': 0.0015295278386860782, 'nr_hidden_layers': 2, 'nr_neurons': 94, 'dropout_rate': 0.010254533305234605, 'weight_decay': 0.0005681216904930708, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:31:50,700] Trial 1933 pruned. 
+2025-11-05 04:33:50,756 - INFO - Trial 1934: Early stopping at epoch 74.
+[I 2025-11-05 04:33:50,888] Trial 1934 finished with value: 0.005484067369252443 and parameters: {'batch_size': 64, 'learning_rate': 0.00202653095270807, 'nr_hidden_layers': 2, 'nr_neurons': 216, 'dropout_rate': 0.028871475515969174, 'weight_decay': 0.0003469545264166125, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:34:10,940] Trial 1935 pruned. 
+[I 2025-11-05 04:34:28,816] Trial 1936 pruned. 
+[I 2025-11-05 04:34:36,993] Trial 1937 pruned. 
+[I 2025-11-05 04:34:54,742] Trial 1938 pruned. 
+[I 2025-11-05 04:35:12,690] Trial 1939 pruned. 
+[I 2025-11-05 04:35:30,582] Trial 1940 pruned. 
+[I 2025-11-05 04:35:54,989] Trial 1941 pruned. 
+[I 2025-11-05 04:36:01,740] Trial 1942 pruned. 
+[I 2025-11-05 04:36:19,577] Trial 1943 pruned. 
+[I 2025-11-05 04:36:25,428] Trial 1944 pruned. 
+[I 2025-11-05 04:36:43,229] Trial 1945 pruned. 
+[I 2025-11-05 04:37:01,154] Trial 1946 pruned. 
+[I 2025-11-05 04:37:19,414] Trial 1947 pruned. 
+[I 2025-11-05 04:37:42,722] Trial 1948 pruned. 
+[I 2025-11-05 04:38:05,776] Trial 1949 pruned. 
+[I 2025-11-05 04:38:24,204] Trial 1950 pruned. 
+[I 2025-11-05 04:38:42,664] Trial 1951 pruned. 
+[I 2025-11-05 04:39:05,972] Trial 1952 pruned. 
+[I 2025-11-05 04:39:28,223] Trial 1953 pruned. 
+[I 2025-11-05 04:39:46,654] Trial 1954 pruned. 
+[I 2025-11-05 04:39:58,083] Trial 1955 pruned. 
+2025-11-05 04:45:19,036 - INFO - Trial 1956: Early stopping at epoch 198.
+[I 2025-11-05 04:45:19,174] Trial 1956 finished with value: 0.001827578991651535 and parameters: {'batch_size': 64, 'learning_rate': 0.0017303323871562715, 'nr_hidden_layers': 2, 'nr_neurons': 177, 'dropout_rate': 0.000241578677044653, 'weight_decay': 0.0013486893444488728, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:45:26,166] Trial 1957 pruned. 
+[I 2025-11-05 04:45:43,968] Trial 1958 pruned. 
+[I 2025-11-05 04:46:07,188] Trial 1959 pruned. 
+[I 2025-11-05 04:46:28,260] Trial 1960 pruned. 
+[I 2025-11-05 04:48:23,590] Trial 1961 pruned. 
+[I 2025-11-05 04:49:10,432] Trial 1962 pruned. 
+2025-11-05 04:52:33,747 - INFO - Trial 1963: Early stopping at epoch 125.
+[I 2025-11-05 04:52:33,889] Trial 1963 finished with value: 0.0022414273116737604 and parameters: {'batch_size': 64, 'learning_rate': 0.0023598043363674873, 'nr_hidden_layers': 2, 'nr_neurons': 160, 'dropout_rate': 0.00012570178068690903, 'weight_decay': 0.001803940292445253, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:52:42,120] Trial 1964 pruned. 
+[I 2025-11-05 04:52:59,928] Trial 1965 pruned. 
+[I 2025-11-05 04:53:17,858] Trial 1966 pruned. 
+2025-11-05 04:55:56,546 - INFO - Trial 1967: Early stopping at epoch 89.
+[I 2025-11-05 04:55:56,692] Trial 1967 finished with value: 0.005021036136895418 and parameters: {'batch_size': 64, 'learning_rate': 0.0021540836424065258, 'nr_hidden_layers': 3, 'nr_neurons': 163, 'dropout_rate': 0.009664653569474248, 'weight_decay': 0.0021044927362615447, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:56:14,529] Trial 1968 pruned. 
+[I 2025-11-05 04:56:21,156] Trial 1969 pruned. 
+[I 2025-11-05 04:56:37,413] Trial 1970 pruned. 
+[I 2025-11-05 04:56:43,081] Trial 1971 pruned. 
+2025-11-05 04:58:32,752 - INFO - Trial 1972: Early stopping at epoch 66.
+[I 2025-11-05 04:58:32,889] Trial 1972 finished with value: 0.005459562409669161 and parameters: {'batch_size': 64, 'learning_rate': 0.002522760061820952, 'nr_hidden_layers': 2, 'nr_neurons': 183, 'dropout_rate': 0.007851428901880491, 'weight_decay': 0.0013091317858505186, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 04:58:51,320] Trial 1973 pruned. 
+[I 2025-11-05 04:59:33,481] Trial 1974 pruned. 
+[I 2025-11-05 04:59:51,461] Trial 1975 pruned. 
+2025-11-05 05:02:41,822 - INFO - Trial 1976: Early stopping at epoch 105.
+[I 2025-11-05 05:02:42,153] Trial 1976 finished with value: 0.002832015510648489 and parameters: {'batch_size': 64, 'learning_rate': 0.0022431756549286174, 'nr_hidden_layers': 2, 'nr_neurons': 183, 'dropout_rate': 0.00019492134324578723, 'weight_decay': 0.0010684487967150722, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 05:02:59,987] Trial 1977 pruned. 
+[I 2025-11-05 05:03:17,769] Trial 1978 pruned. 
+[I 2025-11-05 05:03:35,766] Trial 1979 pruned. 
+[I 2025-11-05 05:03:53,594] Trial 1980 pruned. 
+[I 2025-11-05 05:04:11,406] Trial 1981 pruned. 
+[I 2025-11-05 05:04:29,351] Trial 1982 pruned. 
+[I 2025-11-05 05:04:36,348] Trial 1983 pruned. 
+[I 2025-11-05 05:04:47,470] Trial 1984 pruned. 
+[I 2025-11-05 05:05:05,291] Trial 1985 pruned. 
+[I 2025-11-05 05:05:23,274] Trial 1986 pruned. 
+[I 2025-11-05 05:05:41,428] Trial 1987 pruned. 
+2025-11-05 05:08:51,271 - INFO - Trial 1988: Early stopping at epoch 114.
+[I 2025-11-05 05:08:51,419] Trial 1988 finished with value: 0.004181408789008856 and parameters: {'batch_size': 64, 'learning_rate': 0.0018775887477754756, 'nr_hidden_layers': 2, 'nr_neurons': 181, 'dropout_rate': 0.00929082446504079, 'weight_decay': 0.0010301311695254188, 'activation_name': 'GELU', 'loss_criterion': 'SmoothL1'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 05:09:09,862] Trial 1989 pruned. 
+2025-11-05 05:11:14,060 - INFO - Trial 1990: Early stopping at epoch 74.
+[I 2025-11-05 05:11:14,196] Trial 1990 finished with value: 0.004008942749351263 and parameters: {'batch_size': 64, 'learning_rate': 0.0017437996018769795, 'nr_hidden_layers': 2, 'nr_neurons': 171, 'dropout_rate': 0.0001485843576190012, 'weight_decay': 0.0012658691534593047, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}. Best is trial 333 with value: 0.0009757127058634517.
+[I 2025-11-05 05:11:33,024] Trial 1991 pruned. 
+[I 2025-11-05 05:11:41,471] Trial 1992 pruned. 
+[I 2025-11-05 05:11:58,134] Trial 1993 pruned. 
+[I 2025-11-05 05:12:16,563] Trial 1994 pruned. 
+[I 2025-11-05 05:12:44,880] Trial 1995 pruned. 
+[I 2025-11-05 05:13:06,955] Trial 1996 pruned. 
+[I 2025-11-05 05:13:13,752] Trial 1997 pruned. 
+[I 2025-11-05 05:13:32,014] Trial 1998 pruned. 
+[I 2025-11-05 05:13:38,012] Trial 1999 pruned. 
+2025-11-05 05:13:38,104 - INFO - Optuna study complete. Best trial: 333
+2025-11-05 05:13:38,191 - INFO - Best Loss: 0.0009757127058634517
+2025-11-05 05:13:38,217 - INFO - Best Params: {'batch_size': 64, 'learning_rate': 0.001372335074817238, 'nr_hidden_layers': 2, 'nr_neurons': 230, 'dropout_rate': 8.943741579532514e-05, 'weight_decay': 0.00021732207759797098, 'activation_name': 'GELU', 'loss_criterion': 'MSE'}
+2025-11-05 05:13:38,217 - INFO - Training final model with best parameters...
+2025-11-05 05:13:38,240 - INFO - Starting main training for labels ['Area']...
+2025-11-05 05:13:39,291 - INFO - Final training: 47896 train samples, 11975 val samples, 25660 test samples.
+2025-11-05 05:13:39,295 - INFO - Using MSELoss
+2025-11-05 05:13:39,295 - INFO - Using CosineAnnealingLR with T_max=1000
+2025-11-05 05:13:39,302 - INFO - Starting final training loop for max 1000 epochs (Patience=25)...
+2025-11-05 05:13:40,881 - INFO - Epoch [1/1000], Train Loss: 0.011966, Val Loss: 0.008454, LR: 0.001372
+2025-11-05 05:13:40,883 - INFO - New best model found at epoch 1 with val_loss: 0.008454
+2025-11-05 05:13:42,466 - INFO - New best model found at epoch 2 with val_loss: 0.005163
+2025-11-05 05:13:44,061 - INFO - New best model found at epoch 3 with val_loss: 0.003425
+2025-11-05 05:13:45,650 - INFO - New best model found at epoch 4 with val_loss: 0.003399
+2025-11-05 05:13:47,242 - INFO - New best model found at epoch 5 with val_loss: 0.001258
+2025-11-05 05:13:50,415 - INFO - New best model found at epoch 7 with val_loss: 0.000585
+2025-11-05 05:13:52,006 - INFO - New best model found at epoch 8 with val_loss: 0.000520
+2025-11-05 05:13:53,587 - INFO - New best model found at epoch 9 with val_loss: 0.000468
+2025-11-05 05:13:55,179 - INFO - New best model found at epoch 10 with val_loss: 0.000291
+2025-11-05 05:13:56,773 - INFO - New best model found at epoch 11 with val_loss: 0.000231
+2025-11-05 05:13:58,358 - INFO - New best model found at epoch 12 with val_loss: 0.000165
+2025-11-05 05:13:59,947 - INFO - New best model found at epoch 13 with val_loss: 0.000159
+2025-11-05 05:14:11,081 - INFO - New best model found at epoch 20 with val_loss: 0.000151
+2025-11-05 05:14:12,672 - INFO - New best model found at epoch 21 with val_loss: 0.000115
+2025-11-05 05:14:14,257 - INFO - New best model found at epoch 22 with val_loss: 0.000096
+2025-11-05 05:14:25,381 - INFO - New best model found at epoch 29 with val_loss: 0.000092
+2025-11-05 05:14:26,966 - INFO - New best model found at epoch 30 with val_loss: 0.000085
+2025-11-05 05:14:30,140 - INFO - New best model found at epoch 32 with val_loss: 0.000041
+2025-11-05 05:14:41,250 - INFO - New best model found at epoch 39 with val_loss: 0.000034
+2025-11-05 05:14:44,427 - INFO - New best model found at epoch 41 with val_loss: 0.000016
+2025-11-05 05:14:58,737 - INFO - Epoch [50/1000], Train Loss: 0.000055, Val Loss: 0.000074, LR: 0.001364
+2025-11-05 05:15:16,221 - INFO - New best model found at epoch 61 with val_loss: 0.000015
+2025-11-05 05:15:35,052 - INFO - New best model found at epoch 73 with val_loss: 0.000009
+2025-11-05 05:15:58,239 - INFO - New best model found at epoch 88 with val_loss: 0.000007
+2025-11-05 05:16:16,789 - INFO - Epoch [100/1000], Train Loss: 0.000037, Val Loss: 0.000013, LR: 0.001339
+2025-11-05 05:16:36,852 - INFO - Early stopping at epoch 113.
+2025-11-05 05:16:36,853 - INFO - Training complete. Evaluating on test set...
+2025-11-05 05:16:37,171 - INFO - Final Test Loss (MSE): 0.000008
+2025-11-05 05:16:37,171 - INFO - Inverting transforms and generating plots...
+2025-11-05 05:16:37,172 - INFO - Calculating final metrics...
+2025-11-05 05:16:37,177 - INFO - Final Test MAE: 517.362976
+2025-11-05 05:16:37,177 - INFO - Final Test RMSE: 1556.727783
+2025-11-05 05:16:37,177 - INFO - Final Test R2: 0.998650
+2025-11-05 05:16:37,177 - INFO - Final Test MEDAE: 44.213074
+2025-11-05 05:16:37,178 - INFO - Final Test MAPE: 0.026575
+2025-11-05 05:16:37,178 - INFO - Final Test REL_ERR_STD: 0.061447
+2025-11-05 05:16:37,178 - INFO - Final Test REL_ERR_MEAN_ABS: 0.026575
+2025-11-05 05:16:37,832 - INFO - Logging plots to tensorboard...
+2025-11-05 05:16:37,979 - INFO - Main training function finished.
+2025-11-05 05:16:37,985 - INFO - Final model saved to runs/run_20251104-144230_['Area']/final_model/best_model.pt
+2025-11-05 05:16:37,985 - INFO - --- Run complete ---
+2025-11-05 05:16:37,985 - INFO - To view Optuna results: optuna-dashboard sqlite:///runs/optuna_study.db
+2025-11-05 05:16:37,985 - INFO - To view TensorBoard logs: tensorboard --logdir runs/run_20251104-144230_['Area']/
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+NeuralNetwork                            [64, 1]                   --
+├─ModuleList: 1-7                        --                        (recursive)
+│    └─Linear: 2-1                       [64, 230]                 2,300
+│    └─GELU: 2-2                         [64, 230]                 --
+├─Dropout: 1-2                           [64, 230]                 --
+├─ModuleList: 1-7                        --                        (recursive)
+│    └─Linear: 2-3                       [64, 230]                 53,130
+│    └─GELU: 2-4                         [64, 230]                 --
+├─Dropout: 1-4                           [64, 230]                 --
+├─ModuleList: 1-7                        --                        (recursive)
+│    └─Linear: 2-5                       [64, 230]                 53,130
+│    └─GELU: 2-6                         [64, 230]                 --
+├─Dropout: 1-6                           [64, 230]                 --
+├─ModuleList: 1-7                        --                        (recursive)
+│    └─Linear: 2-7                       [64, 1]                   231
+==========================================================================================
+Total params: 108,791
+Trainable params: 108,791
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 6.96
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.35
+Params size (MB): 0.44
+Estimated Total Size (MB): 0.79
+==========================================================================================
+Job finished.

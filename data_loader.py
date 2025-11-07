@@ -38,10 +38,21 @@ def load_data(csv_file: str,
               test_size: float = 0.3,
               random_state: int = 42,
               plots: bool = False,
-              rf: str = '.') -> Tuple:
+              rf: str = '.') -> Tuple[np.ndarray, np.ndarray, MinMaxScaler, np.ndarray, np.ndarray, MinMaxScaler]:
     """
-    Loads, preprocesses, and splits data from a CSV file
-    using column names.
+    Loads, preprocesses, and splits data from a CSV file using column names.
+    
+    Args:
+        csv_file: Path to the CSV file
+        feature_cols: List of feature column names
+        label_cols: List of label column names
+        test_size: Proportion of data to use for testing (default: 0.3)
+        random_state: Random seed for reproducibility (default: 42)
+        plots: Whether to generate distribution plots (default: False)
+        rf: Root folder for saving plots (default: '.')
+        
+    Returns:
+        Tuple of (X_train, X_test, X_scaler, y_train, y_test, y_scaler)
     """
     # Step 1: Try to load the file
     try:
@@ -101,10 +112,10 @@ def load_data(csv_file: str,
     )
     
     # Initialize scalers
-    X_scaler = MinMaxScaler((0, 1))
-    y_scaler = MinMaxScaler((0, 1))
+    X_scaler = MinMaxScaler(feature_range=(0, 1))
+    y_scaler = MinMaxScaler(feature_range=(0, 1))
 
-    #Fit on training data ONLY to prevent data leakage
+    # Fit on training data ONLY to prevent data leakage
     X_train = X_scaler.fit_transform(X_train)
     X_test = X_scaler.transform(X_test)  # Use transform only
 
@@ -112,14 +123,13 @@ def load_data(csv_file: str,
     y_test = y_scaler.transform(y_test)  # Use transform only
     
     if plots:
-        # --- 3. "After Standardization" Plot ---
-        #y_train plot
+        # "After Standardization" Plot (training data only)
         plt.figure()
         for label_idx in range(y_train.shape[1]):
             plt.hist(y_train[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        plt.title("Label Distribution (After Standardization on Training Data)")
+        plt.title("Label Distribution (After Scaling - Training Data)")
         plt.legend()
-        plt.savefig(os.path.join(plot_dir, "after_standardization.png"))
+        plt.savefig(os.path.join(plot_dir, "after_scaling.png"))
         plt.close()
 
     return X_train, X_test, X_scaler, y_train, y_test, y_scaler
