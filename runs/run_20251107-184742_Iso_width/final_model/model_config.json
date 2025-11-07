@@ -1,0 +1,8 @@
+{
+  "input_size": 9,
+  "output_size": 1,
+  "nr_hidden_layers": 1,
+  "nr_neurons": 112,
+  "activation_name": "GELU",
+  "dropout_rate": 0.00014697292771531992
+}

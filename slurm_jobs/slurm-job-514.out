@@ -1,0 +1,9 @@
+Job started on argon-gtx
+Job ID: 514
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target 
+usage: run_optuna.py [-h] [--skip-optuna] [--target TARGET]
+run_optuna.py: error: argument --target: expected one argument
+Job finished.

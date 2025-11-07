@@ -1,0 +1,73 @@
+Job started on argon-gtx
+Job ID: 552
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Unable to determine the device handle for GPU0000:61:00.0: Unknown Error
+Running: python run_optuna.py --target all --skip-optuna
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-07 18:42:13,167 - INFO - Using device: cuda
+2025-11-07 18:42:13,168 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-07 18:42:13,169 - INFO - Skip Optuna: True
+2025-11-07 18:42:13,169 - INFO - Skipping Optuna. Loading best parameters from study: nn_study_Area_Iso_distance_Iso_width...
+2025-11-07 18:42:14,195 - INFO - Successfully loaded best parameters from trial 587:
+2025-11-07 18:42:14,220 - INFO -   Best value (RMSE): 0.000741
+2025-11-07 18:42:20,754 - INFO -   Number of trials completed: 2986
+2025-11-07 18:42:20,754 - INFO -   Optimized parameters:
+2025-11-07 18:42:20,876 - INFO -     batch_size: 64
+2025-11-07 18:42:20,876 - INFO -     learning_rate: 0.0011537697650495493
+2025-11-07 18:42:20,876 - INFO -     nr_hidden_layers: 3
+2025-11-07 18:42:20,876 - INFO -     nr_neurons: 152
+2025-11-07 18:42:20,876 - INFO -     dropout_rate: 0.0007055009826885291
+2025-11-07 18:42:20,876 - INFO -     weight_decay: 1.3078059031292613e-05
+2025-11-07 18:42:20,876 - INFO -     activation_name: GELU
+2025-11-07 18:42:20,876 - INFO -     loss_criterion: L1
+2025-11-07 18:42:20,876 - INFO -   Hardcoded parameters:
+2025-11-07 18:42:20,877 - INFO -     batch_size: 64
+2025-11-07 18:42:20,877 - INFO -     nr_hidden_layers: 3
+2025-11-07 18:42:20,877 - INFO -     activation_name: GELU
+2025-11-07 18:42:20,877 - INFO -     loss_criterion: L1
+2025-11-07 18:42:20,877 - INFO - Training final model with parameters...
+2025-11-07 18:42:20,877 - INFO - Starting main training for labels ['Area', 'Iso_distance', 'Iso_width']...
+2025-11-07 18:42:23,300 - INFO - Final training: 47896 train samples, 11975 val samples, 25660 test samples.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+2025-11-07 18:42:23,734 - INFO - Using L1Loss (MAE)
+2025-11-07 18:42:25,607 - INFO - Using CosineAnnealingLR with T_max=1000
+2025-11-07 18:42:25,608 - INFO - Added warmup for 10 epochs
+2025-11-07 18:42:25,660 - INFO - Starting final training loop for max 1000 epochs (Patience=100)...
+2025-11-07 18:42:27,900 - INFO - Epoch [1/1000], Train Loss: 0.130433, Val Loss: 0.068609, LR: 0.000219
+2025-11-07 18:42:27,901 - INFO - New best model found at epoch 1 with val_loss: 0.068609
+2025-11-07 18:42:29,896 - INFO - New best model found at epoch 2 with val_loss: 0.066054
+2025-11-07 18:42:34,524 - INFO - New best model found at epoch 4 with val_loss: 0.060308
+2025-11-07 18:42:36,506 - INFO - New best model found at epoch 5 with val_loss: 0.053875
+2025-11-07 18:42:38,486 - INFO - New best model found at epoch 6 with val_loss: 0.050376
+2025-11-07 18:42:40,460 - INFO - New best model found at epoch 7 with val_loss: 0.035634
+2025-11-07 18:42:42,433 - INFO - New best model found at epoch 8 with val_loss: 0.031406
+2025-11-07 18:42:44,410 - INFO - New best model found at epoch 9 with val_loss: 0.028255
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/optim/lr_scheduler.py:243: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+2025-11-07 18:42:46,408 - INFO - New best model found at epoch 10 with val_loss: 0.028126
+2025-11-07 18:42:48,402 - INFO - New best model found at epoch 11 with val_loss: 0.021404
+2025-11-07 18:42:52,381 - INFO - New best model found at epoch 13 with val_loss: 0.017833
+2025-11-07 18:42:58,328 - INFO - New best model found at epoch 16 with val_loss: 0.015493
+2025-11-07 18:43:02,286 - INFO - New best model found at epoch 18 with val_loss: 0.011994
+2025-11-07 18:43:04,262 - INFO - New best model found at epoch 19 with val_loss: 0.009620
+2025-11-07 18:43:06,235 - INFO - New best model found at epoch 20 with val_loss: 0.006892
+2025-11-07 18:43:18,071 - INFO - New best model found at epoch 26 with val_loss: 0.006407
+2025-11-07 18:43:22,016 - INFO - New best model found at epoch 28 with val_loss: 0.005309
+2025-11-07 18:43:29,946 - INFO - New best model found at epoch 32 with val_loss: 0.004918
+2025-11-07 18:43:35,876 - INFO - New best model found at epoch 35 with val_loss: 0.004715
+2025-11-07 18:43:41,823 - INFO - New best model found at epoch 38 with val_loss: 0.004058
+2025-11-07 18:43:51,697 - INFO - New best model found at epoch 43 with val_loss: 0.003517
+2025-11-07 18:44:05,541 - INFO - Epoch [50/1000], Train Loss: 0.005407, Val Loss: 0.003636, LR: 0.001149
+2025-11-07 18:44:07,513 - INFO - New best model found at epoch 51 with val_loss: 0.003431
+2025-11-07 18:44:15,424 - INFO - New best model found at epoch 55 with val_loss: 0.003315
+2025-11-07 18:44:43,073 - INFO - New best model found at epoch 69 with val_loss: 0.003240
+2025-11-07 18:44:49,013 - INFO - New best model found at epoch 72 with val_loss: 0.002580
+2025-11-07 18:45:00,900 - INFO - New best model found at epoch 78 with val_loss: 0.002492
+2025-11-07 18:45:44,401 - INFO - Epoch [100/1000], Train Loss: 0.004376, Val Loss: 0.003445, LR: 0.001131
+2025-11-07 18:46:00,192 - INFO - New best model found at epoch 108 with val_loss: 0.002131
+2025-11-07 18:47:24,308 - INFO - Epoch [150/1000], Train Loss: 0.003696, Val Loss: 0.002865, LR: 0.001099
+slurmstepd-argon-gtx: error: *** JOB 552 ON argon-gtx CANCELLED AT 2025-11-07T18:47:25 ***

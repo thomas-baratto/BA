@@ -1,0 +1,24 @@
+Job started on argon-gtx
+Job ID: 533
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target Iso_width
+2025-11-06 23:24:47,341 - INFO - Using device: cuda
+2025-11-06 23:24:47,342 - INFO - Target labels for this run: ['Iso_width']
+2025-11-06 23:24:47,342 - INFO - Skip Optuna: False
+2025-11-06 23:24:47,343 - INFO - Starting Optuna study: nn_study_['Iso_width']...
+2025-11-06 23:24:47,343 - INFO - Loading data for Optuna study (Labels: ['Iso_width'])...
+[I 2025-11-06 23:24:48,460] Using an existing study with name 'nn_study_['Iso_width']' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:734: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+[I 2025-11-06 23:25:26,137] Trial 2000 pruned. 
+2025-11-06 23:28:18,654 - INFO - Trial 2001: Early stopping at epoch 70.
+[I 2025-11-06 23:28:18,803] Trial 2001 finished with value: 0.006342038046568632 and parameters: {'learning_rate': 0.0034170555641754494, 'nr_neurons': 98, 'dropout_rate': 0.00940170638087776, 'weight_decay': 2.9957800238153647e-05}. Best is trial 1616 with value: 0.0011460189707577229.
+2025-11-06 23:33:54,538 - INFO - Trial 2002: Early stopping at epoch 142.
+[I 2025-11-06 23:33:54,698] Trial 2002 finished with value: 0.0024108681827783585 and parameters: {'learning_rate': 0.004118406171270784, 'nr_neurons': 183, 'dropout_rate': 1.2515311724368443e-05, 'weight_decay': 3.901917036668274e-05}. Best is trial 1616 with value: 0.0011460189707577229.
+2025-11-06 23:36:21,384 - INFO - Trial 2003: Early stopping at epoch 62.
+[I 2025-11-06 23:36:21,518] Trial 2003 finished with value: 0.007352032698690891 and parameters: {'learning_rate': 0.005158949584143464, 'nr_neurons': 127, 'dropout_rate': 0.021677256870022418, 'weight_decay': 0.0001172618687671393}. Best is trial 1616 with value: 0.0011460189707577229.
+2025-11-06 23:38:30,508 - INFO - Trial 2004: Early stopping at epoch 54.
+[I 2025-11-06 23:38:30,643] Trial 2004 finished with value: 0.00818355567753315 and parameters: {'learning_rate': 0.003173209134594521, 'nr_neurons': 170, 'dropout_rate': 0.03585604965584155, 'weight_decay': 1.2876354400838092e-05}. Best is trial 1616 with value: 0.0011460189707577229.
+slurmstepd-argon-gtx: error: *** JOB 533 ON argon-gtx CANCELLED AT 2025-11-06T23:38:41 ***

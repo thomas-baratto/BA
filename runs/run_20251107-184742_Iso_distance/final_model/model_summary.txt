@@ -1,0 +1,54 @@
+NeuralNetwork(
+  (layers): ModuleList(
+    (0): Linear(in_features=9, out_features=158, bias=True)
+    (1): GELU(approximate='none')
+    (2): Dropout(p=1.714286550115525e-05, inplace=False)
+    (3): Linear(in_features=158, out_features=158, bias=True)
+    (4): GELU(approximate='none')
+    (5): Dropout(p=1.714286550115525e-05, inplace=False)
+    (6): Linear(in_features=158, out_features=158, bias=True)
+    (7): GELU(approximate='none')
+    (8): Dropout(p=1.714286550115525e-05, inplace=False)
+    (9): Linear(in_features=158, out_features=158, bias=True)
+    (10): GELU(approximate='none')
+    (11): Dropout(p=1.714286550115525e-05, inplace=False)
+    (12): Linear(in_features=158, out_features=1, bias=True)
+  )
+  (dropout): Dropout(p=1.714286550115525e-05, inplace=False)
+)
+
+
+--- Torchinfo Summary ---
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+NeuralNetwork                            [64, 1]                   --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-1                       [64, 158]                 1,580
+│    └─GELU: 2-2                         [64, 158]                 --
+├─Dropout: 1-2                           [64, 158]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-3                       [64, 158]                 25,122
+│    └─GELU: 2-4                         [64, 158]                 --
+├─Dropout: 1-4                           [64, 158]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-5                       [64, 158]                 25,122
+│    └─GELU: 2-6                         [64, 158]                 --
+├─Dropout: 1-6                           [64, 158]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-7                       [64, 158]                 25,122
+│    └─GELU: 2-8                         [64, 158]                 --
+├─Dropout: 1-8                           [64, 158]                 --
+├─ModuleList: 1-9                        --                        (recursive)
+│    └─Linear: 2-9                       [64, 1]                   159
+==========================================================================================
+Total params: 77,105
+Trainable params: 77,105
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 4.93
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.32
+Params size (MB): 0.31
+Estimated Total Size (MB): 0.63
+==========================================================================================

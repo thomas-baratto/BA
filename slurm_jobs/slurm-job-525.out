@@ -1,0 +1,11 @@
+Job started on argon-gtx
+Job ID: 525
+Working directory: /home/barattts/lavoltabuona/BA
+---
+Starting Python script...
+Running: python run_optuna.py --target width --skip-optuna
+2025-11-06 16:53:06,383 - INFO - Using device: cuda
+usage: run_optuna.py [-h] [--target {Area,Iso_distance,Iso_width,all}]
+                     [--skip-optuna]
+run_optuna.py: error: argument --target: invalid choice: 'width' (choose from 'Area', 'Iso_distance', 'Iso_width', 'all')
+Job finished.
