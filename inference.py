@@ -42,7 +42,9 @@ def load_model_and_scalers(model_path: str, run_folder: str):
             'nr_hidden_layers': 3,
             'nr_neurons': 128,
             'activation_name': "GELU",
-            'dropout_rate': 0.0
+            'dropout_rate': 0.0,
+            'feature_scaler_type': 'minmax',
+            'label_scaler_type': 'minmax'
         }
     
     # Create model with loaded/inferred configuration
@@ -63,7 +65,7 @@ def load_model_and_scalers(model_path: str, run_folder: str):
     logging.info(f"Model loaded successfully from {model_path}")
     logging.info(f"Model architecture: {model_config}")
     
-    return model
+    return model, model_config
 
 def predict(model: torch.nn.Module, 
             X: np.ndarray,
@@ -116,8 +118,8 @@ def main():
     
     args = parser.parse_args()
     
-    # Load model
-    model = load_model_and_scalers(args.model, args.run_folder)
+    # Load model and scaling config
+    model, model_config = load_model_and_scalers(args.model, args.run_folder)
     
     # Load data and scalers
     logging.info("Loading data and fitting scalers...")
@@ -126,7 +128,9 @@ def main():
         feature_cols=args.features,
         label_cols=args.labels,
         plots=False,
-        rf=args.run_folder
+        rf=args.run_folder,
+        feature_scaler_type=model_config.get('feature_scaler_type','minmax'),
+        label_scaler_type=model_config.get('label_scaler_type','minmax')
     )
     
     # Make predictions on test set

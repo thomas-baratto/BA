@@ -11,6 +11,7 @@ optuna-dashboard
 psutil
 nvidia-ml-py
 statsmodels
-pynvml
 pytest>=7.0.0
 pytest-cov>=4.0.0
+plotly
+pymysql
