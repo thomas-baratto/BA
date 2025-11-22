@@ -1,0 +1,36 @@
+{
+  "monitoring_info": {
+    "start_time": "2025-11-19T00:11:19.164488",
+    "end_time": "2025-11-19T00:11:36.897924",
+    "duration_seconds": 17.733436346054077,
+    "duration_hours": 0.004925954540570577,
+    "num_samples": 12,
+    "sample_interval": 1.0
+  },
+  "power_statistics": {
+    "avg_total_power_w": 61.588296875,
+    "max_total_power_w": 72.53596875,
+    "min_total_power_w": 35.175,
+    "avg_gpu_power_w": 0.0,
+    "avg_cpu_power_w": 61.588296875
+  },
+  "energy_consumption": {
+    "total_energy_wh": 0.3033811506374149,
+    "total_energy_kwh": 0.0003033811506374149,
+    "gpu_energy_wh": 0.0,
+    "cpu_energy_wh": 0.3033811506374149,
+    "gpu_percentage": 0.0,
+    "cpu_percentage": 100.0
+  },
+  "cost_estimate": {
+    "energy_kwh": 0.0003033811506374149,
+    "cost_usd_at_0_10_per_kwh": 3.033811506374149e-05,
+    "cost_usd_at_0_15_per_kwh": 4.550717259561223e-05,
+    "cost_usd_at_0_20_per_kwh": 6.067623012748298e-05
+  },
+  "gpu_statistics": {},
+  "process_statistics": {
+    "avg_num_processes": 1.0,
+    "max_num_processes": 1
+  }
+}

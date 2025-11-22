@@ -1,0 +1,15 @@
+--- Running Database Access Test ---
+Using python: Python 3.12.3
+Attempting to connect to: mysql://root:strong_password@127.0.0.1:3307/optuna_study
+Using study name: test_connection_study
+
+[FAILURE] Connection Test Failed at 2025-11-22 13:00:24.264701
+--------------------------------------------------
+CRITICAL ERROR DETAILS:
+Failed to import DB access module for the specified storage URL. Please install appropriate one.
+--------------------------------------------------
+Troubleshooting steps:
+1. Verify the SSH tunnel is active on your MacBook.
+2. Verify the MySQL Docker container is running (docker ps).
+3. Check that the database 'optuna_study' exists.
+4. Check your firewall/security settings if the connection timed out.

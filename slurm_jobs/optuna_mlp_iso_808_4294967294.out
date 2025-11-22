@@ -1,0 +1,52 @@
+Starting global resource monitor on all 7 GPUs...
+GPU Monitor PID: 2201558, Log: runs/global_run_808/gpu_monitor.log
+====================================================================
+Optuna HPO Worker 0 (PID: 2201549) is launching.
+Assigned GPU Index: 0 (8 workers sharing this physical GPU)
+Worker's Trial Share: 179
+====================================================================
+Power monitoring started. Sampling every 1.0s
+Logs will be saved to: runs/run_20251121-202157_Area_Iso_distance_Iso_width_worker0/power_monitor
+Detailed log saved to: runs/run_20251121-202157_Area_Iso_distance_Iso_width_worker0/power_monitor/power_log_20251121-202159.csv
+Summary saved to: runs/run_20251121-202157_Area_Iso_distance_Iso_width_worker0/power_monitor/power_summary_20251121-202159.json
+
+================================================================================
+POWER MONITORING SUMMARY
+================================================================================
+
+Monitoring Duration: 0.00 hours (0.6 seconds)
+Samples Collected: 1
+
+Average Power Consumption:
+  Total:  87.6 W
+  GPU:    55.0 W
+  CPU:    32.6 W
+
+Total Energy Consumption:
+  Total:  0.0000 kWh (0.01 Wh)
+  GPU:    0.01 Wh (62.8%)
+  CPU:    0.01 Wh (37.2%)
+
+Estimated Cost:
+  At $0.10/kWh: $0.0000
+  At $0.15/kWh: $0.0000
+  At $0.20/kWh: $0.0000
+
+Per-GPU Statistics:
+  gpu_0:
+    Avg Power: 8.2 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_1:
+    Avg Power: 8.0 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_2:
+    Avg Power: 8.2 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_3:
+    Avg Power: 7.5 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_4:
+    Avg Power: 7.3 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_5:
+    Avg Power: 8.4 W, Avg Util: 0.0%, Energy: 0.00 Wh
+  gpu_6:
+    Avg Power: 7.3 W, Avg Util: 0.0%, Energy: 0.00 Wh
+================================================================================
+
+Killing GPU monitor PID 2201558

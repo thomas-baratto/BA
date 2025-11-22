@@ -1,0 +1,390 @@
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-19 00:07:40.633900: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-19 00:07:41.640448: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-19 00:07:43.642290: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-19 00:07:46.581051: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-19 00:07:47,001 - INFO - Using device: cuda
+2025-11-19 00:07:47,003 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:47,005 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:47,005 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+2025-11-19 00:07:47,017 - INFO - Using device: cuda
+2025-11-19 00:07:47,019 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:47,020 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:47,020 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[I 2025-11-19 00:07:47,957] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+[I 2025-11-19 00:07:47,999] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+2025-11-19 00:07:48.344972: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-19 00:07:48,359 - INFO - Using device: cuda
+2025-11-19 00:07:48,360 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:48,361 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:48,361 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+[I 2025-11-19 00:07:49,202] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+2025-11-19 00:07:50.203837: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-19 00:07:51,375 - INFO - Using device: cuda
+2025-11-19 00:07:51,377 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:51,377 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:51,377 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+[I 2025-11-19 00:07:52,187] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+2025-11-19 00:07:52.200225: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+2025-11-19 00:07:53,099 - INFO - Using device: cuda
+2025-11-19 00:07:53,100 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:53,101 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:53,101 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+[I 2025-11-19 00:07:53,889] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+2025-11-19 00:07:55,010 - INFO - Using device: cuda
+2025-11-19 00:07:55,012 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:55,012 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:55,012 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+[I 2025-11-19 00:07:55,797] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+2025-11-19 00:07:56,812 - INFO - Using device: cuda
+2025-11-19 00:07:56,813 - INFO - Target labels for this run: ['Area', 'Iso_distance', 'Iso_width']
+2025-11-19 00:07:56,814 - INFO - Optuna config -> study: nn_study_isotherm_bulk | storage: sqlite:///runs/optuna_isotherm_bulk.db | trials: 1429 | n_jobs: 2
+2025-11-19 00:07:56,814 - INFO - Starting Optuna study: nn_study_isotherm_bulk...
+[I 2025-11-19 00:07:57,606] Using an existing study with name 'nn_study_isotherm_bulk' instead of creating a new one.
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [0.0, 1.0] which is of type list.
+  warnings.warn(message)
+/home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/lib/python3.12/site-packages/optuna/distributions.py:518: UserWarning: Choices for a categorical distribution should be a tuple of None, bool, int, float and str for persistent storage but contains [-1.0, 1.0] which is of type list.
+  warnings.warn(message)
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 122 seconds for job step to finish.
+slurmstepd-argon-gtx: error: *** STEP 800.4 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.5 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.2 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.3 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.6 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.1 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** JOB 800 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
+slurmstepd-argon-gtx: error: *** STEP 800.0 ON argon-gtx CANCELLED AT 2025-11-19T00:08:37 ***
