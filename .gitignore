@@ -9,3 +9,4 @@ runs
 .vscode
 .pytest_cache
 slurm_jobs
+__pycache__
