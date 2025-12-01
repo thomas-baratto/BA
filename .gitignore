@@ -5,3 +5,7 @@ plots
 stats
 .venv
 .DS_Store
+runs
+.vscode
+.pytest_cache
+slurm_jobs
