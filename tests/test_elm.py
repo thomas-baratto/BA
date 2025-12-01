@@ -4,7 +4,7 @@ Tests for the Extreme Learning Machine (ELM) implementation.
 import pytest
 import numpy as np
 import torch
-from elm import ExtremeLearningMachine
+from core.elm import ExtremeLearningMachine
 
 
 class TestELMBasics:

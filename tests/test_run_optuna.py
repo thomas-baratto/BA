@@ -9,7 +9,7 @@ from pathlib import Path
 import optuna
 import pytest
 
-from optuna_config import (
+from optimization.optuna_config import (
     parse_args,
     validate_target_labels,
 )

@@ -5,8 +5,8 @@ plots
 stats
 .venv
 .DS_Store
-runs
+runs/
 .vscode
 .pytest_cache
-slurm_jobs
+slurm_jobs/
 __pycache__

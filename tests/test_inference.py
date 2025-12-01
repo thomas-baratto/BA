@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 from sklearn.preprocessing import MinMaxScaler
 
 from inference import load_model_and_scalers, predict
-from model import NeuralNetwork
+from core.model import NeuralNetwork
 
 
 class TestLoadModelAndScalers:

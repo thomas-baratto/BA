@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sklearn.metrics import r2_score, root_mean_squared_error
-from utils import compute_regression_metrics
+from core.utils import compute_regression_metrics
 
 
 def test_plot_metrics_match_computed():

@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 import tempfile
 import os
 
-from utils import compute_regression_metrics, create_scatter_plot, create_residual_plots, create_qq_plots
+from core.utils import compute_regression_metrics, create_scatter_plot, create_residual_plots, create_qq_plots
 
 
 class TestComputeRegressionMetrics:
