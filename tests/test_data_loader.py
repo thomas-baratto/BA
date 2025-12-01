@@ -8,7 +8,7 @@ import tempfile
 import os
 from pathlib import Path
 
-from data_loader import CSVDataset, load_data
+from core.data_loader import CSVDataset, load_data
 
 
 class TestCSVDataset:

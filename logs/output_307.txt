@@ -1,2 +1,0 @@
-Loading cuda/12.2.2
-  Loading requirement: gcc/12.4.0

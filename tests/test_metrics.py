@@ -8,7 +8,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils import compute_regression_metrics
+from core.utils import compute_regression_metrics
 from sklearn.metrics import r2_score
 
 

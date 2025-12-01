@@ -1,3 +1,0 @@
-Traceback (most recent call last):
-  File "<stdin>", line 5, in <module>
-NameError: name 'DB_URL' is not defined

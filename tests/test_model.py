@@ -5,7 +5,7 @@ import pytest
 import torch
 import torch.nn as nn
 
-from model import get_activation, NeuralNetwork
+from core.model import get_activation, NeuralNetwork
 
 
 class TestGetActivation:
@@ -111,48 +111,7 @@ class TestNeuralNetwork:
         # Outputs should be identical
         assert torch.allclose(output3, output4)
     
-    def test_expanding_layers(self):
-        """Test network with expanding layers."""
-        model = NeuralNetwork(
-            input_size=8,
-            output_size=2,
-            nr_hidden_layers=2,
-            nr_neurons=128,
-            exp_layers=True
-        )
-        
-        x = torch.randn(5, 8)
-        output = model(x)
-        assert output.shape == (5, 2)
-    
-    def test_contracting_layers(self):
-        """Test network with contracting layers."""
-        model = NeuralNetwork(
-            input_size=10,
-            output_size=2,
-            nr_hidden_layers=2,
-            nr_neurons=64,
-            con_layers=True
-        )
-        
-        x = torch.randn(5, 10)
-        output = model(x)
-        assert output.shape == (5, 2)
-    
-    def test_both_expanding_and_contracting(self):
-        """Test network with both expanding and contracting layers."""
-        model = NeuralNetwork(
-            input_size=8,
-            output_size=2,
-            nr_hidden_layers=3,
-            nr_neurons=128,
-            exp_layers=True,
-            con_layers=True
-        )
-        
-        x = torch.randn(5, 8)
-        output = model(x)
-        assert output.shape == (5, 2)
+
     
     def test_single_hidden_layer(self):
         """Test network with single hidden layer."""
@@ -266,45 +225,7 @@ class TestNeuralNetwork:
         output = model(x)
         assert output.shape == (5, 3)
     
-    def test_batchnorm_with_expanding_layers(self):
-        """Test BatchNorm with expanding layer architecture."""
-        model = NeuralNetwork(
-            input_size=8,
-            output_size=2,
-            nr_hidden_layers=2,
-            nr_neurons=64,
-            exp_layers=True,
-            use_batchnorm=True
-        )
-        
-        # Should have BatchNorm layers
-        batchnorm_count = sum(1 for layer in model.layers if isinstance(layer, nn.BatchNorm1d))
-        assert batchnorm_count > 0, "Expanding layers with BatchNorm should contain BatchNorm1d layers"
-        
-        # Test forward pass
-        x = torch.randn(4, 8)
-        output = model(x)
-        assert output.shape == (4, 2)
-    
-    def test_batchnorm_with_contracting_layers(self):
-        """Test BatchNorm with contracting layer architecture."""
-        model = NeuralNetwork(
-            input_size=10,
-            output_size=2,
-            nr_hidden_layers=2,
-            nr_neurons=128,
-            con_layers=True,
-            use_batchnorm=True
-        )
-        
-        # Should have BatchNorm layers
-        batchnorm_count = sum(1 for layer in model.layers if isinstance(layer, nn.BatchNorm1d))
-        assert batchnorm_count > 0, "Contracting layers with BatchNorm should contain BatchNorm1d layers"
-        
-        # Test forward pass
-        x = torch.randn(4, 10)
-        output = model(x)
-        assert output.shape == (4, 2)
+
     
     def test_batchnorm_parameter_count_difference(self):
         """Test that BatchNorm adds parameters to the model."""

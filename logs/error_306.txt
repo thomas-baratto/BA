@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/home/barattts/lavoltabuona/BA/FirstTrainingLabel11.py", line 396, in <module>
-    storage_url = f"sqlite:///%prelim_label11_optuna_study.db"%rootfolder
-                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
-ValueError: unsupported format character 'p' (0x70) at index 11

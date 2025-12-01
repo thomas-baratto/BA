@@ -9,9 +9,9 @@ from torch.utils.data import DataLoader
 import tempfile
 import os
 
-from trainer import train_epoch, evaluate, main_train
-from model import NeuralNetwork
-from data_loader import CSVDataset
+from core.trainer import train_epoch, evaluate, main_train
+from core.model import NeuralNetwork
+from core.data_loader import CSVDataset
 
 
 class TestTrainEpoch:
@@ -206,8 +206,6 @@ class TestMainTrainIntegration:
                 "learning_rate": 0.001,
                 "nr_hidden_layers": 2,
                 "nr_neurons": 32,
-                "expanding_layers": False,
-                "contracting_layers": False,
                 "activation_name": "ReLU",
                 "dropout_rate": 0.1,
                 "weight_decay": 0.0001,
