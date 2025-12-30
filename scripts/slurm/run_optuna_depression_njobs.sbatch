@@ -42,7 +42,7 @@ module purge
 module load cuda/12.4.1
 
 # Activate virtualenv
-source /home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/bin/activate
+source /home/barattts/lavoltabuona/BA/.venv/env/bin/activate
 
 # --- Job Info ---
 echo "============================================================================"

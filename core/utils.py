@@ -21,6 +21,14 @@ from sklearn.metrics import (
 # Use PyTorch's built-in CUDA functions instead of NVML
 GPU_AVAILABLE = torch.cuda.is_available()
 
+# --- Physical Units Mapping ---
+LABEL_UNITS = {
+    "Area": "m²",
+    "Iso_distance": "m",
+    "Iso_width": "m",
+    "Cone": "m"
+}
+
 # --- Metrics ---
 
 def compute_regression_metrics(y_true: np.ndarray, 
@@ -98,15 +106,19 @@ def create_residual_plots(true_values: np.ndarray,
         pred_col = predictions[:, label_idx]
         residuals = pred_col - true_col
         
+        label_name = labels[label_idx]
+        unit = LABEL_UNITS.get(label_name, "")
+        unit_str = f" ({unit})" if unit else ""
+        
         ax.scatter(true_col, residuals, alpha=0.5, s=10)
         ax.axhline(y=0, color='r', linestyle='--')
         
-        ax.set_xlabel("True Values")
-        ax.set_ylabel("Residuals (Predicted - True)")
-        ax.set_title(f"Residuals vs. True Values for {labels[label_idx]}")
+        ax.set_xlabel(f"True Values{unit_str}")
+        ax.set_ylabel(f"Residuals{unit_str}")
+        ax.set_title(f"Residuals vs. True Values for {label_name}")
         ax.grid(True)
         
-        plot_name = f"Residuals_vs_True/Label_{labels[label_idx]}"
+        plot_name = f"Residuals_vs_True/Label_{label_name}"
         figures.append((plot_name, fig))
         
     return figures
@@ -175,6 +187,10 @@ def create_regression_plots(true_values: np.ndarray,
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
         
+        label_name = labels[label_idx]
+        unit = LABEL_UNITS.get(label_name, "")
+        unit_str = f" ({unit})" if unit else ""
+        
         ax.scatter(true_col, pred_col, alpha=0.5, s=10, label='Predictions')
         
         # Plot ideal line
@@ -187,9 +203,9 @@ def create_regression_plots(true_values: np.ndarray,
         r2 = r2_score(true_col, pred_col)
         rmse = np.sqrt(np.mean((true_col - pred_col) ** 2))
         
-        ax.set_xlabel("True Values", fontsize=12)
-        ax.set_ylabel("Predicted Values", fontsize=12)
-        ax.set_title(f"Regression Plot: {labels[label_idx]}\nR² = {r2:.4f}, RMSE = {rmse:.4f}", fontsize=14)
+        ax.set_xlabel(f"True Values{unit_str}", fontsize=12)
+        ax.set_ylabel(f"Predicted Values{unit_str}", fontsize=12)
+        ax.set_title(f"Regression Plot: {label_name}\nR² = {r2:.4f}, RMSE = {rmse:.4f}{unit_str}", fontsize=14)
         ax.legend()
         ax.grid(True, alpha=0.3)
         ax.set_xlim(lims)
@@ -197,7 +213,7 @@ def create_regression_plots(true_values: np.ndarray,
         ax.set_aspect('equal', adjustable='box')
         
         if output_dir:
-            filename = f"regression_plot_{labels[label_idx]}.png"
+            filename = f"regression_plot_{label_name}.png"
             fig.savefig(os.path.join(output_dir, filename), dpi=150, bbox_inches='tight')
             plt.close(fig)
     
@@ -215,19 +231,24 @@ def create_scatter_plot(true_values: np.ndarray,
         ax = fig.add_subplot(1, 1, 1)
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
+        
+        label_name = labels[label_idx]
+        unit = LABEL_UNITS.get(label_name, "")
+        unit_str = f" ({unit})" if unit else ""
+        
         ax.scatter(true_col, pred_col, alpha=0.5, s=10)
         min_val = min(true_col.min(), pred_col.min()) * 0.95
         max_val = max(true_col.max(), pred_col.max()) * 1.05
         lims = [min_val, max_val]
         ax.plot(lims, lims, 'r--', label="Ideal (y=x)")
-        ax.set_xlabel("True Values")
-        ax.set_ylabel("Predicted Values")
-        ax.set_title(f"True vs. Predicted for Label: {labels[label_idx]}")
+        ax.set_xlabel(f"True Values{unit_str}")
+        ax.set_ylabel(f"Predicted Values{unit_str}")
+        ax.set_title(f"True vs. Predicted for Label: {label_name}")
         ax.legend()
         ax.set_xlim(lims)
         ax.set_ylim(lims)
         ax.set_aspect('equal', adjustable='box')
-        plot_name = f"True_vs_Predicted/Label_{labels[label_idx]}"
+        plot_name = f"True_vs_Predicted/Label_{label_name}"
         figures.append((plot_name, fig))
     return figures
 
@@ -295,7 +316,12 @@ def plot_split_metric_bars(rf: str,
 
         ax.set_xticks(x)
         ax.set_xticklabels(labels, rotation=30, ha='right')
-        ax.set_ylabel(metric.upper())
+        
+        # Get unit from first label (assume all labels have same units for same metric)
+        unit = LABEL_UNITS.get(labels[0], "") if labels else ""
+        unit_str = f" ({unit})" if unit else ""
+        
+        ax.set_ylabel(f"{metric.upper()}{unit_str}")
         ax.set_title(f"{metric.upper()} by Label (Physical Units)")
         ax.grid(True, axis='y', alpha=0.3)
         ax.legend()

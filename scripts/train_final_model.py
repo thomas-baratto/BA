@@ -22,7 +22,8 @@ from scripts.run_optuna import detect_columns_from_csv
 from monitoring.power_utils import power_monitor_session
 
 
-MAX_EPOCHS = 1000
+MAX_EPOCHS = 10000
+PATIENCE = 250
 
 # Configure logging
 logging.basicConfig(
@@ -143,6 +144,9 @@ if __name__ == "__main__":
     # Ensure 'num_epochs' exists
     if "num_epochs" not in final_model_config:
         final_model_config["num_epochs"] = MAX_EPOCHS
+    
+    # Set patience for early stopping
+    final_model_config["patience"] = PATIENCE
 
     with power_monitor_session(args, output_dir):
         # Train the final model

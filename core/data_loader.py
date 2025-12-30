@@ -13,8 +13,6 @@ from sklearn.exceptions import DataConversionWarning
 
 warnings.filterwarnings(action='ignore', category=DataConversionWarning)
 
-# --- Dataset Class ---
-
 class CSVDataset(Dataset):
     """
     Custom PyTorch Dataset for loading tabular data from arrays.
@@ -30,11 +28,9 @@ class CSVDataset(Dataset):
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
         return self.data[idx], self.labels[idx]
 
-# --- Data Loading & Preprocessing ---
-
-def load_data(csv_file: str,
-              feature_cols: List[str],
-              label_cols: List[str],
+def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
+              feature_cols: List[str] = ["Flow_well", "Temp_diff", "Temp_diff_real", "kW_well", "Hydr_gradient","Hydr_conductivity", "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"],
+              label_cols: List[str] = ["Area", "Iso_distance", "Iso_width"],
               test_size: float = 0.3,
               random_state: int = 42,
               plots: bool = False,
@@ -46,8 +42,8 @@ def load_data(csv_file: str,
     Loads, preprocesses, and splits data from a CSV file using column names.
     
     Args:
-        csv_file: Path to the CSV file
-        feature_cols: List of feature column names
+        csv_file: Path to the CSV file (default: "data/Clean_Results_Isotherm.csv")
+        feature_cols: List of feature column names 
         label_cols: List of label column names
         test_size: Proportion of data to use for testing (default: 0.3)
         random_state: Random seed for reproducibility (default: 42)
@@ -57,24 +53,11 @@ def load_data(csv_file: str,
     Returns:
         Tuple of (X_train, X_test, X_scaler, y_train, y_test, y_scaler)
     """
-    # Step 1: Try to load the file
-    try:
-        df = pd.read_csv(csv_file)
-    except FileNotFoundError:
-        logging.error(f"CSV file not found at: {csv_file}")
-        raise
-    except Exception as e:
-        logging.error(f"Failed to read CSV file: {e}")
-        raise
+    # Try to load the file
+    df = load_file(csv_file)
     
-    # Step 2: Try to select columns
-    try:
-        X = df[feature_cols].values
-        y = df[label_cols].values
-    except KeyError as e:
-        logging.error(f"Column not found: {e}. Check your column names.")
-        logging.error(f"Available columns: {df.columns.tolist()}")
-        raise
+    # Try to select columns
+    X, y = select_columns(df, feature_cols, label_cols)
     
     # Ensure y is 2D
     if y.ndim == 1:
@@ -137,7 +120,7 @@ def load_data(csv_file: str,
     X_scaler = make_scaler(feature_scaler_type)
     y_scaler = make_scaler(label_scaler_type, is_label=True)
 
-    # Fit on training data ONLY to prevent data leakage
+    # Fit on training data to prevent data leakage
     if X_scaler is not None:
         X_train = X_scaler.fit_transform(X_train)
         X_test = X_scaler.transform(X_test)
@@ -161,3 +144,24 @@ def load_data(csv_file: str,
         }
         return X_train, X_test, X_scaler, y_train, y_test, y_scaler, scaler_meta
     return X_train, X_test, X_scaler, y_train, y_test, y_scaler
+
+def load_file(csv_file: str = "data/Clean_Results_Isotherm.csv"):
+    try:
+        df = pd.read_csv(csv_file)
+    except FileNotFoundError:
+        logging.error(f"CSV file not found at: {csv_file}")
+        raise
+    except Exception as e:
+        logging.error(f"Failed to read CSV file: {e}")
+        raise
+    return df
+
+def select_columns(df: pd.DataFrame, feature_cols: List[str], label_cols: List[str]):
+    try:
+        X = df[feature_cols].values
+        y = df[label_cols].values
+    except KeyError as e:
+        logging.error(f"Column not found: {e}. Check your column names.")
+        logging.error(f"Available columns: {df.columns.tolist()}")
+        raise
+    return X, y

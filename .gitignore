@@ -10,3 +10,5 @@ runs/
 .pytest_cache
 slurm_jobs/
 __pycache__
+good_runs/global_run_832/optuna_journal_storage/journal.log
+good_runs/global_run_830/optuna_journal_storage/journal.log

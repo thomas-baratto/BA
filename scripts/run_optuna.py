@@ -18,13 +18,7 @@ from optimization.optuna_config import (
 )
 from optimization.optuna_objective import build_objective
 from monitoring.power_utils import power_monitor_session
-
-# Known feature and label columns for dynamic detection
-KNOWN_FEATURES = [
-    "Flow_well", "Temp_diff", "Temp_diff_real", "kW_well", "Hydr_gradient",
-    "Hydr_conductivity", "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"
-]
-KNOWN_LABELS = ["Area", "Iso_distance", "Iso_width", "Cone"]
+from core.hap import KNOWN_FEATURES, KNOWN_LABELS
 
 def detect_columns_from_csv(csv_file):
     """Detect feature and label columns from CSV header."""
@@ -161,8 +155,6 @@ def main():
             logging.error(f"FATAL EXCEPTION DURING DATA LOADING: {type(e).__name__}: {e}")
             sys.exit(1)
 
-        
-        # CRITICAL DEBUG PRINT: Confirm everything before this point ran.
         logging.info("Data loaded successfully. Attempting to create/load study.")
 
         try:
@@ -171,8 +163,7 @@ def main():
                 direction="minimize",
                 storage=optuna_storage,
                 load_if_exists=True,
-                # CRITICAL: We removed the aggressive pruner here to force longer runs (2 minutes per trial)
-                pruner=optuna.pruners.MedianPruner(n_warmup_steps=10), # Pruner restored per user request for consistency
+                pruner=optuna.pruners.MedianPruner(n_warmup_steps=10),
             )
             objective_fn = build_objective(
                 data=optuna_data,
@@ -186,7 +177,7 @@ def main():
                 objective_fn, 
                 n_trials=optuna_n_trials, 
                 n_jobs=optuna_n_jobs,
-                callbacks=[LogCallback] # Add the per-trial logging
+                callbacks=[LogCallback]
             )
 
             logging.info(f"Optuna study complete. Best trial (Global): {study.best_trial.number}")
@@ -194,7 +185,6 @@ def main():
             logging.info(f"Best Params (Global): {study.best_params}")
             
         except Exception as e:
-            # CRITICAL ERROR TRACE: Capture any exception that caused the silent exit.
             logging.error(f"FATAL EXCEPTION DURING STUDY OPTIMIZATION: {type(e).__name__}: {e}")
             sys.exit(1)
 

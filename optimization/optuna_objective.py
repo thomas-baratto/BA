@@ -16,7 +16,6 @@ from core.model import NeuralNetwork
 from optimization.optuna_config import MAX_EPOCHS, PATIENCE
 from core.trainer import evaluate, train_epoch
 
-# DEVICE is set once and will reflect the GPU pinned by the Slurm script
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -286,7 +285,6 @@ def build_objective(
         trial.set_user_attr("rlr_patience", int(rlr_patience))
         trial.set_user_attr("rlr_min_lr", float(rlr_min_lr))
         
-        # Return the best validation score (primary optimization metric)
         return best_val_rmse
 
     return objective

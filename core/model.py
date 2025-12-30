@@ -15,8 +15,7 @@ def get_activation(name: str) -> nn.Module:
 
 class NeuralNetwork(nn.Module):
     """
-    A flexible fully-connected neural network with optional
-    expanding and contracting layer sections.
+    Multi-layer perceptron (MLP) model.
     """
     def __init__(self,
                  input_size: int,

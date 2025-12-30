@@ -14,7 +14,7 @@
 # Final Model Training with Integrated Power Monitoring
 # ============================================================================
 # Usage:
-#   sbatch --export=STUDY_NAME=my_study,JOURNAL_PATH=runs/my_run/journal.log scripts/slurm/run_final_train.sbatch
+#   sbatch --export=STUDY_NAME=my_study,JOURNAL_PATH=runs/my_run/journal.log scripts/slurm/train_isotherm_journal.sbatch
 #
 # Required parameters:
 #   STUDY_NAME=<study_name>    # Name of the Optuna study
@@ -46,7 +46,7 @@ module purge
 module load cuda/12.4.1
 
 # Activate virtualenv
-source /home/barattts/lavoltabuona/BA/.venv/daicheelavoltabuona/bin/activate
+source /home/barattts/lavoltabuona/BA/.venv/env/bin/activate
 export PYTHONPATH=.
 
 # --- Job Info ---

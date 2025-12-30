@@ -139,8 +139,6 @@ def create_scheduler(optimizer: optim.Optimizer, config: Dict[str, Any]) -> Any:
     
     return scheduler
 
-
-# --- Main Training Function ---
 def main_train(config: Dict[str, Any],
                rf: str,
                csv_file: str,
@@ -166,7 +164,6 @@ def main_train(config: Dict[str, Any],
     val_dataset = CSVDataset(X_val, y_val)
     test_dataset = CSVDataset(X_test, y_test)
     
-    # CRITICAL FIX: num_workers=0 to prevent contention
     train_loader = DataLoader(train_dataset, batch_size=config["batch_size"], shuffle=True,
                               num_workers=0, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=config["batch_size"], shuffle=False,
@@ -249,7 +246,7 @@ def main_train(config: Dict[str, Any],
         else:
             current_lr = scheduler.get_last_lr()[0]
         
-        # Log system resources to local files each epoch (TensorBoard logging disabled)
+        # Log system resources to local files each epoch
         resource_logger.log(epoch)
         
         # Step scheduler (ReduceLROnPlateau needs validation loss, with optional warmup phase)
@@ -277,7 +274,7 @@ def main_train(config: Dict[str, Any],
             best_model_state = copy.deepcopy(model.state_dict())
             logging.info(f"New best model found at epoch {epoch + 1} with val_loss: {val_loss:.6f}")
         else:
-            patience_counter +=1
+            patience_counter += 1
         if patience_counter >= patience:
             logging.info(f"Early stopping at epoch {epoch + 1}.")
             break
@@ -294,7 +291,6 @@ def main_train(config: Dict[str, Any],
     logging.info(f"Final Test Loss ({loss_name}): {test_loss:.6f}")
 
     def to_physical_units(y_scaled: np.ndarray) -> np.ndarray:
-        """Inverse any scaling/log transforms so metrics are reported in physical units."""
         if y_scaler is not None:
             y_log_space = y_scaler.inverse_transform(y_scaled)
         else:
@@ -404,7 +400,6 @@ def main_train(config: Dict[str, Any],
             
     writer.close()
     
-    # Save resource logging data
     resource_logger.save()
     
     logging.info("Main training function finished.")
