@@ -2,6 +2,7 @@ import typing
 import torch
 import numpy as np
 from .utils import torch_activation, ensure_tensor
+from .RBF import RBFHiddenLayer
 
 class dRVFL:
     """Deep Random Vector Functional Link Network.
@@ -17,6 +18,7 @@ class dRVFL:
                  activation: str = "ReLU",
                  alpha: float = 1e-3,
                  include_bias: bool = True,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_layers = int(n_layers)
@@ -24,31 +26,47 @@ class dRVFL:
         self.activation = activation
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
         self.W_hidden: typing.List[torch.Tensor] = []
         self.b_hidden: typing.List[torch.Tensor] = []
+        self.rbf_layers: typing.List[RBFHiddenLayer] = []
         self.W_out: typing.Optional[torch.Tensor] = None
 
-    def _init_weights(self, n_features: int):
+    def _init_weights(self, X_t: torch.Tensor):
+        n_features = X_t.shape[1]
+        n_samples = X_t.shape[0]
         gen = torch.Generator(device=self.device)
         if self.random_state is not None:
             gen.manual_seed(int(self.random_state))
             
         self.W_hidden = []
         self.b_hidden = []
+        self.rbf_layers = []
         
         input_dim = n_features
+        H_curr = X_t
         for _ in range(self.n_layers):
-            W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
-            if self.include_bias:
-                b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+            if self.activation.lower() == "rbf":
+                rbf_layer = RBFHiddenLayer(n_hidden=self.n_hidden, gamma=self.gamma, in_features=input_dim).to(self.device).to(torch.float64)
+                # Sample centers directly from the incoming activation distribution
+                indices = torch.randint(0, n_samples, (self.n_hidden,), generator=gen, device=self.device)
+                rbf_layer.centers.data = H_curr[indices].clone()
+                self.rbf_layers.append(rbf_layer)
+                H_curr = rbf_layer(H_curr)
             else:
-                b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
-                
-            self.W_hidden.append(W)
-            self.b_hidden.append(b)
+                W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                if self.include_bias:
+                    b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                else:
+                    b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
+                    
+                self.W_hidden.append(W)
+                self.b_hidden.append(b)
+                H_curr = H_curr.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
             input_dim = self.n_hidden
 
 
@@ -58,10 +76,15 @@ class dRVFL:
         H_list = [X]
         H_curr = X
         
-        for W, b in zip(self.W_hidden, self.b_hidden):
-            H_curr = H_curr.matmul(W) + b
-            H_curr = torch_activation(H_curr, self.activation)
-            H_list.append(H_curr)
+        if self.activation.lower() == "rbf":
+            for rbf_layer in self.rbf_layers:
+                H_curr = rbf_layer(H_curr)
+                H_list.append(H_curr)
+        else:
+            for W, b in zip(self.W_hidden, self.b_hidden):
+                H_curr = H_curr.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
+                H_list.append(H_curr)
             
         return torch.cat(H_list, dim=1)
 
@@ -69,8 +92,8 @@ class dRVFL:
         """Fit the dRVFL for regression."""
         X_t = ensure_tensor(X, self.device)
         N, D = X_t.shape
-        if not self.W_hidden:
-            self._init_weights(D)
+        if not self.W_hidden and not self.rbf_layers:
+            self._init_weights(X_t)
 
         # Prepare Y
         if isinstance(y, np.ndarray):

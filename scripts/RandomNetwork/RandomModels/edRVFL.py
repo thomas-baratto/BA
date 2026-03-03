@@ -1,7 +1,7 @@
 import typing
 import torch
 import numpy as np
-from RandomNetwork.RandomModels.dRVFL import dRVFL
+from .dRVFL import dRVFL
 
 class edRVFL:
     """Ensemble Deep Random Vector Functional Link Network.
@@ -17,6 +17,7 @@ class edRVFL:
                  activation: str = "ReLU",
                  alpha: float = 1e-3,
                  include_bias: bool = True,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_ensemble = int(n_ensemble)
@@ -25,6 +26,7 @@ class edRVFL:
         self.activation = activation
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
@@ -46,6 +48,7 @@ class edRVFL:
                 activation=self.activation,
                 alpha=self.alpha,
                 include_bias=self.include_bias,
+                gamma=self.gamma,
                 device=self.device,
                 random_state=seed
             )

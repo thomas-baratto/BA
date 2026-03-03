@@ -147,6 +147,7 @@ def main_train(config: Dict[str, Any],
                device: torch.device) -> nn.Module:
     
     logging.info(f"Starting main training for labels {label_cols}...")
+    use_log = config.get("use_log", True)
     X_train_full, X_test, X_scaler, y_train_full, y_test, y_scaler = load_data(
         csv_file,
         feature_cols=feature_cols,
@@ -154,7 +155,8 @@ def main_train(config: Dict[str, Any],
         plots=config["plots"],
         rf=rf,
         feature_scaler_type=config.get("feature_scaler_type", "minmax"),
-        label_scaler_type=config.get("label_scaler_type", "minmax")
+        label_scaler_type=config.get("label_scaler_type", "minmax"),
+        use_log=use_log
     )
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_full, y_train_full, test_size=0.2, random_state=42
@@ -292,10 +294,12 @@ def main_train(config: Dict[str, Any],
 
     def to_physical_units(y_scaled: np.ndarray) -> np.ndarray:
         if y_scaler is not None:
-            y_log_space = y_scaler.inverse_transform(y_scaled)
+            y_unscaled = y_scaler.inverse_transform(y_scaled)
         else:
-            y_log_space = y_scaled
-        return np.expm1(y_log_space)
+            y_unscaled = y_scaled
+        if use_log:
+            return np.expm1(y_unscaled)
+        return y_unscaled
 
     def _format_metric_for_text(value: Any) -> str:
         try:

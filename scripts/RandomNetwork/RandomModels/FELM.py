@@ -2,6 +2,7 @@ import typing
 import torch
 import numpy as np
 from .utils import ensure_tensor
+from .RBF import RBFHiddenLayer
 
 class FELM:
     """Functional Extreme Learning Machine (FELM).
@@ -14,22 +15,40 @@ class FELM:
 
     def __init__(self,
                  n_basis: int = 5,
-                 basis_type: str = "polynomial", # "polynomial" or "fourier"
+                 basis_type: str = "polynomial", # "polynomial", "fourier", "rbf"
                  alpha: float = 1e-3,
-                 device: typing.Optional[torch.device] = None):
+                 gamma: float = 1.0,
+                 device: typing.Optional[torch.device] = None,
+                 random_state: typing.Optional[int] = None):
         """
         Args:
-            n_basis (int): The number of expansion terms (e.g. polynomial degree).
-            basis_type (str): Type of functional basis ("polynomial" or "fourier").
+            n_basis (int): The number of expansion terms (e.g. polynomial degree, RBF nodes).
+            basis_type (str): Type of functional basis ("polynomial" or "fourier" or "rbf").
             alpha (float): Ridge regression regularization parameter.
+            gamma (float): RBF shape parameter.
             device (torch.device): Compute device.
+            random_state (int): Seed for repeatability (optional).
         """
         self.n_basis = int(n_basis)
         self.basis_type = basis_type.lower()
         self.alpha = float(alpha)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
+        self.random_state = random_state
 
         self.W_out: typing.Optional[torch.Tensor] = None
+        self.rbf_layer: typing.Optional[RBFHiddenLayer] = None
+
+    def _init_weights(self, X_t: torch.Tensor):
+        n_features = X_t.shape[1]
+        n_samples = X_t.shape[0]
+        if self.basis_type == "rbf":
+            gen = torch.Generator(device=self.device)
+            if self.random_state is not None:
+                gen.manual_seed(int(self.random_state))
+            self.rbf_layer = RBFHiddenLayer(n_hidden=self.n_basis, gamma=self.gamma, in_features=n_features).to(self.device).to(torch.float64)
+            indices = torch.randint(0, n_samples, (self.n_basis,), generator=gen, device=self.device)
+            self.rbf_layer.centers.data = X_t[indices].clone()
 
     def _expand_basis(self, X: torch.Tensor) -> torch.Tensor:
         """Map the input features X into the specified functional basis space.
@@ -59,12 +78,19 @@ class FELM:
                 expanded.append(torch.cos(freq * X))
             return torch.cat(expanded, dim=1)
             
+        elif self.basis_type == "rbf":
+            return self.rbf_layer(X)
+            
         else:
             raise ValueError(f"Unknown basis_type: {self.basis_type}")
 
     def fit(self, X: typing.Union[np.ndarray, torch.Tensor], y: typing.Union[np.ndarray, torch.Tensor]):
         """Fit the FELM by analytically solving for the basis coefficients."""
         X_t = ensure_tensor(X, self.device)
+        N, D = X_t.shape
+        
+        if self.basis_type == "rbf" and self.rbf_layer is None:
+            self._init_weights(X_t)
         
         # Prepare Y
         if isinstance(y, np.ndarray):

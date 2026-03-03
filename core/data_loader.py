@@ -37,6 +37,8 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
               rf: str = '.',
               feature_scaler_type: str = 'minmax',
               label_scaler_type: str = 'minmax',
+              use_log: bool = True,
+              use_area_root: bool = False,
               return_meta: bool = False) -> Tuple[np.ndarray, np.ndarray, object, np.ndarray, np.ndarray, object]:
     """
     Loads, preprocesses, and splits data from a CSV file using column names.
@@ -49,6 +51,11 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
         random_state: Random seed for reproducibility (default: 42)
         plots: Whether to generate distribution plots (default: False)
         rf: Root folder for saving plots (default: '.')
+        feature_scaler_type: Type of scaler for features (default: 'minmax')
+        label_scaler_type: Type of scaler for labels (default: 'minmax')
+        use_log: Whether to apply log1p transformation before scaling (default: True)
+        use_area_root: Whether to apply square root transformation to 'Area' before log1p/scaling (default: False)
+        return_meta: Whether to return scaler metadata
         
     Returns:
         Tuple of (X_train, X_test, X_scaler, y_train, y_test, y_scaler)
@@ -59,6 +66,11 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
     # Try to select columns
     X, y = select_columns(df, feature_cols, label_cols)
     
+    # Apply square root to "Area" target if requested
+    if use_area_root and "Area" in label_cols:
+        area_idx = label_cols.index("Area")
+        y[:, area_idx] = np.sqrt(y[:, area_idx])
+        
     # Ensure y is 2D
     if y.ndim == 1:
         y = y.reshape(-1, 1)
@@ -79,8 +91,9 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
         plt.close()
 
     # Log-transform (always applied prior to scaling; helps compress heavy-tail)
-    X = np.log1p(X)
-    y = np.log1p(y)
+    if use_log:
+        X = np.log1p(X)
+        y = np.log1p(y)
 
     if plots:
         # "After Log-Transformation" Plot

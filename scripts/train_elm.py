@@ -52,6 +52,8 @@ def parse_args():
                         help='Random seed (default: 42)')
     parser.add_argument('--no-cuda', action='store_true',
                         help='Disable CUDA even if available')
+    parser.add_argument('--use-area-root', action='store_true',
+                        help='Apply square root transformation to Area before log1p/scaling')
     return parser.parse_args()
 
 
@@ -77,7 +79,8 @@ def train_elm_for_targets(args, label_names, output_dir):
         plots=False,
         rf=output_dir,
         feature_scaler_type=args.feature_scaler,
-        label_scaler_type=args.label_scaler
+        label_scaler_type=args.label_scaler,
+        use_area_root=args.use_area_root
     )
     
     # Split train into train/val
@@ -126,6 +129,12 @@ def train_elm_for_targets(args, label_names, output_dir):
         y_true_original = np.expm1(y_scaler.inverse_transform(y_split))
         y_pred_original = np.expm1(y_scaler.inverse_transform(y_pred_scaled))
         
+        # Revert Area root back to Area for fair metric comparison by checking flag and location
+        if args.use_area_root and "Area" in label_names:
+            area_idx = label_names.index("Area")
+            y_true_original[:, area_idx] = y_true_original[:, area_idx] ** 2
+            y_pred_original[:, area_idx] = y_pred_original[:, area_idx] ** 2
+        
         # Compute aggregate metrics on flattened data (true overall metrics)
         y_true_flat = y_true_original.flatten()
         y_pred_flat = y_pred_original.flatten()
@@ -165,9 +174,11 @@ def train_elm_for_targets(args, label_names, output_dir):
             y_pred_target = y_pred_original[:, i]
             
             target_metrics = compute_regression_metrics(y_true_target, y_pred_target)
-            results[split_name][target_name] = {k: float(v) for k, v in target_metrics.items()}
             
-            print(f"\n  {target_name}:")
+            display_name = "Area (Squared from Root)" if (args.use_area_root and target_name == "Area") else target_name
+            results[split_name][display_name] = {k: float(v) for k, v in target_metrics.items()}
+            
+            print(f"\n  {display_name}:")
             print(f"    RMSE: {target_metrics['rmse']:.2f}")
             print(f"    MAE:  {target_metrics['mae']:.2f}")
             print(f"    R²:   {target_metrics['r2']:.4f}")
@@ -234,8 +245,14 @@ def train_elm_for_targets(args, label_names, output_dir):
         json.dump(results_dict, f, indent=2)
     print(f"\nResults saved to: {results_file}")
     
-    # Save predictions
     predictions_file = os.path.join(output_dir, 'test_predictions.npz')
+    
+    # Square predictions data globally for correct plots rendering
+    if args.use_area_root and "Area" in label_names:
+        area_idx = label_names.index("Area")
+        y_test_original[:, area_idx] = y_test_original[:, area_idx] ** 2
+        y_test_pred_original[:, area_idx] = y_test_pred_original[:, area_idx] ** 2
+            
     np.savez(
         predictions_file,
         y_true=y_test_original,
@@ -253,7 +270,7 @@ def main():
     
     # Determine target labels
     if args.target == 'all':
-        label_names = ['Area', 'Iso_distance', 'Iso_width']
+        label_names = ['Area_root', 'Iso_distance', 'Iso_width']
     else:
         label_names = [args.target]
     

@@ -3,6 +3,7 @@ import torch
 import numpy as np
 from sklearn.cluster import KMeans
 from .utils import torch_activation, ensure_tensor
+from .RBF import RBFHiddenLayer
 
 # Attempt to import scikit-fuzzy for Fuzzy C-Means (NF-RVFL-C)
 try:
@@ -30,6 +31,7 @@ class NF_RVFL:
                  activation: str = "ReLU",
                  alpha: float = 1e-3,
                  include_bias: bool = True,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_hidden = int(n_hidden)
@@ -38,6 +40,7 @@ class NF_RVFL:
         self.activation = activation
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
@@ -46,24 +49,32 @@ class NF_RVFL:
 
         self.W_hidden: typing.Optional[torch.Tensor] = None
         self.b_hidden: typing.Optional[torch.Tensor] = None
+        self.rbf_layer: typing.Optional[RBFHiddenLayer] = None
         self.W_out: typing.Optional[torch.Tensor] = None
         
         # Fuzzy layer parameters
         self.centers: typing.Optional[torch.Tensor] = None
         self.widths: typing.Optional[torch.Tensor] = None
 
-    def _init_weights(self, n_features: int):
+    def _init_weights(self, X_t: torch.Tensor):
+        n_samples = X_t.shape[0]
         gen = torch.Generator(device=self.device)
         if self.random_state is not None:
             gen.manual_seed(int(self.random_state))
             
         # The hidden layer maps the fuzzified features to random nodes
         # Fuzzified features dimension = n_rules
-        self.W_hidden = torch.randn(self.n_rules, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
-        if self.include_bias:
-            self.b_hidden = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+        if self.activation.lower() == "rbf":
+            self.rbf_layer = RBFHiddenLayer(n_hidden=self.n_hidden, gamma=self.gamma, in_features=self.n_rules).to(self.device).to(torch.float64)
+            Z_fuzzy = self._fuzzify(X_t)
+            indices = torch.randint(0, n_samples, (self.n_hidden,), generator=gen, device=self.device)
+            self.rbf_layer.centers.data = Z_fuzzy[indices].clone()
         else:
-            self.b_hidden = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
+            self.W_hidden = torch.randn(self.n_rules, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+            if self.include_bias:
+                self.b_hidden = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+            else:
+                self.b_hidden = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
 
 
 
@@ -144,8 +155,8 @@ class NF_RVFL:
         if self.centers is None:
             self._determine_fuzzy_parameters(X_t)
             
-        if self.W_hidden is None:
-            self._init_weights(D)
+        if self.W_hidden is None and self.rbf_layer is None:
+            self._init_weights(X_t)
 
         if isinstance(y, np.ndarray):
             Y_t = torch.from_numpy(y).to(dtype=torch.float64, device=self.device)
@@ -158,8 +169,11 @@ class NF_RVFL:
         Z_fuzzy = self._fuzzify(X_t) # (N, n_rules)
         
         # 2. Random Hidden Layer over Fuzzified features
-        H_random = Z_fuzzy.matmul(self.W_hidden) + self.b_hidden
-        H_random = torch_activation(H_random, self.activation) # (N, n_hidden)
+        if self.activation.lower() == "rbf":
+            H_random = self.rbf_layer(Z_fuzzy)
+        else:
+            H_random = Z_fuzzy.matmul(self.W_hidden) + self.b_hidden
+            H_random = torch_activation(H_random, self.activation) # (N, n_hidden)
         
         # 3. Defuzzification mapping interface - Combine Z_fuzzy, H_random, and original input X
         H_final = torch.cat([Z_fuzzy, H_random, X_t], dim=1)
@@ -179,8 +193,11 @@ class NF_RVFL:
         X_t = ensure_tensor(X, self.device)
         
         Z_fuzzy = self._fuzzify(X_t)
-        H_random = Z_fuzzy.matmul(self.W_hidden) + self.b_hidden
-        H_random = torch_activation(H_random, self.activation)
+        if self.activation.lower() == "rbf":
+            H_random = self.rbf_layer(Z_fuzzy)
+        else:
+            H_random = Z_fuzzy.matmul(self.W_hidden) + self.b_hidden
+            H_random = torch_activation(H_random, self.activation)
         
         H_final = torch.cat([Z_fuzzy, H_random, X_t], dim=1)
         

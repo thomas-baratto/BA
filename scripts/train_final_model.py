@@ -217,9 +217,11 @@ if __name__ == "__main__":
             predictions_original = y_scaler.inverse_transform(predictions)
             true_values_original = y_scaler.inverse_transform(true_values)
             
-            # Apply inverse log transform (expm1)
-            predictions_original = np.expm1(predictions_original)
-            true_values_original = np.expm1(true_values_original)
+            # Apply inverse log transform only if log1p was used during preprocessing
+            use_log = final_model_config.get("use_log", True)
+            if use_log:
+                predictions_original = np.expm1(predictions_original)
+                true_values_original = np.expm1(true_values_original)
             
             # Compute comprehensive metrics
             metrics = compute_regression_metrics(true_values_original, predictions_original)

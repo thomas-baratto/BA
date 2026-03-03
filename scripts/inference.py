@@ -70,7 +70,8 @@ def load_model_and_scalers(model_path: str, run_folder: str):
 def predict(model: torch.nn.Module, 
             X: np.ndarray,
             X_scaler,
-            y_scaler) -> np.ndarray:
+            y_scaler,
+            use_log: bool = True) -> np.ndarray:
     """
     Make predictions with the trained model.
     
@@ -84,8 +85,11 @@ def predict(model: torch.nn.Module,
         Predictions in original scale
     """
     # Apply same preprocessing as training
-    X_log = np.log1p(X)
-    X_scaled = X_scaler.transform(X_log)
+    if use_log:
+        X_preprocessed = np.log1p(X)
+    else:
+        X_preprocessed = X
+    X_scaled = X_scaler.transform(X_preprocessed)
     
     # Convert to tensor and predict
     X_tensor = torch.tensor(X_scaled, dtype=torch.float32)
@@ -94,10 +98,11 @@ def predict(model: torch.nn.Module,
         predictions_scaled = model(X_tensor).numpy()
     
     # Inverse transform
-    predictions_log = y_scaler.inverse_transform(predictions_scaled)
-    predictions = np.expm1(predictions_log)
+    predictions_unscaled = y_scaler.inverse_transform(predictions_scaled)
+    if use_log:
+        predictions_unscaled = np.expm1(predictions_unscaled)
     
-    return predictions
+    return predictions_unscaled
 
 def main():
     parser = argparse.ArgumentParser(description='Make predictions with a trained model')
@@ -148,7 +153,8 @@ def main():
         X_original, y_original, test_size=0.3, random_state=42, shuffle=True
     )
     
-    predictions = predict(model, X_test_original, X_scaler, y_scaler)
+    use_log = model_config.get('use_log', True)
+    predictions = predict(model, X_test_original, X_scaler, y_scaler, use_log=use_log)
     
     # Display results
     logging.info("\nSample Predictions (first 10):")

@@ -2,6 +2,7 @@ import typing
 import torch
 import numpy as np
 from .utils import torch_activation, ensure_tensor
+from .RBF import RBFHiddenLayer
 
 class _dRVFL_SC:
     """Deep Random Vector Functional Link Network with Skip Connections.
@@ -17,6 +18,7 @@ class _dRVFL_SC:
                  include_bias: bool = True,
                  mode: str = "dense", # "dense" or "random"
                  rsc_prob: float = 0.5, # Probability for random skip connections
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_layers = int(n_layers)
@@ -26,22 +28,29 @@ class _dRVFL_SC:
         self.include_bias = bool(include_bias)
         self.mode = mode.lower()
         self.rsc_prob = float(rsc_prob)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
         self.W_hidden: typing.List[torch.Tensor] = []
         self.b_hidden: typing.List[torch.Tensor] = []
+        self.rbf_layers: typing.List[RBFHiddenLayer] = []
         self.layer_masks: typing.List[typing.List[bool]] = []
         self.W_out: typing.Optional[torch.Tensor] = None
 
-    def _init_weights(self, n_features: int):
+    def _init_weights(self, X_t: torch.Tensor):
+        n_features = X_t.shape[1]
+        n_samples = X_t.shape[0]
         gen = torch.Generator(device=self.device)
         if self.random_state is not None:
             gen.manual_seed(int(self.random_state))
             
         self.W_hidden = []
         self.b_hidden = []
+        self.rbf_layers = []
         self.layer_masks = []
+        
+        H_list = [X_t]
         
         for i in range(self.n_layers):
             if self.mode == "dense":
@@ -54,20 +63,34 @@ class _dRVFL_SC:
             
             self.layer_masks.append(mask)
             
-            # Dimension based on what is connected
-            input_dim = 0
-            if mask[0]: input_dim += n_features
-            for j in range(1, i + 1):
-                if mask[j]: input_dim += self.n_hidden
+            gather_inputs = []
+            for j, use_layer in enumerate(mask):
+                if use_layer:
+                    gather_inputs.append(H_list[j])
+            
+            H_in = torch.cat(gather_inputs, dim=1)
+            input_dim = H_in.shape[1]
                 
-            W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
-            if self.include_bias:
-                b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+            if self.activation.lower() == "rbf":
+                rbf_layer = RBFHiddenLayer(n_hidden=self.n_hidden, gamma=self.gamma, in_features=input_dim).to(self.device).to(torch.float64)
+                # Sample centers directly from the combined input space
+                indices = torch.randint(0, n_samples, (self.n_hidden,), generator=gen, device=self.device)
+                rbf_layer.centers.data = H_in[indices].clone()
+                self.rbf_layers.append(rbf_layer)
+                H_curr = rbf_layer(H_in)
             else:
-                b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
+                W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                if self.include_bias:
+                    b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                else:
+                    b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
+                    
+                self.W_hidden.append(W)
+                self.b_hidden.append(b)
+                H_curr = H_in.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
                 
-            self.W_hidden.append(W)
-            self.b_hidden.append(b)
+            H_list.append(H_curr)
 
 
 
@@ -75,15 +98,22 @@ class _dRVFL_SC:
         """Propagate through hidden layers and return concatenated features."""
         H_list = [X]
         
-        for i, (W, b) in enumerate(zip(self.W_hidden, self.b_hidden)):
+        for i in range(self.n_layers):
             gather_inputs = []
             for j, use_layer in enumerate(self.layer_masks[i]):
                 if use_layer:
                     gather_inputs.append(H_list[j])
             
             H_in = torch.cat(gather_inputs, dim=1)
-            H_curr = H_in.matmul(W) + b
-            H_curr = torch_activation(H_curr, self.activation)
+            
+            if self.activation.lower() == "rbf":
+                H_curr = self.rbf_layers[i](H_in)
+            else:
+                W = self.W_hidden[i]
+                b = self.b_hidden[i]
+                H_curr = H_in.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
+                
             H_list.append(H_curr)
             
         return torch.cat(H_list, dim=1)
@@ -92,8 +122,8 @@ class _dRVFL_SC:
         """Fit the dRVFL with SC for regression."""
         X_t = ensure_tensor(X, self.device)
         N, D = X_t.shape
-        if not self.W_hidden:
-            self._init_weights(D)
+        if not self.W_hidden and not self.rbf_layers:
+            self._init_weights(X_t)
 
         if isinstance(y, np.ndarray):
             Y_t = torch.from_numpy(y).to(dtype=torch.float64, device=self.device)
@@ -138,6 +168,7 @@ class edRVFL_SC:
                  include_bias: bool = True,
                  mode: str = "dense", # "dense" or "random"
                  rsc_prob: float = 0.5, # Probability for random skip connections
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_ensemble = int(n_ensemble)
@@ -148,6 +179,7 @@ class edRVFL_SC:
         self.include_bias = bool(include_bias)
         self.mode = mode.lower()
         self.rsc_prob = float(rsc_prob)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
@@ -170,6 +202,7 @@ class edRVFL_SC:
                 include_bias=self.include_bias,
                 mode=self.mode,
                 rsc_prob=self.rsc_prob,
+                gamma=self.gamma,
                 device=self.device,
                 random_state=seed
             )

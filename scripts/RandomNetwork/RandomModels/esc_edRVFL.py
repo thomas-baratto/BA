@@ -6,13 +6,7 @@ import numpy as np
 from sklearn.model_selection import KFold
 import importlib.util
 
-# Safely import edRVFL_SC from a file with a hyphen in its name
-current_dir = os.path.dirname(os.path.abspath(__file__))
-spec = importlib.util.spec_from_file_location("edRVFL_SC_module", os.path.join(current_dir, "edRVFL-SC.py"))
-edrvfl_sc_module = importlib.util.module_from_spec(spec)
-sys.modules["edRVFL_SC_module"] = edrvfl_sc_module
-spec.loader.exec_module(edrvfl_sc_module)
-edRVFL_SC = edrvfl_sc_module.edRVFL_SC
+from .edRVFL_SC import edRVFL_SC
 
 class esc_edRVFL:
     """Ensemble Skip Connection edRVFL (esc-edRVFL).
@@ -30,6 +24,7 @@ class esc_edRVFL:
                  alpha: float = 1e-3,
                  include_bias: bool = True,
                  rsc_prob: float = 0.5,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_folds = int(n_folds)
@@ -40,6 +35,7 @@ class esc_edRVFL:
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
         self.rsc_prob = float(rsc_prob)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
@@ -83,6 +79,7 @@ class esc_edRVFL:
                 include_bias=self.include_bias,
                 mode="random", # esc-edRVFL utilizes edRVFL-RSC
                 rsc_prob=self.rsc_prob,
+                gamma=self.gamma,
                 device=self.device,
                 random_state=seed
             )

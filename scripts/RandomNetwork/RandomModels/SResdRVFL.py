@@ -2,6 +2,7 @@ import typing
 import torch
 import numpy as np
 from .utils import torch_activation, ensure_tensor
+from .RBF import RBFHiddenLayer
 
 class _ResidualBlock:
     """A single residual block for SResdRVFL.
@@ -17,6 +18,7 @@ class _ResidualBlock:
                  alpha: float = 1e-3,
                  include_bias: bool = True,
                  direct_link: bool = True,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_layers = int(n_layers)
@@ -25,39 +27,58 @@ class _ResidualBlock:
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
         self.direct_link = bool(direct_link)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
         self.W_hidden: typing.List[torch.Tensor] = []
         self.b_hidden: typing.List[torch.Tensor] = []
+        self.rbf_layers: typing.List[RBFHiddenLayer] = []
         self.W_out: typing.Optional[torch.Tensor] = None
 
-    def _init_weights(self, n_features: int):
+    def _init_weights(self, X_t: torch.Tensor):
+        n_features = X_t.shape[1]
+        n_samples = X_t.shape[0]
         gen = torch.Generator(device=self.device)
         if self.random_state is not None:
             gen.manual_seed(int(self.random_state))
             
         self.W_hidden = []
         self.b_hidden = []
+        self.rbf_layers = []
         
         input_dim = n_features
+        H_curr = X_t
         for _ in range(self.n_layers):
-            W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
-            if self.include_bias:
-                b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+            if self.activation.lower() == "rbf":
+                rbf_layer = RBFHiddenLayer(n_hidden=self.n_hidden, gamma=self.gamma, in_features=input_dim).to(self.device).to(torch.float64)
+                indices = torch.randint(0, n_samples, (self.n_hidden,), generator=gen, device=self.device)
+                rbf_layer.centers.data = H_curr[indices].clone()
+                self.rbf_layers.append(rbf_layer)
+                H_curr = rbf_layer(H_curr)
             else:
-                b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
-                
-            self.W_hidden.append(W)
-            self.b_hidden.append(b)
+                W = torch.randn(input_dim, self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                if self.include_bias:
+                    b = torch.randn(self.n_hidden, dtype=torch.float64, generator=gen, device=self.device)
+                else:
+                    b = torch.zeros(self.n_hidden, dtype=torch.float64, device=self.device)
+                    
+                self.W_hidden.append(W)
+                self.b_hidden.append(b)
+                H_curr = H_curr.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
             input_dim = self.n_hidden
 
     def _compute_features(self, X: torch.Tensor) -> torch.Tensor:
         H_curr = X
         
-        for W, b in zip(self.W_hidden, self.b_hidden):
-            H_curr = H_curr.matmul(W) + b
-            H_curr = torch_activation(H_curr, self.activation)
+        if self.activation.lower() == "rbf":
+            for rbf_layer in self.rbf_layers:
+                H_curr = rbf_layer(H_curr)
+        else:
+            for W, b in zip(self.W_hidden, self.b_hidden):
+                H_curr = H_curr.matmul(W) + b
+                H_curr = torch_activation(H_curr, self.activation)
             
         # Asymmetric direct links: The input layer is only connected directly to the output 
         # alongside the final hidden layer activations (not densely to all hidden layers)
@@ -68,8 +89,8 @@ class _ResidualBlock:
 
     def fit(self, X: torch.Tensor, y_res: torch.Tensor):
         N, D = X.shape
-        if not self.W_hidden:
-            self._init_weights(D)
+        if not self.W_hidden and not self.rbf_layers:
+            self._init_weights(X)
 
         H_final = self._compute_features(X)
         
@@ -100,6 +121,7 @@ class SResdRVFL:
                  alpha: float = 1e-3,
                  include_bias: bool = True,
                  direct_link: bool = True,
+                 gamma: float = 1.0,
                  device: typing.Optional[torch.device] = None,
                  random_state: typing.Optional[int] = None):
         self.n_blocks = int(n_blocks)
@@ -109,6 +131,7 @@ class SResdRVFL:
         self.alpha = float(alpha)
         self.include_bias = bool(include_bias)
         self.direct_link = bool(direct_link)
+        self.gamma = float(gamma)
         self.device = device if device is not None else torch.device("cpu")
         self.random_state = random_state
 
@@ -144,6 +167,7 @@ class SResdRVFL:
                 alpha=self.alpha,
                 include_bias=self.include_bias,
                 direct_link=self.direct_link,
+                gamma=self.gamma,
                 device=self.device,
                 random_state=seed
             )
