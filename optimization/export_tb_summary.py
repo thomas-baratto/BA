@@ -93,12 +93,15 @@ def export_study_to_tensorboard(journal_dir: str, study_name: str, output_dir: s
     # 3. Log Best Parameters and Final Metrics as Text
     best_trial = study.best_trial
     
+    final_test_rmse = best_trial.user_attrs.get('final_test_rmse')
+    final_test_rmse_text = f"{float(final_test_rmse):.6f}" if final_test_rmse is not None else "N/A"
+
     text_summary = f"""
     ## Optuna Study Summary: {study_name}
     * **Total Trials:** {len(study.trials)}
     * **Best Trial (#):** {best_trial.number}
     * **Best Validation Loss (Objective):** {best_trial.value:.6f}
-    * **Final Test RMSE (User Metric):** {best_trial.user_attrs.get('final_test_rmse', 'N/A'):.6f}
+    * **Final Test RMSE (User Metric):** {final_test_rmse_text}
     
     ### Best Hyperparameters:
     {best_trial.params}

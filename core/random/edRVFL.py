@@ -1,3 +1,5 @@
+"""Ensemble deep RVFL implementation."""
+
 import typing
 import torch
 import numpy as np

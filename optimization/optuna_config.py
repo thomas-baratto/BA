@@ -78,13 +78,15 @@ def parse_args():
         help='Name of the Optuna study.'
     )
     parser.add_argument(
-        '--storage-path', 
+        '--storage-path', '--storage-url',
+        dest='storage_path',
         type=str,
         default=None,
         help='Path to the Journal Storage directory (e.g., runs/my_journal).'
     )
     parser.add_argument(
-        '--optuna-trials',
+        '--optuna-trials', '--n-trials',
+        dest='optuna_trials',
         type=int,
         default=100,
         help='Number of trials this specific worker process should run.'

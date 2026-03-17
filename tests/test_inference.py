@@ -10,7 +10,7 @@ import tempfile
 from unittest.mock import MagicMock, patch
 from sklearn.preprocessing import MinMaxScaler
 
-from inference import load_model_and_scalers, predict
+from scripts.inference import load_model_and_scalers, predict
 from core.model import NeuralNetwork
 
 

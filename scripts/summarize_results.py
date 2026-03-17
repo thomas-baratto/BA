@@ -56,6 +56,7 @@ def main():
             if config.get('n_ensemble'): row['N_Ensemble'] = config.get('n_ensemble')
             if config.get('n_blocks'): row['Blocks'] = config.get('n_blocks')
             if config.get('basis_type'): row['Basis'] = config.get('basis_type')
+            if config.get('activation'): row['Activation'] = config.get('activation')
             
             summary_data.append(row)
         except Exception as e:

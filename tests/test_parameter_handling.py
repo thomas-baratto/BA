@@ -1,49 +1,56 @@
-#!/usr/bin/env python3
-"""
-Test script to verify parameter handling in Optuna studies.
-This tests that hardcoded parameters are properly stored and retrieved.
-"""
+"""Parameter handling tests aligned to journal-based Optuna workflow."""
 
-import optuna
-import sqlite3
+from __future__ import annotations
+
 from pathlib import Path
 
-import pytest
+import optuna
+from optuna.storages import JournalStorage
+from optuna.storages.journal import JournalFileBackend
 
-DB_PATH = "runs/optuna_study.db"
 
-def test_parameter_retrieval():
-    """Test that we can retrieve both optimized and hardcoded parameters."""
-    db_path = Path(DB_PATH)
-    if not db_path.exists():
-        pytest.skip("Optuna study database not found; run tuning before this test if needed.")
+HARDCODED_PARAMS = {"batch_size", "nr_hidden_layers", "activation_name", "loss_criterion"}
 
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT study_name FROM studies")
-    except sqlite3.OperationalError:
-        conn.close()
-        pytest.skip("Optuna tables missing; no studies recorded yet.")
 
-    studies = cursor.fetchall()
-    conn.close()
+def _build_temp_study(tmp_path: Path):
+    journal_dir = tmp_path / "optuna_journal_storage"
+    journal_dir.mkdir(parents=True, exist_ok=True)
+    journal_file = journal_dir / "journal.log"
 
-    if not studies:
-        pytest.skip("No Optuna studies available in the local database.")
+    storage = JournalStorage(JournalFileBackend(str(journal_file)))
+    study = optuna.create_study(study_name="test_journal_study", direction="minimize", storage=storage)
 
-    study_name = studies[0][0]
-    storage = f"sqlite:///{DB_PATH}"
-    study = optuna.load_study(study_name=study_name, storage=storage)
+    def objective(trial: optuna.Trial) -> float:
+        lr = trial.suggest_float("learning_rate", 1e-4, 1e-2, log=True)
+        trial.set_user_attr("batch_size", 64)
+        trial.set_user_attr("nr_hidden_layers", 3)
+        trial.set_user_attr("activation_name", "GELU")
+        trial.set_user_attr("loss_criterion", "SmoothL1")
+        return lr
 
-    assert isinstance(study.best_trial.params, dict)
-    hardcoded_params = {'batch_size', 'nr_hidden_layers', 'activation_name', 'loss_criterion'}
-    merged = study.best_trial.params.copy()
-    for key, value in study.best_trial.user_attrs.items():
-        if key in hardcoded_params:
+    study.optimize(objective, n_trials=1)
+    return study, storage
+
+
+def test_parameter_retrieval_from_journal_storage(tmp_path):
+    """Can retrieve optimized params and user attrs from journal-backed study."""
+    _, storage = _build_temp_study(tmp_path)
+    loaded = optuna.load_study(study_name="test_journal_study", storage=storage)
+
+    assert isinstance(loaded.best_trial.params, dict)
+    assert "learning_rate" in loaded.best_trial.params
+    assert HARDCODED_PARAMS.issubset(set(loaded.best_trial.user_attrs.keys()))
+
+
+def test_parameter_merge_includes_hardcoded_attrs(tmp_path):
+    """Merging trial params with hardcoded attrs yields complete config dict."""
+    _, storage = _build_temp_study(tmp_path)
+    loaded = optuna.load_study(study_name="test_journal_study", storage=storage)
+
+    merged = loaded.best_trial.params.copy()
+    for key, value in loaded.best_trial.user_attrs.items():
+        if key in HARDCODED_PARAMS:
             merged[key] = value
 
-    assert set(merged.keys()) >= set(study.best_trial.params.keys())
-
-if __name__ == "__main__":
-    test_parameter_retrieval()
+    assert "learning_rate" in merged
+    assert HARDCODED_PARAMS.issubset(set(merged.keys()))

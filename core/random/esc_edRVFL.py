@@ -1,10 +1,9 @@
+"""Cross-validated ensemble skip-connection RVFL implementation."""
+
 import typing
-import sys
-import os
 import torch
 import numpy as np
 from sklearn.model_selection import KFold
-import importlib.util
 
 from .edRVFL_SC import edRVFL_SC
 

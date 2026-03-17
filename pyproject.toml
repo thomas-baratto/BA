@@ -12,10 +12,26 @@ addopts = """
     --disable-warnings
 """
 markers = [
+    "fast: marks a fast smoke/unit test subset",
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
 ]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "preserve"
 
 [tool.coverage.run]
 source = ["."]

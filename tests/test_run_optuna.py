@@ -13,7 +13,6 @@ from optimization.optuna_config import (
     parse_args,
     validate_target_labels,
 )
-import run_optuna
 
 
 def test_parse_args_defaults(monkeypatch):
@@ -22,15 +21,35 @@ def test_parse_args_defaults(monkeypatch):
 
     assert args.target == 'all'
     assert args.csv_file == './data/Clean_Results_Isotherm.csv'
-    assert args.storage_url is None
-    assert args.optuna_trials == 10000
+    assert args.storage_path is None
+    assert args.optuna_trials == 100
 
 
 def test_parse_args_db_alias(monkeypatch):
     monkeypatch.setattr(sys, 'argv', ['run_optuna.py', '--storage-url', 'sqlite:///foo.db'])
     args = parse_args()
 
-    assert args.storage_url == 'sqlite:///foo.db'
+    assert args.storage_path == 'sqlite:///foo.db'
+
+
+def test_parse_args_storage_flags_equivalent(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['run_optuna.py', '--storage-path', 'runs/journal'])
+    args_new = parse_args()
+
+    monkeypatch.setattr(sys, 'argv', ['run_optuna.py', '--storage-url', 'runs/journal'])
+    args_old = parse_args()
+
+    assert args_new.storage_path == args_old.storage_path == 'runs/journal'
+
+
+def test_parse_args_trials_flags_equivalent(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['run_optuna.py', '--optuna-trials', '17'])
+    args_new = parse_args()
+
+    monkeypatch.setattr(sys, 'argv', ['run_optuna.py', '--n-trials', '17'])
+    args_old = parse_args()
+
+    assert args_new.optuna_trials == args_old.optuna_trials == 17
 
 
 def test_validate_target_labels_accepts_valid():

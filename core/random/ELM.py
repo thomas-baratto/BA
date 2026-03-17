@@ -1,3 +1,5 @@
+"""Extreme Learning Machine implementation for tabular regression."""
+
 import typing
 import torch
 import numpy as np

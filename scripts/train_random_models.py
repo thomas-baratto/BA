@@ -13,22 +13,23 @@ import os
 import json
 import time
 import pickle
+import logging
 from datetime import datetime
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import r2_score
 
+from core.config_types import RandomTrainingConfig
 from core.data_loader import load_data
+from core.runtime import ensure_dir, get_device, setup_logging
 from core.utils import compute_regression_metrics
 
 # Import Models
-from scripts.RandomNetwork.RandomModels.ELM import ELM
-from scripts.RandomNetwork.RandomModels.dRVFL import dRVFL
-from scripts.RandomNetwork.RandomModels.edRVFL import edRVFL
-from scripts.RandomNetwork.RandomModels.edRVFL_SC import edRVFL_SC
-from scripts.RandomNetwork.RandomModels.esc_edRVFL import esc_edRVFL
-from scripts.RandomNetwork.RandomModels.SResdRVFL import SResdRVFL
-from scripts.RandomNetwork.RandomModels.NF_RVFL import NF_RVFL
-from scripts.RandomNetwork.RandomModels.FELM import FELM
+from core.random.ELM import ELM
+from core.random.dRVFL import dRVFL
+from core.random.edRVFL import edRVFL
+from core.random.edRVFL_SC import edRVFL_SC
+from core.random.esc_edRVFL import esc_edRVFL
+from core.random.SResdRVFL import SResdRVFL
 
 DATASET_CONFIGS = {
     "isotherm": {
@@ -48,12 +49,45 @@ DATASET_CONFIGS = {
     }
 }
 
+
+def _aggregate_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
+    y_true_flat = y_true.flatten()
+    y_pred_flat = y_pred.flatten()
+    metrics = {
+        'mse': float(np.mean((y_pred_flat - y_true_flat) ** 2)),
+        'rmse': float(np.sqrt(np.mean((y_pred_flat - y_true_flat) ** 2))),
+        'mae': float(np.mean(np.abs(y_pred_flat - y_true_flat))),
+        'r2': float(r2_score(y_true_flat, y_pred_flat))
+    }
+    mask = y_true_flat != 0
+    if np.any(mask):
+        metrics['mape'] = float(np.mean(np.abs((y_pred_flat[mask] - y_true_flat[mask]) / y_true_flat[mask])))
+    else:
+        metrics['mape'] = float('nan')
+    return metrics
+
+
+def _inverse_predictions(cfg: RandomTrainingConfig, y_scaler, y_values: np.ndarray) -> np.ndarray:
+    values = y_scaler.inverse_transform(y_values)
+    if cfg.use_log:
+        values = np.expm1(values)
+    return values
+
+
+def _build_output_dir(cfg: RandomTrainingConfig, label_cols):
+    if cfg.output_dir is not None:
+        return ensure_dir(cfg.output_dir)
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    target_str = "_".join(label_cols)
+    folder_name = f"{cfg.dataset}_{cfg.model}_{timestamp}_{target_str}"
+    return ensure_dir(os.path.join(cfg.base_dir, folder_name))
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Train Random Models on tabular datasets")
     
     # Required arguments
     parser.add_argument('--model', type=str, required=True,
-                        choices=['ELM', 'dRVFL', 'edRVFL', 'edRVFL-SC', 'esc-edRVFL', 'SResdRVFL', 'NF-RVFL', 'FELM'],
+                        choices=['ELM', 'dRVFL', 'edRVFL', 'edRVFL-SC', 'esc-edRVFL', 'SResdRVFL'],
                         help='Which model to train')
     parser.add_argument('--dataset', type=str, required=True,
                         choices=['isotherm', 'cone'],
@@ -92,11 +126,7 @@ def parse_args():
     parser.add_argument('--n-blocks', type=int, default=5, help='Number of residual blocks')
     parser.add_argument('--direct-link', action='store_true', help='Use asymmetric direct links in SResdRVFL')
     
-    # NF-RVFL specifics
-    parser.add_argument('--nf-variation', type=str, default='K', choices=['R', 'K', 'C'], help='Fuzzy rule clustering type')
-    
-    # FELM specifics
-    parser.add_argument('--basis-type', type=str, default='polynomial', choices=['polynomial', 'fourier', 'rbf'])
+
 
     # System parameters
     parser.add_argument('--base-dir', type=str, default='runs', help='Base directory for all runs')
@@ -104,6 +134,7 @@ def parse_args():
     parser.add_argument('--random-state', type=int, default=42, help='Random seed')
     parser.add_argument('--n-seeds', type=int, default=1, help='Number of seeds to run (for mean±std reporting). Seeds used: random_state, random_state+1, ...')
     parser.add_argument('--no-cuda', action='store_true', help='Disable CUDA')
+    parser.add_argument('--no-save-model', action='store_true', help='Do not save the model and test predictions to disk')
 
     return parser.parse_args()
 
@@ -139,12 +170,7 @@ def init_model(args, device):
         return SResdRVFL(n_blocks=args.n_blocks, n_layers_per_block=args.n_layers, n_hidden=args.n_hidden,
                          activation=args.activation, direct_link=args.direct_link, **base_kwargs)
                          
-    elif args.model == 'NF-RVFL':
-        return NF_RVFL(n_hidden=args.n_hidden, n_rules=args.n_hidden, variation=args.nf_variation,
-                       activation=args.activation, **base_kwargs)
-                       
-    elif args.model == 'FELM':
-        return FELM(n_basis=args.n_hidden, basis_type=args.basis_type, **base_kwargs)
+
         
     else:
         raise ValueError(f"Unknown model: {args.model}")
@@ -154,20 +180,18 @@ def init_model(args, device):
 def run_single_seed(args, device, seed, output_dir, label_cols, X_train_full, X_test,
                     y_train_full, y_test, y_scaler):
     """Run a single training/evaluation pass with the given seed. Returns test metrics dict."""
-    # Override seed for this run
-    args_copy = argparse.Namespace(**vars(args))
-    args_copy.random_state = seed
+    cfg = RandomTrainingConfig.from_namespace(args).with_seed(seed)
 
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_full, y_train_full, test_size=0.2, random_state=seed
     )
 
     # --- Initialize & Train ---
-    model = init_model(args_copy, device)
+    model = init_model(cfg, device)
     start_time = time.time()
     model.fit(X_train, y_train)
     train_time = time.time() - start_time
-    print(f"  Seed {seed}: trained in {train_time:.2f}s")
+    logging.info("Seed %d: trained in %.2fs", seed, train_time)
 
     # --- Evaluate ---
     results = {}
@@ -179,124 +203,99 @@ def run_single_seed(args, device, seed, output_dir, label_cols, X_train_full, X_
     ]:
         y_pred_scaled = model.predict(X_split)
 
-        if args.use_log:
-            y_true_original = np.expm1(y_scaler.inverse_transform(y_split))
-        else:
-            y_true_original = y_scaler.inverse_transform(y_split)
+        y_true_original = _inverse_predictions(cfg, y_scaler, y_split)
 
         if y_pred_scaled.ndim == 1:
             y_pred_scaled = y_pred_scaled.reshape(-1, 1)
 
-        if args.use_log:
-            y_pred_original = np.expm1(y_scaler.inverse_transform(y_pred_scaled))
-        else:
-            y_pred_original = y_scaler.inverse_transform(y_pred_scaled)
+        y_pred_original = _inverse_predictions(cfg, y_scaler, y_pred_scaled)
 
-        if args.use_area_root and "Area" in label_cols:
+        if cfg.use_area_root and "Area" in label_cols:
             area_idx = label_cols.index("Area")
             y_true_original[:, area_idx] = y_true_original[:, area_idx] ** 2
             y_pred_original[:, area_idx] = y_pred_original[:, area_idx] ** 2
 
-        y_true_flat = y_true_original.flatten()
-        y_pred_flat = y_pred_original.flatten()
-
-        aggregate_metrics = {
-            'mse': float(np.mean((y_pred_flat - y_true_flat) ** 2)),
-            'rmse': float(np.sqrt(np.mean((y_pred_flat - y_true_flat) ** 2))),
-            'mae': float(np.mean(np.abs(y_pred_flat - y_true_flat))),
-            'r2': float(r2_score(y_true_flat, y_pred_flat))
-        }
-
-        mask = y_true_flat != 0
-        if np.any(mask):
-            aggregate_metrics['mape'] = float(np.mean(np.abs((y_pred_flat[mask] - y_true_flat[mask]) / y_true_flat[mask])))
-        else:
-            aggregate_metrics['mape'] = float('nan')
+        aggregate_metrics = _aggregate_metrics(y_true_original, y_pred_original)
 
         results[split_name] = {'aggregate': aggregate_metrics}
 
         if split_name == 'test':
-            print(f"    Test RMSE: {aggregate_metrics['rmse']:.2f}, MAE: {aggregate_metrics['mae']:.2f}, R²: {aggregate_metrics['r2']:.4f}")
+            logging.info(
+                "Seed %d test -> RMSE: %.2f, MAE: %.2f, R2: %.4f",
+                seed,
+                aggregate_metrics['rmse'],
+                aggregate_metrics['mae'],
+                aggregate_metrics['r2'],
+            )
 
         for i, target_name in enumerate(label_cols):
             y_true_target = y_true_original[:, i]
             y_pred_target = y_pred_original[:, i]
             target_metrics = compute_regression_metrics(y_true_target, y_pred_target)
-            display_name = "Area (Squared from Root)" if (args.use_area_root and target_name == "Area") else target_name
+            display_name = "Area (Squared from Root)" if (cfg.use_area_root and target_name == "Area") else target_name
             results[split_name][display_name] = {k: float(v) for k, v in target_metrics.items()}
 
     # --- Save per-seed artifacts ---
     results_dict = {
-        'config': vars(args_copy),
+        'config': cfg.to_dict(),
         'metrics': results,
         'train_time_seconds': train_time
     }
 
-    results_file = os.path.join(output_dir, f"results_{args.model}_{args.dataset}.json")
+    results_file = os.path.join(output_dir, f"results_{cfg.model}_{cfg.dataset}.json")
     with open(results_file, 'w') as f:
         json.dump(results_dict, f, indent=2)
 
-    y_test_pred = model.predict(X_test)
-    if y_test_pred.ndim == 1:
-        y_test_pred = y_test_pred.reshape(-1, 1)
+    if not cfg.no_save_model:
+        y_test_pred = model.predict(X_test)
+        if y_test_pred.ndim == 1:
+            y_test_pred = y_test_pred.reshape(-1, 1)
 
-    if args.use_log:
-        y_test_pred_original = np.expm1(y_scaler.inverse_transform(y_test_pred))
-        y_test_original = np.expm1(y_scaler.inverse_transform(y_test))
-    else:
-        y_test_pred_original = y_scaler.inverse_transform(y_test_pred)
-        y_test_original = y_scaler.inverse_transform(y_test)
+        y_test_pred_original = _inverse_predictions(cfg, y_scaler, y_test_pred)
+        y_test_original = _inverse_predictions(cfg, y_scaler, y_test)
 
-    if args.use_area_root and "Area" in label_cols:
-        area_idx = label_cols.index("Area")
-        y_test_original[:, area_idx] = y_test_original[:, area_idx] ** 2
-        y_test_pred_original[:, area_idx] = y_test_pred_original[:, area_idx] ** 2
+        if cfg.use_area_root and "Area" in label_cols:
+            area_idx = label_cols.index("Area")
+            y_test_original[:, area_idx] = y_test_original[:, area_idx] ** 2
+            y_test_pred_original[:, area_idx] = y_test_pred_original[:, area_idx] ** 2
 
-    np.savez(
-        os.path.join(output_dir, 'test_predictions.npz'),
-        y_true=y_test_original,
-        y_pred=y_test_pred_original,
-        label_names=label_cols
-    )
+        np.savez(
+            os.path.join(output_dir, 'test_predictions.npz'),
+            y_true=y_test_original,
+            y_pred=y_test_pred_original,
+            label_names=label_cols
+        )
 
-    model_file = os.path.join(output_dir, 'model.pkl')
-    with open(model_file, 'wb') as f:
-        pickle.dump(model, f)
+        model_file = os.path.join(output_dir, 'model.pkl')
+        with open(model_file, 'wb') as f:
+            pickle.dump(model, f)
 
     return results, train_time
 
 
 def main():
+    setup_logging()
     args = parse_args()
+    cfg = RandomTrainingConfig.from_namespace(args)
 
     # --- Setup Device ---
-    if args.no_cuda:
-        device = torch.device('cpu')
-    else:
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"Using device: {device}")
+    device = get_device(cfg.no_cuda)
+    logging.info("Using device: %s", device)
 
     # --- Setup Dataset ---
-    dataset_cfg = DATASET_CONFIGS[args.dataset]
+    dataset_cfg = DATASET_CONFIGS[cfg.dataset]
     csv_file = dataset_cfg['file']
     feature_cols = dataset_cfg['features']
-    label_cols = args.targets if args.targets else dataset_cfg['default_targets']
+    label_cols = list(cfg.targets) if cfg.targets else dataset_cfg['default_targets']
 
-    print(f"\nLoading dataset: {args.dataset}")
-    print(f"File: {csv_file}")
-    print(f"Features ({len(feature_cols)}): {feature_cols}")
-    print(f"Targets: {label_cols}")
+    logging.info("Loading dataset: %s", cfg.dataset)
+    logging.info("File: %s", csv_file)
+    logging.info("Features (%d): %s", len(feature_cols), feature_cols)
+    logging.info("Targets: %s", label_cols)
 
     # --- Setup Base Output Dir ---
-    if args.output_dir is None:
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        target_str = "_".join(label_cols)
-        folder_name = f"{args.dataset}_{args.model}_{timestamp}_{target_str}"
-        base_output_dir = os.path.join(args.base_dir, folder_name)
-    else:
-        base_output_dir = args.output_dir
-    os.makedirs(base_output_dir, exist_ok=True)
-    print(f"Output directory: {base_output_dir}")
+    base_output_dir = _build_output_dir(cfg, label_cols)
+    logging.info("Output directory: %s", base_output_dir)
 
     # --- Load Data (applies log1p and scaler intrinsically) ---
     X_train_full, X_test, X_scaler, y_train_full, y_test, y_scaler = load_data(
@@ -305,25 +304,25 @@ def main():
         label_cols=label_cols,
         plots=False,
         rf=base_output_dir,
-        feature_scaler_type=args.feature_scaler,
-        label_scaler_type=args.label_scaler,
-        use_log=args.use_log,
-        use_area_root=args.use_area_root
+        feature_scaler_type=cfg.feature_scaler,
+        label_scaler_type=cfg.label_scaler,
+        use_log=cfg.use_log,
+        use_area_root=cfg.use_area_root
     )
 
-    print(f"\nData shapes:")
-    print(f"  X_train_full: {X_train_full.shape}, y_train_full: {y_train_full.shape}")
-    print(f"  X_test:       {X_test.shape}, y_test:       {y_test.shape}")
+    logging.info("Data shapes:")
+    logging.info("  X_train_full: %s, y_train_full: %s", X_train_full.shape, y_train_full.shape)
+    logging.info("  X_test:       %s, y_test:       %s", X_test.shape, y_test.shape)
 
     # --- Run over seeds ---
-    seeds = [args.random_state + i for i in range(args.n_seeds)]
+    seeds = [cfg.random_state + i for i in range(cfg.n_seeds)]
     all_test_metrics = []
 
-    for seed in seeds:
-        if args.n_seeds > 1:
+    for idx, seed in enumerate(seeds, start=1):
+        if cfg.n_seeds > 1:
             seed_output_dir = os.path.join(base_output_dir, f"seed_{seed}")
-            os.makedirs(seed_output_dir, exist_ok=True)
-            print(f"\n--- Seed {seed} ({seeds.index(seed)+1}/{len(seeds)}) ---")
+            ensure_dir(seed_output_dir)
+            logging.info("--- Seed %d (%d/%d) ---", seed, idx, len(seeds))
         else:
             seed_output_dir = base_output_dir
 
@@ -337,10 +336,10 @@ def main():
         all_test_metrics.append(test_metrics)
 
     # --- Aggregate multi-seed results ---
-    if args.n_seeds > 1:
-        print(f"\n{'='*70}")
-        print(f"MULTI-SEED SUMMARY ({args.n_seeds} seeds)")
-        print(f"{'='*70}")
+    if cfg.n_seeds > 1:
+        logging.info("%s", '=' * 70)
+        logging.info("MULTI-SEED SUMMARY (%d seeds)", cfg.n_seeds)
+        logging.info("%s", '=' * 70)
 
         summary = {}
         for key in ['rmse', 'mae', 'r2', 'mape', 'mse']:
@@ -353,29 +352,36 @@ def main():
                     'max': float(np.max(values)),
                     'values': values
                 }
-                print(f"  {key.upper():>5s}: {summary[key]['mean']:.4f} ± {summary[key]['std']:.4f}  (min={summary[key]['min']:.4f}, max={summary[key]['max']:.4f})")
+                logging.info(
+                    "  %5s: %.4f +/- %.4f  (min=%.4f, max=%.4f)",
+                    key.upper(),
+                    summary[key]['mean'],
+                    summary[key]['std'],
+                    summary[key]['min'],
+                    summary[key]['max'],
+                )
 
         train_times = [m['train_time'] for m in all_test_metrics]
         summary['train_time'] = {
             'mean': float(np.mean(train_times)),
             'std': float(np.std(train_times))
         }
-        print(f"  TIME:  {summary['train_time']['mean']:.2f} ± {summary['train_time']['std']:.2f}s")
+        logging.info("  TIME:  %.2f +/- %.2fs", summary['train_time']['mean'], summary['train_time']['std'])
 
         # Save aggregated summary
         multi_seed_result = {
-            'config': vars(args),
+            'config': cfg.to_dict(),
             'seeds': seeds,
-            'n_seeds': args.n_seeds,
+            'n_seeds': cfg.n_seeds,
             'per_seed_test_metrics': all_test_metrics,
             'aggregated': summary
         }
         summary_file = os.path.join(base_output_dir, 'multi_seed_summary.json')
         with open(summary_file, 'w') as f:
             json.dump(multi_seed_result, f, indent=2)
-        print(f"\nMulti-seed summary saved to: {summary_file}")
+        logging.info("Multi-seed summary saved to: %s", summary_file)
     else:
-        print(f"\nRun artifacts saved in: {base_output_dir}")
+        logging.info("Run artifacts saved in: %s", base_output_dir)
 
 
 if __name__ == "__main__":

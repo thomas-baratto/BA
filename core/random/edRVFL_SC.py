@@ -1,3 +1,5 @@
+"""Skip-connection variants of deep RVFL models."""
+
 import typing
 import torch
 import numpy as np

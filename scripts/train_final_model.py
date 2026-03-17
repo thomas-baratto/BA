@@ -12,12 +12,12 @@ import time
 import numpy as np
 from datetime import datetime
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from torch.utils.data import DataLoader
 
 from core.trainer import main_train, evaluate
 from core.data_loader import load_data, CSVDataset
-from core.utils import compute_regression_metrics, ResourceLogger
+from core.runtime import ensure_dir, get_device, setup_logging
+from core.utils import compute_regression_metrics
 from scripts.run_optuna import detect_columns_from_csv
 from monitoring.power_utils import power_monitor_session
 
@@ -31,15 +31,34 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-STUDY_NAME_DEPRESSION_CONES = 'depression_cones_mlp_journal_study'
 STUDY_NAME_ISOTHERM = 'nn_study_v3_Area_Iso_distance_Iso_width'
 
-PATH_DEPRESSION_CONE_STUDY = '/home/barattts/lavoltabuona/BA/runs/global_run_832/optuna_journal_storage/journal.log'
 PATH_ISOTHERM_STUDY = '/home/barattts/lavoltabuona/BA/runs/global_run_830/optuna_journal_storage/journal.log'
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+def normalize_best_params(best_params: dict) -> dict:
+    """Normalize parameter naming variants from historical studies."""
+    final_model_config = best_params.copy()
+    if "feature_scaler" in final_model_config and "feature_scaler_type" not in final_model_config:
+        final_model_config["feature_scaler_type"] = final_model_config["feature_scaler"]
+    if "label_scaler" in final_model_config and "label_scaler_type" not in final_model_config:
+        final_model_config["label_scaler_type"] = final_model_config["label_scaler"]
+    final_model_config["plots"] = True
+    if "num_epochs" not in final_model_config:
+        final_model_config["num_epochs"] = MAX_EPOCHS
+    final_model_config["patience"] = PATIENCE
+    return final_model_config
+
+
+def get_loss_criterion(loss_name: str) -> nn.Module:
+    if loss_name == "L1":
+        return nn.L1Loss()
+    if loss_name == "SmoothL1":
+        return nn.SmoothL1Loss()
+    return nn.MSELoss()
 
 if __name__ == "__main__":
+    setup_logging()
     parser = argparse.ArgumentParser(description='Train final model with best Optuna parameters')
     parser.add_argument(
         '--study-name',
@@ -90,6 +109,7 @@ if __name__ == "__main__":
         help='Override directory for power logs.'
     )
     args = parser.parse_args()
+    device = get_device()
 
     # Load the Optuna study
     logging.info(f"Loading Optuna study: {args.study_name}")
@@ -116,7 +136,7 @@ if __name__ == "__main__":
     else:
         output_dir = args.output_dir
     
-    os.makedirs(output_dir, exist_ok=True)
+    ensure_dir(output_dir)
     logging.info(f"Output directory: {output_dir}")
 
     # Detect feature and label columns from CSV file (same as run_optuna.py)
@@ -129,24 +149,7 @@ if __name__ == "__main__":
     logging.info(f"Labels ({len(LABEL_NAMES)}): {LABEL_NAMES}")
 
     # Build final model configuration
-    final_model_config = study.best_params.copy()
-    
-    # Normalize parameter names (handle variations between studies)
-    if "feature_scaler" in final_model_config and "feature_scaler_type" not in final_model_config:
-        final_model_config["feature_scaler_type"] = final_model_config["feature_scaler"]
-    
-    if "label_scaler" in final_model_config and "label_scaler_type" not in final_model_config:
-        final_model_config["label_scaler_type"] = final_model_config["label_scaler"]
-
-    # Ensure 'plots' key exists (required by main_train)
-    final_model_config["plots"] = True
-    
-    # Ensure 'num_epochs' exists
-    if "num_epochs" not in final_model_config:
-        final_model_config["num_epochs"] = MAX_EPOCHS
-    
-    # Set patience for early stopping
-    final_model_config["patience"] = PATIENCE
+    final_model_config = normalize_best_params(study.best_params)
 
     with power_monitor_session(args, output_dir):
         # Train the final model
@@ -175,7 +178,7 @@ if __name__ == "__main__":
             csv_file=args.csv_file,
             feature_cols=FEATURE_COLUMN_NAMES,
             label_cols=LABEL_NAMES,
-            device=DEVICE
+            device=device
         )
         
         train_time = time.time() - train_start
@@ -198,12 +201,7 @@ if __name__ == "__main__":
         
         # Get criterion
         loss_name = final_model_config.get("loss_criterion", "SmoothL1")
-        if loss_name == "L1":
-            criterion = nn.L1Loss()
-        elif loss_name == "SmoothL1":
-            criterion = nn.SmoothL1Loss()
-        else:
-            criterion = nn.MSELoss()
+        criterion = get_loss_criterion(loss_name)
         
         for split_name, loader, X_split, y_split in [
             ('train', train_loader, X_train, y_train),
@@ -211,7 +209,7 @@ if __name__ == "__main__":
             ('test', test_loader, X_test, y_test)
         ]:
             # Get predictions
-            loss, predictions, true_values = evaluate(final_model, loader, criterion, DEVICE)
+            loss, predictions, true_values = evaluate(final_model, loader, criterion, device)
             
             # Inverse transform
             predictions_original = y_scaler.inverse_transform(predictions)
@@ -255,7 +253,7 @@ if __name__ == "__main__":
                 'test_samples': X_test.shape[0]
             },
             'train_time_seconds': train_time,
-            'device': str(DEVICE)
+            'device': str(device)
         }
         
         results_file = os.path.join(output_dir, 'results.json')

@@ -51,6 +51,7 @@ HIDDEN_SIZES=(500 1000 1500)
 LAYER_COUNTS=(1 2 3)
 BLOCK_COUNTS=(3 5 8)
 ENSEMBLE_COUNTS=(10 20)
+ACTIVATIONS=(ReLU GELU ELU)
 
 # Models to sweep (comment out any you want to skip)
 MODELS_SIMPLE=(ELM)                             # Only n_hidden matters
@@ -72,40 +73,44 @@ for dataset in "${DATASETS[@]}"; do
         EXTRA="--use-area-root"
     fi
 
-    COMMON="--feature-scaler $FEATURE_SCALER --label-scaler $LABEL_SCALER --base-dir \"$BASE_RUN_DIR\" $EXTRA"
+    COMMON="--feature-scaler $FEATURE_SCALER --label-scaler $LABEL_SCALER --base-dir \"$BASE_RUN_DIR\" --no-save-model $EXTRA"
 
-    # --- ELM: sweep n_hidden only ---
-    for nh in "${HIDDEN_SIZES[@]}"; do
-        commands+=("python scripts/train_random_models.py --model ELM --dataset $dataset --n-hidden $nh $COMMON")
-    done
+    for act in "${ACTIVATIONS[@]}"; do
+        ACT_FLAG="--activation $act"
 
-    # --- dRVFL: sweep n_hidden × n_layers ---
-    for nh in "${HIDDEN_SIZES[@]}"; do
-        for nl in "${LAYER_COUNTS[@]}"; do
-            commands+=("python scripts/train_random_models.py --model dRVFL --dataset $dataset --n-hidden $nh --n-layers $nl $COMMON")
+        # --- ELM: sweep n_hidden only ---
+        for nh in "${HIDDEN_SIZES[@]}"; do
+            commands+=("python scripts/train_random_models.py --model ELM --dataset $dataset --n-hidden $nh $ACT_FLAG $COMMON")
         done
-    done
 
-    # --- Ensemble models: sweep n_hidden × n_layers × n_ensemble ---
-    for model in "${MODELS_ENSEMBLE[@]}"; do
-        SC_FLAGS=""
-        if [ "$model" = "edRVFL-SC" ]; then
-            SC_FLAGS="--sc-mode dense"
-        fi
-
+        # --- dRVFL: sweep n_hidden × n_layers ---
         for nh in "${HIDDEN_SIZES[@]}"; do
             for nl in "${LAYER_COUNTS[@]}"; do
-                for ne in "${ENSEMBLE_COUNTS[@]}"; do
-                    commands+=("python scripts/train_random_models.py --model $model --dataset $dataset --n-hidden $nh --n-layers $nl --n-ensemble $ne $SC_FLAGS $COMMON")
+                commands+=("python scripts/train_random_models.py --model dRVFL --dataset $dataset --n-hidden $nh --n-layers $nl $ACT_FLAG $COMMON")
+            done
+        done
+
+        # --- Ensemble models: sweep n_hidden × n_layers × n_ensemble ---
+        for model in "${MODELS_ENSEMBLE[@]}"; do
+            SC_FLAGS=""
+            if [ "$model" = "edRVFL-SC" ]; then
+                SC_FLAGS="--sc-mode dense"
+            fi
+
+            for nh in "${HIDDEN_SIZES[@]}"; do
+                for nl in "${LAYER_COUNTS[@]}"; do
+                    for ne in "${ENSEMBLE_COUNTS[@]}"; do
+                        commands+=("python scripts/train_random_models.py --model $model --dataset $dataset --n-hidden $nh --n-layers $nl --n-ensemble $ne $SC_FLAGS $ACT_FLAG $COMMON")
+                    done
                 done
             done
         done
-    done
 
-    # --- SResdRVFL: sweep n_hidden × n_blocks (1 layer per block, direct link) ---
-    for nh in "${HIDDEN_SIZES[@]}"; do
-        for nb in "${BLOCK_COUNTS[@]}"; do
-            commands+=("python scripts/train_random_models.py --model SResdRVFL --dataset $dataset --n-hidden $nh --n-layers 1 --n-blocks $nb --direct-link $COMMON")
+        # --- SResdRVFL: sweep n_hidden × n_blocks (1 layer per block, direct link) ---
+        for nh in "${HIDDEN_SIZES[@]}"; do
+            for nb in "${BLOCK_COUNTS[@]}"; do
+                commands+=("python scripts/train_random_models.py --model SResdRVFL --dataset $dataset --n-hidden $nh --n-layers 1 --n-blocks $nb --direct-link $ACT_FLAG $COMMON")
+            done
         done
     done
 done
@@ -113,11 +118,12 @@ done
 TOTAL=${#commands[@]}
 echo "======================================"
 echo "Parameter Sweep: $TOTAL total runs"
-echo "  Hidden sizes:   ${HIDDEN_SIZES[*]}"
-echo "  Layer counts:   ${LAYER_COUNTS[*]}"
-echo "  Block counts:   ${BLOCK_COUNTS[*]}"
+echo "  Hidden sizes:    ${HIDDEN_SIZES[*]}"
+echo "  Layer counts:    ${LAYER_COUNTS[*]}"
+echo "  Block counts:    ${BLOCK_COUNTS[*]}"
 echo "  Ensemble counts: ${ENSEMBLE_COUNTS[*]}"
-echo "  Datasets:       ${DATASETS[*]}"
+echo "  Activations:     ${ACTIVATIONS[*]}"
+echo "  Datasets:        ${DATASETS[*]}"
 echo "======================================"
 
 # ============================================================

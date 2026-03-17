@@ -12,14 +12,12 @@ from sklearn.metrics import r2_score
 
 from core.data_loader import load_data
 
-from scripts.RandomNetwork.RandomModels.ELM import ELM
-from scripts.RandomNetwork.RandomModels.dRVFL import dRVFL
-from scripts.RandomNetwork.RandomModels.edRVFL import edRVFL
-from scripts.RandomNetwork.RandomModels.edRVFL_SC import edRVFL_SC
-from scripts.RandomNetwork.RandomModels.esc_edRVFL import esc_edRVFL
-from scripts.RandomNetwork.RandomModels.FELM import FELM
-from scripts.RandomNetwork.RandomModels.SResdRVFL import SResdRVFL
-from scripts.RandomNetwork.RandomModels.NF_RVFL import NF_RVFL
+from core.random.ELM import ELM
+from core.random.dRVFL import dRVFL
+from core.random.edRVFL import edRVFL
+from core.random.edRVFL_SC import edRVFL_SC
+from core.random.esc_edRVFL import esc_edRVFL
+from core.random.SResdRVFL import SResdRVFL
 
 MODEL_CLASSES = {
     'ELM': ELM,
@@ -27,9 +25,7 @@ MODEL_CLASSES = {
     'edRVFL': edRVFL,
     'edRVFL-SC': edRVFL_SC,
     'esc-edRVFL': esc_edRVFL,
-    'SResdRVFL': SResdRVFL,
-    'NF-RVFL': NF_RVFL,
-    'FELM': FELM
+    'SResdRVFL': SResdRVFL
 }
 
 DATASET_CONFIGS = {
@@ -60,10 +56,7 @@ def objective(trial, model_name, X_train, y_train, X_val, y_val, device):
         'random_state': 42
     }
     
-    if model_name != 'FELM':
-        kwargs['activation'] = 'rbf'
-    else:
-        kwargs['basis_type'] = 'rbf'
+    kwargs['activation'] = 'rbf'
         
     if model_name in ['dRVFL', 'edRVFL', 'edRVFL-SC', 'esc-edRVFL']:
         kwargs['n_layers'] = 3
@@ -72,8 +65,6 @@ def objective(trial, model_name, X_train, y_train, X_val, y_val, device):
     if model_name == 'SResdRVFL':
         kwargs['n_blocks'] = 3
         kwargs['n_layers_per_block'] = 3
-    if model_name == 'NF-RVFL':
-        kwargs['n_rules'] = 200
     
     kwargs['gamma'] = gamma
     

@@ -153,7 +153,13 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
     if return_meta:
         scaler_meta = {
             'feature_scaler_type': feature_scaler_type,
-            'label_scaler_type': label_scaler_type
+            'label_scaler_type': label_scaler_type,
+            'use_log': bool(use_log),
+            'use_area_root': bool(use_area_root),
+            'test_size': float(test_size),
+            'random_state': int(random_state),
+            'feature_cols': list(feature_cols),
+            'label_cols': list(label_cols),
         }
         return X_train, X_test, X_scaler, y_train, y_test, y_scaler, scaler_meta
     return X_train, X_test, X_scaler, y_train, y_test, y_scaler

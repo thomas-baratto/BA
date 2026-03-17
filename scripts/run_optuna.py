@@ -5,12 +5,12 @@ import sys
 
 import optuna
 import pandas as pd
-import torch
 from sklearn.model_selection import train_test_split
 from optuna.storages import JournalStorage
 from optuna.storages.journal import JournalFileBackend 
 
 from core.data_loader import load_data
+from core.runtime import ensure_dir, get_device, setup_logging
 from optimization.optuna_config import (
     parse_args,
     set_seed,
@@ -46,14 +46,9 @@ def main():
     
     # Log format adjusted to include SLURM_PROCID and stream to stdout/stderr
     worker_id = os.environ.get('SLURM_PROCID', 'MAIN')
-    logging.basicConfig(
-        level=logging.INFO, 
-        format=f'%(asctime)s - Worker-{worker_id} - %(levelname)s - %(message)s',
-        # CRITICAL: Ensures logs go to the Slurm output file
-        stream=sys.stdout 
-    )
+    setup_logging(worker_id=worker_id)
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = get_device()
     logging.info(f"Using device: {device} (Visible device: {os.environ.get('CUDA_VISIBLE_DEVICES', 'N/A')})")
 
     args = parse_args()
@@ -84,7 +79,7 @@ def main():
         run_tag = safe_tag.strip()
     tag_suffix = f"_{run_tag}" if run_tag else ""
     root_folder = f"runs/run_{run_timestamp}_{label_str}{tag_suffix}/"
-    os.makedirs(root_folder, exist_ok=True)
+    ensure_dir(root_folder)
 
     # --- JOURNAL STORAGE SETUP (Shared between all 56 workers) ---
     journal_dir = args.storage_path or f"{root_folder}/optuna_journal_storage/"
@@ -93,7 +88,7 @@ def main():
     optuna_study_name = args.study_name or f"nn_study_{label_str}"
     
     # Ensure the directory exists before the backend tries to open the file
-    os.makedirs(os.path.dirname(journal_file_path) if os.path.basename(journal_file_path) != "journal.log" else journal_dir, exist_ok=True)
+    ensure_dir(os.path.dirname(journal_file_path) if os.path.basename(journal_file_path) != "journal.log" else journal_dir)
     
     backend = JournalFileBackend(journal_file_path) 
     optuna_storage = JournalStorage(backend)
