@@ -36,3 +36,22 @@ def test_run_random_model_script_wires_entrypoint_and_direct_link():
     assert 'MODEL=${MODEL:-ELM}' in content
     assert '--model ${MODEL}' in content
     assert 'if [ "$MODEL" = "SResdRVFL" ]; then' in content
+
+
+def test_canonical_slurm_scripts_do_not_use_optional_legacy_entrypoints():
+    paths = [
+        'scripts/slurm/run_optuna_mlp.sbatch',
+        'scripts/slurm/train_isotherm_journal.sbatch',
+        'scripts/slurm/sweep_random_params.sbatch',
+        'scripts/slurm/run_random_model.sbatch',
+    ]
+    disallowed_refs = [
+        'scripts/inference.py',
+        'scripts/tune_gamma.py',
+        'scripts/RandomNetwork/',
+    ]
+
+    for path in paths:
+        content = _read(path)
+        for ref in disallowed_refs:
+            assert ref not in content, f"{path} must not reference {ref}"

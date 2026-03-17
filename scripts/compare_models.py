@@ -41,6 +41,9 @@ def process_mlp_results(mlp_results_file):
         'R2': metrics.get('r2', 0),
         'RMSE': metrics.get('rmse', 0),
         'MAE': metrics.get('mae', 0),
+        'RMSLE': metrics.get('rmsle'),
+        'nRMSE': metrics.get('nrmse'),
+        'KGE': metrics.get('kge'),
         'Time(s)': data.get('train_time_seconds', 0),
         'Architecture': f"MLP {data.get('config', {}).get('nr_hidden_layers', 'N/A')}x{data.get('config', {}).get('nr_neurons', 'N/A')}"
     }
@@ -79,6 +82,9 @@ def collect_best_random_models(random_csv):
                 'R2': best_row.get('R2', 0),
                 'RMSE': best_row.get('RMSE', 0),
                 'MAE': best_row.get('MAE', 0),
+                'RMSLE': best_row.get('RMSLE'),
+                'nRMSE': best_row.get('nRMSE'),
+                'KGE': best_row.get('KGE'),
                 'Time(s)': best_row.get('Time(s)', 0),
                 'Architecture': arch
             })

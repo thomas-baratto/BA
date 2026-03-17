@@ -16,7 +16,6 @@ import pickle
 import logging
 from datetime import datetime
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
 
 from core.config_types import RandomTrainingConfig
 from core.data_loader import load_data
@@ -51,20 +50,8 @@ DATASET_CONFIGS = {
 
 
 def _aggregate_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
-    y_true_flat = y_true.flatten()
-    y_pred_flat = y_pred.flatten()
-    metrics = {
-        'mse': float(np.mean((y_pred_flat - y_true_flat) ** 2)),
-        'rmse': float(np.sqrt(np.mean((y_pred_flat - y_true_flat) ** 2))),
-        'mae': float(np.mean(np.abs(y_pred_flat - y_true_flat))),
-        'r2': float(r2_score(y_true_flat, y_pred_flat))
-    }
-    mask = y_true_flat != 0
-    if np.any(mask):
-        metrics['mape'] = float(np.mean(np.abs((y_pred_flat[mask] - y_true_flat[mask]) / y_true_flat[mask])))
-    else:
-        metrics['mape'] = float('nan')
-    return metrics
+    # Keep aggregate metrics aligned with per-target metric implementation.
+    return compute_regression_metrics(y_true, y_pred)
 
 
 def _inverse_predictions(cfg: RandomTrainingConfig, y_scaler, y_values: np.ndarray) -> np.ndarray:
@@ -342,7 +329,7 @@ def main():
         logging.info("%s", '=' * 70)
 
         summary = {}
-        for key in ['rmse', 'mae', 'r2', 'mape', 'mse']:
+        for key in ['rmse', 'mae', 'r2', 'mape', 'mse', 'rmsle', 'nrmse', 'kge']:
             values = [m[key] for m in all_test_metrics if not np.isnan(m.get(key, float('nan')))]
             if values:
                 summary[key] = {

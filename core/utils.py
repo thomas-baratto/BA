@@ -68,6 +68,39 @@ def compute_regression_metrics(y_true: np.ndarray,
     else:
         logging.warning("Could not calculate MAPE: all true values are zero")
         metrics["mape"] = float('nan')
+
+    # RMSLE requires non-negative values.
+    if np.all(y_true_flat >= 0) and np.all(y_pred_flat >= 0):
+        log_err = np.log1p(y_pred_flat) - np.log1p(y_true_flat)
+        metrics["rmsle"] = float(np.sqrt(np.mean(log_err ** 2)))
+    else:
+        metrics["rmsle"] = float('nan')
+
+    # nRMSE normalized by target range.
+    y_range = float(np.max(y_true_flat) - np.min(y_true_flat))
+    if y_range > 0:
+        metrics["nrmse"] = float(metrics["rmse"] / y_range)
+    else:
+        metrics["nrmse"] = float('nan')
+
+    # Kling-Gupta Efficiency (KGE): 1 - sqrt((r-1)^2 + (alpha-1)^2 + (beta-1)^2)
+    y_true_std = float(np.std(y_true_flat))
+    y_pred_std = float(np.std(y_pred_flat))
+    y_true_mean = float(np.mean(y_true_flat))
+    y_pred_mean = float(np.mean(y_pred_flat))
+
+    if y_true_std > 0 and y_pred_std > 0:
+        r = float(np.corrcoef(y_true_flat, y_pred_flat)[0, 1])
+    else:
+        r = float('nan')
+
+    alpha = float(y_pred_std / y_true_std) if y_true_std > 0 else float('nan')
+    beta = float(y_pred_mean / y_true_mean) if y_true_mean != 0 else float('nan')
+
+    if np.isfinite(r) and np.isfinite(alpha) and np.isfinite(beta):
+        metrics["kge"] = float(1.0 - np.sqrt((r - 1.0) ** 2 + (alpha - 1.0) ** 2 + (beta - 1.0) ** 2))
+    else:
+        metrics["kge"] = float('nan')
         
     # Relative error statistics
     if np.any(mask): 

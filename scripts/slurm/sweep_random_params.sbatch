@@ -33,6 +33,7 @@ export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH}"
 JOB_ID_STR=${SLURM_JOB_ID:-"manual_$(date +%Y%m%d_%H%M%S)"}
 BASE_RUN_DIR="runs/run_sweep_random_${JOB_ID_STR}"
 mkdir -p "$BASE_RUN_DIR"
+KEEP_RUN_ARTIFACTS=${KEEP_RUN_ARTIFACTS:-0}
 
 echo "Results will be saved in: $BASE_RUN_DIR"
 
@@ -155,5 +156,10 @@ echo "======================================"
 
 echo "Generating summary table..."
 python scripts/summarize_results.py --run-dir "$BASE_RUN_DIR"
+
+if [ "$KEEP_RUN_ARTIFACTS" != "1" ]; then
+    echo "Cleaning per-run subdirectories (keeping summary_table.csv only)..."
+    find "$BASE_RUN_DIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
+fi
 
 echo "Sweep finished. Results in: $BASE_RUN_DIR"

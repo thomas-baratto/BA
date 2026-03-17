@@ -4,9 +4,38 @@ Summarize results from a random training job folder into a CSV table.
 """
 import os
 import json
+import numpy as np
 import pandas as pd
 import argparse
 from pathlib import Path
+
+from core.utils import compute_regression_metrics
+
+
+def _load_or_compute_test_metrics(subdir: Path, data: dict) -> dict:
+    metrics = data.get('metrics', {}).get('test', {}).get('aggregate', {}) or {}
+
+    # If advanced metrics are absent in JSON, try computing from saved predictions.
+    required = {'rmsle', 'nrmse', 'kge'}
+    if required.issubset(metrics.keys()):
+        return metrics
+
+    pred_file = subdir / 'test_predictions.npz'
+    if not pred_file.exists():
+        return metrics
+
+    try:
+        arr = np.load(pred_file)
+        y_true = arr['y_true']
+        y_pred = arr['y_pred']
+        computed = compute_regression_metrics(y_true, y_pred)
+
+        # Keep original JSON values when present; fill missing keys from recomputation.
+        merged = dict(computed)
+        merged.update(metrics)
+        return merged
+    except Exception:
+        return metrics
 
 def main():
     parser = argparse.ArgumentParser(description="Summarize training results into a table")
@@ -36,7 +65,7 @@ def main():
                 data = json.load(f)
                 
             config = data.get('config', {})
-            metrics = data.get('metrics', {}).get('test', {}).get('aggregate', {})
+            metrics = _load_or_compute_test_metrics(subdir, data)
             
             row = {
                 'Model': config.get('model'),
@@ -46,6 +75,9 @@ def main():
                 'MSE': metrics.get('mse'),
                 'MAPE': metrics.get('mape'),
                 'R2': metrics.get('r2'),
+                'RMSLE': metrics.get('rmsle'),
+                'nRMSE': metrics.get('nrmse'),
+                'KGE': metrics.get('kge'),
                 'Time(s)': data.get('train_time_seconds'),
                 'Folder': subdir.name
             }
