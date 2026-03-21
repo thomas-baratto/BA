@@ -29,7 +29,7 @@ class CSVDataset(Dataset):
         return self.data[idx], self.labels[idx]
 
 def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
-              feature_cols: List[str] = ["Flow_well", "Temp_diff", "Temp_diff_real", "kW_well", "Hydr_gradient","Hydr_conductivity", "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"],
+              feature_cols: List[str] = ["Flow_well", "Temp_diff", "kW_well", "Hydr_gradient","Hydr_conductivity", "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"],
               label_cols: List[str] = ["Area", "Iso_distance", "Iso_width"],
               test_size: float = 0.3,
               random_state: int = 42,

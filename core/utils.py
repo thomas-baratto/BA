@@ -69,13 +69,6 @@ def compute_regression_metrics(y_true: np.ndarray,
         logging.warning("Could not calculate MAPE: all true values are zero")
         metrics["mape"] = float('nan')
 
-    # RMSLE requires non-negative values.
-    if np.all(y_true_flat >= 0) and np.all(y_pred_flat >= 0):
-        log_err = np.log1p(y_pred_flat) - np.log1p(y_true_flat)
-        metrics["rmsle"] = float(np.sqrt(np.mean(log_err ** 2)))
-    else:
-        metrics["rmsle"] = float('nan')
-
     # nRMSE normalized by target range.
     y_range = float(np.max(y_true_flat) - np.min(y_true_flat))
     if y_range > 0:

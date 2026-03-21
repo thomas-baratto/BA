@@ -21,7 +21,11 @@ from core.config_types import RandomTrainingConfig
 from core.data_loader import load_data
 from core.runtime import ensure_dir, get_device, setup_logging
 from core.utils import compute_regression_metrics
+from config.datasets import DATASET_CONFIGS
+from core.artifacts import ArtifactManifest
+from pathlib import Path
 
+# Import Models
 # Import Models
 from core.random.ELM import ELM
 from core.random.dRVFL import dRVFL
@@ -29,24 +33,6 @@ from core.random.edRVFL import edRVFL
 from core.random.edRVFL_SC import edRVFL_SC
 from core.random.esc_edRVFL import esc_edRVFL
 from core.random.SResdRVFL import SResdRVFL
-
-DATASET_CONFIGS = {
-    "isotherm": {
-        "file": "./data/Clean_Results_Isotherm.csv",
-        "features": [
-            "Flow_well", "Temp_diff", "kW_well", "Hydr_gradient", "Hydr_conductivity",
-            "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"
-        ],
-        "default_targets": ["Area", "Iso_distance", "Iso_width"]
-    },
-    "cone": {
-        "file": "./data/Depression_cones.csv",
-        "features": [
-            "Flow_well", "Hydr_gradient", "Hydr_conductivity", "Aqu_thickness"
-        ],
-        "default_targets": ["Cone"]
-    }
-}
 
 
 def _aggregate_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
@@ -271,9 +257,9 @@ def main():
 
     # --- Setup Dataset ---
     dataset_cfg = DATASET_CONFIGS[cfg.dataset]
-    csv_file = dataset_cfg['file']
+    csv_file = dataset_cfg['csv_file']
     feature_cols = dataset_cfg['features']
-    label_cols = list(cfg.targets) if cfg.targets else dataset_cfg['default_targets']
+    label_cols = list(cfg.targets) if cfg.targets else dataset_cfg['labels']
 
     logging.info("Loading dataset: %s", cfg.dataset)
     logging.info("File: %s", csv_file)
@@ -300,6 +286,51 @@ def main():
     logging.info("Data shapes:")
     logging.info("  X_train_full: %s, y_train_full: %s", X_train_full.shape, y_train_full.shape)
     logging.info("  X_test:       %s, y_test:       %s", X_test.shape, y_test.shape)
+
+    # --- Save scalers and model config for inference ---
+    scalers_path = os.path.join(base_output_dir, "scalers.pkl")
+    with open(scalers_path, "wb") as f:
+        pickle.dump({
+            "feature_scaler": X_scaler,
+            "label_scaler": y_scaler,
+        }, f)
+    logging.info("Scalers saved to: %s", scalers_path)
+
+    model_config = {
+        "model_type": "random",
+        "model_name": cfg.model,
+        "dataset": cfg.dataset,
+        "input_size": len(feature_cols),
+        "output_size": len(label_cols),
+        "feature_scaler_type": cfg.feature_scaler,
+        "label_scaler_type": cfg.label_scaler,
+        "use_log": cfg.use_log,
+        "use_area_root": cfg.use_area_root,
+        "feature_names": feature_cols,
+        "label_names": label_cols,
+    }
+    config_path = os.path.join(base_output_dir, "model_config.json")
+    with open(config_path, "w") as f:
+        json.dump(model_config, f, indent=2)
+    logging.info("Model config saved to: %s", config_path)
+
+        # Save artifact manifest
+        manifest = ArtifactManifest(
+            model_type="random",
+            dataset=cfg.dataset,
+            targets=label_cols,
+            features=feature_cols,
+            training={
+                "model": cfg.model,
+                "n_hidden": cfg.n_hidden,
+                "n_layers": cfg.n_layers,
+                "alpha": cfg.alpha,
+                "gamma": cfg.gamma,
+            },
+            performance={},  # Will be populated after training
+        )
+        manifest.save(Path(base_output_dir))
+        logging.info("Artifact manifest saved to: %s", os.path.join(base_output_dir, "artifact_manifest.json"))
 
     # --- Run over seeds ---
     seeds = [cfg.random_state + i for i in range(cfg.n_seeds)]
@@ -329,7 +360,7 @@ def main():
         logging.info("%s", '=' * 70)
 
         summary = {}
-        for key in ['rmse', 'mae', 'r2', 'mape', 'mse', 'rmsle', 'nrmse', 'kge']:
+        for key in ['rmse', 'mae', 'r2', 'mape', 'mse', 'nrmse', 'kge']:
             values = [m[key] for m in all_test_metrics if not np.isnan(m.get(key, float('nan')))]
             if values:
                 summary[key] = {

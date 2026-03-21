@@ -403,8 +403,8 @@ def main_train(config: Dict[str, Any],
         plot_split_metric_bars(rf, label_cols, split_metrics, writer=writer)
             
     writer.close()
-    
+
     resource_logger.save()
-    
+
     logging.info("Main training function finished.")
-    return model
+    return model, X_scaler, y_scaler

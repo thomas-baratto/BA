@@ -219,7 +219,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -255,7 +255,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -287,7 +287,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area', 'Iso_distance', 'Iso_width']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -325,7 +325,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -363,7 +363,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -398,7 +398,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -433,7 +433,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -465,7 +465,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -497,7 +497,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -531,7 +531,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -571,7 +571,7 @@ class TestMainTrainIntegration:
             # Track learning rates
             initial_lr = config['learning_rate']
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,
@@ -606,7 +606,7 @@ class TestMainTrainIntegration:
             label_cols = ['Area']
             device = torch.device('cpu')
             
-            model = main_train(
+            model, _, _ = main_train(
                 config=config,
                 rf=tmpdir,
                 csv_file=sample_csv_file,

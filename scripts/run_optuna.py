@@ -18,7 +18,12 @@ from optimization.optuna_config import (
 )
 from optimization.optuna_objective import build_objective
 from monitoring.power_utils import power_monitor_session
-from core.hap import KNOWN_FEATURES, KNOWN_LABELS
+# Feature and label definitions for known datasets
+KNOWN_FEATURES = [
+    "Flow_well", "Temp_diff", "kW_well", "Hydr_gradient",
+    "Hydr_conductivity", "Aqu_thickness", "Long_dispersivity", "Trans_dispersivity", "Isotherm"
+]
+KNOWN_LABELS = ["Area", "Iso_distance", "Iso_width", "Cone"]
 
 def detect_columns_from_csv(csv_file):
     """Detect feature and label columns from CSV header."""

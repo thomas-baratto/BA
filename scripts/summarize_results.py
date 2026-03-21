@@ -16,7 +16,7 @@ def _load_or_compute_test_metrics(subdir: Path, data: dict) -> dict:
     metrics = data.get('metrics', {}).get('test', {}).get('aggregate', {}) or {}
 
     # If advanced metrics are absent in JSON, try computing from saved predictions.
-    required = {'rmsle', 'nrmse', 'kge'}
+    required = {'nrmse', 'kge'}
     if required.issubset(metrics.keys()):
         return metrics
 
@@ -75,7 +75,6 @@ def main():
                 'MSE': metrics.get('mse'),
                 'MAPE': metrics.get('mape'),
                 'R2': metrics.get('r2'),
-                'RMSLE': metrics.get('rmsle'),
                 'nRMSE': metrics.get('nrmse'),
                 'KGE': metrics.get('kge'),
                 'Time(s)': data.get('train_time_seconds'),

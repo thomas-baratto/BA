@@ -1,72 +1,177 @@
-# Bachelor Thesis Codebase: Heat Plume Prediction
+# Thermal Plume Prediction
 
-This repository compares optimized MLPs against randomized network families for two geothermal targets:
+Predict thermal plume parameters (isotherm geometry or depression cone size) from hydrogeological inputs using trained neural networks.
 
-1. Isotherm dataset: `Area`, `Iso_distance`, `Iso_width`
-2. Depression cones dataset: `Cone`
+## Quick Start
 
-Core logic is in `core/`, `optimization/`, and `monitoring/`. CLI entry points are in `scripts/`.
-
-## Current Script Map
-
-Primary training and evaluation entry points:
-
-1. `scripts/run_optuna.py`: distributed Optuna tuning for MLP (journal storage)
-2. `scripts/train_final_model.py`: train final MLP from best Optuna trial
-3. `scripts/train_random_models.py`: train random-model families (ELM, dRVFL, edRVFL, edRVFL-SC, esc-edRVFL, SResdRVFL)
-4. `scripts/summarize_results.py`: aggregate random run folders into `summary_table.csv`
-
-Reporting and packaging utilities:
-
-1. `scripts/compare_models.py`: compare best MLP vs best random models per dataset
-2. `scripts/csv_to_latex.py`: export CSV table to LaTeX
-3. `scripts/package_models.py`: package finalized artifacts into a consistent deployable layout
-
-Canonical SLURM scripts:
-
-1. `scripts/slurm/run_optuna_mlp.sbatch`
-2. `scripts/slurm/train_isotherm_journal.sbatch`
-3. `scripts/slurm/sweep_random_params.sbatch`
-4. `scripts/slurm/run_random_model.sbatch`
-
-## Local Quickstart
+### Installation
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd BA
+
+# Create and activate virtual environment
+python -m venv .venv/env
 source .venv/env/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-Run tests:
+### Using the Prediction CLI
+
+The prediction tool takes a CSV file with hydrogeological parameters and outputs predicted thermal plume values.
+
+**Isotherm prediction:**
 
 ```bash
-pytest -m "not slow"
-# or
-pytest
+python scripts/predict.py -i your_data.csv -d isotherm -m mlp
 ```
 
-Quality tooling:
+Required input columns for isotherm:
+- `Flow_well` - Well flow rate (m³/s)
+- `Temp_diff` - Temperature difference (K)
+- `Temp_diff_real` - Real temperature difference (K)
+- `kW_well` - Thermal power (kW)
+- `Hydr_gradient` - Hydraulic gradient (-)
+- `Hydr_conductivity` - Hydraulic conductivity (m/s)
+- `Aqu_thickness` - Aquifer thickness (m)
+- `Long_dispersivity` - Longitudinal dispersivity (m)
+- `Trans_dispersivity` - Transverse dispersivity (m)
+- `Isotherm` - Target isotherm value (K)
+
+Outputs: `Area` (m²), `Iso_distance` (m), `Iso_width` (m)
+
+**Depression cone prediction:**
 
 ```bash
-pip install pre-commit ruff black
-pre-commit install
-pre-commit run --all-files
+python scripts/predict.py -i your_data.csv -d cone -m mlp
 ```
 
-## Metrics
+Required input columns for cone:
+- `Flow_well` - Well flow rate (m³/s)
+- `Hydr_gradient` - Hydraulic gradient (-)
+- `Hydr_conductivity` - Hydraulic conductivity (m/s)
+- `Aqu_thickness` - Aquifer thickness (m)
 
-Regression metrics are computed in `core/utils.py` and include:
+Outputs: `Cone` (m)
 
-1. MAE, MSE, RMSE, R2, MAPE
-2. RMSLE
-3. nRMSE
-4. KGE (Kling-Gupta Efficiency)
-5. residual distribution statistics
+### CLI Options
 
-These metrics are used in random-model summaries and final MLP result files produced by current training code.
+```bash
+python scripts/predict.py --help
 
-## End-to-End Workflow
+Options:
+  -i, --input      Input CSV file (required)
+  -d, --dataset    Dataset type: isotherm or cone (required)
+  -m, --model      Model type: mlp or random (default: mlp)
+  -o, --output     Output directory (default: predictions_<timestamp>)
+  --model-dir      Custom model directory path
+  --no-report      Skip generating markdown report
+```
 
-### 1) Tune MLP with Optuna (journal storage)
+### Output Files
+
+The prediction tool creates an output directory containing:
+- `predictions.csv` - Predicted values
+- `report.md` - Markdown report with input/output statistics
+
+### Example
+
+```bash
+# Create a sample input file
+echo "Flow_well,Hydr_gradient,Hydr_conductivity,Aqu_thickness
+0.001,0.001,0.0001,50
+0.002,0.002,0.0002,100" > sample_cone.csv
+
+# Run prediction
+python scripts/predict.py -i sample_cone.csv -d cone -m mlp -o my_predictions/
+
+# View results
+cat my_predictions/predictions.csv
+cat my_predictions/report.md
+```
+
+---
+
+## Training Models (Advanced)
+
+This section is for training new models or retraining with different data.
+
+### Project Structure
+
+```
+BA/
+├── core/                    # Core ML components
+│   ├── model.py            # MLP architecture
+│   ├── trainer.py          # Training loop
+│   ├── data_loader.py      # Data loading and scaling
+│   └── random/             # Random network implementations (ELM, RVFL, etc.)
+├── scripts/                 # CLI entry points
+│   ├── predict.py          # Prediction CLI
+│   ├── train_mlp_with_metrics.py    # Train MLP from Optuna results
+│   ├── train_random_models.py       # Train random networks
+│   ├── run_optuna.py                # Hyperparameter optimization
+│   └── slurm/              # SLURM job scripts
+├── data/
+│   ├── Clean_Results_Isotherm.csv   # Isotherm training data
+│   ├── Depression_cones.csv         # Cone training data
+│   └── good_runs/                   # Trained model artifacts
+└── tests/                   # Unit tests
+```
+
+### Training MLP Models
+
+Train MLP models using best hyperparameters from Optuna optimization:
+
+```bash
+# Train both isotherm and cone MLPs
+sbatch scripts/slurm/train_mlp_metrics.sbatch
+
+# Train only one dataset
+sbatch --export=DATASET=isotherm scripts/slurm/train_mlp_metrics.sbatch
+sbatch --export=DATASET=cone scripts/slurm/train_mlp_metrics.sbatch
+```
+
+Or run locally:
+
+```bash
+source .venv/env/bin/activate
+PYTHONPATH=. python scripts/train_mlp_with_metrics.py --dataset all --output-dir data/good_runs/mlp_final
+```
+
+Output artifacts per model:
+- `best_model.pt` - Model weights
+- `model_config.json` - Architecture and feature configuration
+- `scalers.pkl` - Fitted data scalers for inference
+- `results_MLP_*.json` - Training metrics
+
+### Training Random Network Models
+
+Train random network families (ELM, dRVFL, edRVFL, etc.):
+
+```bash
+# Single model
+sbatch scripts/slurm/run_random_model.sbatch
+
+# Parameter sweep
+sbatch scripts/slurm/sweep_random_params.sbatch
+```
+
+Or run locally:
+
+```bash
+PYTHONPATH=. python scripts/train_random_models.py \
+    --model ELM \
+    --dataset isotherm \
+    --n-hidden 100 \
+    --activation ReLU
+```
+
+### Hyperparameter Optimization (Optuna)
+
+Run distributed hyperparameter search:
 
 ```bash
 # Isotherm
@@ -76,80 +181,64 @@ sbatch --export=CSV_FILE=data/Clean_Results_Isotherm.csv,TARGET=all,STUDY_NAME=n
 sbatch --export=CSV_FILE=data/Depression_cones.csv,TARGET=Cone,STUDY_NAME=depression_cones_mlp_journal_study,TOTAL_TRIALS=10000 scripts/slurm/run_optuna_mlp.sbatch
 ```
 
-### 2) Train final MLP from best trial
+### Model Comparison
 
-```bash
-# Isotherm
-sbatch --export=STUDY_NAME=nn_study_isotherm_journal,JOURNAL_PATH=data/good_runs/global_run_830/optuna_journal_storage/journal.log,CSV_FILE=data/Clean_Results_Isotherm.csv scripts/slurm/train_isotherm_journal.sbatch
-
-# Cone
-sbatch --export=STUDY_NAME=depression_cones_mlp_journal_study,JOURNAL_PATH=data/good_runs/global_run_832/optuna_journal_storage/journal.log,CSV_FILE=data/Depression_cones.csv scripts/slurm/train_isotherm_journal.sbatch
-```
-
-Final MLP artifacts are saved under `runs/final_model_<timestamp>/` and include:
-
-1. `best_model.pt`
-2. `model_config.json`
-3. `results.json`
-
-### 3) Random-model sweep
-
-```bash
-sbatch scripts/slurm/sweep_random_params.sbatch
-```
-
-Current sweep behavior:
-
-1. Runs many random-model configs in parallel
-2. Generates `summary_table.csv`
-3. By default deletes per-run subdirectories to save disk
-
-To keep all per-run artifacts:
-
-```bash
-sbatch --export=KEEP_RUN_ARTIFACTS=1 scripts/slurm/sweep_random_params.sbatch
-```
-
-### 4) Promote one random model configuration (with model saved)
-
-Sweeps typically use `--no-save-model`. To package random models, rerun selected winners with save enabled:
-
-```bash
-sbatch --export=MODEL=edRVFL,DATASET=isotherm,ACTIVATION=GELU,N_HIDDEN=1000,N_LAYERS=2,N_ENSEMBLE=20,NO_SAVE_MODEL=0,USE_AREA_ROOT=1 scripts/slurm/run_random_model.sbatch
-```
-
-## Comparison Table
-
-Build a final comparison CSV with best MLP and random entries per dataset:
+Compare MLP vs random models:
 
 ```bash
 python scripts/compare_models.py \
-    --random-summary runs/run_sweep_random_XXXX/summary_table.csv \
-    --mlp-isotherm runs/final_model_ISOTHERM_TIMESTAMP/results.json \
-    --mlp-cone runs/final_model_CONE_TIMESTAMP/results.json \
-    --output-csv final_comparison.csv
+    --random-summary data/good_runs/run_training_random_943/summary_table.csv \
+    --mlp-isotherm data/good_runs/mlp_final/isotherm_MLP_*/results_MLP_isotherm.json \
+    --mlp-cone data/good_runs/mlp_final/cone_MLP_*/results_MLP_cone.json \
+    --output-csv comparison.csv
 ```
 
 Export to LaTeX:
 
 ```bash
-python scripts/csv_to_latex.py final_comparison.csv --caption "Final Model Comparison"
+python scripts/csv_to_latex.py comparison.csv --caption "Model Comparison"
 ```
 
-## Packaging Artifacts
+### Metrics
 
-Package finalized model artifacts into a consistent structure under `data/good_runs/packages`:
+All models are evaluated using these regression metrics (computed in `core/utils.py`):
+- MAE, MSE, RMSE, R²
+- MAPE
+- nRMSE (normalized RMSE)
+- KGE (Kling-Gupta Efficiency)
+
+### Testing
 
 ```bash
-python scripts/package_models.py \
-    --mlp-isotherm-dir runs/final_model_ISOTHERM_TIMESTAMP \
-    --mlp-cone-dir runs/final_model_CONE_TIMESTAMP \
-    --random-summary runs/run_sweep_random_XXXX/summary_table.csv \
-    --random-run-dir runs/run_sweep_random_XXXX \
-    --output-root data/good_runs/packages
+# Run fast tests
+pytest -m "not slow"
+
+# Run all tests
+pytest
+
+# With coverage
+pytest --cov=core --cov-report=html
 ```
 
-Notes:
+### Code Quality
 
-1. Random packaging requires `model.pkl` in selected run folders.
-2. If missing (e.g. sweep ran with `--no-save-model` or post-sweep cleanup), rerun selected winners once with `NO_SAVE_MODEL=0`.
+```bash
+pip install pre-commit ruff black
+pre-commit install
+pre-commit run --all-files
+```
+
+## Pre-trained Models
+
+Pre-trained models are stored in `data/good_runs/`:
+
+| Dataset | Model | Location |
+|---------|-------|----------|
+| Isotherm | MLP | `data/good_runs/mlp_final/isotherm_MLP_*` |
+| Isotherm | ELM | `data/good_runs/run_training_random_943/isotherm_ELM_*` |
+| Cone | MLP | `data/good_runs/mlp_final/cone_MLP_*` |
+| Cone | ELM | `data/good_runs/run_training_random_943/cone_ELM_*` |
+
+## License
+
+[Add license information]

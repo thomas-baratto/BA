@@ -18,8 +18,19 @@ from core.trainer import main_train, evaluate
 from core.data_loader import load_data, CSVDataset
 from core.runtime import ensure_dir, get_device, setup_logging
 from core.utils import compute_regression_metrics
-from scripts.run_optuna import detect_columns_from_csv
 from monitoring.power_utils import power_monitor_session
+from config.datasets import KNOWN_FEATURES, KNOWN_LABELS, DATASET_CONFIGS
+from core.artifacts import ArtifactManifest
+from pathlib import Path
+import pandas as pd
+
+def detect_columns_from_csv(csv_file):
+    """Detect feature and label columns from CSV header."""
+    df = pd.read_csv(csv_file, nrows=0)
+    columns = list(df.columns)
+    features = [col for col in columns if col in KNOWN_FEATURES]
+    labels = [col for col in columns if col in KNOWN_LABELS]
+    return features, labels
 
 
 MAX_EPOCHS = 10000
@@ -172,7 +183,7 @@ if __name__ == "__main__":
         )
         
         # Train the model using main_train
-        final_model = main_train(
+        final_model, _, _ = main_train(
             config=final_model_config,
             rf=output_dir,
             csv_file=args.csv_file,
@@ -285,6 +296,32 @@ if __name__ == "__main__":
         with open(model_config_path, 'w') as f:
             json.dump(model_config, f, indent=2)
         logging.info(f"Model configuration saved to {model_config_path}")
+        
+            # Save artifact manifest
+            manifest = ArtifactManifest(
+                model_type="mlp",
+                dataset="isotherm",  # Always isotherm for final model
+                targets=LABEL_NAMES,
+                features=FEATURE_COLUMN_NAMES,
+                training={
+                    "epochs": final_model_config.get("num_epochs", MAX_EPOCHS),
+                    "batch_size": final_model_config.get("batch_size", 32),
+                    "learning_rate": final_model_config.get("learning_rate", 0.001),
+                    "optimizer": final_model_config.get("optimizer", "Adam"),
+                    "loss_criterion": final_model_config.get("loss_criterion", "SmoothL1"),
+                    "train_time_seconds": train_time,
+                },
+                performance={
+                    "test_rmse": results.get("test", {}).get("rmse"),
+                    "test_mae": results.get("test", {}).get("mae"),
+                    "test_mse": results.get("test", {}).get("mse"),
+                    "test_r2": results.get("test", {}).get("r2"),
+                    "test_nrmse": results.get("test", {}).get("nrmse"),
+                    "test_kge": results.get("test", {}).get("kge"),
+                },
+            )
+            manifest.save(Path(output_dir))
+            logging.info(f"Artifact manifest saved to {os.path.join(output_dir, 'artifact_manifest.json')}")
         
         logging.info("--- Final model training complete ---")
         logging.info(f"Model directory: {output_dir}")
