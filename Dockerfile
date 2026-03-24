@@ -15,8 +15,8 @@ COPY artifacts/models/mlp/ artifacts/models/mlp/
 COPY pyproject.toml .
 COPY README.md .
 
-# Install as package (makes ba-predict available)
-RUN pip install --no-cache-dir --no-deps .
+# Editable install so paths resolve to /app/ (where the artifacts live)
+RUN pip install --no-cache-dir --no-deps -e .
 
 # Default entrypoint
 ENTRYPOINT ["ba-predict"]
