@@ -8,16 +8,18 @@ Predict thermal plume parameters (isotherm geometry or depression cone size) fro
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/thomas-baratto/BA.git
 cd BA
 
 # Create and activate virtual environment
-python -m venv .venv/env
+python3 -m venv .venv/env
 source .venv/env/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install as package (recommended)
+pip install -e .
 ```
+
+This makes the `ba-predict` command available. See [docs/INFERENCE_GUIDE.md](docs/INFERENCE_GUIDE.md) for the full step-by-step guide including Docker.
 
 ### Using the Prediction CLI
 
@@ -26,7 +28,7 @@ The prediction tool takes a CSV file with hydrogeological parameters and outputs
 **Isotherm prediction:**
 
 ```bash
-python scripts/deployment/predict.py -i your_data.csv -d isotherm -m mlp
+ba-predict -i your_data.csv -d isotherm -m mlp
 ```
 
 Required input columns for isotherm:
@@ -45,7 +47,7 @@ Outputs: `Area` (m²), `Iso_distance` (m), `Iso_width` (m)
 **Depression cone prediction:**
 
 ```bash
-python scripts/deployment/predict.py -i your_data.csv -d cone -m mlp
+ba-predict -i your_data.csv -d cone -m mlp
 ```
 
 Required input columns for cone:
@@ -59,7 +61,7 @@ Outputs: `Cone` (m)
 ### CLI Options
 
 ```bash
-python scripts/deployment/predict.py --help
+ba-predict --help
 
 Options:
   -i, --input      Input CSV file (required)
@@ -85,7 +87,7 @@ echo "Flow_well,Hydr_gradient,Hydr_conductivity,Aqu_thickness
 0.002,0.002,0.0002,100" > sample_cone.csv
 
 # Run prediction
-python scripts/deployment/predict.py -i sample_cone.csv -d cone -m mlp -o my_predictions/
+ba-predict -i sample_cone.csv -d cone -m mlp -o my_predictions/
 
 # View results
 cat my_predictions/predictions.csv

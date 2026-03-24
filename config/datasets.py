@@ -1,15 +1,24 @@
 """Centralized dataset configuration - single source of truth."""
 
 import os
+from pathlib import Path
+
+# Project root — works both for PYTHONPATH=. usage and pip-installed packages.
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Root directory for trained model artifacts and Optuna studies.
 # Override via environment variable BA_ARTIFACTS_ROOT if needed.
-ARTIFACTS_ROOT = os.environ.get("BA_ARTIFACTS_ROOT", "artifacts")
+ARTIFACTS_ROOT = os.environ.get(
+    "BA_ARTIFACTS_ROOT", str(_PROJECT_ROOT / "artifacts")
+)
+
+# Root directory for data files.
+_DATA_ROOT = str(_PROJECT_ROOT / "data")
 
 # Dataset configurations: features, labels, CSV paths, and Optuna journal info
 DATASET_CONFIGS = {
     "isotherm": {
-        "csv_file": "data/Clean_Results_Isotherm.csv",
+        "csv_file": os.path.join(_DATA_ROOT, "Clean_Results_Isotherm.csv"),
         "features": [
             "Flow_well", "Temp_diff", "kW_well", "Hydr_gradient",
             "Hydr_conductivity", "Aqu_thickness", "Long_dispersivity",
@@ -18,15 +27,15 @@ DATASET_CONFIGS = {
         "labels": ["Area", "Iso_distance", "Iso_width"],
         "journal_path": os.path.join(ARTIFACTS_ROOT, "optuna_studies", "isotherm", "journal.log"),
         "study_name": "nn_study_isotherm_journal",
-        "best_params_file": "config/best_params_isotherm.json",
+        "best_params_file": str(_PROJECT_ROOT / "config" / "best_params_isotherm.json"),
     },
     "cone": {
-        "csv_file": "data/Depression_cones.csv",
+        "csv_file": os.path.join(_DATA_ROOT, "Depression_cones.csv"),
         "features": ["Flow_well", "Hydr_gradient", "Hydr_conductivity", "Aqu_thickness"],
         "labels": ["Cone"],
         "journal_path": os.path.join(ARTIFACTS_ROOT, "optuna_studies", "cone", "journal.log"),
         "study_name": "depression_cones_mlp_journal_study",
-        "best_params_file": "config/best_params_cone.json",
+        "best_params_file": str(_PROJECT_ROOT / "config" / "best_params_cone.json"),
     },
 }
 

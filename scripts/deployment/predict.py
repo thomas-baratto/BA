@@ -36,7 +36,8 @@ import numpy as np
 import pandas as pd
 import torch
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Allow running as both a script (PYTHONPATH=.) and installed package (pip install .)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from core.model import NeuralNetwork
 from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS

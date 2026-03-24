@@ -2,6 +2,7 @@
 name = "ba-thermal-plume"
 version = "1.0.0"
 description = "Machine learning models for thermal plume prediction (Bachelor Thesis)"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "matplotlib",
@@ -12,13 +13,29 @@ dependencies = [
     "scikit-learn",
     "scipy",
     "statsmodels",
+    "tabulate",
     "tensorboard",
     "torch",
     "torchinfo",
 ]
 
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["core*", "config*", "scripts*", "optimization*", "monitoring*"]
+
+[tool.setuptools.package-data]
+"*" = [
+    "artifacts/models/mlp/**/*",
+    "artifacts/packages/mlp/**/*",
+    "config/*.json",
+    "data/*.csv",
+]
+
 [project.scripts]
-ba-predict = "scripts.predict:main"
+ba-predict = "scripts.deployment.predict:main"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "black", "optuna-dashboard"]
