@@ -79,6 +79,7 @@ BA/
 │   │   └── csv_to_latex.py
 │   ├── deployment/          # Prediction & packaging
 │   │   ├── predict.py           # Main prediction CLI
+│   │   ├── retrain_random_models.py  # Rebuild random model.pkl from stored configs
 │   │   ├── package_models.py
 │   │   └── extract_best_params.py
 │   ├── sweep/               # Sweep orchestration

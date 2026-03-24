@@ -66,7 +66,8 @@ ba-predict --help
 Options:
   -i, --input      Input CSV file (required)
   -d, --dataset    Dataset type: isotherm or cone (required)
-  -m, --model      Model type: mlp or random (default: mlp)
+  -m, --model      Model type: mlp, random, random:nRMSE, or random:KGE
+                   (default: mlp). 'random' uses the nRMSE Pareto winner.
   -o, --output     Output directory (default: predictions_<timestamp>)
   --model-dir      Custom model directory path
   --no-report      Skip generating markdown report
@@ -106,6 +107,8 @@ This section is for training new models or retraining with different data.
 BA/
 ├── core/                    # Core ML components
 │   ├── model.py            # MLP architecture
+│   ├── model_wrapper.py    # Unified model interface (MLP + random)
+│   ├── inference.py        # Inference pipeline
 │   ├── trainer.py          # Training loop
 │   ├── data_loader.py      # Data loading and scaling
 │   └── random/             # Random network implementations (ELM, RVFL, etc.)
@@ -117,9 +120,9 @@ BA/
 │   │   ├── train_random_models.py       # Train random networks
 │   │   └── run_optuna.py               # Hyperparameter optimization
 │   ├── analysis/           # Comparison & evaluation
-│   │   ├── compare_models.py
-│   │   ├── summarize_results.py
-│   │   ├── select_knee_points.py
+│   │   ├── generate_model_comparison.py # Full comparison report
+│   │   ├── plot_pareto_frontiers.py     # Pareto frontier plots
+│   │   ├── select_knee_points.py        # Knee-point model selection
 │   │   ├── pareto_manager.py
 │   │   └── csv_to_latex.py
 │   ├── sweep/              # Sweep orchestration
@@ -129,9 +132,13 @@ BA/
 │   ├── Clean_Results_Isotherm.csv   # Isotherm training data
 │   └── Depression_cones.csv         # Cone training data
 ├── artifacts/
-│   ├── models/              # Full training outputs (model + plots + stats)
-│   └── packages/            # Lean deployment packages (model + config only)
-└── tests/                   # Unit tests
+│   └── models/              # Pre-trained model artifacts
+│       ├── mlp/             # MLP models (cone, isotherm)
+│       └── random/          # Random models (4 Pareto winners)
+├── docs/                    # Documentation and plots
+│   ├── INFERENCE_GUIDE.md   # Step-by-step inference guide
+│   └── MODEL_COMPARISON.md  # Model comparison report with plots
+└── tests/                   # Unit tests (172 tests)
 ```
 
 ### Training MLP Models
@@ -243,14 +250,28 @@ pre-commit run --all-files
 
 ## Pre-trained Models
 
-Pre-trained models are stored in `artifacts/`:
+Pre-trained models are stored in `artifacts/models/`:
 
-| Directory | Contents |
-|-----------|----------|
-| `artifacts/models/mlp/isotherm/` | Full MLP training output (model, plots, stats, tensorboard) |
-| `artifacts/models/mlp/cone/` | Full MLP training output |
-| `artifacts/packages/mlp/` | Lean deployment packages (model + config + results only) |
-| `runs/run_sweep_random_*/` | Random model sweep results (populated after sweep job) |
+| Directory | Model | Description |
+|-----------|-------|-------------|
+| `artifacts/models/mlp/cone/` | Optimized MLP | Optuna-tuned MLP for cone prediction (R²=0.99) |
+| `artifacts/models/mlp/isotherm/` | Optimized MLP | Optuna-tuned MLP for isotherm prediction (R²≈1.0) |
+| `artifacts/models/random/cone/winner/` | edRVFL-SC | Pareto-frontier winner for cone (R²=0.977) |
+| `artifacts/models/random/isotherm/nRMSE_winner/` | SResdRVFL | Best random model for isotherm by nRMSE (R²=0.900) |
+| `artifacts/models/random/isotherm/KGE_winner/` | dRVFL | Best random model for isotherm by KGE (R²=0.860) |
+
+Random models were selected as knee-point winners from Pareto frontiers
+(accuracy vs. training time) across a sweep of 558 configurations (job 1048).
+See [docs/MODEL_COMPARISON.md](docs/MODEL_COMPARISON.md) for detailed plots and metrics.
+
+> **Note:** Random model binaries (`model.pkl`) are excluded from git due to
+> size (up to 223 MB each). After cloning, retrain them in ~15 seconds:
+>
+> ```bash
+> PYTHONPATH=. .venv/env/bin/python scripts/deployment/retrain_random_models.py
+> # or, if installed via pip:
+> ba-retrain-random
+> ```
 
 ## License
 

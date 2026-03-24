@@ -27,14 +27,40 @@ def _load_pickle(path: Path):
     """Load a pickle file, transparently handling gzip compression.
 
     Tries gzip first; falls back to plain pickle for backward compatibility
-    with uncompressed artifacts.
+    with uncompressed artifacts.  If the pickle embeds PyTorch CUDA tensors,
+    they are automatically mapped to CPU.
     """
+    import io
+
+    def _unpickle_bytes(data: bytes):
+        """Unpickle bytes, remapping CUDA tensors to CPU.
+
+        Pickle files produced by ``pickle.dump`` that contain ``torch.Tensor``
+        objects serialise each tensor via ``torch.storage._load_from_bytes``,
+        which internally calls ``torch.load`` **without** ``map_location``.
+        We monkeypatch that inner call to force ``map_location='cpu'``.
+        """
+        import torch.storage as _ts
+
+        _original = _ts._load_from_bytes
+
+        def _cpu_load_from_bytes(b):
+            return torch.load(io.BytesIO(b), map_location="cpu", weights_only=False)
+
+        _ts._load_from_bytes = _cpu_load_from_bytes
+        try:
+            return pickle.loads(data)
+        finally:
+            _ts._load_from_bytes = _original
+
     try:
         with gzip.open(path, "rb") as f:
-            return pickle.load(f)
+            data = f.read()
+        return _unpickle_bytes(data)
     except gzip.BadGzipFile:
         with open(path, "rb") as f:
-            return pickle.load(f)
+            data = f.read()
+        return _unpickle_bytes(data)
 
 
 class TrainedModel:
@@ -147,6 +173,43 @@ class TrainedModel:
             raise FileNotFoundError(f"Random model not found: {model_path}")
         
         self.model = _load_pickle(model_path)
+        self._relocate_random_to_device()
+
+    def _relocate_random_to_device(self):
+        """Ensure a deserialized random model's tensors live on ``self.device``.
+
+        When a model is trained on CUDA and loaded on a CPU-only machine,
+        ``_load_pickle`` remaps the tensors to CPU but the model's
+        ``device`` attribute still references the original CUDA device.
+        This method patches the device and moves any lingering tensors.
+        """
+        target = torch.device(self.device)
+
+        def _move(obj):
+            if isinstance(obj, torch.Tensor) and obj.device != target:
+                return obj.to(target)
+            return obj
+
+        # Fix top-level model(s) — random wrappers may contain sub-models
+        models_to_fix = [self.model]
+        if hasattr(self.model, "models"):
+            models_to_fix.extend(self.model.models)
+
+        for m in models_to_fix:
+            if hasattr(m, "device"):
+                m.device = target
+            for attr_name in list(vars(m)):
+                val = getattr(m, attr_name)
+                if isinstance(val, torch.Tensor):
+                    setattr(m, attr_name, _move(val))
+                elif isinstance(val, list):
+                    setattr(
+                        m,
+                        attr_name,
+                        [_move(v) if isinstance(v, torch.Tensor) else v for v in val],
+                    )
+                elif isinstance(val, torch.nn.Module):
+                    val.to(target)
 
     def _load_scalers(self) -> Dict[str, Any]:
         """Load feature and label scalers."""

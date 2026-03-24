@@ -120,6 +120,8 @@ def make_predictions(
     apply_feature_log: bool = True,
     apply_inverse_transform: bool = True,
     apply_label_expm1: bool = True,
+    use_area_root: bool = False,
+    label_names: Optional[list] = None,
 ) -> np.ndarray:
     """
     End-to-end prediction pipeline.
@@ -128,6 +130,7 @@ def make_predictions(
     1. Feature preprocessing (log + scaling)
     2. Model prediction
     3. Output postprocessing (inverse scaling + inverse log)
+    4. Inverse sqrt(Area) if use_area_root was applied during training
     
     Args:
         model: TrainedModel instance
@@ -137,6 +140,10 @@ def make_predictions(
         apply_feature_log: Apply log1p to features
         apply_inverse_transform: Apply inverse scaling to predictions
         apply_label_expm1: Apply expm1 (inverse log) to predictions
+        use_area_root: Whether sqrt(Area) was used during training
+            (if True, Area column is squared to restore original units)
+        label_names: Label column names (needed to locate "Area" column
+            when use_area_root is True). Falls back to model.label_names.
     
     Returns:
         Predictions in original units
@@ -158,5 +165,14 @@ def make_predictions(
         inverse_transform=apply_inverse_transform,
         apply_expm1=apply_label_expm1,
     )
+    
+    # Reverse sqrt(Area) transform if applied during training
+    if use_area_root:
+        if label_names is None:
+            label_names = getattr(model, "label_names", [])
+        if "Area" in label_names:
+            area_idx = label_names.index("Area")
+            y_pred = y_pred.copy()
+            y_pred[:, area_idx] = y_pred[:, area_idx] ** 2
     
     return y_pred

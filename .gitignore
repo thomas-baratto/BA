@@ -26,7 +26,13 @@ artifacts/*
 !artifacts/models/
 artifacts/models/*
 !artifacts/models/mlp/
+!artifacts/models/random/
 !artifacts/packages/
+
+# Random model binaries are too large for git (>200 MB).
+# They are deterministically reproducible via:
+#   PYTHONPATH=. python scripts/deployment/retrain_random_models.py
+artifacts/models/random/**/model.pkl
 
 # TensorBoard/event logs (inside tracked artifact dirs too)
 events.out.tfevents.*

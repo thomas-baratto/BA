@@ -71,6 +71,21 @@ docker run --rm -v $(pwd):/data ba-predict \
     -i /data/my_input.csv -d cone -m mlp -o /data/results/
 ```
 
+### Retrain random model binaries (required for `--model random`)
+
+Random model binaries (`model.pkl`) are too large for git and are **not** included
+in the repository. Retrain them after cloning — it takes ~15 seconds total:
+
+```bash
+# With pip install:
+ba-retrain-random
+
+# Or with PYTHONPATH:
+PYTHONPATH=. python scripts/deployment/retrain_random_models.py
+```
+
+> MLP models (`--model mlp`) work out of the box without this step.
+
 ---
 
 ## 3. Choose Your Prediction Task
@@ -155,6 +170,29 @@ ba-predict --input my_cone_data.csv --dataset cone --model mlp
 ```bash
 ba-predict --input my_isotherm_data.csv --dataset isotherm --model mlp
 ```
+
+### Use a random network model
+
+Random network models are available (Pareto frontier knee-point winners from a
+sweep of 558 configurations). For **cone**, there is a single winner (the nRMSE
+and KGE Pareto winners were the same model). For **isotherm**, two different
+winners are available:
+
+```bash
+# Cone — single random winner
+ba-predict -i my_cone_data.csv -d cone -m random
+
+# Isotherm — nRMSE winner (default)
+ba-predict -i my_isotherm_data.csv -d isotherm -m random
+
+# Isotherm — KGE winner
+ba-predict -i my_isotherm_data.csv -d isotherm -m random:KGE
+```
+
+| Model key | Cone model | Isotherm model |
+|-----------|------------|----------------|
+| `random` / `random:nRMSE` | edRVFL-SC (R²=0.977) | SResdRVFL (R²=0.900) |
+| `random:KGE` | edRVFL-SC (R²=0.977) | dRVFL (R²=0.860) |
 
 ### Specify an output directory
 
@@ -252,13 +290,18 @@ cat results/predictions.csv
 
 ```
 usage: ba-predict [-h] --input INPUT --dataset {isotherm,cone}
-                  [--model {mlp,random}] [--model-dir MODEL_DIR]
-                  [--output OUTPUT] [--no-report]
+                  [--model {mlp,random,random:nRMSE,random:KGE}]
+                  [--model-dir MODEL_DIR] [--output OUTPUT] [--no-report]
 
 Options:
   -i, --input INPUT        Input CSV file with feature columns (required)
   -d, --dataset DATASET    Prediction task: isotherm or cone (required)
-  -m, --model MODEL        Model type: mlp or random (default: mlp)
+  -m, --model MODEL        Model type (default: mlp)
+                           mlp          — Optuna-optimized MLP
+                           random       — Pareto-frontier winner (nRMSE for isotherm)
+                           random:nRMSE — same as 'random'
+                           random:KGE   — KGE Pareto-frontier winner (isotherm only,
+                                          cone has a single winner)
   --model-dir MODEL_DIR    Custom model directory (overrides default)
   -o, --output OUTPUT      Output directory (default: predictions_<timestamp>)
   --no-report              Skip generating the markdown report
@@ -272,7 +315,8 @@ Options:
 |---------|----------|
 | `ModuleNotFoundError: No module named 'core'` | Use `pip install -e .` or run with `PYTHONPATH=.` |
 | `Error: Input CSV missing required columns: {...}` | Check that your CSV header matches the column names exactly (case-sensitive) |
-| `No model found in artifacts/models/mlp/...` | Make sure the repository was cloned completely — the pre-trained models ship in `artifacts/models/mlp/` |
+| `No model found in artifacts/models/mlp/...` | Make sure the repository was cloned completely — the pre-trained models ship in `artifacts/models/` |
+| `No model found in artifacts/models/random/...` | Random model binaries aren't in git — run `ba-retrain-random` to build them (~15 s) |
 | `InconsistentVersionWarning` for scikit-learn | Safe to ignore — the scalers are compatible across minor versions |
 | Predictions are all identical or negative | Your input values may be outside the training data range — check the units and magnitudes |
 
@@ -291,5 +335,6 @@ PYTHONPATH=. python scripts/deployment/predict.py \
     --model-dir runs/my_custom_training_run/
 ```
 
-The directory must contain `best_model.pt`, `model_config.json`, and
-`scalers.pkl`.
+The directory must contain `model_config.json` and `scalers.pkl`, plus either
+`best_model.pt` (MLP) or `model.pkl` (random network). The model type is
+auto-detected from the artifacts present.

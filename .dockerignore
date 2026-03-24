@@ -6,7 +6,6 @@ __pycache__/
 runs/
 slurm_jobs/
 artifacts/optuna_studies/
-artifacts/models/random/
 artifacts/packages/
 *.egg-info/
 dist/

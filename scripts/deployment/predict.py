@@ -78,13 +78,9 @@ def predict_with_model(trained_model: TrainedModel, config: dict, features: np.n
         apply_feature_log=config.get("use_log", True),
         apply_inverse_transform=True,
         apply_label_expm1=config.get("use_log", True),
+        use_area_root=config.get("use_area_root", False),
+        label_names=config.get("label_names"),
     )
-    
-    if config.get("use_area_root", False):
-        label_names = config.get("label_names", [])
-        if "Area" in label_names:
-            area_idx = label_names.index("Area")
-            predictions[:, area_idx] = predictions[:, area_idx] ** 2
 
     return predictions
 
@@ -168,8 +164,13 @@ def main():
         "--model", "-m",
         type=str,
         default="mlp",
-        choices=["mlp", "random"],
-        help="Model type to use (default: mlp)"
+        choices=["mlp", "random", "random:nRMSE", "random:KGE"],
+        help=(
+            "Model type to use (default: mlp). "
+            "'random' uses the Pareto-frontier winner. "
+            "For isotherm, 'random:nRMSE' and 'random:KGE' select different winners. "
+            "For cone, all random variants use the same model."
+        ),
     )
     parser.add_argument(
         "--model-dir",
@@ -204,7 +205,13 @@ def main():
     if args.model_dir:
         model_dir = args.model_dir
     else:
-        base_dir = DEFAULT_MODEL_DIRS[args.dataset][args.model]
+        model_key = args.model
+        dataset_dirs = DEFAULT_MODEL_DIRS[args.dataset]
+        # Fall back to "random" if the specific variant isn't available
+        # (e.g. cone has only one random winner)
+        if model_key not in dataset_dirs and model_key.startswith("random"):
+            model_key = "random"
+        base_dir = dataset_dirs[model_key]
         try:
             model_dir = find_model_dir(base_dir)
         except FileNotFoundError:

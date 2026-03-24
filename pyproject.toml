@@ -29,13 +29,16 @@ include = ["core*", "config*", "scripts*", "optimization*", "monitoring*"]
 [tool.setuptools.package-data]
 "*" = [
     "artifacts/models/mlp/**/*",
-    "artifacts/packages/mlp/**/*",
+    "artifacts/models/random/**/*.json",
+    "artifacts/models/random/**/*.npz",
+    "artifacts/models/random/**/scalers.pkl",
     "config/*.json",
     "data/*.csv",
 ]
 
 [project.scripts]
 ba-predict = "scripts.deployment.predict:main"
+ba-retrain-random = "scripts.deployment.retrain_random_models:main"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "black", "optuna-dashboard"]

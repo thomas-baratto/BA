@@ -56,11 +56,13 @@ KNOWN_LABELS = sorted(list(KNOWN_LABELS))
 DEFAULT_MODEL_DIRS = {
     "isotherm": {
         "mlp": os.path.join(ARTIFACTS_ROOT, "models", "mlp", "isotherm"),
-        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm"),
+        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "nRMSE_winner"),
+        "random:nRMSE": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "nRMSE_winner"),
+        "random:KGE": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "KGE_winner"),
     },
     "cone": {
         "mlp": os.path.join(ARTIFACTS_ROOT, "models", "mlp", "cone"),
-        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "cone"),
+        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "cone", "winner"),
     },
 }
 
