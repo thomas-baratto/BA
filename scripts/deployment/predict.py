@@ -46,14 +46,25 @@ DATASET_FEATURES = {dataset: cfg["features"] for dataset, cfg in DATASET_CONFIGS
 from core.model_wrapper import TrainedModel
 from core.inference import make_predictions
 
-def find_model_dir(pattern: str) -> str:
-    """Find model directory matching glob pattern."""
+def find_model_dir(base_dir: str) -> str:
+    """Find model directory containing model_config.json.
+
+    Checks base_dir itself first, then looks for subdirectories
+    (e.g. timestamped run directories).
+    """
     import glob
+
+    # Check if the base directory itself contains model artifacts
+    if os.path.isfile(os.path.join(base_dir, "model_config.json")):
+        return base_dir
+
+    # Otherwise look for subdirectories with model artifacts
+    pattern = os.path.join(base_dir, "*", "model_config.json")
     matches = sorted(glob.glob(pattern))
     if not matches:
-        raise FileNotFoundError(f"No model found matching: {pattern}")
-    # Return most recent (last in sorted list)
-    return matches[-1]
+        raise FileNotFoundError(f"No model found in: {base_dir}")
+    # Return parent dir of most recent match
+    return os.path.dirname(matches[-1])
 
 
 def predict_with_model(trained_model: TrainedModel, config: dict, features: np.ndarray) -> np.ndarray:
@@ -193,9 +204,8 @@ def main():
         model_dir = args.model_dir
     else:
         base_dir = DEFAULT_MODEL_DIRS[args.dataset][args.model]
-        pattern = os.path.join(base_dir, "*")
         try:
-            model_dir = find_model_dir(pattern)
+            model_dir = find_model_dir(base_dir)
         except FileNotFoundError:
             print(f"Error: No model found in {base_dir}")
             print(f"\nMake sure you have trained the {args.model} model for {args.dataset}.")
