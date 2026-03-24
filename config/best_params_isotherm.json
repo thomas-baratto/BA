@@ -1,0 +1,23 @@
+{
+  "best_params": {
+    "batch_size": 128,
+    "nr_hidden_layers": 4,
+    "activation_name": "GELU",
+    "loss_criterion": "L1",
+    "learning_rate": 0.0049175231592782824,
+    "nr_neurons": 256,
+    "dropout_rate": 1.855105006454693e-05,
+    "weight_decay": 0.001107240598448432,
+    "rlr_factor": 0.8010234502072867,
+    "rlr_patience": 3,
+    "rlr_min_lr": 5.343080323512295e-06,
+    "feature_scaler": "robust",
+    "label_scaler": "minmax",
+    "minmax_label_signed": false,
+    "robust_q_low": 23,
+    "robust_q_high": 70,
+    "use_batchnorm": false
+  },
+  "trial_number": 6843,
+  "best_value": 0.0004316308768466115
+}

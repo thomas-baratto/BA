@@ -36,9 +36,9 @@ def add_preprocessing_args(parser: argparse.ArgumentParser):
     parser.add_argument(
         '--label-scaler',
         type=str,
-        default='minmax',
+        default='robust',
         choices=['minmax', 'standard', 'robust', 'quantile'],
-        help='Scaler type for labels (default: minmax)'
+        help='Scaler type for labels (default: robust)'
     )
     parser.add_argument(
         '--use-log',

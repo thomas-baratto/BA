@@ -12,7 +12,7 @@ from core.random.dRVFL import dRVFL
 from core.random.edRVFL import edRVFL
 from core.random.edRVFL_SC import edRVFL_SC
 from core.random.esc_edRVFL import esc_edRVFL
-from scripts.train_random_models import init_model
+from scripts.training.train_random_models import init_model
 
 
 def _base_args(model: str) -> argparse.Namespace:

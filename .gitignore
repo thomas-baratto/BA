@@ -1,32 +1,35 @@
 .venv/
-env/
 
 # Editor and OS files
 .vscode/
 .DS_Store
 
+# Claude Code CLI (local settings)
+.claude/settings.json
+.claude/settings.local.json
+
 # Python cache/build artifacts
 __pycache__/
 *.py[cod]
 *.pyo
+*.egg-info/
+dist/
+build/
 .pytest_cache/
 
 # Experiment outputs and logs
 runs/
-good_runs/
-data/good_runs/
 slurm_jobs/
-Models/
-plots/
-stats/
-ellipse/
 
-# Common generated model artifacts
-*.pt
-*.pkl
-*.npz
+# Artifacts — ignore bulk experiment data, but track pre-trained models
+artifacts/*
+!artifacts/models/
+artifacts/models/*
+!artifacts/models/mlp/
+!artifacts/packages/
 
-# TensorBoard/event logs
+# TensorBoard/event logs (inside tracked artifact dirs too)
 events.out.tfevents.*
 
+# Thesis description (local only)
 Ausschreibung.pdf

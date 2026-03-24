@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "created_at": "2026-03-22T20:27:34.347221Z",
+  "model_type": "mlp",
+  "dataset": "cone",
+  "targets": [
+    "Cone"
+  ],
+  "features": [
+    "Flow_well",
+    "Hydr_gradient",
+    "Hydr_conductivity",
+    "Aqu_thickness"
+  ],
+  "artifacts": {
+    "config": "model_config.json",
+    "scalers": "scalers.pkl",
+    "results": "results.json",
+    "predictions": "test_predictions.npz",
+    "model": "best_model.pt"
+  },
+  "training": {
+    "epochs": 10000,
+    "batch_size": 64,
+    "learning_rate": 0.005144703744834637,
+    "optimizer": "Adam",
+    "loss_criterion": "SmoothL1",
+    "train_time_seconds": 1212.4357166290283
+  },
+  "performance": {
+    "test_rmse": 0.15655730545350321,
+    "test_mae": 0.09289544820785522,
+    "test_mse": 0.02451018989086151,
+    "test_r2": 0.9217031598091125,
+    "test_nrmse": 0.04630744558454459,
+    "test_kge": 0.679940289526412
+  }
+}

@@ -4,9 +4,9 @@
 #SBATCH --error=./slurm_jobs/mlp_metrics_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --gres=gpu:1
-#SBATCH --mem=32G
+#SBATCH --cpus-per-task=56
+#SBATCH --gres=gpu:7
+#SBATCH --mem=754G
 #SBATCH --time=1-00:00:00
 #SBATCH -w argon-gtx
 
@@ -54,25 +54,36 @@ echo "==========================================================================
 echo "Starting MLP training from Optuna best trials..."
 echo "============================================================================"
 
-# Build command with defaults
-TRAIN_CMD="python scripts/train_mlp_with_metrics.py"
+OUT_DIR="${OUTPUT_DIR:-artifacts/models/mlp}"
 
-if [ -n "$DATASET" ]; then
-    TRAIN_CMD="$TRAIN_CMD --dataset $DATASET"
+if [ "$DATASET" == "isotherm" ] || [ "$DATASET" == "cone" ]; then
+    TRAIN_CMD="python scripts/training/train_mlp_with_metrics.py --dataset $DATASET --output-dir \"$OUT_DIR\""
+    echo "Command: $TRAIN_CMD"
+    eval $TRAIN_CMD
+    EXIT_CODE=$?
 else
-    TRAIN_CMD="$TRAIN_CMD --dataset all"
+    echo "============================================================================"
+    echo "Running BOTH datasets simultaneously on distinct isolated GPUs..."
+    echo "============================================================================"
+    
+    CUDA_VISIBLE_DEVICES=0,1,2 python scripts/training/train_mlp_with_metrics.py --dataset isotherm --output-dir "$OUT_DIR" &
+    PID1=$!
+    
+    CUDA_VISIBLE_DEVICES=3,4,5,6 python scripts/training/train_mlp_with_metrics.py --dataset cone --output-dir "$OUT_DIR" &
+    PID2=$!
+    
+    wait $PID1
+    EXIT1=$?
+    
+    wait $PID2
+    EXIT2=$?
+    
+    if [ $EXIT1 -ne 0 ] || [ $EXIT2 -ne 0 ]; then
+        EXIT_CODE=1
+    else
+        EXIT_CODE=0
+    fi
 fi
-
-if [ -n "$OUTPUT_DIR" ]; then
-    TRAIN_CMD="$TRAIN_CMD --output-dir $OUTPUT_DIR"
-else
-    TRAIN_CMD="$TRAIN_CMD --output-dir data/good_runs/mlp_final"
-fi
-
-echo "Command: $TRAIN_CMD"
-eval $TRAIN_CMD
-
-EXIT_CODE=$?
 
 echo "============================================================================"
 echo "Job Completed"

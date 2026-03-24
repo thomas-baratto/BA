@@ -1,0 +1,12 @@
+{
+  "packaged_at": "2026-03-24T18:34:07.435810+00:00",
+  "model_family": "mlp",
+  "dataset": "cone",
+  "source_dir": "data/good_runs/mlp_final/cone_MLP_20260322-210721_Cone",
+  "files": {
+    "best_model.pt": true,
+    "model_config.json": true,
+    "results.json": true,
+    "stats/metrics_summary.txt": true
+  }
+}

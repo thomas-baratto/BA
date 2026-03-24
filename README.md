@@ -26,13 +26,12 @@ The prediction tool takes a CSV file with hydrogeological parameters and outputs
 **Isotherm prediction:**
 
 ```bash
-python scripts/predict.py -i your_data.csv -d isotherm -m mlp
+python scripts/deployment/predict.py -i your_data.csv -d isotherm -m mlp
 ```
 
 Required input columns for isotherm:
 - `Flow_well` - Well flow rate (m³/s)
 - `Temp_diff` - Temperature difference (K)
-- `Temp_diff_real` - Real temperature difference (K)
 - `kW_well` - Thermal power (kW)
 - `Hydr_gradient` - Hydraulic gradient (-)
 - `Hydr_conductivity` - Hydraulic conductivity (m/s)
@@ -46,7 +45,7 @@ Outputs: `Area` (m²), `Iso_distance` (m), `Iso_width` (m)
 **Depression cone prediction:**
 
 ```bash
-python scripts/predict.py -i your_data.csv -d cone -m mlp
+python scripts/deployment/predict.py -i your_data.csv -d cone -m mlp
 ```
 
 Required input columns for cone:
@@ -60,7 +59,7 @@ Outputs: `Cone` (m)
 ### CLI Options
 
 ```bash
-python scripts/predict.py --help
+python scripts/deployment/predict.py --help
 
 Options:
   -i, --input      Input CSV file (required)
@@ -86,7 +85,7 @@ echo "Flow_well,Hydr_gradient,Hydr_conductivity,Aqu_thickness
 0.002,0.002,0.0002,100" > sample_cone.csv
 
 # Run prediction
-python scripts/predict.py -i sample_cone.csv -d cone -m mlp -o my_predictions/
+python scripts/deployment/predict.py -i sample_cone.csv -d cone -m mlp -o my_predictions/
 
 # View results
 cat my_predictions/predictions.csv
@@ -109,15 +108,27 @@ BA/
 │   ├── data_loader.py      # Data loading and scaling
 │   └── random/             # Random network implementations (ELM, RVFL, etc.)
 ├── scripts/                 # CLI entry points
-│   ├── predict.py          # Prediction CLI
-│   ├── train_mlp_with_metrics.py    # Train MLP from Optuna results
-│   ├── train_random_models.py       # Train random networks
-│   ├── run_optuna.py                # Hyperparameter optimization
+│   ├── deployment/         # Prediction & packaging
+│   │   └── predict.py      # Prediction CLI
+│   ├── training/           # Model training scripts
+│   │   ├── train_mlp_with_metrics.py    # Train MLP from Optuna results
+│   │   ├── train_random_models.py       # Train random networks
+│   │   └── run_optuna.py               # Hyperparameter optimization
+│   ├── analysis/           # Comparison & evaluation
+│   │   ├── compare_models.py
+│   │   ├── summarize_results.py
+│   │   ├── select_knee_points.py
+│   │   ├── pareto_manager.py
+│   │   └── csv_to_latex.py
+│   ├── sweep/              # Sweep orchestration
+│   │   └── launch_sweep_workers.py
 │   └── slurm/              # SLURM job scripts
 ├── data/
 │   ├── Clean_Results_Isotherm.csv   # Isotherm training data
-│   ├── Depression_cones.csv         # Cone training data
-│   └── good_runs/                   # Trained model artifacts
+│   └── Depression_cones.csv         # Cone training data
+├── artifacts/
+│   ├── models/              # Full training outputs (model + plots + stats)
+│   └── packages/            # Lean deployment packages (model + config only)
 └── tests/                   # Unit tests
 ```
 
@@ -138,7 +149,7 @@ Or run locally:
 
 ```bash
 source .venv/env/bin/activate
-PYTHONPATH=. python scripts/train_mlp_with_metrics.py --dataset all --output-dir data/good_runs/mlp_final
+PYTHONPATH=. python scripts/training/train_mlp_with_metrics.py --dataset all --output-dir artifacts/models/mlp
 ```
 
 Output artifacts per model:
@@ -162,7 +173,7 @@ sbatch scripts/slurm/sweep_random_params.sbatch
 Or run locally:
 
 ```bash
-PYTHONPATH=. python scripts/train_random_models.py \
+PYTHONPATH=. python scripts/training/train_random_models.py \
     --model ELM \
     --dataset isotherm \
     --n-hidden 100 \
@@ -186,17 +197,17 @@ sbatch --export=CSV_FILE=data/Depression_cones.csv,TARGET=Cone,STUDY_NAME=depres
 Compare MLP vs random models:
 
 ```bash
-python scripts/compare_models.py \
-    --random-summary data/good_runs/run_training_random_943/summary_table.csv \
-    --mlp-isotherm data/good_runs/mlp_final/isotherm_MLP_*/results_MLP_isotherm.json \
-    --mlp-cone data/good_runs/mlp_final/cone_MLP_*/results_MLP_cone.json \
+python scripts/analysis/compare_models.py \
+    --random-summary runs/run_sweep_random_<jobid>/summary_table.csv \
+    --mlp-isotherm artifacts/models/mlp/isotherm/results_MLP_isotherm.json \
+    --mlp-cone artifacts/models/mlp/cone/results_MLP_cone.json \
     --output-csv comparison.csv
 ```
 
 Export to LaTeX:
 
 ```bash
-python scripts/csv_to_latex.py comparison.csv --caption "Model Comparison"
+python scripts/analysis/csv_to_latex.py comparison.csv --caption "Model Comparison"
 ```
 
 ### Metrics
@@ -230,14 +241,14 @@ pre-commit run --all-files
 
 ## Pre-trained Models
 
-Pre-trained models are stored in `data/good_runs/`:
+Pre-trained models are stored in `artifacts/`:
 
-| Dataset | Model | Location |
-|---------|-------|----------|
-| Isotherm | MLP | `data/good_runs/mlp_final/isotherm_MLP_*` |
-| Isotherm | ELM | `data/good_runs/run_training_random_943/isotherm_ELM_*` |
-| Cone | MLP | `data/good_runs/mlp_final/cone_MLP_*` |
-| Cone | ELM | `data/good_runs/run_training_random_943/cone_ELM_*` |
+| Directory | Contents |
+|-----------|----------|
+| `artifacts/models/mlp/isotherm/` | Full MLP training output (model, plots, stats, tensorboard) |
+| `artifacts/models/mlp/cone/` | Full MLP training output |
+| `artifacts/packages/mlp/` | Lean deployment packages (model + config + results only) |
+| `runs/run_sweep_random_*/` | Random model sweep results (populated after sweep job) |
 
 ## License
 

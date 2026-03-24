@@ -30,13 +30,20 @@ CSV_FILE=${CSV_FILE:-"./data/Clean_Results_Isotherm.csv"}
 TARGET=${TARGET:-"all"}
 TOTAL_TRIALS=${TOTAL_TRIALS:-10000}
 STUDY_NAME=${STUDY_NAME:-"nn_study_mlp_journal"}
+USE_AREA_ROOT=${USE_AREA_ROOT:-"0"}
 TRIALS_PER_WORKER=$(( (TOTAL_TRIALS + 55) / 56 ))
+
+AREA_ROOT_FLAG=""
+if [ "$USE_AREA_ROOT" = "1" ]; then
+    AREA_ROOT_FLAG="--use-area-root"
+fi
 
 echo "Starting Optuna MLP tuning"
 echo "Study: $STUDY_NAME"
 echo "CSV: $CSV_FILE"
 echo "Target: $TARGET"
 echo "Trials total: $TOTAL_TRIALS"
+echo "Use sqrt(Area): $USE_AREA_ROOT"
 
 srun --ntasks=56 bash -c '
     set -euo pipefail
@@ -47,14 +54,15 @@ srun --ntasks=56 bash -c '
     export CUDA_DEVICE_ID=$GPU_ID
     export CUDA_VISIBLE_DEVICES=$GPU_ID
 
-    python scripts/run_optuna.py \
+    python scripts/training/run_optuna.py \
         --csv-file "'"$CSV_FILE"'" \
         --target "'"$TARGET"'" \
         --storage-path "'"$JOURNAL_STORAGE_PATH"'" \
         --study-name "'"$STUDY_NAME"'" \
         --optuna-trials "'"$TRIALS_PER_WORKER"'" \
         --optuna-workers 1 \
-        --run-tag "worker${PROC_ID}"
+        --run-tag "worker${PROC_ID}" \
+        '"$AREA_ROOT_FLAG"'
 
     sync
 '

@@ -3,13 +3,13 @@
 from .model import NeuralNetwork, get_activation
 from .data_loader import CSVDataset, load_data
 from .trainer import main_train, evaluate, train_epoch
-from .utils import (
-    compute_regression_metrics,
+from .metrics import compute_regression_metrics
+from .plotting import (
     create_regression_plots,
     create_qq_plots,
     create_residual_plots,
     create_scatter_plot,
-    ResourceLogger
+    ResourceLogger,
 )
 
 __all__ = [
@@ -18,5 +18,5 @@ __all__ = [
     'main_train', 'evaluate', 'train_epoch',
     'compute_regression_metrics', 'create_regression_plots',
     'create_qq_plots', 'create_residual_plots', 'create_scatter_plot',
-    'ResourceLogger'
+    'ResourceLogger',
 ]

@@ -121,8 +121,9 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
             # Robust to outliers (IQR based)
             return RobustScaler()
         if kind == 'quantile':
-            # Map distribution to normal; n_quantiles capped by sample size
-            n_q = min(1000, X.shape[0]) if not is_label else min(1000, y.shape[0])
+            # Map distribution to normal; n_quantiles capped by training sample size
+            n_train = X_train.shape[0] if not is_label else y_train.shape[0]
+            n_q = min(1000, n_train)
             return QuantileTransformer(n_quantiles=n_q, output_distribution='normal', subsample=int(1e9), random_state=random_state)
         if kind == 'none':
             return None

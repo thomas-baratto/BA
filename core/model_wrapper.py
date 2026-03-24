@@ -11,6 +11,7 @@ Key Features:
 """
 
 import json
+import gzip
 import os
 import pickle
 from pathlib import Path
@@ -20,6 +21,20 @@ import numpy as np
 import torch
 
 from core.model import NeuralNetwork
+
+
+def _load_pickle(path: Path):
+    """Load a pickle file, transparently handling gzip compression.
+
+    Tries gzip first; falls back to plain pickle for backward compatibility
+    with uncompressed artifacts.
+    """
+    try:
+        with gzip.open(path, "rb") as f:
+            return pickle.load(f)
+    except gzip.BadGzipFile:
+        with open(path, "rb") as f:
+            return pickle.load(f)
 
 
 class TrainedModel:
@@ -131,8 +146,7 @@ class TrainedModel:
         if not model_path.exists():
             raise FileNotFoundError(f"Random model not found: {model_path}")
         
-        with open(model_path, "rb") as f:
-            self.model = pickle.load(f)
+        self.model = _load_pickle(model_path)
 
     def _load_scalers(self) -> Dict[str, Any]:
         """Load feature and label scalers."""
@@ -148,8 +162,7 @@ class TrainedModel:
                 "Model may need to be retrained."
             )
         
-        with open(scalers_path, "rb") as f:
-            return pickle.load(f)
+        return _load_pickle(scalers_path)
 
     @property
     def feature_scaler(self):

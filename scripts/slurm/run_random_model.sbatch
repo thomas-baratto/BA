@@ -35,7 +35,7 @@ BASE_DIR=${BASE_DIR:-runs}
 NO_SAVE_MODEL=${NO_SAVE_MODEL:-1}
 USE_AREA_ROOT=${USE_AREA_ROOT:-0}
 
-CMD="python scripts/train_random_models.py \
+CMD="python scripts/training/train_random_models.py \
     --model ${MODEL} \
     --dataset ${DATASET} \
     --activation ${ACTIVATION} \

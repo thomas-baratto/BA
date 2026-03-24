@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "created_at": "2026-03-22T21:18:58.367456Z",
+  "model_type": "mlp",
+  "dataset": "isotherm",
+  "targets": [
+    "Area",
+    "Iso_distance",
+    "Iso_width"
+  ],
+  "features": [
+    "Flow_well",
+    "Temp_diff",
+    "kW_well",
+    "Hydr_gradient",
+    "Hydr_conductivity",
+    "Aqu_thickness",
+    "Long_dispersivity",
+    "Trans_dispersivity",
+    "Isotherm"
+  ],
+  "artifacts": {
+    "config": "model_config.json",
+    "scalers": "scalers.pkl",
+    "results": "results.json",
+    "predictions": "test_predictions.npz",
+    "model": "best_model.pt"
+  },
+  "training": {
+    "epochs": 10000,
+    "batch_size": 128,
+    "learning_rate": 0.0049175231592782824,
+    "optimizer": "Adam",
+    "loss_criterion": "L1",
+    "train_time_seconds": 4296.107328176498
+  },
+  "performance": {
+    "test_rmse": Infinity,
+    "test_mae": 1.0759986155964754e+20,
+    "test_mse": Infinity,
+    "test_r2": -Infinity,
+    "test_nrmse": Infinity,
+    "test_kge": NaN
+  }
+}

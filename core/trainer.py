@@ -17,12 +17,13 @@ from sklearn.model_selection import train_test_split
 
 from core.model import NeuralNetwork
 from core.data_loader import CSVDataset, load_data
-from core.utils import (
-    plot_results, 
-    compute_regression_metrics,
+from core.metrics import compute_regression_metrics
+from core.plotting import (
+    plot_results,
     plot_split_metric_bars,
-    ResourceLogger
+    ResourceLogger,
 )
+from core.training_utils import to_physical_units
 
 def train_epoch(model: nn.Module,
                 loader: DataLoader,
@@ -120,7 +121,6 @@ def create_scheduler(optimizer: optim.Optimizer, config: Dict[str, Any]) -> Any:
             min_lr=min_lr,
             threshold=threshold,
             threshold_mode=threshold_mode,
-            verbose=True
         )
         logging.info(
             f"Using ReduceLROnPlateau(factor={factor}, patience={patience_plateau}, "
@@ -156,8 +156,15 @@ def main_train(config: Dict[str, Any],
         rf=rf,
         feature_scaler_type=config.get("feature_scaler_type", "minmax"),
         label_scaler_type=config.get("label_scaler_type", "minmax"),
-        use_log=use_log
+        use_log=use_log,
+        use_area_root=config.get("use_area_root", False)
     )
+
+    # Keep original label names for display/metrics; rename internally only to track sqrt transform
+    original_label_cols = list(label_cols)
+    if config.get("use_area_root", False):
+        label_cols = ["sqrt(Area)" if col == "Area" else col for col in label_cols]
+
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_full, y_train_full, test_size=0.2, random_state=42
     )
@@ -166,12 +173,13 @@ def main_train(config: Dict[str, Any],
     val_dataset = CSVDataset(X_val, y_val)
     test_dataset = CSVDataset(X_test, y_test)
     
+    num_workers = min(os.cpu_count() or 1, 8)
     train_loader = DataLoader(train_dataset, batch_size=config["batch_size"], shuffle=True,
-                              num_workers=0, pin_memory=True)
+                              num_workers=num_workers, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=config["batch_size"], shuffle=False,
-                            num_workers=0, pin_memory=True)
+                            num_workers=num_workers, pin_memory=True)
     test_loader = DataLoader(test_dataset, batch_size=config["batch_size"], shuffle=False,
-                             num_workers=0, pin_memory=True)
+                             num_workers=num_workers, pin_memory=True)
     
     model = NeuralNetwork(
         input_size=X_train.shape[1],
@@ -292,14 +300,13 @@ def main_train(config: Dict[str, Any],
     logging.info(f"Final Validation Loss ({loss_name}): {val_loss_final:.6f}")
     logging.info(f"Final Test Loss ({loss_name}): {test_loss:.6f}")
 
-    def to_physical_units(y_scaled: np.ndarray) -> np.ndarray:
-        if y_scaler is not None:
-            y_unscaled = y_scaler.inverse_transform(y_scaled)
-        else:
-            y_unscaled = y_scaled
-        if use_log:
-            return np.expm1(y_unscaled)
-        return y_unscaled
+    def _to_physical(y_scaled: np.ndarray) -> np.ndarray:
+        return to_physical_units(
+            y_scaled, y_scaler,
+            use_log=use_log,
+            use_area_root=config.get("use_area_root", False),
+            label_cols=original_label_cols,
+        )
 
     def _format_metric_for_text(value: Any) -> str:
         try:
@@ -316,15 +323,15 @@ def main_train(config: Dict[str, Any],
         ("validation", val_loss_final, val_pred_scaled, val_true_scaled),
         ("test", test_loss, test_pred_scaled, test_true_scaled),
     ]:
-        y_true_physical = to_physical_units(targets_scaled)
-        y_pred_physical = to_physical_units(preds_scaled)
+        y_true_physical = _to_physical(targets_scaled)
+        y_pred_physical = _to_physical(preds_scaled)
         split_plot_data[split_name] = {
             "true": y_true_physical,
             "pred": y_pred_physical
         }
         overall_metrics = compute_regression_metrics(y_true_physical, y_pred_physical)
         per_label_metrics = {}
-        for idx, label in enumerate(label_cols):
+        for idx, label in enumerate(original_label_cols):
             per_label_metrics[label] = compute_regression_metrics(
                 y_true_physical[:, idx:idx+1],
                 y_pred_physical[:, idx:idx+1]
@@ -356,7 +363,7 @@ def main_train(config: Dict[str, Any],
                 logging.info(f"{split_name.title()} {key.upper()}: {value:.6f}")
                 f.write(f"  {key}: {value:.6f}\n")
             f.write("Per-Label Metrics:\n")
-            for label in label_cols:
+            for label in original_label_cols:
                 f.write(f"  --- {label} ---\n")
                 feature_metrics = metrics["per_label"].get(label, {})
                 for key, value in feature_metrics.items():
@@ -397,10 +404,10 @@ def main_train(config: Dict[str, Any],
             val_losses,
             test_true_physical,
             test_pred_physical,
-            label_cols,
+            original_label_cols,
             writer=writer
         )
-        plot_split_metric_bars(rf, label_cols, split_metrics, writer=writer)
+        plot_split_metric_bars(rf, original_label_cols, split_metrics, writer=writer)
             
     writer.close()
 

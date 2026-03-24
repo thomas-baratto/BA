@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 
 @contextmanager
@@ -15,14 +16,11 @@ def _noop_context(*args, **kwargs):
 
 
 def test_train_random_models_main_smoke(monkeypatch, tmp_path):
-    import scripts.train_random_models as trm
+    import scripts.training.train_random_models as trm
 
-    class _IdentityScaler:
-        def transform(self, x):
-            return x
-
-        def inverse_transform(self, x):
-            return x
+    # Use real scalers that can be pickled (the script writes scalers.pkl)
+    _feat_scaler = MinMaxScaler().fit(np.random.randn(12, 4))
+    _lbl_scaler = MinMaxScaler().fit(np.random.randn(12, 1))
 
     args = argparse.Namespace(
         model='ELM',
@@ -60,7 +58,7 @@ def test_train_random_models_main_smoke(monkeypatch, tmp_path):
     monkeypatch.setattr(
         trm,
         'load_data',
-        lambda **kwargs: (X_train, X_test, _IdentityScaler(), y_train, y_test, _IdentityScaler()),
+        lambda **kwargs: (X_train, X_test, _feat_scaler, y_train, y_test, _lbl_scaler),
     )
 
     def _fake_run_single_seed(*_a, **_kw):
@@ -74,7 +72,7 @@ def test_train_random_models_main_smoke(monkeypatch, tmp_path):
 
 
 def test_run_optuna_main_smoke(monkeypatch, tmp_path):
-    import scripts.run_optuna as ro
+    import scripts.training.run_optuna as ro
 
     csv_file = tmp_path / 'tiny.csv'
     csv_file.write_text(
@@ -128,10 +126,13 @@ def test_run_optuna_main_smoke(monkeypatch, tmp_path):
             for cb in callbacks:
                 cb(self, _FakeTrial())
 
+        def set_user_attr(self, key, value):
+            pass
+
     monkeypatch.setattr(ro, 'parse_args', lambda: args)
     monkeypatch.setattr(ro, 'set_seed', lambda: None)
     monkeypatch.setattr(ro, 'validate_target_labels', lambda labels: None)
-    monkeypatch.setattr(ro, 'detect_columns_from_csv', lambda _p: (['Flow_well', 'Hydr_gradient', 'Hydr_conductivity', 'Aqu_thickness'], ['Cone']))
+    monkeypatch.setattr(ro, 'detect_features_and_labels', lambda _p: (['Flow_well', 'Hydr_gradient', 'Hydr_conductivity', 'Aqu_thickness'], ['Cone']))
     monkeypatch.setattr(ro, 'load_data', lambda **kwargs: (X, X, None, y, y, None))
     monkeypatch.setattr(ro, 'build_objective', lambda **kwargs: (lambda _trial: 0.1))
     monkeypatch.setattr(ro, 'power_monitor_session', _noop_context)

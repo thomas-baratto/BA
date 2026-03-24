@@ -14,7 +14,7 @@ All trained models should create artifacts following this schema:
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -89,7 +89,7 @@ class ArtifactManifest:
         """
         self.manifest = {
             "version": self.SCHEMA_VERSION,
-            "created_at": datetime.utcnow().isoformat() + "Z",
+            "created_at": datetime.now(timezone.utc).isoformat(),
             "model_type": model_type,
             "dataset": dataset,
             "targets": targets,

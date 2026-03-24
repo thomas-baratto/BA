@@ -1,34 +1,15 @@
 import argparse
 import logging
 import random
-from typing import List
 
 import numpy as np
 import torch
 
+from config.datasets import KNOWN_LABELS
+
 # --- Global Constants for Optuna Tuning ---
 MAX_EPOCHS = 200
 PATIENCE = 50
-
-# List of input features to select from Clean_Results_Isotherm.csv
-FEATURE_COLUMN_NAMES_ISOTHERM = [
-    "Flow_well",
-    "Temp_diff",
-    "kW_well",
-    "Hydr_gradient",
-    "Hydr_conductivity",
-    "Aqu_thickness",
-    "Long_dispersivity",
-    "Trans_dispersivity",
-    "Isotherm"
-]
-
-FEATURE_COLUMN_NAMES_DEPRESSION = [
-    "Flow_well",
-    "Hydr_gradient",
-    "Hydr_conductivity",
-    "Aqu_thickness"
-]
 
 def set_seed(seed: int = 42):
     """Sets the seed for reproducibility."""
@@ -40,9 +21,9 @@ def set_seed(seed: int = 42):
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
-def validate_target_labels(labels: List[str]):
+def validate_target_labels(labels: list[str]):
     """Validates that the target labels are correctly defined."""
-    valid_labels = {"Area", "Iso_distance", "Iso_width", "Cone"}
+    valid_labels = set(KNOWN_LABELS)
     if not all(label in valid_labels for label in labels):
         logging.error(f"Invalid target labels detected: {labels}. Valid choices are: {valid_labels}")
         raise ValueError("Invalid target label configuration.")
@@ -138,6 +119,12 @@ def parse_args():
         help='Default loss function for objective.'
     )
     
+    parser.add_argument(
+        '--use-area-root',
+        action='store_true',
+        help='Apply sqrt(Area) before log1p during data loading (isotherm only).'
+    )
+
     # --- Power Monitor Arguments (from power_utils) ---
     parser.add_argument(
         '--disable-power-monitor',

@@ -1,3 +1,28 @@
+[project]
+name = "ba-thermal-plume"
+version = "1.0.0"
+description = "Machine learning models for thermal plume prediction (Bachelor Thesis)"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "optuna",
+    "pandas",
+    "psutil",
+    "scikit-learn",
+    "scipy",
+    "statsmodels",
+    "tensorboard",
+    "torch",
+    "torchinfo",
+]
+
+[project.scripts]
+ba-predict = "scripts.predict:main"
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "black", "optuna-dashboard"]
+
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
