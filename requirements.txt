@@ -1,14 +1,6 @@
-matplotlib
 numpy
-optuna
-optuna-dashboard
 pandas
-psutil
-pytest
 scikit-learn
 scipy
-statsmodels
 tabulate
-tensorboard
 torch
-torchinfo

@@ -2,25 +2,23 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install dependencies first (for layer caching)
+# Install CPU-only dependencies (no GPU needed for inference)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt \
+        --extra-index-url https://download.pytorch.org/whl/cpu
 
-# Copy project files
-COPY core/ core/
-COPY config/ config/
-COPY scripts/ scripts/
-COPY data/ data/
-COPY artifacts/models/mlp/ artifacts/models/mlp/
-COPY artifacts/models/random/ artifacts/models/random/
-COPY pyproject.toml .
-COPY README.md .
+# Copy inference-only project files
+COPY core/__init__.py core/model.py core/model_wrapper.py core/inference.py  core/
+COPY core/random/ core/random/
+COPY config/__init__.py config/datasets.py config/
+COPY scripts/__init__.py scripts/
+COPY scripts/deployment/__init__.py scripts/deployment/predict.py scripts/deployment/
+COPY artifacts/models/ artifacts/models/
+COPY sample_cone.csv sample_isotherm.csv ./
+COPY pyproject.toml README.md ./
 
-# Editable install so paths resolve to /app/ (where the artifacts live)
+# Install package (no-deps: requirements already installed above)
 RUN pip install --no-cache-dir --no-deps -e .
-
-# Retrain random models (deterministic, ~15s on CPU)
-RUN PYTHONPATH=. python scripts/deployment/retrain_random_models.py
 
 # Default entrypoint
 ENTRYPOINT ["ba-predict"]

@@ -1,5 +1,6 @@
 .venv/
 .git/
+.vscode/
 .claude/
 __pycache__/
 *.pyc
@@ -7,7 +8,20 @@ runs/
 slurm_jobs/
 artifacts/optuna_studies/
 artifacts/packages/
+artifacts/models/mlp/*/plots/
+artifacts/models/mlp/*/resources/
+artifacts/models/mlp/*/stats/
+artifacts/models/**/test_predictions.npz
+artifacts/models/**/results_*.json
 *.egg-info/
 dist/
 build/
 .pytest_cache/
+tests/
+optimization/
+monitoring/
+data/
+scripts/analysis/
+scripts/sweep/
+scripts/training/
+scripts/slurm/

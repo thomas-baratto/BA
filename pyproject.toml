@@ -5,18 +5,12 @@ description = "Machine learning models for thermal plume prediction (Bachelor Th
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "matplotlib",
     "numpy",
-    "optuna",
     "pandas",
-    "psutil",
     "scikit-learn",
     "scipy",
-    "statsmodels",
     "tabulate",
-    "tensorboard",
     "torch",
-    "torchinfo",
 ]
 
 [build-system]
@@ -24,7 +18,7 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["core*", "config*", "scripts*", "optimization*", "monitoring*"]
+include = ["core*", "config*", "scripts.deployment*"]
 
 [tool.setuptools.package-data]
 "*" = [
@@ -38,10 +32,9 @@ include = ["core*", "config*", "scripts*", "optimization*", "monitoring*"]
 
 [project.scripts]
 ba-predict = "scripts.deployment.predict:main"
-ba-retrain-random = "scripts.deployment.retrain_random_models:main"
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff", "black", "optuna-dashboard"]
+dev = ["pytest"]
 
 [tool.pytest.ini_options]
 testpaths = [
