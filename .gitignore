@@ -32,8 +32,10 @@ artifacts/models/*
 !artifacts/models/random/
 !artifacts/packages/
 
-# Random model binaries: included in release branch (pre-built for CPU inference).
-# On master they are excluded (reproducible via retrain_random_models.py).
+# Random model binaries: too large for git (up to 223 MB each).
+# Shipped via DaRUS archive instead. Reproducible on master via:
+#   PYTHONPATH=. python scripts/deployment/retrain_random_models.py
+artifacts/models/random/**/model.pkl
 
 # TensorBoard/event logs (inside tracked artifact dirs too)
 events.out.tfevents.*
