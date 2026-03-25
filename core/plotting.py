@@ -14,6 +14,20 @@ from torch.utils.tensorboard import SummaryWriter
 import statsmodels.api as sm
 
 from core.metrics import LABEL_UNITS
+from core.thesis_style import (
+    apply_thesis_style,
+    COLORS,
+    DPI,
+    FIG_SQUARE,
+    FIG_WIDE,
+    FIG_SINGLE,
+    FIG_TALL,
+    label_with_unit,
+    save_fig,
+)
+
+# Apply thesis-quality defaults for every plot created via this module
+apply_thesis_style()
 
 # --- GPU Logging Setup ---
 GPU_AVAILABLE = torch.cuda.is_available()
@@ -33,24 +47,21 @@ def create_residual_plots(
         predictions = predictions.reshape(-1, 1)
 
     for label_idx in range(true_values.shape[1]):
-        fig = plt.figure()
-        ax = fig.add_subplot(1, 1, 1)
+        fig, ax = plt.subplots(figsize=FIG_WIDE)
 
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
         residuals = pred_col - true_col
 
         label_name = labels[label_idx]
-        unit = LABEL_UNITS.get(label_name, "")
-        unit_str = f" ({unit})" if unit else ""
 
-        ax.scatter(true_col, residuals, alpha=0.5, s=10)
-        ax.axhline(y=0, color="r", linestyle="--")
+        ax.scatter(true_col, residuals, alpha=0.4, s=12, color=COLORS["accent1"],
+                   edgecolors="none")
+        ax.axhline(y=0, color=COLORS["secondary"], linestyle="--", lw=1.5)
 
-        ax.set_xlabel(f"True Values{unit_str}")
-        ax.set_ylabel(f"Residuals{unit_str}")
-        ax.set_title(f"Residuals vs. True Values for {label_name}")
-        ax.grid(True)
+        ax.set_xlabel(label_with_unit(f"True {label_name}"))
+        ax.set_ylabel(label_with_unit(f"Residuals", LABEL_UNITS.get(label_name)))
+        ax.set_title(f"Residuals — {label_name}")
 
         plot_name = f"Residuals_vs_True/Label_{label_name}"
         figures.append((plot_name, fig))
@@ -86,7 +97,7 @@ def create_qq_plots(
         fig = sm.qqplot(residuals, line="45", fit=True, markersize=3)
         ax = plt.gca()
         ax.grid(True, alpha=0.3)
-        plt.title(f"Q-Q Plot of Residuals for {labels[label_idx]}")
+        ax.set_title(f"Q-Q Plot — {labels[label_idx]}")
 
         plot_name = f"QQ_Plot/Label_{labels[label_idx]}"
         figures.append((plot_name, fig))
@@ -94,8 +105,7 @@ def create_qq_plots(
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)
             filename = f"qq_plot_{labels[label_idx]}.png"
-            fig.savefig(os.path.join(output_dir, filename))
-            plt.close(fig)
+            save_fig(fig, os.path.join(output_dir, filename))
 
     return figures
 
@@ -123,48 +133,43 @@ def create_regression_plots(
         predictions = predictions.reshape(-1, 1)
 
     for label_idx in range(true_values.shape[1]):
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(1, 1, 1)
+        fig, ax = plt.subplots(figsize=FIG_SQUARE)
 
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
 
         label_name = labels[label_idx]
-        unit = LABEL_UNITS.get(label_name, "")
-        unit_str = f" ({unit})" if unit else ""
 
-        ax.scatter(true_col, pred_col, alpha=0.5, s=10, label="Predictions")
+        ax.scatter(true_col, pred_col, alpha=0.4, s=12, color=COLORS["primary"],
+                   edgecolors="none", label="Predictions")
 
         # Plot ideal line
         min_val = min(true_col.min(), pred_col.min()) * 0.95
         max_val = max(true_col.max(), pred_col.max()) * 1.05
         lims = [min_val, max_val]
-        ax.plot(lims, lims, "r--", linewidth=2, label="Ideal (y=x)")
+        ax.plot(lims, lims, color=COLORS["secondary"], ls="--", lw=1.5,
+                label="Ideal ($y = x$)")
 
         # Compute R²
         r2 = r2_score(true_col, pred_col)
         rmse = np.sqrt(np.mean((true_col - pred_col) ** 2))
 
-        ax.set_xlabel(f"True Values{unit_str}", fontsize=12)
-        ax.set_ylabel(f"Predicted Values{unit_str}", fontsize=12)
+        unit = LABEL_UNITS.get(label_name, "")
+        unit_suffix = f" {unit}" if unit else ""
+        ax.set_xlabel(label_with_unit(f"True {label_name}"))
+        ax.set_ylabel(label_with_unit(f"Predicted {label_name}"))
         ax.set_title(
-            f"Regression Plot: {label_name}\nR² = {r2:.4f}, RMSE = {rmse:.4f}{unit_str}",
-            fontsize=14,
+            f"Regression — {label_name}\n"
+            f"$R^2 = {r2:.4f}$,  RMSE $= {rmse:.2f}${unit_suffix}",
         )
         ax.legend()
-        ax.grid(True, alpha=0.3)
         ax.set_xlim(lims)
         ax.set_ylim(lims)
         ax.set_aspect("equal", adjustable="box")
 
         if output_dir:
             filename = f"regression_plot_{label_name}.png"
-            fig.savefig(
-                os.path.join(output_dir, filename),
-                dpi=150,
-                bbox_inches="tight",
-            )
-            plt.close(fig)
+            save_fig(fig, os.path.join(output_dir, filename))
 
     logging.info(f"Saved {len(labels)} regression plots to {output_dir}")
 
@@ -181,23 +186,22 @@ def create_scatter_plot(
         predictions = predictions.reshape(-1, 1)
 
     for label_idx in range(true_values.shape[1]):
-        fig = plt.figure()
-        ax = fig.add_subplot(1, 1, 1)
+        fig, ax = plt.subplots(figsize=FIG_SQUARE)
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
 
         label_name = labels[label_idx]
-        unit = LABEL_UNITS.get(label_name, "")
-        unit_str = f" ({unit})" if unit else ""
 
-        ax.scatter(true_col, pred_col, alpha=0.5, s=10)
+        ax.scatter(true_col, pred_col, alpha=0.4, s=12, color=COLORS["primary"],
+                   edgecolors="none")
         min_val = min(true_col.min(), pred_col.min()) * 0.95
         max_val = max(true_col.max(), pred_col.max()) * 1.05
         lims = [min_val, max_val]
-        ax.plot(lims, lims, "r--", label="Ideal (y=x)")
-        ax.set_xlabel(f"True Values{unit_str}")
-        ax.set_ylabel(f"Predicted Values{unit_str}")
-        ax.set_title(f"True vs. Predicted for Label: {label_name}")
+        ax.plot(lims, lims, color=COLORS["secondary"], ls="--", lw=1.5,
+                label="Ideal ($y = x$)")
+        ax.set_xlabel(label_with_unit(f"True {label_name}"))
+        ax.set_ylabel(label_with_unit(f"Predicted {label_name}"))
+        ax.set_title(f"Predicted vs. True — {label_name}")
         ax.legend()
         ax.set_xlim(lims)
         ax.set_ylim(lims)
@@ -220,18 +224,18 @@ def plot_results(
     plot_dir_name = "_".join(labels).replace(" ", "_").replace("/", "_")
     plot_dir = os.path.join(rf, "plots", plot_dir_name)
     os.makedirs(plot_dir, exist_ok=True)
-    fig_loss = plt.figure()
-    ax = fig_loss.add_subplot(1, 1, 1)
-    ax.semilogy(x_loss, train_losses, label="Training Loss")
-    ax.semilogy(x_loss, val_losses, label="Validation Loss", linestyle="--")
+    fig_loss, ax = plt.subplots(figsize=FIG_WIDE)
+    ax.semilogy(x_loss, train_losses, label="Training Loss",
+                color=COLORS["primary"])
+    ax.semilogy(x_loss, val_losses, label="Validation Loss",
+                color=COLORS["accent1"], ls="--")
     ax.set_title("Training vs. Validation Loss")
     ax.set_xlabel("Epoch")
-    ax.set_ylabel("Loss")
+    ax.set_ylabel("Loss (log scale)")
     ax.legend()
     if writer:
         writer.add_figure("Loss_Curve", fig_loss, global_step=len(x_loss))
-    fig_loss.savefig(os.path.join(plot_dir, "loss.png"))
-    plt.close(fig_loss)
+    save_fig(fig_loss, os.path.join(plot_dir, "loss.png"))
 
     # --- Generate and Save All Plots ---
     all_plots = [
@@ -244,8 +248,7 @@ def plot_results(
         filename = plot_name.replace("/", "_") + ".png"
         if writer:
             writer.add_figure(plot_name, fig)
-        fig.savefig(os.path.join(plot_dir, filename))
-        plt.close(fig)
+        save_fig(fig, os.path.join(plot_dir, filename))
 
 
 def plot_split_metric_bars(
@@ -269,7 +272,7 @@ def plot_split_metric_bars(
     bar_width = 0.75 / max(1, len(splits))
 
     for metric in metric_keys:
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=FIG_WIDE)
         for idx, split in enumerate(splits):
             per_label_values = [
                 split_metrics[split]["per_label"]
@@ -293,19 +296,13 @@ def plot_split_metric_bars(
         unit_str = f" ({unit})" if unit else ""
 
         ax.set_ylabel(f"{metric.upper()}{unit_str}")
-        ax.set_title(f"{metric.upper()} by Label (Physical Units)")
-        ax.grid(True, axis="y", alpha=0.3)
+        ax.set_title(f"{metric.upper()} per Label across Splits")
         ax.legend()
         fig.tight_layout()
 
         if writer:
             writer.add_figure(f"Metrics/{metric.upper()}_per_label", fig)
-        fig.savefig(
-            os.path.join(plot_dir, f"{metric}_per_label.png"),
-            dpi=150,
-            bbox_inches="tight",
-        )
-        plt.close(fig)
+        save_fig(fig, os.path.join(plot_dir, f"{metric}_per_label.png"))
 
 
 # --- Resource Logging ---
@@ -452,8 +449,7 @@ class ResourceLogger:
 
         plt.tight_layout()
         cpu_ram_path = os.path.join(self.output_dir, "cpu_ram_usage.png")
-        plt.savefig(cpu_ram_path, dpi=150, bbox_inches="tight")
-        plt.close()
+        save_fig(fig, cpu_ram_path)
         logging.info(f"Saved CPU/RAM usage plot to {cpu_ram_path}")
 
         # Plot 2: GPU usage (if available)
@@ -502,6 +498,5 @@ class ResourceLogger:
 
             plt.tight_layout()
             gpu_path = os.path.join(self.output_dir, "gpu_usage.png")
-            plt.savefig(gpu_path, dpi=150, bbox_inches="tight")
-            plt.close()
+            save_fig(fig, gpu_path)
             logging.info(f"Saved GPU usage plot to {gpu_path}")

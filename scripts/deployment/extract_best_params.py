@@ -18,7 +18,8 @@ for name, cfg in DATASET_CONFIGS.items():
     data = {
         "best_params": study.best_trial.params,
         "trial_number": study.best_trial.number,
-        "best_value": study.best_trial.value
+        "best_value": study.best_trial.value,
+        "use_area_root": study.user_attrs.get("use_area_root", False),
     }
     out_file = cfg["best_params_file"]
     os.makedirs(os.path.dirname(out_file), exist_ok=True)

@@ -34,7 +34,11 @@ PATIENCE = 250
 
 
 def load_optuna_best_params(config: dict) -> tuple:
-    """Load best parameters from config file or fallback to Optuna journal."""
+    """Load best parameters from config file or fallback to Optuna journal.
+
+    Returns (best_params, trial_number, best_value) where best_params may
+    include the ``use_area_root`` key extracted from the study metadata.
+    """
     best_params_file = config.get("best_params_file")
     if best_params_file and os.path.exists(best_params_file):
         with open(best_params_file, "r") as f:
@@ -42,7 +46,11 @@ def load_optuna_best_params(config: dict) -> tuple:
         logging.info(f"Loaded best parameters from {best_params_file}")
         logging.info(f"Trial number: {data.get('trial_number', 'N/A')}")
         logging.info(f"Best value: {data.get('best_value', 'N/A')}")
-        return data["best_params"], data.get("trial_number", -1), data.get("best_value", -1.0)
+        params = data["best_params"]
+        # Carry use_area_root from the top-level JSON into the params dict
+        if "use_area_root" in data:
+            params.setdefault("use_area_root", data["use_area_root"])
+        return params, data.get("trial_number", -1), data.get("best_value", -1.0)
 
     journal_path = config.get("journal_path")
     study_name = config.get("study_name")
@@ -56,6 +64,10 @@ def load_optuna_best_params(config: dict) -> tuple:
     logging.info(f"Loaded study: {study_name}")
     logging.info(f"Best trial: {study.best_trial.number}")
     logging.info(f"Best value: {study.best_value:.6f}")
+
+    use_area_root = study.user_attrs.get("use_area_root", False)
+    params = study.best_params
+    params["use_area_root"] = use_area_root
     
     if best_params_file:
         os.makedirs(os.path.dirname(best_params_file), exist_ok=True)
@@ -63,7 +75,8 @@ def load_optuna_best_params(config: dict) -> tuple:
             json.dump({
                 "best_params": study.best_params,
                 "trial_number": study.best_trial.number,
-                "best_value": study.best_value
+                "best_value": study.best_value,
+                "use_area_root": use_area_root,
             }, f, indent=2)
         logging.info(f"Saved best parameters to {best_params_file}")
 

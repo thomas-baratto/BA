@@ -30,8 +30,11 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from core.thesis_style import apply_thesis_style, DPI, FIG_WIDE, save_fig
 from scripts.analysis.pareto_manager import is_pareto_efficient
 from scripts.analysis.select_knee_points import _knee_point_index
+
+apply_thesis_style()
 
 # ── Consistent model styling ─────────────────────────────────────────────────
 
@@ -144,14 +147,27 @@ def plot_pareto_frontier(
     sort_idx = np.argsort(frontier_costs[:, 0])
     frontier_sorted = frontier_costs[sort_idx]
 
-    # ── Create figure ──
-    fig, ax = plt.subplots(figsize=(11, 7))
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-
-    # Axis ranges (with padding)
+    # Axis ranges (with padding) — computed early so staircase can use x_range
     x_range = (time_vals.min() * 0.7, time_vals.max() * 1.5)
     y_range = (error_vals.min() * 0.85, error_vals.max() * 1.2)
+
+    # Build staircase (orthogonal segments) for the Pareto frontier
+    stair_x, stair_y = [], []
+    for i, (tx, ey) in enumerate(frontier_sorted):
+        if i > 0:
+            # Horizontal segment to the new x at the previous y
+            stair_x.append(tx)
+            stair_y.append(frontier_sorted[i - 1, 1])
+        stair_x.append(tx)
+        stair_y.append(ey)
+    # Extend rightward from last point so the frontier doesn't just stop
+    stair_x.append(x_range[1])
+    stair_y.append(frontier_sorted[-1, 1])
+
+    # ── Create figure ──
+    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
 
     # Iso-cost curves
     _draw_iso_cost_curves(ax, x_range, y_range)
@@ -172,10 +188,10 @@ def plot_pareto_frontier(
             label=style["label"], zorder=3,
         )
 
-    # Pareto frontier line
+    # Pareto frontier staircase
     ax.plot(
-        frontier_sorted[:, 0], frontier_sorted[:, 1],
-        color="red", ls="--", lw=2.5, zorder=4,
+        stair_x, stair_y,
+        color="red", ls="--", lw=1.2, zorder=4,
         label="Pareto Frontier",
     )
 
@@ -190,23 +206,21 @@ def plot_pareto_frontier(
                 linewidths=1.2, zorder=5, label="Knee Point",
             )
 
-    ax.set_xlabel("Time (s)", fontsize=13)
-    ax.set_ylabel(error_label, fontsize=13)
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel(error_label)
     ax.set_title(
-        f"{error_label} Performance of Random Models on: {dataset.capitalize()}",
-        fontsize=14,
+        f"{error_label} vs. Training Time — {dataset.capitalize()}",
     )
     ax.set_xlim(x_range)
     ax.set_ylim(y_range)
 
     ax.legend(
-        title="Model Type", fontsize=10, title_fontsize=11,
+        title="Model Type",
         loc="upper right", framealpha=0.9,
     )
     ax.grid(True, which="both", alpha=0.2)
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_fig(fig, output_path)
     print(f"  Saved: {output_path}")
 
 

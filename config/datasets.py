@@ -26,7 +26,7 @@ DATASET_CONFIGS = {
         ],
         "labels": ["Area", "Iso_distance", "Iso_width"],
         "journal_path": os.path.join(ARTIFACTS_ROOT, "optuna_studies", "isotherm", "journal.log"),
-        "study_name": "nn_study_isotherm_journal",
+        "study_name": "nn_study_isotherm_arearoot",
         "best_params_file": str(_PROJECT_ROOT / "config" / "best_params_isotherm.json"),
     },
     "cone": {

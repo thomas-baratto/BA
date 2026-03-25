@@ -25,7 +25,18 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from config.datasets import DATASET_CONFIGS
 from core.inference import load_model_and_scalers, make_predictions
 from core.metrics import LABEL_UNITS, compute_regression_metrics
+from core.thesis_style import (
+    apply_thesis_style,
+    COLORS,
+    DPI,
+    FIG_SQUARE,
+    FIG_WIDE,
+    label_with_unit,
+    save_fig,
+)
 from scripts.analysis.plot_pareto_frontiers import generate_all_pareto_plots
+
+apply_thesis_style()
 
 PLOT_DIR = PROJECT_ROOT / "docs" / "plots"
 PLOT_DIR.mkdir(parents=True, exist_ok=True)
@@ -159,36 +170,35 @@ def plot_regression(y_true, y_pred, label_name, model_key, label_idx=0):
     yp = y_pred[:, label_idx] if y_pred.ndim > 1 else y_pred
 
     unit = LABEL_UNITS.get(label_name, "")
-    unit_str = f" ({unit})" if unit else ""
+    unit_suffix = f" {unit}" if unit else ""
 
-    fig, ax = plt.subplots(figsize=(7, 7))
-    ax.scatter(yt, yp, alpha=0.3, s=8, color="steelblue")
+    fig, ax = plt.subplots(figsize=FIG_SQUARE)
+    ax.scatter(yt, yp, alpha=0.4, s=12, color=COLORS["primary"],
+               edgecolors="none")
 
     lo = min(yt.min(), yp.min()) * 0.95
     hi = max(yt.max(), yp.max()) * 1.05
-    ax.plot([lo, hi], [lo, hi], "r--", lw=2, label="Ideal (y=x)")
+    ax.plot([lo, hi], [lo, hi], color=COLORS["secondary"], ls="--", lw=1.5,
+            label="Ideal ($y = x$)")
 
     from sklearn.metrics import r2_score
 
     r2 = r2_score(yt, yp)
     rmse = float(np.sqrt(np.mean((yt - yp) ** 2)))
-    ax.set_xlabel(f"True Values{unit_str}", fontsize=12)
-    ax.set_ylabel(f"Predicted Values{unit_str}", fontsize=12)
+    ax.set_xlabel(label_with_unit(f"True {label_name}"))
+    ax.set_ylabel(label_with_unit(f"Predicted {label_name}"))
     ax.set_title(
         f"{MODELS[model_key]['name']} — {label_name}\n"
-        f"R² = {r2:.4f},  RMSE = {rmse:.4f}{unit_str}",
-        fontsize=13,
+        f"$R^2 = {r2:.4f}$,  RMSE $= {rmse:.2f}${unit_suffix}",
     )
-    ax.legend(fontsize=11)
+    ax.legend()
     ax.set_xlim(lo, hi)
     ax.set_ylim(lo, hi)
     ax.set_aspect("equal", adjustable="box")
-    ax.grid(True, alpha=0.3)
     fig.tight_layout()
 
     fname = f"regression_{model_key}_{label_name}.png"
-    fig.savefig(PLOT_DIR / fname, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_fig(fig, PLOT_DIR / fname)
     return fname
 
 
@@ -198,24 +208,19 @@ def plot_residuals(y_true, y_pred, label_name, model_key, label_idx=0):
     yp = y_pred[:, label_idx] if y_pred.ndim > 1 else y_pred
     residuals = yp - yt
 
-    unit = LABEL_UNITS.get(label_name, "")
-    unit_str = f" ({unit})" if unit else ""
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.scatter(yt, residuals, alpha=0.3, s=8, color="darkorange")
-    ax.axhline(0, color="r", ls="--", lw=1.5)
-    ax.set_xlabel(f"True Values{unit_str}", fontsize=12)
-    ax.set_ylabel(f"Residuals{unit_str}", fontsize=12)
+    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    ax.scatter(yt, residuals, alpha=0.4, s=12, color=COLORS["accent1"],
+               edgecolors="none")
+    ax.axhline(0, color=COLORS["secondary"], ls="--", lw=1.5)
+    ax.set_xlabel(label_with_unit(f"True {label_name}"))
+    ax.set_ylabel(label_with_unit("Residuals", LABEL_UNITS.get(label_name)))
     ax.set_title(
         f"{MODELS[model_key]['name']} — Residuals for {label_name}",
-        fontsize=13,
     )
-    ax.grid(True, alpha=0.3)
     fig.tight_layout()
 
     fname = f"residuals_{model_key}_{label_name}.png"
-    fig.savefig(PLOT_DIR / fname, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_fig(fig, PLOT_DIR / fname)
     return fname
 
 

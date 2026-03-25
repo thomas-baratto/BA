@@ -9,11 +9,10 @@ Comparison of the 6 best models: 2 Optuna-optimized MLPs and 4 random network sw
 | Dataset | Model | Type | R² | RMSE | MAE | nRMSE | KGE | Train Time | Samples |
 |---------|-------|------|-----|------|-----|-------|-----|------------|---------|
 | cone | Optimized MLP | MLP | 0.9909 | 0.05 | 0.01 | 0.013306 | 0.9911 | 1212.4s | 12835 |
-| cone | edRVFL-SC (nRMSE winner) | RANDOM | 0.9770 | 0.08 | 0.04 | 0.024885 | 0.9871 | 6.9s | 3851 |
-| cone | edRVFL-SC (KGE winner) | RANDOM | 0.9770 | 0.08 | 0.04 | 0.024885 | 0.9871 | 6.9s | 3851 |
+| cone | edRVFL-SC (Pareto winner) | RANDOM | 0.9754 | 0.09 | 0.04 | 0.025720 | 0.9868 | 22.2s | 3851 |
 | isotherm | Optimized MLP | MLP | 1.0000 | 92.01 | 14.38 | 0.000185 | 0.9998 | 4296.1s | 85531 |
-| isotherm | SResdRVFL (nRMSE winner) | RANDOM | 0.8998 | 99.74 | 46.60 | 0.049879 | 0.9400 | 5.9s | 25660 |
-| isotherm | dRVFL (KGE winner) | RANDOM | 0.8596 | 118.09 | 55.62 | 0.059058 | 0.9013 | 1.0s | 25660 |
+| isotherm | SResdRVFL (nRMSE winner) | RANDOM | 0.8950 | 102.11 | 47.66 | 0.051065 | 0.9357 | 25.0s | 25660 |
+| isotherm | dRVFL (KGE winner) | RANDOM | 0.8548 | 120.07 | 56.79 | 0.060045 | 0.8976 | 2.2s | 25660 |
 
 ## Pareto Frontiers
 
@@ -52,7 +51,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 | ![regression](plots/regression_mlp_cone_Cone.png) | ![residuals](plots/residuals_mlp_cone_Cone.png) |
 
 
-### edRVFL-SC (nRMSE winner) (RANDOM)
+### edRVFL-SC (Pareto winner) (RANDOM)
 
 **Architecture:** `edRVFL-SC: H=1000, L=3, B=5, E=10, GELU, direct_link=✗, area_root=✗`
 
@@ -62,7 +61,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Cone | 0.9770 | 0.08 m | 0.04 m | 0.024885 | 0.9871 |
+| Cone | 0.9754 | 0.09 m | 0.04 m | 0.025720 | 0.9868 |
 
 #### Plots
 
@@ -71,27 +70,6 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 | Regression | Residuals |
 |:---:|:---:|
 | ![regression](plots/regression_cone_nRMSE_Cone.png) | ![residuals](plots/residuals_cone_nRMSE_Cone.png) |
-
-
-### edRVFL-SC (KGE winner) (RANDOM)
-
-**Architecture:** `edRVFL-SC: H=1000, L=3, B=5, E=10, GELU, direct_link=✗, area_root=✗`
-
-**Preprocessing:** feature_scaler=robust, label_scaler=robust, log_transform=✗
-
-#### Per-Label Test Metrics
-
-| Label | R² | RMSE | MAE | nRMSE | KGE |
-|-------|-----|------|-----|-------|-----|
-| Cone | 0.9770 | 0.08 m | 0.04 m | 0.024885 | 0.9871 |
-
-#### Plots
-
-**Cone**
-
-| Regression | Residuals |
-|:---:|:---:|
-| ![regression](plots/regression_cone_1KGE_Cone.png) | ![residuals](plots/residuals_cone_1KGE_Cone.png) |
 
 
 ---
@@ -143,9 +121,9 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Area | 0.8839 | 36.09 m² | 22.47 m² | 0.053178 | 0.9292 |
-| Iso_distance | 0.8764 | 168.53 m | 110.34 m | 0.084282 | 0.9253 |
-| Iso_width | 0.9078 | 11.79 m | 6.97 m | 0.037385 | 0.9413 |
+| Area | 0.8788 | 36.87 m² | 23.00 m² | 0.054327 | 0.9249 |
+| Iso_distance | 0.8704 | 172.56 m | 112.99 m | 0.086301 | 0.9201 |
+| Iso_width | 0.9066 | 11.87 m | 6.99 m | 0.037637 | 0.9394 |
 
 #### Plots
 
@@ -178,9 +156,9 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Area | 0.8440 | 41.82 m² | 26.75 m² | 0.061632 | 0.8905 |
-| Iso_distance | 0.8263 | 199.75 m | 131.90 m | 0.099899 | 0.8767 |
-| Iso_width | 0.8768 | 13.64 m | 8.19 m | 0.043220 | 0.9113 |
+| Area | 0.8369 | 42.76 m² | 27.40 m² | 0.063015 | 0.8851 |
+| Iso_distance | 0.8205 | 203.05 m | 134.67 m | 0.101545 | 0.8722 |
+| Iso_width | 0.8734 | 13.82 m | 8.28 m | 0.043809 | 0.9092 |
 
 #### Plots
 
@@ -210,14 +188,14 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 ### Cone (Depression Cone Size)
 
 - **MLP** achieves R² = 0.9909, nRMSE = 0.013306 on the full dataset.
-- **Best random model** (edRVFL-SC) achieves R² = 0.9770, nRMSE = 0.024885 on the test fold.
+- **Best random model** (edRVFL-SC) achieves R² = 0.9754, nRMSE = 0.025720 on the test fold.
 - Both cone winners on the Pareto frontiers selected the same edRVFL-SC configuration (H=1000, L=3, B=5, GELU).
 
 ### Isotherm (Thermal Plume Geometry)
 
 - **MLP** achieves R² = 0.999988, nRMSE = 0.000185 — near-perfect reconstruction of thermal plume geometry.
-- **Best random model by nRMSE** (SResdRVFL) achieves R² = 0.8998, nRMSE = 0.049879.
-- **Best random model by KGE** (dRVFL) achieves R² = 0.8596, KGE = 0.9013.
+- **Best random model by nRMSE** (SResdRVFL) achieves R² = 0.8950, nRMSE = 0.051065.
+- **Best random model by KGE** (dRVFL) achieves R² = 0.8548, KGE = 0.8976.
 - The MLP significantly outperforms all random architectures on this task, demonstrating the value of backpropagation-based optimization for the multi-output isotherm problem.
 
 ### Speed vs. Accuracy Trade-off

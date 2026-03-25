@@ -40,3 +40,7 @@ events.out.tfevents.*
 
 # Thesis description (local only)
 Ausschreibung.pdf
+
+#plots just save the summary .md files
+*.png
+*.pdf
