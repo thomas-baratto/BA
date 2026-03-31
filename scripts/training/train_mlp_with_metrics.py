@@ -28,6 +28,7 @@ from core.trainer import main_train
 from core.training_utils import normalize_best_params, get_loss_criterion
 from config.datasets import DATASET_CONFIGS
 from core.artifacts import ArtifactManifest
+from monitoring.power_utils import power_monitor_session
 
 MAX_EPOCHS = 10000
 PATIENCE = 250
@@ -89,7 +90,8 @@ def load_optuna_best_params(config: dict) -> tuple:
 def train_and_evaluate(
     dataset_name: str,
     output_dir: str,
-    device: torch.device
+    device: torch.device,
+    args,
 ) -> dict:
     """Train MLP from Optuna best trial and return metrics row for summary CSV."""
     config = DATASET_CONFIGS[dataset_name]
@@ -116,14 +118,15 @@ def train_and_evaluate(
     logging.info("Training model...")
     train_start = time.time()
 
-    model, X_scaler, y_scaler = main_train(
-        config=final_config,
-        rf=run_dir,
-        csv_file=config["csv_file"],
-        feature_cols=config["features"],
-        label_cols=config["labels"],
-        device=device
-    )
+    with power_monitor_session(args, run_dir):
+        model, X_scaler, y_scaler = main_train(
+            config=final_config,
+            rf=run_dir,
+            csv_file=config["csv_file"],
+            feature_cols=config["features"],
+            label_cols=config["labels"],
+            device=device
+        )
 
     train_time = time.time() - train_start
     logging.info(f"Training completed in {train_time:.2f}s")
@@ -270,6 +273,30 @@ def main():
         action="store_true",
         help="Disable CUDA even if available"
     )
+    # --- Power Monitor Arguments ---
+    parser.add_argument(
+        "--disable-power-monitor",
+        action="store_true",
+        help="Disable per-run power monitoring.",
+    )
+    parser.add_argument(
+        "--power-interval",
+        type=float,
+        default=1.0,
+        help="Sampling interval in seconds for the power monitor.",
+    )
+    parser.add_argument(
+        "--power-filter",
+        type=str,
+        default="python",
+        help="Process name filter for the power monitor.",
+    )
+    parser.add_argument(
+        "--power-log-dir",
+        type=str,
+        default=None,
+        help="Override directory for power logs (default: <run_dir>/power_monitor).",
+    )
     args = parser.parse_args()
 
     device = get_device(args.no_cuda)
@@ -283,7 +310,7 @@ def main():
     results = []
     for dataset in datasets:
         try:
-            result = train_and_evaluate(dataset, args.output_dir, device)
+            result = train_and_evaluate(dataset, args.output_dir, device, args)
             results.append(result)
         except Exception as e:
             logging.error(f"Failed to train {dataset}: {e}")

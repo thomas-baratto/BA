@@ -1,0 +1,2 @@
+timestamp,datetime,total_power_w,total_gpu_power_w,total_cpu_power_w,cpu_utilization_pct,num_active_gpus,num_processes
+1774888942.8775535,2026-03-30T18:42:22.877553,247.9619375,215.03,32.931937500000004,1.9482142857142857,1,2

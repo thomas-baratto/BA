@@ -133,7 +133,7 @@ def save_fig(
     path: str | Path,
     *,
     close: bool = True,
-    formats: tuple[str, ...] = ("pdf", "png"),
+    formats: tuple[str, ...] = ("pdf",),
 ) -> None:
     """Save a figure in multiple formats (PDF + PNG by default).
 

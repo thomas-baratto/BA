@@ -191,12 +191,12 @@ def run_single_seed(args, device, seed, output_dir, label_cols, X_train_full, X_
     ]:
         y_pred_scaled = model.predict(X_split)
 
-        y_true_original = _inverse_predictions(cfg, y_scaler, y_split)
+        y_true_original = _inverse_predictions(cfg, y_scaler, y_split, label_cols=label_cols)
 
         if y_pred_scaled.ndim == 1:
             y_pred_scaled = y_pred_scaled.reshape(-1, 1)
 
-        y_pred_original = _inverse_predictions(cfg, y_scaler, y_pred_scaled)
+        y_pred_original = _inverse_predictions(cfg, y_scaler, y_pred_scaled, label_cols=label_cols)
 
         aggregate_metrics = _aggregate_metrics(y_true_original, y_pred_original)
 
@@ -215,8 +215,7 @@ def run_single_seed(args, device, seed, output_dir, label_cols, X_train_full, X_
             y_true_target = y_true_original[:, i]
             y_pred_target = y_pred_original[:, i]
             target_metrics = compute_regression_metrics(y_true_target, y_pred_target)
-            display_name = "sqrt(Area)" if (cfg.use_area_root and target_name == "Area") else target_name
-            results[split_name][display_name] = {k: float(v) for k, v in target_metrics.items()}
+            results[split_name][target_name] = {k: float(v) for k, v in target_metrics.items()}
 
     # --- Save per-seed artifacts ---
     results_dict = {
@@ -236,8 +235,8 @@ def run_single_seed(args, device, seed, output_dir, label_cols, X_train_full, X_
         if y_test_pred.ndim == 1:
             y_test_pred = y_test_pred.reshape(-1, 1)
 
-        y_test_pred_original = _inverse_predictions(cfg, y_scaler, y_test_pred)
-        y_test_original = _inverse_predictions(cfg, y_scaler, y_test)
+        y_test_pred_original = _inverse_predictions(cfg, y_scaler, y_test_pred, label_cols=label_cols)
+        y_test_original = _inverse_predictions(cfg, y_scaler, y_test, label_cols=label_cols)
 
         np.savez_compressed(
             os.path.join(output_dir, 'test_predictions.npz'),

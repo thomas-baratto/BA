@@ -220,6 +220,7 @@ def plot_results(
     predictions: np.ndarray,
     labels: list[str],
     writer: SummaryWriter = None,
+    epoch_times: list[float] | None = None,
 ):
     plot_dir_name = "_".join(labels).replace(" ", "_").replace("/", "_")
     plot_dir = os.path.join(rf, "plots", plot_dir_name)
@@ -233,9 +234,22 @@ def plot_results(
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss (log scale)")
     ax.legend()
+
+    if epoch_times is not None and len(epoch_times) == len(x_loss):
+        epoch_mins = np.array(epoch_times) / 60.0
+
+        def _epoch_to_min(ep):
+            return np.interp(ep, x_loss, epoch_mins)
+
+        def _min_to_epoch(mn):
+            return np.interp(mn, epoch_mins, x_loss)
+
+        ax2 = ax.secondary_xaxis("top", functions=(_epoch_to_min, _min_to_epoch))
+        ax2.set_xlabel("Time (min)")
+
     if writer:
         writer.add_figure("Loss_Curve", fig_loss, global_step=len(x_loss))
-    save_fig(fig_loss, os.path.join(plot_dir, "loss.png"))
+    save_fig(fig_loss, os.path.join(plot_dir, "loss.pdf"))
 
     # --- Generate and Save All Plots ---
     all_plots = [
@@ -245,7 +259,7 @@ def plot_results(
     ]
 
     for plot_name, fig in all_plots:
-        filename = plot_name.replace("/", "_") + ".png"
+        filename = plot_name.replace("/", "_") + ".pdf"
         if writer:
             writer.add_figure(plot_name, fig)
         save_fig(fig, os.path.join(plot_dir, filename))
@@ -302,7 +316,7 @@ def plot_split_metric_bars(
 
         if writer:
             writer.add_figure(f"Metrics/{metric.upper()}_per_label", fig)
-        save_fig(fig, os.path.join(plot_dir, f"{metric}_per_label.png"))
+        save_fig(fig, os.path.join(plot_dir, f"{metric}_per_label.pdf"))
 
 
 # --- Resource Logging ---

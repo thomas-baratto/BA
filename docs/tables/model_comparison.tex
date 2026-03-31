@@ -1,0 +1,144 @@
+% ============================================================
+%  Model Comparison Tables — ba-thermal-plume
+%  Required packages (all in texlive-base / texlive-latex-extra):
+%    booktabs, dcolumn, multirow, xcolor, geometry
+%
+%  Sources:
+%    MLP Cone     : artifacts/models/mlp/cone_MLP_20260330-171026_Cone/stats/metrics_summary.json
+%    MLP Isotherm : artifacts/models/mlp/isotherm/stats/metrics_summary.json
+%    edRVFL-SC    : artifacts/models/random/cone/winner/results_edRVFL-SC_cone.json
+%    dRVFL (KGE)  : artifacts/models/random/isotherm/KGE_winner/results_dRVFL_isotherm.json
+%    SResdRVFL    : artifacts/models/random/isotherm/nRMSE_winner/results_SResdRVFL_isotherm.json
+%
+%  All metrics are test-set results.
+%  MLP cone metrics are computed in log-transformed target space (use_log=True).
+%  All isotherm metrics are computed in the original physical unit space
+%  after inverse-transform (including inverse sqrt for Area).
+% ============================================================
+
+\documentclass[a4paper,11pt]{article}
+\usepackage{booktabs}
+\usepackage{dcolumn}           % decimal-point column alignment
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{graphicx}         % \resizebox
+\usepackage{geometry}
+\geometry{margin=2cm}
+
+% D{<input sep>}{<output sep>}{<left.right digits>}
+% Negative third arg = full auto-sizing
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+
+% Convenience: bold a cell that lives in a d{} column
+% Usage: \B{0.9913}  — renders bold, still decimal-aligned with \multicolumn trick
+\newcommand{\B}[1]{\multicolumn{1}{c}{\textbf{#1}}}
+
+\begin{document}
+
+% ------------------------------------------------------------
+%  TABLE 1 — Depression Cone
+% ------------------------------------------------------------
+\begin{table}[htbp]
+  \centering
+  \caption{%
+    Test-set performance for the \textbf{Depression Cone} prediction task
+    (single target: \textit{Cone}).
+    Best result per column is \textbf{bold}.
+    MLP metrics are computed in log-transformed target space (\texttt{use\_log=True});
+    edRVFL-SC metrics are in the original robustly-scaled target space.
+    Both models were trained and evaluated on the identical test split.
+    $R^2$, KGE, and nRMSE are all dimensionless.
+  }
+  \label{tab:results_cone}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{l l d{1.4} d{1.4} d{1.4} r r}
+    \toprule
+    Model & Architecture &
+      \multicolumn{1}{c}{$R^2\ {\uparrow}$} &
+      \multicolumn{1}{c}{nRMSE\ ${\downarrow}$} &
+      \multicolumn{1}{c}{KGE\ ${\uparrow}$} &
+      \multicolumn{1}{c}{Time [s]} &
+      \multicolumn{1}{c}{Energy [Wh]} \\
+    \midrule
+    \textbf{MLP}
+      & 1$\times$221, SiLU, Smooth-$L_1$
+      & \B{0.9913}
+      & \B{0.0153}
+      & \B{0.9934}
+      & 735
+      & 28.0 \\[2pt]
+    edRVFL-SC
+      & 3$\times$1000, GELU, ridge ($E{=}10$)
+      & 0.9770
+      & 0.0249
+      & 0.9871
+      & \textbf{7}
+      & \textbf{1.0} \\
+    \bottomrule
+  \end{tabular}}% end resizebox
+\end{table}
+
+% ------------------------------------------------------------
+%  TABLE 2 — Thermal Isotherm (per-label)
+% ------------------------------------------------------------
+\begin{table}[htbp]
+  \centering
+  \caption{%
+    Per-label test-set performance for the \textbf{Thermal Isotherm}
+    prediction task (targets: Area [$\mathrm{m}^2$], Iso\_distance [m],
+    Iso\_width [m]).
+    Best result per target per column is \textbf{bold}.
+    All metrics are in the original physical unit space (after inverse-transform,
+    including inverse $\sqrt{\cdot}$ for Area where applicable).
+    $R^2$, KGE, MAPE, and nRMSE (normalized by target range) are all
+    dimensionless.
+  }
+  \label{tab:results_isotherm}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{l l d{1.6} d{1.6} d{1.6} d{2.6} r r}
+    \toprule
+    Model & Target &
+      \multicolumn{1}{c}{$R^2\ {\uparrow}$} &
+      \multicolumn{1}{c}{nRMSE\ ${\downarrow}$} &
+      \multicolumn{1}{c}{KGE\ ${\uparrow}$} &
+      \multicolumn{1}{c}{MAPE [\%]\ ${\downarrow}$} &
+      \multicolumn{1}{c}{Time [s]} &
+      \multicolumn{1}{c}{Energy [Wh]} \\
+    \midrule
+    %
+    % ---- MLP ----
+    \multirow{3}{*}{\textbf{MLP}}
+      & Area
+        & \B{0.999989} & \B{0.000308} & \B{0.999863} & \B{0.002367}
+        & \multirow{3}{*}{4296} & \multirow{3}{*}{176.2} \\
+      & Iso\_distance
+        & \B{0.999972} & \B{0.001275} & \B{0.999868} & \B{0.002963} & & \\
+      & Iso\_width
+        & \B{0.999996} & \B{0.000242} & \B{0.999916} & \B{0.001006} & & \\
+    \midrule
+    %
+    % ---- dRVFL (KGE winner) ----
+    \multirow{3}{*}{dRVFL (KGE)}
+      & Area
+        & 0.747415 & 0.046194 & 0.711994 & 3.571374
+        & \multirow{3}{*}{\textbf{0.7}} & \multirow{3}{*}{\textbf{0.1}} \\
+      & Iso\_distance
+        & 0.826288 & 0.099899 & 0.876727 & 2.131550 & & \\
+      & Iso\_width
+        & 0.876799 & 0.043220 & 0.911318 & 0.329458 & & \\
+    \midrule
+    %
+    % ---- SResdRVFL (nRMSE winner) ----
+    \multirow{3}{*}{SResdRVFL (nRMSE)}
+      & Area
+        & 0.800805 & 0.041023 & 0.805524 & 2.408352
+        & \multirow{3}{*}{\textbf{6.0}} & \multirow{3}{*}{\textbf{0.8}} \\
+      & Iso\_distance
+        & 0.876158 & 0.084349 & 0.922708 & 1.753401 & & \\
+      & Iso\_width
+        & \B{0.909871} & \B{0.036967} & \B{0.940870} & \B{0.269629} & & \\
+    \bottomrule
+  \end{tabular}}% end resizebox
+\end{table}
+
+\end{document}

@@ -235,6 +235,7 @@ def main_train(config: Dict[str, Any],
     train_losses = []
     val_losses = []
     x_loss_epochs = []
+    epoch_times: list[float] = []
     patience = config.get("patience", 100)
     patience_counter = 0
     best_val_loss = float("inf")
@@ -288,7 +289,8 @@ def main_train(config: Dict[str, Any],
         if patience_counter >= patience:
             logging.info(f"Early stopping at epoch {epoch + 1}.")
             break
-        
+        epoch_times.append(time.time() - start_time)
+
     logging.info("Training complete. Evaluating best model on validation and test sets...")
     if best_model_state:
         model.load_state_dict(best_model_state)
@@ -405,7 +407,8 @@ def main_train(config: Dict[str, Any],
             test_true_physical,
             test_pred_physical,
             original_label_cols,
-            writer=writer
+            writer=writer,
+            epoch_times=epoch_times,
         )
         plot_split_metric_bars(rf, original_label_cols, split_metrics, writer=writer)
             

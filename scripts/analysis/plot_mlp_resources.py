@@ -167,11 +167,109 @@ def plot_gpu_utilization(data: dict, dataset: str, out: Path,
     save_fig(fig, out / f"mlp_{dataset}_gpu_util")
 
 
+def plot_utilization_timeline(data: dict, dataset: str, out: Path,
+                             x: np.ndarray, xlabel: str) -> None:
+    """Combined CPU + GPU memory utilization timeline (Optuna-style dual-axis)."""
+    from pandas import Series
+
+    cpu = np.array(data["cpu_percent"], dtype=float)
+    has_gpu = _has_gpu_data(data)
+
+    fig, ax1 = plt.subplots(figsize=FIG_WIDE)
+
+    # Adaptive rolling window — short runs need smaller windows
+    window = max(3, min(30, len(x) // 10))
+
+    # Left axis: CPU utilization
+    color_cpu = COLORS["accent1"]
+    ax1.plot(x, cpu, linewidth=0.4, alpha=0.25, color=color_cpu)
+    if window > 1:
+        cpu_smooth = Series(cpu).rolling(window, center=True).mean()
+        ax1.plot(x, cpu_smooth, linewidth=1.5, color=color_cpu,
+                 label=f"CPU util. ({window}-epoch avg)")
+    else:
+        ax1.plot(x, cpu, linewidth=1.5, color=color_cpu, label="CPU util.")
+    ax1.set_ylabel("CPU Utilization (%)")
+    ax1.set_ylim(0, max(cpu.max() * 1.15, 10))
+    ax1.tick_params(axis="y", labelcolor=color_cpu)
+    ax1.set_xlabel(xlabel)
+
+    # Right axis: GPU memory utilization (if available)
+    if has_gpu:
+        gpu_pct = np.array(data["gpu_memory_percent"], dtype=float)
+        ax2 = ax1.twinx()
+        color_gpu = COLORS["primary"]
+        ax2.plot(x, gpu_pct, linewidth=0.4, alpha=0.25, color=color_gpu)
+        if window > 1:
+            gpu_smooth = Series(gpu_pct).rolling(window, center=True).mean()
+            ax2.plot(x, gpu_smooth, linewidth=1.5, color=color_gpu,
+                     label=f"GPU mem. ({window}-epoch avg)")
+        else:
+            ax2.plot(x, gpu_pct, linewidth=1.5, color=color_gpu, label="GPU mem.")
+        ax2.set_ylabel("GPU Memory (%)")
+        ax2.set_ylim(0, max(gpu_pct.max() * 1.15, 5))
+        ax2.tick_params(axis="y", labelcolor=color_gpu)
+
+        h1, l1 = ax1.get_legend_handles_labels()
+        h2, l2 = ax2.get_legend_handles_labels()
+        ax1.legend(h1 + h2, l1 + l2, loc="upper right")
+    else:
+        ax1.legend(loc="upper right")
+
+    ax1.set_title(f"Resource Utilization Timeline — MLP {DATASETS[dataset]}")
+    fig.tight_layout()
+
+    save_fig(fig, out / f"mlp_{dataset}_utilization_timeline")
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Plot MLP training resource usage")
     p.add_argument("--output-dir", default="docs/plots/power",
                    help="Output directory for plots")
+    p.add_argument(
+        "--run-dir",
+        default=None,
+        help=(
+            "Path to a specific MLP run directory (e.g. artifacts/models/mlp/cone_MLP_20260330-171026_Cone). "
+            "If given, --dataset is required and only that dataset is processed using this directory."
+        ),
+    )
+    p.add_argument(
+        "--dataset",
+        choices=list(DATASETS.keys()),
+        default=None,
+        help="Dataset key (required when --run-dir is used).",
+    )
     return p.parse_args()
+
+
+def _load_resource_json_from_dir(run_dir: Path) -> dict | None:
+    """Load resource_usage.json from an explicit run directory."""
+    path = run_dir / "resources" / "resource_usage.json"
+    if not path.exists():
+        print(f"  Warning: {path} not found")
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
+def _load_train_time_from_dir(run_dir: Path) -> float | None:
+    """Load training time from artifact_manifest.json in an explicit run directory."""
+    manifest = run_dir / "artifact_manifest.json"
+    if manifest.exists():
+        with open(manifest) as f:
+            data = json.load(f)
+        t = data.get("training", {}).get("train_time_seconds")
+        if t is not None:
+            return float(t)
+    # Fallback: results_*.json
+    for p in run_dir.glob("results_*.json"):
+        with open(p) as f:
+            data = json.load(f)
+        t = data.get("train_time_seconds")
+        if t is not None:
+            return float(t)
+    return None
 
 
 def main() -> None:
@@ -180,14 +278,27 @@ def main() -> None:
 
     root_out = Path(args.output_dir)
 
-    for dataset in DATASETS:
+    if args.run_dir is not None:
+        if args.dataset is None:
+            print("Error: --dataset is required when --run-dir is used.")
+            raise SystemExit(1)
+        run_dir = Path(args.run_dir)
+        datasets_to_process = {args.dataset: DATASETS.get(args.dataset, args.dataset.capitalize())}
+        load_resource = lambda ds: _load_resource_json_from_dir(run_dir)  # noqa: E731
+        load_time = lambda ds: _load_train_time_from_dir(run_dir)  # noqa: E731
+    else:
+        datasets_to_process = DATASETS
+        load_resource = _load_resource_json
+        load_time = _load_train_time
+
+    for dataset in datasets_to_process:
         print(f"Processing {dataset}...")
-        data = _load_resource_json(dataset)
+        data = load_resource(dataset)
         if data is None:
             continue
 
         n_epochs = len(data["step"])
-        train_time = _load_train_time(dataset)
+        train_time = load_time(dataset)
         x, xlabel = _make_time_axis(n_epochs, train_time)
 
         if train_time is not None:
@@ -201,6 +312,7 @@ def main() -> None:
         plot_gpu_memory(data, dataset, out, x, xlabel)
         plot_cpu_ram(data, dataset, out, x, xlabel)
         plot_gpu_utilization(data, dataset, out, x, xlabel)
+        plot_utilization_timeline(data, dataset, out, x, xlabel)
 
     print(f"\nAll plots saved under {root_out}/")
 

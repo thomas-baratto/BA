@@ -55,6 +55,7 @@ from core.thesis_style import (
 RUN_PATTERNS: dict[str, str] = {
     "optuna": "run_20260325-19291*_worker*",
     "random": "run_sweep_random_*",
+    "mlp": "*_MLP_*",
 }
 
 
@@ -100,7 +101,7 @@ def _load_longest_csv(worker_dirs: list[str]) -> pd.DataFrame:
             best_path = csvs[0]
 
     df = pd.read_csv(best_path)
-    df["datetime"] = pd.to_datetime(df["datetime"])
+    df["datetime"] = pd.to_datetime(df["datetime"], format="ISO8601")
     return df
 
 
@@ -322,7 +323,7 @@ def plot_utilization_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO
     # Combined legend
     h1, l1 = ax1.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
-    ax1.legend(h1 + h2, l1 + l2, loc="lower left")
+    ax1.legend(h1 + h2, l1 + l2, loc="upper right")
 
     ax1.set_xlabel("Elapsed time (hours)")
     ax1.set_title(f"CPU and GPU Utilization During {run_label}")

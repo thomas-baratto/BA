@@ -19,7 +19,7 @@
     "n_blocks": 5,
     "direct_link": false,
     "base_dir": "runs",
-    "output_dir": "/home/barattts/lavoltabuona/BA/runs/run_sweep_random_1053/cone_nRMSE_winner",
+    "output_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/random/cone/winner",
     "random_state": 42,
     "n_seeds": 1,
     "no_cuda": false,
@@ -153,5 +153,5 @@
       }
     }
   },
-  "train_time_seconds": 6.919548273086548
+  "train_time_seconds": 7.104070663452148
 }
