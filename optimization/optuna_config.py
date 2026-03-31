@@ -124,6 +124,11 @@ def parse_args():
         action='store_true',
         help='Apply sqrt(Area) before log1p during data loading (isotherm only).'
     )
+    parser.add_argument(
+        '--no-log',
+        action='store_true',
+        help='Disable log1p transformation on features and labels before scaling.'
+    )
 
     # --- Power Monitor Arguments (from power_utils) ---
     parser.add_argument(

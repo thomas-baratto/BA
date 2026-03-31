@@ -80,7 +80,7 @@ for dataset in "${DATASETS[@]}"; do
         EXTRA="--use-area-root"
     fi
 
-    COMMON="--no-save-model --feature-scaler $FEATURE_SCALER --label-scaler $LABEL_SCALER --base-dir \"$BASE_RUN_DIR\" $EXTRA"
+    COMMON="--no-save-model --disable-power-monitor --feature-scaler $FEATURE_SCALER --label-scaler $LABEL_SCALER --base-dir \"$BASE_RUN_DIR\" $EXTRA"
 
     for act in "${ACTIVATIONS[@]}"; do
         ACT_FLAG="--activation $act"
@@ -144,12 +144,26 @@ echo "======================================"
 
 # ============================================================
 # Launch parallel workers (no model saving — metrics only)
+# Power monitor runs as a single job-level background process
+# (per-run monitors are disabled — runs are too short for useful data)
 # ============================================================
 echo "Deploying $TOTAL sweep runs (--no-save-model, metrics only)..."
 
 export KEEP_RUN_ARTIFACTS=0
 
+POWER_LOG_DIR="${BASE_RUN_DIR}/power_monitor"
+mkdir -p "$POWER_LOG_DIR"
+echo "Starting job-level power monitor → $POWER_LOG_DIR"
+python monitoring/power_monitor.py \
+    --output-dir "$POWER_LOG_DIR" \
+    --interval 1.0 \
+    --filter python &
+POWER_PID=$!
+
 python scripts/sweep/launch_sweep_workers.py $MAX_PARALLEL "${commands[@]}"
+
+echo "Stopping power monitor (PID=$POWER_PID)..."
+kill $POWER_PID 2>/dev/null && wait $POWER_PID 2>/dev/null || true
 
 echo "======================================"
 echo "All $TOTAL sweep runs completed."
@@ -176,6 +190,12 @@ mkdir -p "$FINAL_RUN_DIR"
 # Copy summary table and knee point winners
 cp "$BASE_RUN_DIR/summary_table.csv" "$FINAL_RUN_DIR/"
 cp "$BASE_RUN_DIR/knee_point_winners.csv" "$FINAL_RUN_DIR/"
+
+# Copy power monitor data
+if [ -d "$BASE_RUN_DIR/power_monitor" ]; then
+    cp -r "$BASE_RUN_DIR/power_monitor" "$FINAL_RUN_DIR/"
+    echo "Copied power_monitor data to $FINAL_RUN_DIR/power_monitor/"
+fi
 
 # Copy only the JSON result files (tiny) from each run subfolder
 find "$BASE_RUN_DIR" -mindepth 2 -maxdepth 2 -name "results_*.json" | while read src; do

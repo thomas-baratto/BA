@@ -125,6 +125,7 @@ def main():
                 rf=root_folder,
                 feature_scaler_type='none',
                 label_scaler_type='none',
+                use_log=not getattr(args, 'no_log', False),
                 use_area_root=getattr(args, 'use_area_root', False)
             )
             X_train_main, X_val, y_train_main, y_val = train_test_split(
@@ -159,6 +160,7 @@ def main():
             )
             
             study.set_user_attr("use_area_root", getattr(args, 'use_area_root', False))
+            study.set_user_attr("use_log", not getattr(args, 'no_log', False))
             logging.info(f"Study loaded/created. Starting optimization for {optuna_n_trials} trials.")
             
             study.optimize(

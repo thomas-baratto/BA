@@ -9,22 +9,22 @@ Comparison of the 6 best models: 2 Optuna-optimized MLPs and 4 random network sw
 | Dataset | Model | Type | R² | RMSE | MAE | nRMSE | KGE | Train Time | Samples |
 |---------|-------|------|-----|------|-----|-------|-----|------------|---------|
 | cone | Optimized MLP | MLP | 0.9909 | 0.05 | 0.01 | 0.013306 | 0.9911 | 1212.4s | 12835 |
-| cone | edRVFL-SC (Pareto winner) | RANDOM | 0.9754 | 0.09 | 0.04 | 0.025720 | 0.9868 | 22.2s | 3851 |
+| cone | edRVFL-SC (Pareto winner) | RANDOM | 0.9770 | 0.08 | 0.04 | 0.024885 | 0.9871 | 6.9s | 3851 |
 | isotherm | Optimized MLP | MLP | 1.0000 | 92.01 | 14.38 | 0.000185 | 0.9998 | 4296.1s | 85531 |
-| isotherm | SResdRVFL (nRMSE winner) | RANDOM | 0.8950 | 102.11 | 47.66 | 0.051065 | 0.9357 | 25.0s | 25660 |
-| isotherm | dRVFL (KGE winner) | RANDOM | 0.8548 | 120.07 | 56.79 | 0.060045 | 0.8976 | 2.2s | 25660 |
+| isotherm | SResdRVFL (nRMSE winner) | RANDOM | 0.8997 | 99.80 | 45.77 | 0.049908 | 0.9379 | 6.2s | 25660 |
+| isotherm | dRVFL (KGE winner) | RANDOM | 0.8596 | 118.09 | 55.62 | 0.059058 | 0.9013 | 1.1s | 25660 |
 
 ## Pareto Frontiers
 
 Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (training time) for all 497 successful sweep runs. The red dashed line marks the Pareto-efficient frontier; the gold star marks the knee-point winner.
 
-![cone_nRMSE](plots/pareto_cone_nRMSE.png)
+![cone_nRMSE](plots/pareto/pareto_cone_nRMSE.png)
 
-![cone_1KGE](plots/pareto_cone_1KGE.png)
+![cone_1KGE](plots/pareto/pareto_cone_1KGE.png)
 
-![isotherm_nRMSE](plots/pareto_isotherm_nRMSE.png)
+![isotherm_nRMSE](plots/pareto/pareto_isotherm_nRMSE.png)
 
-![isotherm_1KGE](plots/pareto_isotherm_1KGE.png)
+![isotherm_1KGE](plots/pareto/pareto_isotherm_1KGE.png)
 
 ---
 
@@ -48,7 +48,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_mlp_cone_Cone.png) | ![residuals](plots/residuals_mlp_cone_Cone.png) |
+| ![regression](plots/mlp/regression_mlp_cone_Cone.png) | ![residuals](plots/mlp/residuals_mlp_cone_Cone.png) |
 
 
 ### edRVFL-SC (Pareto winner) (RANDOM)
@@ -61,7 +61,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Cone | 0.9754 | 0.09 m | 0.04 m | 0.025720 | 0.9868 |
+| Cone | 0.9770 | 0.08 m | 0.04 m | 0.024885 | 0.9871 |
 
 #### Plots
 
@@ -69,7 +69,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_cone_nRMSE_Cone.png) | ![residuals](plots/residuals_cone_nRMSE_Cone.png) |
+| ![regression](plots/random/regression_cone_nRMSE_Cone.png) | ![residuals](plots/random/residuals_cone_nRMSE_Cone.png) |
 
 
 ---
@@ -96,24 +96,24 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_mlp_isotherm_Area.png) | ![residuals](plots/residuals_mlp_isotherm_Area.png) |
+| ![regression](plots/mlp/regression_mlp_isotherm_Area.png) | ![residuals](plots/mlp/residuals_mlp_isotherm_Area.png) |
 
 **Iso_distance**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_mlp_isotherm_Iso_distance.png) | ![residuals](plots/residuals_mlp_isotherm_Iso_distance.png) |
+| ![regression](plots/mlp/regression_mlp_isotherm_Iso_distance.png) | ![residuals](plots/mlp/residuals_mlp_isotherm_Iso_distance.png) |
 
 **Iso_width**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_mlp_isotherm_Iso_width.png) | ![residuals](plots/residuals_mlp_isotherm_Iso_width.png) |
+| ![regression](plots/mlp/regression_mlp_isotherm_Iso_width.png) | ![residuals](plots/mlp/residuals_mlp_isotherm_Iso_width.png) |
 
 
 ### SResdRVFL (nRMSE winner) (RANDOM)
 
-**Architecture:** `SResdRVFL: H=1500, L=1, B=8, E=10, ELU, direct_link=✓, area_root=✓`
+**Architecture:** `SResdRVFL: H=1500, L=1, B=8, E=10, GELU, direct_link=✓, area_root=✓`
 
 **Preprocessing:** feature_scaler=robust, label_scaler=robust, log_transform=✗
 
@@ -121,9 +121,9 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Area | 0.8788 | 36.87 m² | 23.00 m² | 0.054327 | 0.9249 |
-| Iso_distance | 0.8704 | 172.56 m | 112.99 m | 0.086301 | 0.9201 |
-| Iso_width | 0.9066 | 11.87 m | 6.99 m | 0.037637 | 0.9394 |
+| Area | 0.8845 | 35.99 m² | 22.05 m² | 0.053038 | 0.9277 |
+| Iso_distance | 0.8762 | 168.66 m | 108.50 m | 0.084349 | 0.9227 |
+| Iso_width | 0.9099 | 11.66 m | 6.74 m | 0.036967 | 0.9409 |
 
 #### Plots
 
@@ -131,19 +131,19 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_nRMSE_Area.png) | ![residuals](plots/residuals_isotherm_nRMSE_Area.png) |
+| ![regression](plots/random/regression_isotherm_nRMSE_Area.png) | ![residuals](plots/random/residuals_isotherm_nRMSE_Area.png) |
 
 **Iso_distance**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_nRMSE_Iso_distance.png) | ![residuals](plots/residuals_isotherm_nRMSE_Iso_distance.png) |
+| ![regression](plots/random/regression_isotherm_nRMSE_Iso_distance.png) | ![residuals](plots/random/residuals_isotherm_nRMSE_Iso_distance.png) |
 
 **Iso_width**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_nRMSE_Iso_width.png) | ![residuals](plots/residuals_isotherm_nRMSE_Iso_width.png) |
+| ![regression](plots/random/regression_isotherm_nRMSE_Iso_width.png) | ![residuals](plots/random/residuals_isotherm_nRMSE_Iso_width.png) |
 
 
 ### dRVFL (KGE winner) (RANDOM)
@@ -156,9 +156,9 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Area | 0.8369 | 42.76 m² | 27.40 m² | 0.063015 | 0.8851 |
-| Iso_distance | 0.8205 | 203.05 m | 134.67 m | 0.101545 | 0.8722 |
-| Iso_width | 0.8734 | 13.82 m | 8.28 m | 0.043809 | 0.9092 |
+| Area | 0.8440 | 41.82 m² | 26.75 m² | 0.061632 | 0.8905 |
+| Iso_distance | 0.8263 | 199.75 m | 131.90 m | 0.099899 | 0.8767 |
+| Iso_width | 0.8768 | 13.64 m | 8.19 m | 0.043220 | 0.9113 |
 
 #### Plots
 
@@ -166,19 +166,19 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_1KGE_Area.png) | ![residuals](plots/residuals_isotherm_1KGE_Area.png) |
+| ![regression](plots/random/regression_isotherm_1KGE_Area.png) | ![residuals](plots/random/residuals_isotherm_1KGE_Area.png) |
 
 **Iso_distance**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_1KGE_Iso_distance.png) | ![residuals](plots/residuals_isotherm_1KGE_Iso_distance.png) |
+| ![regression](plots/random/regression_isotherm_1KGE_Iso_distance.png) | ![residuals](plots/random/residuals_isotherm_1KGE_Iso_distance.png) |
 
 **Iso_width**
 
 | Regression | Residuals |
 |:---:|:---:|
-| ![regression](plots/regression_isotherm_1KGE_Iso_width.png) | ![residuals](plots/residuals_isotherm_1KGE_Iso_width.png) |
+| ![regression](plots/random/regression_isotherm_1KGE_Iso_width.png) | ![residuals](plots/random/residuals_isotherm_1KGE_Iso_width.png) |
 
 
 ---
@@ -188,14 +188,14 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 ### Cone (Depression Cone Size)
 
 - **MLP** achieves R² = 0.9909, nRMSE = 0.013306 on the full dataset.
-- **Best random model** (edRVFL-SC) achieves R² = 0.9754, nRMSE = 0.025720 on the test fold.
+- **Best random model** (edRVFL-SC) achieves R² = 0.9770, nRMSE = 0.024885 on the test fold.
 - Both cone winners on the Pareto frontiers selected the same edRVFL-SC configuration (H=1000, L=3, B=5, GELU).
 
 ### Isotherm (Thermal Plume Geometry)
 
 - **MLP** achieves R² = 0.999988, nRMSE = 0.000185 — near-perfect reconstruction of thermal plume geometry.
-- **Best random model by nRMSE** (SResdRVFL) achieves R² = 0.8950, nRMSE = 0.051065.
-- **Best random model by KGE** (dRVFL) achieves R² = 0.8548, KGE = 0.8976.
+- **Best random model by nRMSE** (SResdRVFL) achieves R² = 0.8997, nRMSE = 0.049908.
+- **Best random model by KGE** (dRVFL) achieves R² = 0.8596, KGE = 0.9013.
 - The MLP significantly outperforms all random architectures on this task, demonstrating the value of backpropagation-based optimization for the multi-output isotherm problem.
 
 ### Speed vs. Accuracy Trade-off

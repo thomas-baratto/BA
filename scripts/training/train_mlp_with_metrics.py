@@ -66,8 +66,10 @@ def load_optuna_best_params(config: dict) -> tuple:
     logging.info(f"Best value: {study.best_value:.6f}")
 
     use_area_root = study.user_attrs.get("use_area_root", False)
+    use_log = study.user_attrs.get("use_log", True)
     params = study.best_params
     params["use_area_root"] = use_area_root
+    params["use_log"] = use_log
     
     if best_params_file:
         os.makedirs(os.path.dirname(best_params_file), exist_ok=True)
@@ -77,6 +79,7 @@ def load_optuna_best_params(config: dict) -> tuple:
                 "trial_number": study.best_trial.number,
                 "best_value": study.best_value,
                 "use_area_root": use_area_root,
+                "use_log": use_log,
             }, f, indent=2)
         logging.info(f"Saved best parameters to {best_params_file}")
 

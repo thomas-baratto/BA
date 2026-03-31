@@ -30,7 +30,7 @@
     "use_log": false,
     "use_area_root": true,
     "n_hidden": 1500,
-    "activation": "ELU",
+    "activation": "GELU",
     "alpha": 0.001,
     "gamma": 1.0,
     "n_layers": 1,

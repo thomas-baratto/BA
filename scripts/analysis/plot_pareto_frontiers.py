@@ -93,14 +93,27 @@ def _draw_iso_cost_curves(ax, x_range, y_range, n_curves: int = 5):
         c = 10 ** log_c
         ys = c / xs
         ax.plot(xs, ys, color="lightgray", ls="--", lw=0.8, zorder=0)
-        # Label in the upper-right area of the curve
-        label_x = 10 ** (log_x[1] - 0.1)
+
+        # Place label along the isoline where it intersects the visible area.
+        # Try a point ~30% from the left edge of the visible x-range (in log space).
+        label_log_x = log_x[0] + 0.3 * (log_x[1] - log_x[0])
+        label_x = 10 ** label_log_x
         label_y = c / label_x
-        if y_range[0] <= label_y <= y_range[1]:
+
+        # If that y falls outside the visible range, slide along the curve.
+        if label_y > y_range[1]:
+            label_y = y_range[1] * 0.85
+            label_x = c / label_y
+        elif label_y < y_range[0]:
+            label_y = y_range[0] * 1.2
+            label_x = c / label_y
+
+        if x_range[0] <= label_x <= x_range[1] and y_range[0] <= label_y <= y_range[1]:
             ax.text(
-                label_x, label_y, f"Cost: {c:.3g}",
-                fontsize=7, color="gray", rotation=-45,
-                ha="right", va="bottom", zorder=0,
+                label_x, label_y, f"{c:.2g}",
+                fontsize=6.5, color="gray", rotation=-45,
+                ha="center", va="bottom", zorder=0,
+                bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=1),
             )
 
 
@@ -281,7 +294,7 @@ def generate_all_pareto_plots(
 def main():
     parser = argparse.ArgumentParser(description="Plot Pareto frontiers from sweep results")
     parser.add_argument("--summary-csv", required=True, help="Path to summary_table.csv")
-    parser.add_argument("--output-dir", default="docs/plots", help="Output directory for plots")
+    parser.add_argument("--output-dir", default="docs/plots/pareto", help="Output directory for plots")
     parser.add_argument("--knee-csv", default=None, help="Path to knee_point_winners.csv (optional)")
     args = parser.parse_args()
 

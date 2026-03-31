@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=optuna_mlp
-#SBATCH --output=slurm_jobs/optuna_mlp_%j_%a.out
-#SBATCH --error=slurm_jobs/optuna_mlp_%j_%a.err
+#SBATCH --job-name=optuna_cone
+#SBATCH --output=slurm_jobs/optuna_cone_%j_%a.out
+#SBATCH --error=slurm_jobs/optuna_cone_%j_%a.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=56
 #SBATCH --cpus-per-task=1
@@ -26,33 +26,26 @@ GLOBAL_RUN_DIR="runs/global_run_${SLURM_JOB_ID}"
 JOURNAL_STORAGE_PATH="${GLOBAL_RUN_DIR}/optuna_journal_storage"
 mkdir -p "$JOURNAL_STORAGE_PATH"
 
-CSV_FILE=${CSV_FILE:-"./data/Clean_Results_Isotherm.csv"}
-TARGET=${TARGET:-"all"}
+CSV_FILE="./data/Depression_cones.csv"
+TARGET="Cone"
 TOTAL_TRIALS=${TOTAL_TRIALS:-10000}
-STUDY_NAME=${STUDY_NAME:-"nn_study_mlp_journal"}
-USE_AREA_ROOT=${USE_AREA_ROOT:-"0"}
-USE_LOG=${USE_LOG:-"1"}
+STUDY_NAME="nn_study_mlp_cone"
+USE_LOG=${USE_LOG:-"0"}
 TRIALS_PER_WORKER=$(( (TOTAL_TRIALS + 55) / 56 ))
-
-AREA_ROOT_FLAG=""
-if [ "$USE_AREA_ROOT" = "1" ]; then
-    AREA_ROOT_FLAG="--use-area-root"
-fi
 
 NO_LOG_FLAG=""
 if [ "$USE_LOG" = "0" ]; then
     NO_LOG_FLAG="--no-log"
 fi
 
-echo "Starting Optuna MLP tuning"
+echo "Starting Optuna MLP tuning — Cone"
 echo "Study: $STUDY_NAME"
 echo "CSV: $CSV_FILE"
 echo "Target: $TARGET"
 echo "Trials total: $TOTAL_TRIALS"
-echo "Use sqrt(Area): $USE_AREA_ROOT"
 echo "Use log1p: $USE_LOG"
 
-# ── Job-level power monitor (full-system view across all 56 workers) ─────
+# ── Job-level power monitor ──────────────────────────────────────────────────
 POWER_LOG_DIR="${GLOBAL_RUN_DIR}/power_monitor"
 mkdir -p "$POWER_LOG_DIR"
 echo "Starting job-level power monitor → $POWER_LOG_DIR"
@@ -79,7 +72,6 @@ srun --ntasks=56 bash -c '
         --optuna-trials "'"$TRIALS_PER_WORKER"'" \
         --optuna-workers 1 \
         --run-tag "worker${PROC_ID}" \
-        '"$AREA_ROOT_FLAG"' \
         '"$NO_LOG_FLAG"'
 
     sync

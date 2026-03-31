@@ -7,6 +7,7 @@ Generate comparison plots and markdown report for the 5 best models:
 Produces: docs/MODEL_COMPARISON.md with embedded PNG plots.
 """
 
+import argparse
 import json
 import os
 import sys
@@ -38,8 +39,17 @@ from scripts.analysis.plot_pareto_frontiers import generate_all_pareto_plots
 
 apply_thesis_style()
 
+# Defaults — overridden by CLI args
 PLOT_DIR = PROJECT_ROOT / "docs" / "plots"
-PLOT_DIR.mkdir(parents=True, exist_ok=True)
+PLOT_DIR_MLP = PLOT_DIR / "mlp"
+PLOT_DIR_RANDOM = PLOT_DIR / "random"
+PLOT_DIR_PARETO = PLOT_DIR / "pareto"
+DEFAULT_SWEEP_DIR = PROJECT_ROOT / "runs" / "run_sweep_random_1053"
+
+
+def _plot_dir_for(model_key: str) -> Path:
+    """Return the appropriate plot directory based on model type."""
+    return PLOT_DIR_MLP if MODELS[model_key]["type"] == "mlp" else PLOT_DIR_RANDOM
 
 # ── Model definitions ──────────────────────────────────────────────────────────
 
@@ -198,7 +208,7 @@ def plot_regression(y_true, y_pred, label_name, model_key, label_idx=0):
     fig.tight_layout()
 
     fname = f"regression_{model_key}_{label_name}.png"
-    save_fig(fig, PLOT_DIR / fname)
+    save_fig(fig, _plot_dir_for(model_key) / fname)
     return fname
 
 
@@ -220,7 +230,7 @@ def plot_residuals(y_true, y_pred, label_name, model_key, label_idx=0):
     fig.tight_layout()
 
     fname = f"residuals_{model_key}_{label_name}.png"
-    save_fig(fig, PLOT_DIR / fname)
+    save_fig(fig, _plot_dir_for(model_key) / fname)
     return fname
 
 
@@ -305,7 +315,10 @@ def _arch_str(model_key, config):
         )
 
 
-def write_markdown(results: dict):
+def write_markdown(
+    results: dict,
+    sweep_dir: Path = DEFAULT_SWEEP_DIR,
+):
     """Write the MODEL_COMPARISON.md file."""
     md_path = PROJECT_ROOT / "docs" / "MODEL_COMPARISON.md"
     lines = []
@@ -376,19 +389,18 @@ def write_markdown(results: dict):
     w()
 
     # Generate the Pareto plots
-    sweep_dir = PROJECT_ROOT / "runs" / "run_sweep_random_1048"
     summary_csv = sweep_dir / "summary_table.csv"
     knee_csv = sweep_dir / "knee_point_winners.csv"
     pareto_fnames = generate_all_pareto_plots(
         summary_csv=str(summary_csv),
-        output_dir=str(PLOT_DIR),
+        output_dir=str(PLOT_DIR_PARETO),
         knee_csv=str(knee_csv) if knee_csv.exists() else None,
     )
     for fname in pareto_fnames:
         # Extract dataset + metric from filename: pareto_cone_nRMSE.png
         stem = Path(fname).stem  # e.g. pareto_cone_nRMSE
         parts = stem.split("_", 1)[1]  # e.g. cone_nRMSE
-        w(f"![{parts}](plots/{fname})")
+        w(f"![{parts}](plots/pareto/{fname})")
         w()
 
     # ── Per-dataset sections ───────────────────────────────────────────────
@@ -467,9 +479,10 @@ def write_markdown(results: dict):
                 w(
                     f"|:---:|:---:|"
                 )
+                subdir = "mlp" if info["type"] == "mlp" else "random"
                 w(
-                    f"| ![regression](plots/{p['regression']}) "
-                    f"| ![residuals](plots/{p['residuals']}) |"
+                    f"| ![regression](plots/{subdir}/{p['regression']}) "
+                    f"| ![residuals](plots/{subdir}/{p['residuals']}) |"
                 )
                 w()
 
@@ -544,9 +557,42 @@ def write_markdown(results: dict):
 
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"\nMarkdown report written to: {md_path}")
-    print(f"Plots saved to: {PLOT_DIR}")
+    print(f"Plots saved to: {PLOT_DIR_MLP}, {PLOT_DIR_RANDOM}, {PLOT_DIR_PARETO}")
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(
+        description="Generate comparison plots and markdown report for best models.",
+    )
+    p.add_argument(
+        "--sweep-dir",
+        default=str(DEFAULT_SWEEP_DIR),
+        help="Path to the random sweep run directory (default: runs/run_sweep_random_1053)",
+    )
+    p.add_argument(
+        "--output-dir",
+        default=str(PLOT_DIR),
+        help="Root output directory for plots (default: docs/plots)",
+    )
+    return p.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+
+    global PLOT_DIR, PLOT_DIR_MLP, PLOT_DIR_RANDOM, PLOT_DIR_PARETO
+    PLOT_DIR = Path(args.output_dir)
+    PLOT_DIR_MLP = PLOT_DIR / "mlp"
+    PLOT_DIR_RANDOM = PLOT_DIR / "random"
+    PLOT_DIR_PARETO = PLOT_DIR / "pareto"
+    for d in (PLOT_DIR, PLOT_DIR_MLP, PLOT_DIR_RANDOM, PLOT_DIR_PARETO):
+        d.mkdir(parents=True, exist_ok=True)
+
+    sweep_dir = Path(args.sweep_dir)
+
+    results = generate_all()
+    write_markdown(results, sweep_dir=sweep_dir)
 
 
 if __name__ == "__main__":
-    results = generate_all()
-    write_markdown(results)
+    main()

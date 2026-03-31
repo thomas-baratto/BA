@@ -1,8 +1,13 @@
 """Thesis-quality matplotlib style configuration.
 
-Import and call `apply_thesis_style()` once at the start of any plotting
-script.  All subsequent matplotlib figures will use consistent fonts, sizes,
-colours, and layout settings suitable for a bachelor thesis (LaTeX / PDF).
+Based on the SciencePlots ``science`` style (standard in CS/engineering
+papers) with thesis-specific overrides for figure size, colour palette,
+and grid.  Requires ``pip install SciencePlots``.
+
+The ``science`` base provides:
+  • Serif (Times-like) font family with proper math rendering
+  • Thin axes and tick styling matching IEEE / Springer / ACM conventions
+  • Clean legend and label defaults
 
 Usage
 -----
@@ -10,7 +15,6 @@ Usage
     apply_thesis_style()
 """
 
-import os
 from pathlib import Path
 
 import matplotlib as mpl
@@ -41,7 +45,7 @@ MODEL_COLORS = {
 
 # ── Consistent figure dimensions ────────────────────────────────────────────
 # Single-column thesis figure: ~5.5 in wide; double-column ~7.2 in.
-FIG_SINGLE = (5.5, 4.5)
+FIG_SINGLE = (5.5, 4.0)
 FIG_SQUARE = (5.5, 5.5)
 FIG_WIDE = (7.2, 4.5)
 FIG_TALL = (7.2, 8.0)
@@ -49,30 +53,33 @@ FIG_TALL = (7.2, 8.0)
 DPI = 300  # thesis-quality raster resolution
 
 
-def apply_thesis_style(usetex: bool = False) -> None:
-    """Apply a consistent, publication-quality matplotlib style.
+def apply_thesis_style() -> None:
+    """Apply a publication-quality matplotlib style based on ``science``.
 
-    Parameters
-    ----------
-    usetex : bool
-        If True, render text with LaTeX (requires a working TeX installation).
-        If False, uses mathtext with a serif font that closely matches LaTeX.
+    Uses the SciencePlots ``science`` + ``no-latex`` + ``grid`` styles as
+    the foundation (IEEE/ACM-standard fonts and layout), then layers
+    thesis-specific overrides for figure size, colours, and DPI.
     """
-    style = {
-        # ── Font ────────────────────────────────────────────────────────
-        "font.family": "serif",
-        "font.serif": ["Computer Modern Roman", "DejaVu Serif", "Times New Roman"],
+    # ── Base: SciencePlots "science" style (serif fonts, clean layout) ──
+    import scienceplots  # noqa: F401 – registers styles on import
+    plt.style.use(["science", "no-latex", "grid"])
+
+    # ── Thesis overrides on top of the science base ─────────────────────
+    overrides = {
+        # ── Figure dimensions (wider than IEEE single-column default) ───
+        "figure.figsize": FIG_SINGLE,
+        "figure.dpi": 100,          # screen preview; savefig uses DPI
+        "savefig.dpi": DPI,
+        "savefig.bbox": "tight",
+        "savefig.pad_inches": 0.05,
+        # ── Font sizes (scaled up from science 8pt for thesis A4 page) ──
         "font.size": 10,
-        "text.usetex": usetex,
-        "mathtext.fontset": "cm",  # Computer Modern for math
-        # ── Axes ────────────────────────────────────────────────────────
         "axes.titlesize": 12,
         "axes.labelsize": 11,
-        "axes.linewidth": 0.8,
-        "axes.grid": True,
-        "axes.grid.which": "major",
-        "axes.spines.top": False,
-        "axes.spines.right": False,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 9,
+        "legend.fontsize": 9,
+        # ── Colour cycle ────────────────────────────────────────────────
         "axes.prop_cycle": mpl.cycler(
             color=[
                 COLORS["primary"],
@@ -82,34 +89,18 @@ def apply_thesis_style(usetex: bool = False) -> None:
                 COLORS["accent2"],
             ]
         ),
-        # ── Grid ────────────────────────────────────────────────────────
-        "grid.color": COLORS["grid"],
+        # ── Grid (lighter than science default) ─────────────────────────
+        "grid.alpha": 0.4,
         "grid.linewidth": 0.5,
-        "grid.alpha": 0.5,
-        # ── Ticks ───────────────────────────────────────────────────────
-        "xtick.labelsize": 9,
-        "ytick.labelsize": 9,
-        "xtick.direction": "in",
-        "ytick.direction": "in",
-        "xtick.major.width": 0.6,
-        "ytick.major.width": 0.6,
-        # ── Legend ──────────────────────────────────────────────────────
-        "legend.fontsize": 9,
-        "legend.framealpha": 0.9,
-        "legend.edgecolor": COLORS["grid"],
-        "legend.fancybox": False,
-        # ── Figure ──────────────────────────────────────────────────────
-        "figure.figsize": FIG_SINGLE,
-        "figure.dpi": 100,          # screen preview; savefig uses DPI
-        "savefig.dpi": DPI,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.05,
         # ── Lines / scatter ─────────────────────────────────────────────
         "lines.linewidth": 1.5,
         "lines.markersize": 4,
         "scatter.marker": "o",
+        # ── Legend ──────────────────────────────────────────────────────
+        "legend.framealpha": 0.9,
+        "legend.edgecolor": COLORS["grid"],
     }
-    mpl.rcParams.update(style)
+    mpl.rcParams.update(overrides)
 
 
 def label_with_unit(name: str, unit: str | None = None) -> str:

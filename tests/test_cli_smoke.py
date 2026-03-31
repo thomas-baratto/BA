@@ -47,6 +47,10 @@ def test_train_random_models_main_smoke(monkeypatch, tmp_path):
         n_seeds=1,
         no_cuda=True,
         no_save_model=True,
+        disable_power_monitor=True,
+        power_interval=1.0,
+        power_filter='python',
+        power_log_dir=None,
     )
 
     X_train = np.random.randn(12, 4)

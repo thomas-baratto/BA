@@ -56,6 +56,16 @@ echo "==========================================================================
 
 OUT_DIR="${OUTPUT_DIR:-artifacts/models/mlp}"
 
+# ── Job-level power monitor ─────────────────────────────────
+POWER_LOG_DIR="${OUT_DIR}/power_monitor"
+mkdir -p "$POWER_LOG_DIR"
+echo "Starting job-level power monitor → $POWER_LOG_DIR"
+python monitoring/power_monitor.py \
+    --output-dir "$POWER_LOG_DIR" \
+    --interval 1.0 \
+    --filter python &
+POWER_PID=$!
+
 if [ "$DATASET" == "isotherm" ] || [ "$DATASET" == "cone" ]; then
     TRAIN_CMD="python scripts/training/train_mlp_with_metrics.py --dataset $DATASET --output-dir \"$OUT_DIR\""
     echo "Command: $TRAIN_CMD"
@@ -84,6 +94,9 @@ else
         EXIT_CODE=0
     fi
 fi
+
+echo "Stopping power monitor (PID=$POWER_PID)..."
+kill $POWER_PID 2>/dev/null && wait $POWER_PID 2>/dev/null || true
 
 echo "============================================================================"
 echo "Job Completed"

@@ -25,6 +25,7 @@ from core.metrics import compute_regression_metrics
 from core.training_utils import to_physical_units
 from config.datasets import DATASET_CONFIGS
 from core.artifacts import ArtifactManifest
+from monitoring.power_utils import power_monitor_session
 from pathlib import Path
 
 # Import Models
@@ -112,6 +113,16 @@ def parse_args():
     parser.add_argument('--n-seeds', type=int, default=1, help='Number of seeds to run (for mean±std reporting). Seeds used: random_state, random_state+1, ...')
     parser.add_argument('--no-cuda', action='store_true', help='Disable CUDA')
     parser.add_argument('--no-save-model', action='store_true', help='Do not save the model and test predictions to disk')
+
+    # --- Power Monitor Arguments ---
+    parser.add_argument('--disable-power-monitor', action='store_true',
+                        help='Disable the per-run power monitoring session.')
+    parser.add_argument('--power-interval', type=float, default=1.0,
+                        help='Interval in seconds for power/resource logging.')
+    parser.add_argument('--power-filter', type=str, default='python',
+                        help='Process name filter for the power monitor.')
+    parser.add_argument('--power-log-dir', type=str, default=None,
+                        help='Override directory for power logs.')
 
     return parser.parse_args()
 
@@ -328,26 +339,27 @@ def main():
     manifest.save(Path(base_output_dir))
     logging.info("Artifact manifest saved to: %s", os.path.join(base_output_dir, "artifact_manifest.json"))
 
-    # --- Run over seeds ---
+    # --- Run over seeds (with optional power monitoring) ---
     seeds = [cfg.random_state + i for i in range(cfg.n_seeds)]
     all_test_metrics = []
 
-    for idx, seed in enumerate(seeds, start=1):
-        if cfg.n_seeds > 1:
-            seed_output_dir = os.path.join(base_output_dir, f"seed_{seed}")
-            ensure_dir(seed_output_dir)
-            logging.info("--- Seed %d (%d/%d) ---", seed, idx, len(seeds))
-        else:
-            seed_output_dir = base_output_dir
+    with power_monitor_session(args, base_output_dir):
+        for idx, seed in enumerate(seeds, start=1):
+            if cfg.n_seeds > 1:
+                seed_output_dir = os.path.join(base_output_dir, f"seed_{seed}")
+                ensure_dir(seed_output_dir)
+                logging.info("--- Seed %d (%d/%d) ---", seed, idx, len(seeds))
+            else:
+                seed_output_dir = base_output_dir
 
-        results, train_time = run_single_seed(
-            args, device, seed, seed_output_dir, label_cols,
-            X_train_full, X_test, y_train_full, y_test, y_scaler
-        )
-        test_metrics = results['test']['aggregate']
-        test_metrics['train_time'] = train_time
-        test_metrics['seed'] = seed
-        all_test_metrics.append(test_metrics)
+            results, train_time = run_single_seed(
+                args, device, seed, seed_output_dir, label_cols,
+                X_train_full, X_test, y_train_full, y_test, y_scaler
+            )
+            test_metrics = results['test']['aggregate']
+            test_metrics['train_time'] = train_time
+            test_metrics['seed'] = seed
+            all_test_metrics.append(test_metrics)
 
     # --- Aggregate multi-seed results ---
     if cfg.n_seeds > 1:
