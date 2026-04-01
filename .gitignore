@@ -6,7 +6,6 @@
 
 # AI assistant config files
 .claude/
-.github/copilot-instructions.md
 CLAUDE.md
 
 # Python cache/build artifacts
