@@ -441,13 +441,18 @@ def render_drvfl(cfg: dict[str, Any], hp: dict[str, Any]) -> str:
     if direct_link:
         lines.append("")
         lines.append("    % direct link (input bypass)")
+        arc_loose = max(70, 55 + n_layers * 5)
+        arc_tight = 180 - arc_loose
         lines.append(
             "    " + r"\draw[direct arr]"
-            + " (in_0.north) to[out=60, in=120] (cat.north);"
+            + " (in_0.north) to[out=" + str(arc_loose)
+            + ", in=" + str(arc_tight) + "] (cat.north);"
         )
+        lift = 0.8 + n_layers * 0.35
         lines.append(
             "    " + r"\node[annot, above=1mm] at"
-            + " ($0.5*(in_0.north)+0.5*(cat.north)+(0,0.8)$)"
+            + " ($0.5*(in_0.north)+0.5*(cat.north)+(0,"
+            + f"{lift:.2f}" + ")$)"
             + r" {\textit{direct link}};"
         )
 
@@ -528,10 +533,15 @@ def render_edrvfl(cfg: dict[str, Any], hp: dict[str, Any]) -> str:
     sc_suffix = ""
     if "SC" in model_name or sc_mode:
         sc_suffix = ", SC=" + sc_mode if sc_mode else ", SC"
+    kfold_suffix = ""
+    n_folds = hp.get("n_folds", 0)
+    if "esc" in model_name.lower() and n_folds:
+        kfold_suffix = r", " + str(n_folds) + "-fold CV"
     lines.append(
         "    " + r"\node[lbl, above=8mm] at"
         + " (" + f"{mid_block_x:.2f},{stack_top_y + 1.5:.2f}" + ")"
-        + r" {$\times$" + str(n_ensemble) + " ensemble" + sc_suffix + "};"
+        + r" {$\times$" + str(n_ensemble) + " ensemble" + sc_suffix
+        + kfold_suffix + "};"
     )
 
     # averaging node
@@ -831,7 +841,84 @@ RANDOM_RENDERERS = {
 }
 
 
-def render(cfg: dict[str, Any], winners: dict[str, Any], config_path: Path | None = None) -> str:
+# ── Generic (schematic) configs ──────────────────────────────────────────────
+
+_GENERIC_FEATURES = ["$x_1$", "$x_2$", "$x_3$", "$x_4$"]
+_GENERIC_LABELS = ["$y_1$", "$y_2$", "$y_3$"]
+
+_GENERIC_CFG_BASE: dict[str, Any] = {
+    "feature_names": _GENERIC_FEATURES,
+    "label_names": _GENERIC_LABELS,
+    "input_size": len(_GENERIC_FEATURES),
+    "output_size": len(_GENERIC_LABELS),
+}
+
+GENERIC_CONFIGS: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {
+    "MLP": (
+        {
+            **_GENERIC_CFG_BASE,
+            "model_type": "mlp",
+            "nr_hidden_layers": 3,
+            "nr_neurons": 64,
+            "activation_name": "ReLU",
+            "dropout_rate": 0.0,
+            "use_batchnorm": False,
+        },
+        {},
+    ),
+    "ELM": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "ELM"},
+        {"n_hidden": 100, "activation": "ReLU"},
+    ),
+    "dRVFL": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "dRVFL"},
+        {
+            "n_hidden": 100, "n_layers": 3, "activation": "ReLU",
+            "direct_link": True,
+        },
+    ),
+    "edRVFL": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "edRVFL"},
+        {
+            "n_hidden": 100, "n_layers": 2, "n_ensemble": 5,
+            "activation": "ReLU", "direct_link": False,
+            "model": "edRVFL",
+        },
+    ),
+    "edRVFL-SC": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "edRVFL-SC"},
+        {
+            "n_hidden": 100, "n_layers": 2, "n_ensemble": 5,
+            "activation": "ReLU", "direct_link": False,
+            "sc_mode": "dense", "model": "edRVFL-SC",
+        },
+    ),
+    "esc-edRVFL": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "esc-edRVFL"},
+        {
+            "n_hidden": 100, "n_layers": 2, "n_ensemble": 5,
+            "activation": "ReLU", "direct_link": False,
+            "n_folds": 5, "model": "esc-edRVFL",
+        },
+    ),
+    "SResdRVFL": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "SResdRVFL"},
+        {
+            "n_hidden": 100, "n_layers": 2, "n_blocks": 3,
+            "activation": "ReLU", "direct_link": True,
+        },
+    ),
+}
+
+
+def render(
+    cfg: dict[str, Any],
+    winners: dict[str, Any],
+    config_path: Path | None = None,
+    *,
+    generic: bool = False,
+    generic_hp: dict[str, Any] | None = None,
+) -> str:
     is_random = cfg.get("model_type") == "random"
     if is_random:
         model_name = cfg.get("model_name", "")
@@ -839,10 +926,13 @@ def render(cfg: dict[str, Any], winners: dict[str, Any], config_path: Path | Non
         if renderer is None:
             print("Warning: unknown random model '" + model_name + "', falling back to ELM")
             renderer = render_elm
-        hp = find_winner_hparams(cfg, winners)
-        if not hp:
-            print("Warning: no winner hparams for " + model_name + "/" + str(cfg.get("dataset")))
-            hp = {}
+        if generic and generic_hp is not None:
+            hp = generic_hp
+        else:
+            hp = find_winner_hparams(cfg, winners)
+            if not hp:
+                print("Warning: no winner hparams for " + model_name + "/" + str(cfg.get("dataset")))
+                hp = {}
         body_lines: list[str] = []
         body_lines.append(renderer(cfg, hp))
         display_name = model_name
@@ -853,7 +943,9 @@ def render(cfg: dict[str, Any], winners: dict[str, Any], config_path: Path | Non
 
     # title (all diagrams)
     dataset = cfg.get("dataset", "")
-    if not dataset and config_path is not None:
+    if generic:
+        dataset = ""  # no dataset label for generic diagrams
+    elif not dataset and config_path is not None:
         # infer from path: .../models/{mlp|random}/{dataset}/...
         try:
             rel = config_path.relative_to(ARTIFACTS_DIR)
@@ -899,6 +991,10 @@ def main():
         "--all-artifacts", action="store_true",
         help="Discover all model_config.json under artifacts/models/",
     )
+    group.add_argument(
+        "--generic", action="store_true",
+        help="Generate one schematic diagram per architecture type",
+    )
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument(
         "--winners-config", type=Path, default=WINNERS_PATH,
@@ -911,7 +1007,18 @@ def main():
 
     winners = load_winners(args.winners_config)
 
-    if args.all_artifacts:
+    if args.generic:
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        for model_key, (cfg, hp) in GENERIC_CONFIGS.items():
+            stem = "generic_" + model_key.lower().replace("-", "_")
+            out = OUTPUT_DIR / (stem + ".tex")
+            tex = render(cfg, winners, generic=True, generic_hp=hp)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(tex)
+            print("  generic " + model_key + " -> " + str(out))
+            if args.compile:
+                _compile_tex(out)
+    elif args.all_artifacts:
         configs = discover_configs(ARTIFACTS_DIR)
         if not configs:
             print("No model_config.json found under " + str(ARTIFACTS_DIR))

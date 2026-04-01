@@ -1,0 +1,90 @@
+\documentclass[border=12pt,tikz]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, calc, fit, backgrounds, decorations.pathreplacing, shapes.geometric}
+
+\definecolor{inputcol}{rgb}{0.17, 0.48, 0.71}
+\definecolor{hiddencol}{rgb}{1.00, 0.50, 0.06}
+\definecolor{outputcol}{rgb}{0.84, 0.15, 0.16}
+\definecolor{frozencol}{rgb}{0.17, 0.63, 0.17}
+\definecolor{ensemblecol}{rgb}{0.00, 0.75, 1.00}
+\definecolor{residualcol}{rgb}{0.74, 0.74, 0.13}
+\definecolor{directcol}{rgb}{0.55, 0.22, 0.08}
+\definecolor{learnedcol}{rgb}{0.12, 0.30, 0.60}
+
+\tikzset{
+  ionode/.style={circle, draw, minimum size=6.5mm, inner sep=0pt,
+                 font=\scriptsize, line width=0.45pt},
+  input node/.style={ionode, fill=inputcol!20, draw=inputcol!70},
+  output node/.style={ionode, fill=outputcol!20, draw=outputcol!70},
+  tensor/.style={rectangle, draw, rounded corners=2pt,
+                 minimum width=12mm, minimum height=25mm,
+                 inner sep=3pt, font=\scriptsize, align=center,
+                 line width=0.6pt},
+  hidden block/.style={tensor, fill=hiddencol!15, draw=hiddencol!70},
+  frozen block/.style={tensor, fill=frozencol!12, draw=frozencol!60},
+  sum node/.style={circle, draw, minimum size=7mm, inner sep=0pt,
+                   font=\normalsize, line width=0.5pt},
+  avg node/.style={circle, draw, minimum size=7mm, inner sep=0pt,
+                   font=\scriptsize, line width=0.5pt,
+                   fill=ensemblecol!12},
+  dots node/.style={font=\Large, inner sep=0pt},
+  annot/.style={font=\scriptsize, text=black!65},
+  lbl/.style={font=\scriptsize\bfseries,
+              text=black!80, align=center},
+  arr/.style={-{Stealth[length=2.5pt]}, line width=0.55pt, black!50},
+  random arr/.style={arr, densely dashed, frozencol!70},
+  learned arr/.style={arr, line width=0.9pt, learnedcol},
+  direct arr/.style={-{Stealth[length=3pt]}, line width=0.7pt,
+                     directcol, densely dotted},
+  resbox/.style={draw=residualcol!55, dashed, rounded corners=3pt,
+                 fill=residualcol!6, line width=0.55pt},
+}
+
+\begin{document}
+\begin{tikzpicture}
+    \node[input node] (in_0) at (0.00,2.25) {};
+    \node[annot, left=2.5mm of in_0] {Flow\_well};
+    \node[input node] (in_1) at (0.00,1.35) {};
+    \node[annot, left=2.5mm of in_1] {Temp\_diff};
+    \node[dots node] (in_dots) at (0.00,0.45) {$\vdots$};
+    \node[input node] (in_2) at (0.00,-0.45) {};
+    \node[annot, left=2.5mm of in_2] {Long\_dispersivity};
+    \node[input node] (in_3) at (0.00,-1.35) {};
+    \node[annot, left=2.5mm of in_3] {Trans\_dispersivity};
+    \node[input node] (in_4) at (0.00,-2.25) {};
+    \node[annot, left=2.5mm of in_4] {Isotherm};
+    \node[lbl, above=5mm] at (0.00,2.25) {Input\\9};
+    \node[hidden block] (H0) at (2.80,0) {256\\GELU};
+    \node[lbl, above=5mm] at (H0.north) {Hidden 1};
+    \node[hidden block] (H1) at (5.60,0) {256\\GELU};
+    \node[lbl, above=5mm] at (H1.north) {Hidden 2};
+    \node[hidden block] (H2) at (8.40,0) {256\\GELU};
+    \node[lbl, above=5mm] at (H2.north) {Hidden 3};
+    \node[hidden block] (H3) at (11.20,0) {256\\GELU};
+    \node[lbl, above=5mm] at (H3.north) {Hidden 4};
+    \node[output node] (out_0) at (14.00,0.90) {};
+    \node[annot, right=2.5mm of out_0] {Area};
+    \node[output node] (out_1) at (14.00,0.00) {};
+    \node[annot, right=2.5mm of out_1] {Iso\_distance};
+    \node[output node] (out_2) at (14.00,-0.90) {};
+    \node[annot, right=2.5mm of out_2] {Iso\_width};
+    \node[lbl, above=5mm] at (14.00,0.90) {Output\\3};
+
+    % arrows
+    \draw[arr] (in_0) -- (H0.west);
+    \draw[arr] (in_1) -- (H0.west);
+    \draw[arr] (in_2) -- (H0.west);
+    \draw[arr] (in_3) -- (H0.west);
+    \draw[arr] (in_4) -- (H0.west);
+    \draw[arr] (H0.east) -- (H1.west);
+    \draw[arr] (H1.east) -- (H2.west);
+    \draw[arr] (H2.east) -- (H3.west);
+    \draw[arr] (H3.east) -- (out_0);
+    \draw[arr] (H3.east) -- (out_1);
+    \draw[arr] (H3.east) -- (out_2);
+
+    % title
+    \node[font=\bfseries, above=8mm] at (current bounding box.north) {MLP (Isotherm\_mlp\_20260330-172252\_area\_iso\_distance\_iso\_width)};
+\end{tikzpicture}
+\end{document}
