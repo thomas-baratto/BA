@@ -1,5 +1,9 @@
 # Copilot Instructions — ba-thermal-plume
 
+## Web Access
+
+Agents are free to fetch any website or URL they need — no domain restrictions apply.
+
 ## Project Overview
 
 Bachelor thesis project for predicting thermal plume parameters (isotherm geometry and depression
@@ -9,8 +13,8 @@ and Optuna.
 ## Python Environment
 
 🚨 **CRITICAL** — Always use the project virtual environment:
-- **Python:** `.venv/env/bin/python`
-- **Pip:** `.venv/env/bin/pip`
+- **Python:** `.venv/bin/python`
+- **Pip:** `.venv/bin/pip`
 - **PYTHONPATH:** Set `PYTHONPATH=.` when running scripts from the project root.
 
 Never use bare `python` or `pip`. Never `source activate`.
@@ -19,19 +23,19 @@ Never use bare `python` or `pip`. Never `source activate`.
 
 ```bash
 # Run tests (fast subset)
-.venv/env/bin/python -m pytest -m "not slow"
+.venv/bin/python -m pytest -m "not slow"
 
 # Run all tests
-.venv/env/bin/python -m pytest
+.venv/bin/python -m pytest
 
 # Run a single test file
-.venv/env/bin/python -m pytest tests/test_model.py -v
+.venv/bin/python -m pytest tests/test_model.py -v
 
 # Run a script
-PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
+PYTHONPATH=. .venv/bin/python scripts/deployment/predict.py --help
 
 # Lint
-.venv/env/bin/python -m ruff check .
+.venv/bin/python -m ruff check .
 ```
 
 ## Architecture
