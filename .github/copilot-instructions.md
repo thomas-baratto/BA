@@ -92,3 +92,10 @@ Two prediction tasks, configured in `config/datasets.py`:
   best params extracted to `config/best_params_*.json` → used by `train_mlp_with_metrics.py`.
 - **Scaling:** Data is scaled during training (stored in `scalers.pkl`); inference must use the
   same scalers — never fit new scalers at inference time.
+
+## Skills
+
+Load these skills when their domain applies:
+- **`/thesis-results`** — when implementing scripts, models, or analysis in BA to produce results
+  needed by the thesis (missing plots, baseline comparisons, inference benchmarking, SLURM jobs).
+  Contains execution constraints, gap tracker, and analysis script reference.
