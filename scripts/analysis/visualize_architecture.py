@@ -234,7 +234,9 @@ def _draw_title(lines: list[str], display_name: str, dataset: str) -> None:
 def render_mlp(cfg: dict[str, Any]) -> str:
     features = cfg["feature_names"]
     labels = cfg["label_names"]
-    n_hidden = cfg["nr_hidden_layers"]
+    # NeuralNetwork builds 1 "input projection" layer + nr_hidden_layers extra
+    # hidden layers, so the total number of hidden blocks is nr_hidden_layers + 1.
+    n_hidden = cfg["nr_hidden_layers"] + 1
     n_neurons = cfg["nr_neurons"]
     activation = cfg.get("activation_name", "ReLU")
     dropout = cfg.get("dropout_rate", 0.0)
@@ -858,7 +860,7 @@ GENERIC_CONFIGS: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {
         {
             **_GENERIC_CFG_BASE,
             "model_type": "mlp",
-            "nr_hidden_layers": 3,
+            "nr_hidden_layers": 2,
             "nr_neurons": 64,
             "activation_name": "ReLU",
             "dropout_rate": 0.0,
@@ -941,20 +943,7 @@ def render(
         body_lines.append(render_mlp(cfg))
         display_name = "MLP"
 
-    # title (all diagrams)
-    dataset = cfg.get("dataset", "")
-    if generic:
-        dataset = ""  # no dataset label for generic diagrams
-    elif not dataset and config_path is not None:
-        # infer from path: .../models/{mlp|random}/{dataset}/...
-        try:
-            rel = config_path.relative_to(ARTIFACTS_DIR)
-            dataset = rel.parts[1]  # e.g. "cone" or "isotherm"
-        except (ValueError, IndexError):
-            pass
-    title_lines: list[str] = []
-    _draw_title(title_lines, display_name, dataset)
-    body_lines.append("\n".join(title_lines))
+    # title suppressed — each diagram is included in the thesis with a \caption
 
     body = "\n".join(body_lines)
 

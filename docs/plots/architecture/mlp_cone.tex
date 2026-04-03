@@ -1,4 +1,4 @@
-\documentclass[border=2pt,tikz]{standalone}
+\documentclass[border=12pt,tikz]{standalone}
 \usepackage[T1]{fontenc}
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta, calc, fit, backgrounds, decorations.pathreplacing, shapes.geometric}
@@ -52,20 +52,20 @@
     \node[input node] (in_3) at (0.00,-1.35) {};
     \node[annot, left=2.5mm of in_3] {Aqu\_thickness};
     \node[lbl, above=5mm] at (0.00,1.35) {Input\\4};
-    \node[hidden block] (H0) at (2.80,0) {221\\SiLU\\drop 12\%};
+    \node[hidden block] (H0) at (2.80,0) {244\\LeakyReLU};
     \node[lbl, above=5mm] at (H0.north) {Hidden 1};
-    \node[output node] (out_0) at (5.60,0.00) {};
+    \node[hidden block] (H1) at (5.60,0) {244\\LeakyReLU};
+    \node[lbl, above=5mm] at (H1.north) {Hidden 2};
+    \node[output node] (out_0) at (8.40,0.00) {};
     \node[annot, right=2.5mm of out_0] {Cone};
-    \node[lbl, above=5mm] at (5.60,0.00) {Output\\1};
+    \node[lbl, above=5mm] at (8.40,0.00) {Output\\1};
 
     % arrows
     \draw[arr] (in_0) -- (H0.west);
     \draw[arr] (in_1) -- (H0.west);
     \draw[arr] (in_2) -- (H0.west);
     \draw[arr] (in_3) -- (H0.west);
-    \draw[arr] (H0.east) -- (out_0);
-
-    % title
-%     \node[font=\bfseries, above=8mm] at (current bounding box.north) {MLP (Cone)};
+    \draw[arr] (H0.east) -- (H1.west);
+    \draw[arr] (H1.east) -- (out_0);
 \end{tikzpicture}
 \end{document}

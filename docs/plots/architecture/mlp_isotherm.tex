@@ -1,4 +1,4 @@
-\documentclass[border=2pt,tikz]{standalone}
+\documentclass[border=12pt,tikz]{standalone}
 \usepackage[T1]{fontenc}
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta, calc, fit, backgrounds, decorations.pathreplacing, shapes.geometric}
@@ -63,13 +63,15 @@
     \node[lbl, above=5mm] at (H2.north) {Hidden 3};
     \node[hidden block] (H3) at (11.20,0) {256\\GELU};
     \node[lbl, above=5mm] at (H3.north) {Hidden 4};
-    \node[output node] (out_0) at (14.00,0.90) {};
+    \node[hidden block] (H4) at (14.00,0) {256\\GELU};
+    \node[lbl, above=5mm] at (H4.north) {Hidden 5};
+    \node[output node] (out_0) at (16.80,0.90) {};
     \node[annot, right=2.5mm of out_0] {Area};
-    \node[output node] (out_1) at (14.00,0.00) {};
+    \node[output node] (out_1) at (16.80,0.00) {};
     \node[annot, right=2.5mm of out_1] {Iso\_distance};
-    \node[output node] (out_2) at (14.00,-0.90) {};
+    \node[output node] (out_2) at (16.80,-0.90) {};
     \node[annot, right=2.5mm of out_2] {Iso\_width};
-    \node[lbl, above=5mm] at (14.00,0.90) {Output\\3};
+    \node[lbl, above=5mm] at (16.80,0.90) {Output\\3};
 
     % arrows
     \draw[arr] (in_0) -- (H0.west);
@@ -80,11 +82,9 @@
     \draw[arr] (H0.east) -- (H1.west);
     \draw[arr] (H1.east) -- (H2.west);
     \draw[arr] (H2.east) -- (H3.west);
-    \draw[arr] (H3.east) -- (out_0);
-    \draw[arr] (H3.east) -- (out_1);
-    \draw[arr] (H3.east) -- (out_2);
-
-    % title
-%     \node[font=\bfseries, above=8mm] at (current bounding box.north) {MLP (Isotherm)};
+    \draw[arr] (H3.east) -- (H4.west);
+    \draw[arr] (H4.east) -- (out_0);
+    \draw[arr] (H4.east) -- (out_1);
+    \draw[arr] (H4.east) -- (out_2);
 \end{tikzpicture}
 \end{document}
