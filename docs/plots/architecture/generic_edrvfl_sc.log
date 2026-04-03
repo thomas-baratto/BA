@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.8)  31 MAR 2026 17:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.8)  3 APR 2026 17:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/Users/toma/repoandthesis/BA/docs/plots/architecture/generic_edrvfl_sc.tex
-(/Users/toma/repoandthesis/BA/docs/plots/architecture/generic_edrvfl_sc.tex
+**generic_edrvfl_sc.tex
+(./generic_edrvfl_sc.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22>
 (/usr/local/texlive/2023/texmf-dist/tex/latex/standalone/standalone.cls
@@ -433,7 +433,7 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count284
 \l__pdf_internal_box=\box66
 )
-(/Users/toma/repoandthesis/BA/docs/plots/architecture/generic_edrvfl_sc.aux)
+(./generic_edrvfl_sc.aux)
 \openout1 = `generic_edrvfl_sc.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
@@ -511,28 +511,26 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
-(/Users/toma/repoandthesis/BA/docs/plots/architecture/generic_edrvfl_sc.aux) ) 
+(./generic_edrvfl_sc.aux) ) 
 Here is how much of TeX's memory you used:
- 14771 strings out of 476025
- 318653 string characters out of 5790018
- 1870388 words of memory out of 5000000
- 34959 multiletter control sequences out of 15000+600000
- 516141 words of font info for 37 fonts, out of 8000000 for 9000
+ 14768 strings out of 476025
+ 318160 string characters out of 5790018
+ 1869388 words of memory out of 5000000
+ 34958 multiletter control sequences out of 15000+600000
+ 515365 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 117i,7n,118p,479b,724s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<
-/usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></u
-sr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
-local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/lo
-cal/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx0700.pfb></usr/loca
-l/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/
-texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0500.pfb></usr/local/te
-xlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb>
-Output written on /Users/toma/repoandthesis/BA/docs/plots/architecture/generic_
-edrvfl_sc.pdf (1 page, 95002 bytes).
+ 117i,7n,118p,426b,724s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-s
+uper/sfbx0700.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-sup
+er/sfrm0500.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super
+/sfrm0700.pfb>
+Output written on generic_edrvfl_sc.pdf (1 page, 84507 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 29 compressed objects within 1 object stream
+ 42 PDF objects out of 1000 (max. 8388607)
+ 26 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
