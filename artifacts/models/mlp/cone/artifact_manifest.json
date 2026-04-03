@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "created_at": "2026-03-22T20:27:34.347221Z",
+  "created_at": "2026-03-30T15:22:41.792782+00:00",
   "model_type": "mlp",
   "dataset": "cone",
   "targets": [
@@ -22,17 +22,17 @@
   "training": {
     "epochs": 10000,
     "batch_size": 64,
-    "learning_rate": 0.005144703744834637,
+    "learning_rate": 0.008705562604336024,
     "optimizer": "Adam",
-    "loss_criterion": "SmoothL1",
-    "train_time_seconds": 1212.4357166290283
+    "loss_criterion": "MSE",
+    "train_time_seconds": 735.134548664093
   },
   "performance": {
-    "test_rmse": 0.15655730545350321,
-    "test_mae": 0.09289544820785522,
-    "test_mse": 0.02451018989086151,
-    "test_r2": 0.9217031598091125,
-    "test_nrmse": 0.04630744558454459,
-    "test_kge": 0.679940289526412
+    "test_rmse": 0.05163791327274763,
+    "test_mae": 0.016935447230935097,
+    "test_mse": 0.002666474087163806,
+    "test_r2": 0.991332471370697,
+    "test_nrmse": 0.015273767340658368,
+    "test_kge": 0.9933559727764183
   }
 }

@@ -9,6 +9,7 @@
   "feature_scaler_type": "robust",
   "label_scaler_type": "minmax",
   "use_log": true,
+  "use_area_root": false,
   "feature_names": [
     "Flow_well",
     "Temp_diff",

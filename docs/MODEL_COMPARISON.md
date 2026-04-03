@@ -2,15 +2,15 @@
 
 Comparison of the 6 best models: 2 Optuna-optimized MLPs and 4 random network sweep winners (knee-point selection from Pareto frontiers of accuracy vs. complexity).
 
-*Generated on 2026-03-24 from sweep job 1048 (558 configurations).*
+*Generated on 2026-03-30. Random models from sweep job 1048 (558 configurations); MLPs retrained with final Optuna params.*
 
 ## Summary Table
 
-| Dataset | Model | Type | R² | RMSE | MAE | nRMSE | KGE | Train Time | Samples |
-|---------|-------|------|-----|------|-----|-------|-----|------------|---------|
-| cone | Optimized MLP | MLP | 0.9909 | 0.05 | 0.01 | 0.013306 | 0.9911 | 1212.4s | 12835 |
+| Dataset | Model | Type | R² | RMSE | MAE | nRMSE | KGE | Train Time | Test Samples |
+|---------|-------|------|-----|------|-----|-------|-----|------------|--------|
+| cone | Optimized MLP | MLP | 0.9913 | 0.05 | 0.02 | 0.015274 | 0.9934 | 735.1s | 3851 |
 | cone | edRVFL-SC (Pareto winner) | RANDOM | 0.9770 | 0.08 | 0.04 | 0.024885 | 0.9871 | 6.9s | 3851 |
-| isotherm | Optimized MLP | MLP | 1.0000 | 92.01 | 14.38 | 0.000185 | 0.9998 | 4296.1s | 85531 |
+| isotherm | Optimized MLP | MLP | 1.0000 | 79.96 | 14.80 | 0.000173 | 0.9995 | 4572.4s | 25660 |
 | isotherm | SResdRVFL (nRMSE winner) | RANDOM | 0.8997 | 99.80 | 45.77 | 0.049908 | 0.9379 | 6.2s | 25660 |
 | isotherm | dRVFL (KGE winner) | RANDOM | 0.8596 | 118.09 | 55.62 | 0.059058 | 0.9013 | 1.1s | 25660 |
 
@@ -32,7 +32,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 ### Optimized MLP (MLP)
 
-**Architecture:** `MLP 1×221, SiLU, dropout=0.1226`
+**Architecture:** `MLP 1×244, LeakyReLU, dropout=0.0094`
 
 **Preprocessing:** feature_scaler=robust, label_scaler=minmax, log_transform=✓
 
@@ -40,7 +40,7 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Cone | 0.9909 | 0.05 m | 0.01 m | 0.013306 | 0.9911 |
+| Cone | 0.9913 | 0.05 m | 0.02 m | 0.015274 | 0.9934 |
 
 #### Plots
 
@@ -86,9 +86,9 @@ Pareto frontier plots showing accuracy (nRMSE or 1−KGE) vs. complexity (traini
 
 | Label | R² | RMSE | MAE | nRMSE | KGE |
 |-------|-----|------|-----|-------|-----|
-| Area | 1.0000 | 159.35 m² | 42.36 m² | 0.000320 | 0.9998 |
-| Iso_distance | 1.0000 | 2.45 m | 0.74 m | 0.001224 | 0.9997 |
-| Iso_width | 1.0000 | 0.07 m | 0.03 m | 0.000219 | 0.9999 |
+| Area | 1.0000 | 138.44 m² | 43.48 m² | 0.000300 | 0.9995 |
+| Iso_distance | 1.0000 | 4.00 m | 0.89 m | 0.002001 | 0.9997 |
+| Iso_width | 1.0000 | 0.08 m | 0.04 m | 0.000265 | 0.9997 |
 
 #### Plots
 

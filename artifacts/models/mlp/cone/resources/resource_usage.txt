@@ -2,24 +2,24 @@
 RESOURCE USAGE SUMMARY
 ============================================================
 
-Total steps logged: 1122
+Total steps logged: 632
 
 CPU Usage (%):
-  Mean: 9.13
-  Max:  12.80
-  Min:  5.30
+  Mean: 4.66
+  Max:  5.20
+  Min:  2.50
 
 RAM Usage (%):
-  Mean: 1.10
+  Mean: 1.03
   Max:  1.10
-  Min:  1.10
+  Min:  1.00
 
 GPU Memory Usage (%):
-  Mean: 0.15
-  Max:  0.15
+  Mean: 0.16
+  Max:  0.16
   Min:  0.15
 
 GPU Memory Allocated (MiB):
-  Mean: 17.22
-  Max:  17.22
-  Min:  17.02
+  Mean: 17.42
+  Max:  17.42
+  Min:  17.19

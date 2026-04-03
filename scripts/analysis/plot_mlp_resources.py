@@ -230,7 +230,7 @@ def parse_args() -> argparse.Namespace:
         "--run-dir",
         default=None,
         help=(
-            "Path to a specific MLP run directory (e.g. artifacts/models/mlp/cone_MLP_20260330-171026_Cone). "
+            "Path to a specific MLP run directory (e.g. artifacts/models/mlp/cone). "
             "If given, --dataset is required and only that dataset is processed using this directory."
         ),
     )

@@ -42,13 +42,16 @@ PYTHONPATH=. .venv/bin/python scripts/deployment/predict.py --help
 
 - `core/model.py` — `NeuralNetwork` (MLP), PyTorch `nn.Module`
 - `core/trainer.py` — Training loop, early stopping, LR scheduling
+- `core/training_utils.py` — Training helper functions
 - `core/data_loader.py` — CSV loading, train/val/test splits, scaling
 - `core/preprocessing.py` — Feature engineering, data transforms
 - `core/inference.py` — Load saved model + scalers → predict
 - `core/model_wrapper.py` — Unified interface for MLP and random models
 - `core/metrics.py` — MAE, MSE, RMSE, R², MAPE, nRMSE, KGE
 - `core/utils.py` — Seed setting, logging, metric computation
+- `core/runtime.py` — Runtime/timing utilities
 - `core/plotting.py` — Visualization helpers
+- `core/thesis_style.py` — Thesis-quality plot styling (SciencePlots, colours, `save_fig()`)
 - `core/args.py` — Shared argparse definitions
 - `core/artifacts.py` — Model artifact path resolution
 - `core/config_types.py` — Typed config dataclasses
