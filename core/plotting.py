@@ -17,11 +17,8 @@ from core.metrics import LABEL_UNITS
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    DPI,
     FIG_SQUARE,
     FIG_WIDE,
-    FIG_SINGLE,
-    FIG_TALL,
     label_with_unit,
     save_fig,
 )

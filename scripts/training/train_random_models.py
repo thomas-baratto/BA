@@ -6,7 +6,6 @@ Usage:
   python train_random_models.py --model NF-RVFL --dataset isotherm --targets Area Iso_width
 """
 
-import torch
 import numpy as np
 import argparse
 import os

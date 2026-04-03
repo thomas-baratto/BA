@@ -26,13 +26,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from config.datasets import DATASET_CONFIGS
 from core.data_loader import load_file, select_columns
-from core.metrics import LABEL_UNITS
 from core.model import NeuralNetwork
 from core.random.ELM import ELM
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    FIG_SQUARE,
     FIG_WIDE,
     label_with_unit,
     save_fig,

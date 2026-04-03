@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager
-from pathlib import Path
 
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler

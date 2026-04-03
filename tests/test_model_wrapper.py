@@ -8,9 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import torch
 
-from core.model import NeuralNetwork
 from core.model_wrapper import TrainedModel
 
 

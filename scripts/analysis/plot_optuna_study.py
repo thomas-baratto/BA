@@ -31,11 +31,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    DPI,
     FIG_WIDE,
     FIG_SINGLE,
-    FIG_TALL,
-    FIG_SQUARE,
     save_fig,
 )
 

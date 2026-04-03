@@ -1,7 +1,6 @@
 import argparse
 import logging
 import os
-import numpy as np
 
 import optuna
 from torch.utils.tensorboard import SummaryWriter

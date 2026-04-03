@@ -30,9 +30,8 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from core.thesis_style import apply_thesis_style, DPI, FIG_WIDE, save_fig
+from core.thesis_style import apply_thesis_style, FIG_WIDE, save_fig
 from scripts.analysis.pareto_manager import is_pareto_efficient
-from scripts.analysis.select_knee_points import _knee_point_index
 
 apply_thesis_style()
 

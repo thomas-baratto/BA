@@ -9,15 +9,9 @@
     "loss_criterion": "MSE",
     "learning_rate": 0.008705562604336024,
     "dropout_rate": 0.009364659319868551,
-    "weight_decay": 0.00010260116167520304,
-    "rlr_factor": 0.7132899777479387,
-    "rlr_patience": 9,
-    "rlr_min_lr": 3.0802969305750486e-06,
+    "weight_decay": 0,
     "feature_scaler": "robust",
     "label_scaler": "minmax",
-    "minmax_label_signed": false,
-    "robust_q_low": 9,
-    "robust_q_high": 83,
     "use_batchnorm": false,
     "feature_scaler_type": "robust",
     "label_scaler_type": "minmax",
@@ -27,9 +21,9 @@
     "use_log": true
   },
   "study_info": {
-    "study_name": "depression_cones_mlp_journal_study",
-    "best_trial": 10019,
-    "best_value": 0.021422214806079865
+    "study_name": "",
+    "best_trial": 0,
+    "best_value": 0
   },
   "metrics": {
     "test": {
@@ -38,8 +32,8 @@
         "mse": 0.002666474087163806,
         "rmse": 0.05163791327274763,
         "r2": 0.991332471370697,
-        "medae": 0.007117226719856262,
         "explained_variance": 0.9913443326950073,
+        "medae": 0.007117226719856262,
         "max_error": 2.2545838356018066,
         "mape": 442173.34375,
         "nrmse": 0.015273767340658368,

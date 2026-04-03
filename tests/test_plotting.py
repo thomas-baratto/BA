@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 
 from core.plotting import create_scatter_plot, create_residual_plots, create_qq_plots
 

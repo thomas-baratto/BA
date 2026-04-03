@@ -13,8 +13,8 @@ and Optuna.
 ## Python Environment
 
 🚨 **CRITICAL** — Always use the project virtual environment:
-- **Python:** `.venv/bin/python`
-- **Pip:** `.venv/bin/pip`
+- **Python:** `.venv/env/bin/python`
+- **Pip:** `.venv/env/bin/pip`
 - **PYTHONPATH:** Set `PYTHONPATH=.` when running scripts from the project root.
 
 Never use bare `python` or `pip`. Never `source activate`.
@@ -23,19 +23,19 @@ Never use bare `python` or `pip`. Never `source activate`.
 
 ```bash
 # Run tests (fast subset)
-.venv/bin/python -m pytest -m "not slow"
+.venv/env/bin/python -m pytest -m "not slow"
 
 # Run all tests
-.venv/bin/python -m pytest
+.venv/env/bin/python -m pytest
 
 # Run a single test file
-.venv/bin/python -m pytest tests/test_model.py -v
+.venv/env/bin/python -m pytest tests/test_model.py -v
 
 # Run a script
-PYTHONPATH=. .venv/bin/python scripts/deployment/predict.py --help
+PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
 
 # Lint
-.venv/bin/python -m ruff check .
+.venv/env/bin/python -m ruff check .
 ```
 
 ## Architecture

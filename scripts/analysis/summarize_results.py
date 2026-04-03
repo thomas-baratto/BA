@@ -2,7 +2,6 @@
 """
 Summarize results from a random training job folder into a CSV table.
 """
-import os
 import json
 import numpy as np
 import pandas as pd

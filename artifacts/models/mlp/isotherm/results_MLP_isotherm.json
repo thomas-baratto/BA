@@ -9,15 +9,9 @@
     "loss_criterion": "L1",
     "learning_rate": 0.0049175231592782824,
     "dropout_rate": 1.855105006454693e-05,
-    "weight_decay": 0.001107240598448432,
-    "rlr_factor": 0.8010234502072867,
-    "rlr_patience": 3,
-    "rlr_min_lr": 5.343080323512295e-06,
+    "weight_decay": 0,
     "feature_scaler": "robust",
     "label_scaler": "minmax",
-    "minmax_label_signed": false,
-    "robust_q_low": 23,
-    "robust_q_high": 70,
     "use_batchnorm": false,
     "feature_scaler_type": "robust",
     "label_scaler_type": "minmax",
@@ -27,9 +21,9 @@
     "use_log": true
   },
   "study_info": {
-    "study_name": "nn_study_isotherm_journal",
-    "best_trial": 6843,
-    "best_value": 0.0004316308768466115
+    "study_name": "",
+    "best_trial": 0,
+    "best_value": 0
   },
   "metrics": {
     "test": {
@@ -38,8 +32,8 @@
         "mse": 6393.4462890625,
         "rmse": 79.9590288151532,
         "r2": 0.9999908208847046,
-        "medae": 0.18357467651367188,
         "explained_variance": 0.9999908208847046,
+        "medae": 0.18357467651367188,
         "max_error": 4417.03125,
         "mape": 0.002180417301133275,
         "nrmse": 0.00017345699394853012,

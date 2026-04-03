@@ -109,7 +109,7 @@ The thesis compiles cleanly at 105 pages with no undefined references or warning
 | Optuna study plots (6 per dataset) | `thesis/graphics/plots/optuna_cone/` and `optuna_isotherm/` (history, importance, slices, contours, trial durations, parallel coords) |
 | MLP power monitoring plots | `thesis/graphics/plots/power/mlp_cone/` (4 PDFs), `mlp_isotherm/` (4 PDFs) |
 | Random winner power plots | `thesis/graphics/plots/power/random_winners/` (6 PDFs) |
-| Architecture diagrams (7 of 8) | `thesis/graphics/plots/architecture/` — MLP, ELM, dRVFL, edRVFL, edRVFL-SC, esc-edRVFL, SResdRVFL |
+| Architecture diagrams (8 of 8) | `thesis/graphics/plots/architecture/` — MLP, ELM, RVFL, dRVFL, edRVFL, edRVFL-SC, esc-edRVFL, SResdRVFL. Also `docs/plots/architecture/` has 5 model-specific diagrams. |
 | Böttcher baseline evaluated | `artifacts/models/baseline/boettcher/results_boettcher_baseline.json` — metrics for all_disp (n=7140) + matched (n=454) subsets |
 | Böttcher comparison in thesis | §5.2 with `tab:baseline-all` and `tab:baseline-matched` (R², KGE, MAPE, MAE, RMSE) |
 | Inference latency benchmarked | `artifacts/models/benchmark_inference_results.json` + `docs/tables/inference_benchmark.tex` + `docs/tables/inference_scaling.tex` |
@@ -123,7 +123,7 @@ The thesis compiles cleanly at 105 pages with no undefined references or warning
 
 | Priority | Gap | What to do | Target output |
 |----------|-----|------------|---------------|
-| **MEDIUM** | `generic_rvfl.pdf` architecture diagram missing (thesis line ~377) | Extend `visualize_architecture.py` or create in TikZ | `thesis/graphics/plots/architecture/generic_rvfl.pdf` |
+| ~~**MEDIUM**~~ | ~~`generic_rvfl.pdf` architecture diagram~~ — **Done** | Created in TikZ, exists in `BA/docs/plots/architecture/generic_rvfl.pdf`. Copy to `thesis/graphics/plots/architecture/` if not already there. | `thesis/graphics/plots/architecture/generic_rvfl.pdf` |
 | **MEDIUM** | 2 Optuna parallel coordinate plots commented out (files exist; thesis lines ~1968, ~1976) | Verify plots look correct, then uncomment the `\begin{figure}` blocks | Uncommented figures in thesis |
 | **MEDIUM** | 3 missing power/energy plots for Optuna cone search (Appendix G.2, lines ~2216–2252) | Regenerate from monitoring CSVs: `optuna_cone/{energy_breakdown,gpu_breakdown,worker_durations}` | 3 PDFs → uncomment figures in thesis |
 | **LOW** | Stale `% TODO` comments in Introduction | Remove planning comments — content already written beneath them | Cleaner LaTeX source |

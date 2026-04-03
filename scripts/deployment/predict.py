@@ -25,21 +25,17 @@ Examples:
 """
 
 import argparse
-import json
 import os
-import pickle
 import sys
 from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import torch
 
 # Allow running as both a script (PYTHONPATH=.) and installed package (pip install .)
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from core.model import NeuralNetwork
 from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS
 from core.preprocessing import compute_engineered_features
 

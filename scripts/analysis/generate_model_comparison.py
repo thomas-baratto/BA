@@ -9,7 +9,6 @@ Produces: docs/MODEL_COMPARISON.md with embedded PNG plots.
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -29,7 +28,6 @@ from core.metrics import LABEL_UNITS, compute_regression_metrics
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    DPI,
     FIG_SQUARE,
     FIG_WIDE,
     label_with_unit,

@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 import sys
-from contextlib import contextmanager
 from pathlib import Path
 
-import optuna
 import pytest
 
 from optimization.optuna_config import (

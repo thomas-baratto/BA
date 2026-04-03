@@ -13,7 +13,6 @@ import logging
 import os
 import pickle
 import time
-import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -25,7 +24,7 @@ from pathlib import Path
 
 from core.runtime import ensure_dir, get_device, setup_logging
 from core.trainer import main_train
-from core.training_utils import normalize_best_params, get_loss_criterion
+from core.training_utils import normalize_best_params
 from config.datasets import DATASET_CONFIGS
 from core.artifacts import ArtifactManifest
 from monitoring.power_utils import power_monitor_session

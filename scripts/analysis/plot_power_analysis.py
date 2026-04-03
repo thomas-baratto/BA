@@ -33,17 +33,14 @@ import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    DPI,
     FIG_SINGLE,
     FIG_WIDE,
-    FIG_TALL,
     save_fig,
 )
 

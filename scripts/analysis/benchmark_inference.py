@@ -14,9 +14,7 @@ import json
 import logging
 import os
 import platform
-import sys
 import time
-from pathlib import Path
 from typing import Any
 
 import warnings
@@ -27,7 +25,6 @@ import torch
 from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS
 from core.data_loader import load_data
 from core.inference import load_model_and_scalers, make_predictions, preprocess_features
-from core.model_wrapper import TrainedModel
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -127,7 +124,6 @@ def benchmark_model(
     """
     model_dir = spec["model_dir"]
     dataset = spec["dataset"]
-    ds_cfg = DATASET_CONFIGS[dataset]
 
     if not os.path.isdir(model_dir):
         logger.warning("Model dir missing: %s — skipping %s/%s", model_dir, spec["name"], dataset)

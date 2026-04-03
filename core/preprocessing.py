@@ -2,8 +2,6 @@
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from pathlib import Path
 
 from core.data_loader import load_data
 from core.training_utils import to_physical_units
