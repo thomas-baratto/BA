@@ -1,0 +1,594 @@
+{
+  "system_info": {
+    "platform": "Linux-6.8.0-106-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "cpu_count": "16",
+    "python_version": "3.12.3",
+    "numpy_version": "2.3.3",
+    "torch_version": "2.6.0+cu124",
+    "torch_cuda_available": "False",
+    "device_used": "cpu"
+  },
+  "settings": {
+    "warmup": 5,
+    "repeats": 100
+  },
+  "timestamp": "2026-04-03T18:32:23+0200",
+  "models": [
+    {
+      "model_name": "MLP",
+      "model_key": "mlp",
+      "dataset": "cone",
+      "model_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/mlp/cone",
+      "n_features": 4,
+      "n_test_samples": 3851,
+      "benchmarks": {
+        "synthetic_1": {
+          "n_samples": 1,
+          "forward_pass": {
+            "mean_ns": 158402.03,
+            "std_ns": 5265.895647380415,
+            "median_ns": 156163.5,
+            "min_ns": 153271.0,
+            "max_ns": 178015.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 158402.03
+          },
+          "full_pipeline": {
+            "mean_ns": 485526.9,
+            "std_ns": 8003.8684265797365,
+            "median_ns": 485829.0,
+            "min_ns": 468806.0,
+            "max_ns": 513270.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 485526.9
+          }
+        },
+        "synthetic_10": {
+          "n_samples": 10,
+          "forward_pass": {
+            "mean_ns": 179458.13,
+            "std_ns": 6052.301231192975,
+            "median_ns": 177161.5,
+            "min_ns": 174290.0,
+            "max_ns": 219383.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 17945.813000000002
+          },
+          "full_pipeline": {
+            "mean_ns": 514937.32,
+            "std_ns": 8676.45457301541,
+            "median_ns": 514442.0,
+            "min_ns": 501442.0,
+            "max_ns": 557413.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 51493.732
+          }
+        },
+        "synthetic_100": {
+          "n_samples": 100,
+          "forward_pass": {
+            "mean_ns": 277910.37,
+            "std_ns": 5384.42510516211,
+            "median_ns": 275282.0,
+            "min_ns": 271353.0,
+            "max_ns": 299903.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 2779.1037
+          },
+          "full_pipeline": {
+            "mean_ns": 641294.41,
+            "std_ns": 7492.590235819653,
+            "median_ns": 641642.0,
+            "min_ns": 625548.0,
+            "max_ns": 662479.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 6412.944100000001
+          }
+        },
+        "synthetic_1000": {
+          "n_samples": 1000,
+          "forward_pass": {
+            "mean_ns": 575869.0,
+            "std_ns": 8685.183222016678,
+            "median_ns": 575112.0,
+            "min_ns": 563848.0,
+            "max_ns": 603448.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 575.869
+          },
+          "full_pipeline": {
+            "mean_ns": 1111310.88,
+            "std_ns": 26305.35842267883,
+            "median_ns": 1105334.0,
+            "min_ns": 1096956.0,
+            "max_ns": 1278702.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 1111.31088
+          }
+        },
+        "test_set_3851": {
+          "n_samples": 3851,
+          "forward_pass": {
+            "mean_ns": 1612609.4285714286,
+            "std_ns": 184884.5771210917,
+            "median_ns": 1511746.0,
+            "min_ns": 1470927.0,
+            "max_ns": 2044845.0,
+            "n_repeats": 14,
+            "per_sample_mean_ns": 418.75082538858186
+          },
+          "full_pipeline": {
+            "mean_ns": 2438212.0714285714,
+            "std_ns": 13987.906120565549,
+            "median_ns": 2434729.5,
+            "min_ns": 2423550.0,
+            "max_ns": 2481679.0,
+            "n_repeats": 14,
+            "per_sample_mean_ns": 633.1373854657418
+          }
+        }
+      }
+    },
+    {
+      "model_name": "MLP",
+      "model_key": "mlp",
+      "dataset": "isotherm",
+      "model_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/mlp/isotherm",
+      "n_features": 9,
+      "n_test_samples": 25660,
+      "benchmarks": {
+        "synthetic_1": {
+          "n_samples": 1,
+          "forward_pass": {
+            "mean_ns": 443862.74,
+            "std_ns": 7183.40984438449,
+            "median_ns": 440800.5,
+            "min_ns": 433422.0,
+            "max_ns": 463395.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 443862.74
+          },
+          "full_pipeline": {
+            "mean_ns": 808293.06,
+            "std_ns": 7311.873849869129,
+            "median_ns": 808374.0,
+            "min_ns": 789444.0,
+            "max_ns": 829016.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 808293.06
+          }
+        },
+        "synthetic_10": {
+          "n_samples": 10,
+          "forward_pass": {
+            "mean_ns": 509854.76,
+            "std_ns": 6184.70700699718,
+            "median_ns": 510301.5,
+            "min_ns": 499884.0,
+            "max_ns": 525533.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 50985.476
+          },
+          "full_pipeline": {
+            "mean_ns": 880946.51,
+            "std_ns": 17117.4949011209,
+            "median_ns": 884220.0,
+            "min_ns": 812782.0,
+            "max_ns": 900812.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 88094.651
+          }
+        },
+        "synthetic_100": {
+          "n_samples": 100,
+          "forward_pass": {
+            "mean_ns": 685021.03,
+            "std_ns": 9810.308262694909,
+            "median_ns": 683708.5,
+            "min_ns": 671566.0,
+            "max_ns": 722841.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 6850.210300000001
+          },
+          "full_pipeline": {
+            "mean_ns": 1071335.36,
+            "std_ns": 6980.7032790686635,
+            "median_ns": 1070313.0,
+            "min_ns": 1059879.0,
+            "max_ns": 1110901.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 10713.3536
+          }
+        },
+        "synthetic_1000": {
+          "n_samples": 1000,
+          "forward_pass": {
+            "mean_ns": 1956621.46,
+            "std_ns": 22356.434083466887,
+            "median_ns": 1949455.5,
+            "min_ns": 1935393.0,
+            "max_ns": 2041394.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 1956.62146
+          },
+          "full_pipeline": {
+            "mean_ns": 2704164.52,
+            "std_ns": 179032.0712029261,
+            "median_ns": 2664818.5,
+            "min_ns": 2647630.0,
+            "max_ns": 3614606.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 2704.16452
+          }
+        },
+        "test_set_25660": {
+          "n_samples": 25660,
+          "forward_pass": {
+            "mean_ns": 67180969.5,
+            "std_ns": 162265.43751412377,
+            "median_ns": 67208476.5,
+            "min_ns": 66944060.0,
+            "max_ns": 67457167.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 2618.1204014029618
+          },
+          "full_pipeline": {
+            "mean_ns": 74029955.7,
+            "std_ns": 181549.93570202662,
+            "median_ns": 74050658.0,
+            "min_ns": 73733285.0,
+            "max_ns": 74374799.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 2885.0333476227593
+          }
+        }
+      }
+    },
+    {
+      "model_name": "edRVFL-SC",
+      "model_key": "random",
+      "dataset": "cone",
+      "model_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/random/cone/winner",
+      "n_features": 4,
+      "n_test_samples": 3851,
+      "benchmarks": {
+        "synthetic_1": {
+          "n_samples": 1,
+          "forward_pass": {
+            "mean_ns": 7369929.9,
+            "std_ns": 117613.58621490121,
+            "median_ns": 7342167.5,
+            "min_ns": 7294021.0,
+            "max_ns": 8338233.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 7369929.9
+          },
+          "full_pipeline": {
+            "mean_ns": 7729559.5,
+            "std_ns": 47745.22318127752,
+            "median_ns": 7721294.0,
+            "min_ns": 7684378.0,
+            "max_ns": 8038471.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 7729559.5
+          }
+        },
+        "synthetic_10": {
+          "n_samples": 10,
+          "forward_pass": {
+            "mean_ns": 16943181.29,
+            "std_ns": 308738.5072125048,
+            "median_ns": 16869787.5,
+            "min_ns": 16575459.0,
+            "max_ns": 18482856.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 1694318.129
+          },
+          "full_pipeline": {
+            "mean_ns": 17281678.94,
+            "std_ns": 276652.09869552124,
+            "median_ns": 17226364.0,
+            "min_ns": 17058619.0,
+            "max_ns": 19055870.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 1728167.894
+          }
+        },
+        "synthetic_100": {
+          "n_samples": 100,
+          "forward_pass": {
+            "mean_ns": 62253409.58,
+            "std_ns": 6467377.095478384,
+            "median_ns": 65452257.0,
+            "min_ns": 49373539.0,
+            "max_ns": 75367439.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 622534.0958
+          },
+          "full_pipeline": {
+            "mean_ns": 54291931.8,
+            "std_ns": 6733785.273103046,
+            "median_ns": 50398302.0,
+            "min_ns": 49954045.0,
+            "max_ns": 68235089.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 542919.318
+          }
+        },
+        "synthetic_1000": {
+          "n_samples": 1000,
+          "forward_pass": {
+            "mean_ns": 442996195.2,
+            "std_ns": 83668132.84077796,
+            "median_ns": 406528476.5,
+            "min_ns": 405316965.0,
+            "max_ns": 682395617.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 442996.1952
+          },
+          "full_pipeline": {
+            "mean_ns": 441990749.24,
+            "std_ns": 87220575.04882598,
+            "median_ns": 406260098.0,
+            "min_ns": 405218168.0,
+            "max_ns": 681648370.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 441990.74924000003
+          }
+        },
+        "test_set_3851": {
+          "n_samples": 3851,
+          "forward_pass": {
+            "mean_ns": 2196149610.857143,
+            "std_ns": 262726471.76425585,
+            "median_ns": 2066549649.5,
+            "min_ns": 2054558139.0,
+            "max_ns": 2908992948.0,
+            "n_repeats": 14,
+            "per_sample_mean_ns": 570280.345587417
+          },
+          "full_pipeline": {
+            "mean_ns": 2258446077.5,
+            "std_ns": 314929355.94422036,
+            "median_ns": 2074025980.5,
+            "min_ns": 2056230967.0,
+            "max_ns": 2947937859.0,
+            "n_repeats": 14,
+            "per_sample_mean_ns": 586457.0442742145
+          }
+        }
+      }
+    },
+    {
+      "model_name": "SResdRVFL",
+      "model_key": "random:nRMSE",
+      "dataset": "isotherm",
+      "model_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/random/isotherm/nRMSE_winner",
+      "n_features": 9,
+      "n_test_samples": 25660,
+      "benchmarks": {
+        "synthetic_1": {
+          "n_samples": 1,
+          "forward_pass": {
+            "mean_ns": 542427.42,
+            "std_ns": 36982.52960552591,
+            "median_ns": 524978.5,
+            "min_ns": 514223.0,
+            "max_ns": 695357.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 542427.42
+          },
+          "full_pipeline": {
+            "mean_ns": 806684.48,
+            "std_ns": 34201.38550423944,
+            "median_ns": 789674.5,
+            "min_ns": 774688.0,
+            "max_ns": 962462.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 806684.48
+          }
+        },
+        "synthetic_10": {
+          "n_samples": 10,
+          "forward_pass": {
+            "mean_ns": 3468341.26,
+            "std_ns": 21581.87342591926,
+            "median_ns": 3459917.0,
+            "min_ns": 3444148.0,
+            "max_ns": 3574716.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 346834.126
+          },
+          "full_pipeline": {
+            "mean_ns": 3788451.59,
+            "std_ns": 10147.728665169363,
+            "median_ns": 3789852.0,
+            "min_ns": 3763604.0,
+            "max_ns": 3812059.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 378845.159
+          }
+        },
+        "synthetic_100": {
+          "n_samples": 100,
+          "forward_pass": {
+            "mean_ns": 5677172.75,
+            "std_ns": 174489.147308271,
+            "median_ns": 5626107.5,
+            "min_ns": 5605517.0,
+            "max_ns": 6372609.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 56771.7275
+          },
+          "full_pipeline": {
+            "mean_ns": 5992860.82,
+            "std_ns": 66156.94827474738,
+            "median_ns": 5981611.5,
+            "min_ns": 5965575.0,
+            "max_ns": 6600393.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 59928.6082
+          }
+        },
+        "synthetic_1000": {
+          "n_samples": 1000,
+          "forward_pass": {
+            "mean_ns": 53735690.62,
+            "std_ns": 101761.22073165003,
+            "median_ns": 53713225.5,
+            "min_ns": 53618756.0,
+            "max_ns": 54278954.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 53735.690619999994
+          },
+          "full_pipeline": {
+            "mean_ns": 60047215.7,
+            "std_ns": 2462984.226747522,
+            "median_ns": 60564796.0,
+            "min_ns": 54331361.0,
+            "max_ns": 68046007.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 60047.2157
+          }
+        },
+        "test_set_25660": {
+          "n_samples": 25660,
+          "forward_pass": {
+            "mean_ns": 2649259233.8,
+            "std_ns": 176342542.8811083,
+            "median_ns": 2573711867.5,
+            "min_ns": 2523888212.0,
+            "max_ns": 3063114666.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 103244.7090335152
+          },
+          "full_pipeline": {
+            "mean_ns": 2671309138.4,
+            "std_ns": 219827395.52555737,
+            "median_ns": 2534140165.5,
+            "min_ns": 2511948725.0,
+            "max_ns": 3020029941.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 104104.01942322681
+          }
+        }
+      }
+    },
+    {
+      "model_name": "dRVFL",
+      "model_key": "random:KGE",
+      "dataset": "isotherm",
+      "model_dir": "/home/barattts/lavoltabuona/BA/artifacts/models/random/isotherm/KGE_winner",
+      "n_features": 9,
+      "n_test_samples": 25660,
+      "benchmarks": {
+        "synthetic_1": {
+          "n_samples": 1,
+          "forward_pass": {
+            "mean_ns": 73048.01,
+            "std_ns": 9985.693906279123,
+            "median_ns": 69632.0,
+            "min_ns": 63900.0,
+            "max_ns": 126209.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 73048.01
+          },
+          "full_pipeline": {
+            "mean_ns": 308358.73,
+            "std_ns": 23237.042370686937,
+            "median_ns": 303616.0,
+            "min_ns": 280712.0,
+            "max_ns": 404900.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 308358.73
+          }
+        },
+        "synthetic_10": {
+          "n_samples": 10,
+          "forward_pass": {
+            "mean_ns": 202907.33,
+            "std_ns": 8142.580961900225,
+            "median_ns": 199733.0,
+            "min_ns": 196238.0,
+            "max_ns": 245691.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 20290.733
+          },
+          "full_pipeline": {
+            "mean_ns": 482750.82,
+            "std_ns": 6156.825424486226,
+            "median_ns": 482301.0,
+            "min_ns": 472530.0,
+            "max_ns": 496929.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 48275.082
+          }
+        },
+        "synthetic_100": {
+          "n_samples": 100,
+          "forward_pass": {
+            "mean_ns": 436277.66,
+            "std_ns": 8960.471433155735,
+            "median_ns": 435035.5,
+            "min_ns": 426383.0,
+            "max_ns": 485583.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 4362.7766
+          },
+          "full_pipeline": {
+            "mean_ns": 742919.62,
+            "std_ns": 7196.5252862475245,
+            "median_ns": 742405.0,
+            "min_ns": 728386.0,
+            "max_ns": 778307.0,
+            "n_repeats": 100,
+            "per_sample_mean_ns": 7429.1962
+          }
+        },
+        "synthetic_1000": {
+          "n_samples": 1000,
+          "forward_pass": {
+            "mean_ns": 3351955.84,
+            "std_ns": 57394.43681206742,
+            "median_ns": 3338868.5,
+            "min_ns": 3311902.0,
+            "max_ns": 3727188.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 3351.9558399999996
+          },
+          "full_pipeline": {
+            "mean_ns": 3920723.6,
+            "std_ns": 34235.38063407504,
+            "median_ns": 3914728.0,
+            "min_ns": 3891135.0,
+            "max_ns": 4132058.0,
+            "n_repeats": 50,
+            "per_sample_mean_ns": 3920.7236000000003
+          }
+        },
+        "test_set_25660": {
+          "n_samples": 25660,
+          "forward_pass": {
+            "mean_ns": 226138231.1,
+            "std_ns": 12931510.340793626,
+            "median_ns": 220356167.0,
+            "min_ns": 217631019.0,
+            "max_ns": 262018437.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 8812.869489477785
+          },
+          "full_pipeline": {
+            "mean_ns": 221879249.7,
+            "std_ns": 1554905.9520260412,
+            "median_ns": 221462314.0,
+            "min_ns": 220634223.0,
+            "max_ns": 226256186.0,
+            "n_repeats": 10,
+            "per_sample_mean_ns": 8646.892038191738
+          }
+        }
+      }
+    }
+  ]
+}

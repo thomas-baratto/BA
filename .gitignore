@@ -27,6 +27,8 @@ artifacts/*
 artifacts/models/*
 !artifacts/models/mlp/
 !artifacts/models/random/
+!artifacts/models/baseline/
+!artifacts/models/benchmark_inference_results.json
 !artifacts/packages/
 
 # Random model binaries are too large for git (>200 MB).
