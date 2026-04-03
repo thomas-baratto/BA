@@ -67,39 +67,79 @@ For per-label metrics, loop over label columns and call `compute_regression_metr
 - LaTeX tables: `docs/tables/`
 - Use `core/thesis_style.py` → `apply_thesis_style()` + `save_fig()` for consistent plot styling
 
+## Ausschreibung Requirements Checklist
+
+From [BA/Ausschreibung.pdf](../../Ausschreibung.pdf) — primary deliverables and their status:
+
+| Requirement | Status | Notes |
+|-------------|--------|-------|
+| **Compare MLP to ELM (+ RaNN variants)** on heat plume prediction | ✅ Done | 7 RaNN architectures compared against MLP on both datasets |
+| **Thorough analysis**: metrics, data, training/inference times, model size | ⚠️ Mostly done | Inference latency not benchmarked (only training time measured) |
+| **Literature research**: MLPs, ELMs, random feature methods, RaNNs | ✅ Done | Ch. 2 (Background) + Ch. 3 (Related Work) fully written |
+| **Overfit to 1, then 10 data points** to validate architecture | ✅ Done | §4.3.1 Initial Overfitting Tests, plots in appendix |
+| **Optimize hyperparameters** (Optuna suggested) | ✅ Done | 10k+ Optuna trials for MLP, 467-config grid search for RaNN |
+| **Baseline: Böttcher regression formula** for comparison | ⚠️ Script ready, not run | `evaluate_boettcher_baseline.py` exists but artifacts not produced; thesis §5.2 says "not reimplemented" |
+| **Submit code via git** | ✅ Done | Full repository on GitHub |
+| **Submit trained models via DaRUS** with DOI | ✅ Done | DOI: 10.18419/DARUS-5815, cited in thesis |
+| **Clean packaging** of best model for practitioners | ✅ Done | `ba-predict` CLI, `predict.py`, `INFERENCE_GUIDE.md` |
+| **Clean, documented, reproducible code** with testing | ✅ Done | pytest suite, README, docstrings, type hints |
+| **Optional**: Compare against models in Maheshwari et al. [5] | ✅ Discussed | Qualitative comparison in §5.7 Discussion |
+| **Optional**: Compare against 1HP-CNN from Pelzer [3] | ✅ Discussed | Qualitative comparison in §5.7 Discussion |
+| **Optional**: BayesValidRox | ❌ Skipped | Out of scope (acknowledged) |
+
 ## Thesis Gap Tracker
+
+> Last updated: 2026-04-03. All thesis text is written. Remaining gaps are missing
+> figures (appendix only), one unrun script, and the DaRUS submission.
+
+### Thesis Content Status
+
+All chapters have complete prose — no stubs or placeholder text remain.
+The Introduction sections had stale `% TODO` planning comments that were never cleaned up after the
+content was written. These are cosmetic and do not affect compilation.
 
 ### Completed
 
-| Item | Script | Artifact |
-|------|--------|----------|
-| Böttcher analytical baseline | `scripts/analysis/evaluate_boettcher_baseline.py` | `artifacts/models/baseline/boettcher/results_boettcher_baseline.json` |
+| Item | Evidence |
+|------|----------|
+| All thesis chapters written (Intro, Background, Related Work, Methodology, Results, Conclusion) | Full prose in all sections |
+| Abstract written | Lines 84–99 of main-english.tex |
+| MLP trained on both datasets | `artifacts/models/mlp/cone/`, `artifacts/models/mlp/isotherm/` |
+| RaNN sweep (467 configs) | `runs/run_sweep_random_1053/` |
+| Pareto front analysis + plots | 4 PDFs in `thesis/graphics/plots/pareto/` |
+| Optuna study plots (5/7 per dataset) | `thesis/graphics/plots/optuna_cone/` and `optuna_isotherm/` (history, importance, slices, contours, trial durations) |
+| MLP power monitoring plots | `thesis/graphics/plots/power/mlp_cone/` (4 PDFs), `mlp_isotherm/` (4 PDFs) |
+| Random winner power plots | `thesis/graphics/plots/power/random_winners/` (6 PDFs) |
+| Architecture diagrams (7 of 8) | `thesis/graphics/plots/architecture/` — MLP, ELM, dRVFL, edRVFL, edRVFL-SC, esc-edRVFL, SResdRVFL |
+| Böttcher baseline script | `scripts/analysis/evaluate_boettcher_baseline.py` (implements power-law formulas) |
+| Deployment pipeline | `predict.py`, `package_models.py`, `retrain_random_models.py`, `INFERENCE_GUIDE.md` |
+| LaTeX comparison table | `docs/tables/model_comparison.tex` |
 
 ### Open — Actionable Locally
 
-| Priority | Thesis gap | What to implement | Target output |
-|----------|-----------|-------------------|---------------|
-| **HIGH** | Inference latency not measured (Limitation §6.2, Future Work §6.3) | New script `scripts/analysis/benchmark_inference.py` — load each model, time N predictions, report per-sample latency | JSON + summary table |
-| **HIGH** | Baseline comparison is qualitative only (§5.2) | Update thesis text — baseline is now quantitative (results JSON exists) | Thesis LaTeX update |
-| **MEDIUM** | 11 missing power/energy plots in appendix | Regenerate from monitoring CSVs if raw `power_log_*.csv` / `power_summary_*.json` exist. Scripts: `plot_power_analysis.py`, `plot_optuna_study.py` | PDFs for appendix |
-| **MEDIUM** | Missing `generic_rvfl.pdf` architecture diagram (thesis line 375) | Extend `visualize_architecture.py` or create manually in TikZ | PDF in `thesis/graphics/plots/architecture/` |
-| **LOW** | 2 missing Optuna parallel coordinate plots | Run `plot_optuna_study.py` with journal logs | PDFs in `thesis/graphics/plots/optuna_*/` |
+| Priority | Gap | What to do | Target output |
+|----------|-----|------------|---------------|
+| **HIGH** | Böttcher baseline not run (thesis §5.2 + Limitation §6.2 say "not reimplemented") | Run `evaluate_boettcher_baseline.py` → produce results JSON → update thesis §5.2 text + remove Limitation #4 | `artifacts/models/baseline/boettcher/results_boettcher_baseline.json` + thesis LaTeX |
+| **HIGH** | ~~DaRUS submission~~ — **Done** | DOI `10.18419/DARUS-5815` added to bibliography + cited in §1.3 and §3.4 | `bibliography.bib` entry `baratto2026darus` |
+| **MEDIUM** | `generic_rvfl.pdf` architecture diagram missing (thesis line 375) | Extend `visualize_architecture.py` or create in TikZ | `thesis/graphics/plots/architecture/generic_rvfl.pdf` |
+| **MEDIUM** | 9 missing power/energy plots in appendix (commented out) | Regenerate from monitoring CSVs. Missing: `optuna_cone/{energy,gpu}_breakdown`, `optuna_cone/worker_durations`, `optuna_isotherm/optuna_{energy,gpu}_breakdown`, `optuna_isotherm/optuna_worker_durations`, `random/random_{energy,gpu}_breakdown`, `random/random_worker_durations` | 9 PDFs → uncomment figures in thesis |
+| **MEDIUM** | 2 missing Optuna parallel coordinate plots | Run `plot_optuna_study.py` with journal logs | `thesis/graphics/plots/optuna_cone/optuna_parallel_coordinate.pdf`, same for isotherm |
+| **LOW** | Inference latency not benchmarked (Limitation §6.2) | New script `scripts/analysis/benchmark_inference.py` — load each model, time N predictions | JSON + optional thesis update |
+| **LOW** | Stale `% TODO` comments in Introduction (lines 184–209) | Remove planning comments — content already written beneath them | Cleaner LaTeX source |
 
 ### Open — Requires SLURM / Server
 
-| Priority | Thesis gap | What to implement | SLURM script |
-|----------|-----------|-------------------|--------------|
-| **LOW** | Continuous RaNN optimization (Future Work §6.3) | Optuna study for RaNN hyperparameters | New `.sbatch` needed |
-| **LOW** | Missing power monitoring data | Re-run training with monitoring if raw CSVs are lost | Existing SLURM scripts already integrate `monitoring/power_monitor.py` |
+| Priority | Gap | Notes |
+|----------|-----|-------|
+| **LOW** | Continuous RaNN optimization (Future Work §6.3) | New Optuna study for RaNN hyperparameters — acknowledged as future work |
 
 ### Out of Scope
 
-These are acknowledged as future work in the thesis and not feasible before the deadline:
+Acknowledged as future work in the thesis — not feasible before the April 14 deadline:
 - CNN / QCNN comparison (different output representation)
 - Transfer to heterogeneous/transient settings (needs new datasets)
 - Hybrid RaNN + gradient fine-tuning (new model class, research-level)
-- Cross-validation (impractical: 467 configs × k folds + 10k Optuna trials)
-- BayesValidRox integration (optional per Ausschreibung, steep learning curve)
+- BayesValidRox integration (optional per Ausschreibung, skipped)
 
 ## Analysis Scripts Reference
 

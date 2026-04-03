@@ -409,6 +409,7 @@ def main_train(config: Dict[str, Any],
             original_label_cols,
             writer=writer,
             epoch_times=epoch_times,
+            loss_fn_name=loss_name,
         )
         plot_split_metric_bars(rf, original_label_cols, split_metrics, writer=writer)
             

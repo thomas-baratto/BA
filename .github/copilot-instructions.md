@@ -99,3 +99,6 @@ Load these skills when their domain applies:
 - **`/thesis-results`** — when implementing scripts, models, or analysis in BA to produce results
   needed by the thesis (missing plots, baseline comparisons, inference benchmarking, SLURM jobs).
   Contains execution constraints, gap tracker, and analysis script reference.
+- **`/thesis-plots`** — when creating, editing, or reviewing matplotlib plots. Enforces the thesis
+  style guide (SciencePlots base, colour-blind palette, PDF output, consistent figure dimensions).
+  Covers colours, sizes, `save_fig()`, axis labels, and output paths.

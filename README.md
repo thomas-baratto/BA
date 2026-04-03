@@ -273,6 +273,12 @@ See [docs/MODEL_COMPARISON.md](docs/MODEL_COMPARISON.md) for detailed plots and 
 > ba-retrain-random
 > ```
 
+## Data & Models
+
+All trained model weights, scaler objects, Optuna study journals, and evaluation results are archived on DaRUS:
+
+> Baratto, Thomas (2026). *Trained Neural Networks on Simulated Data of Groundwater Heat Plume Characteristics*. DaRUS. <https://doi.org/10.18419/DARUS-5815>
+
 ## License
 
 [Add license information]

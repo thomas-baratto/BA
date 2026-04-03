@@ -104,7 +104,7 @@ def create_qq_plots(
 
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)
-            filename = f"qq_plot_{labels[label_idx]}.png"
+            filename = f"qq_plot_{labels[label_idx]}.pdf"
             save_fig(fig, os.path.join(output_dir, filename))
 
     return figures
@@ -168,7 +168,7 @@ def create_regression_plots(
         ax.set_aspect("equal", adjustable="box")
 
         if output_dir:
-            filename = f"regression_plot_{label_name}.png"
+            filename = f"regression_plot_{label_name}.pdf"
             save_fig(fig, os.path.join(output_dir, filename))
 
     logging.info(f"Saved {len(labels)} regression plots to {output_dir}")
@@ -221,6 +221,7 @@ def plot_results(
     labels: list[str],
     writer: SummaryWriter = None,
     epoch_times: list[float] | None = None,
+    loss_fn_name: str = "Loss",
 ):
     plot_dir_name = "_".join(labels).replace(" ", "_").replace("/", "_")
     plot_dir = os.path.join(rf, "plots", plot_dir_name)
@@ -230,9 +231,9 @@ def plot_results(
                 color=COLORS["primary"])
     ax.semilogy(x_loss, val_losses, label="Validation Loss",
                 color=COLORS["accent1"], ls="--")
-    ax.set_title("Training vs. Validation Loss")
+    ax.set_title(f"Training vs. Validation {loss_fn_name}")
     ax.set_xlabel("Epoch")
-    ax.set_ylabel("Loss (log scale)")
+    ax.set_ylabel(f"{loss_fn_name} (log scale)")
     ax.legend()
 
     if epoch_times is not None and len(epoch_times) == len(x_loss):
@@ -462,7 +463,7 @@ class ResourceLogger:
         ax2.legend()
 
         plt.tight_layout()
-        cpu_ram_path = os.path.join(self.output_dir, "cpu_ram_usage.png")
+        cpu_ram_path = os.path.join(self.output_dir, "cpu_ram_usage.pdf")
         save_fig(fig, cpu_ram_path)
         logging.info(f"Saved CPU/RAM usage plot to {cpu_ram_path}")
 
@@ -511,6 +512,6 @@ class ResourceLogger:
             ax2.legend()
 
             plt.tight_layout()
-            gpu_path = os.path.join(self.output_dir, "gpu_usage.png")
+            gpu_path = os.path.join(self.output_dir, "gpu_usage.pdf")
             save_fig(fig, gpu_path)
             logging.info(f"Saved GPU usage plot to {gpu_path}")
