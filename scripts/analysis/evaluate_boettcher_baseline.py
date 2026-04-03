@@ -179,8 +179,16 @@ def main():
     for model_name, model_dir in nn_models.items():
         try:
             model, feat_scaler, lbl_scaler = load_model_and_scalers(model_dir)
+            cfg_m = model.config
+            use_log = cfg_m.get("use_log", True)
+            use_area_root = cfg_m.get("use_area_root", False)
+
             y_nn = make_predictions(
                 model, X_iso1, feat_scaler, lbl_scaler,
+                apply_feature_log=use_log,
+                apply_inverse_transform=True,
+                apply_label_expm1=use_log,
+                use_area_root=use_area_root,
                 label_names=label_cols,
             )
             nn_overall = compute_regression_metrics(y_true_iso1, y_nn)
