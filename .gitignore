@@ -43,3 +43,7 @@ Ausschreibung.pdf
 #plots just save the summary .md files
 *.png
 *.pdf
+
+# Keep thesis plot exports under docs/plots versioned.
+!docs/plots/**/*.png
+!docs/plots/**/*.pdf
