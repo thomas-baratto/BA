@@ -201,6 +201,8 @@ def plot_slices(study, output_dir: Path):
 
 def plot_parallel_coordinate(study, output_dir: Path):
     """Parallel coordinate plot of top trials, colour-coded by objective."""
+    from matplotlib.collections import LineCollection
+
     trials = completed_trials(study)
     trials.sort(key=lambda t: t.value)
     # Use top 200 for readability
@@ -216,10 +218,6 @@ def plot_parallel_coordinate(study, output_dir: Path):
                       if any(p in t.params for t in top)]
 
     n_axes = len(params_to_show)
-    fig, axes = plt.subplots(1, n_axes, figsize=(7.2, 4.5),
-                             gridspec_kw={"wspace": 0})
-    if n_axes == 1:
-        axes = [axes]
 
     # Normalise each param to [0, 1] for plotting
     param_data = {}
@@ -231,53 +229,51 @@ def plot_parallel_coordinate(study, output_dir: Path):
                          "min": vmin, "max": vmax}
 
     # Colour by objective
-    obj_vals = [t.value for t in top]
-    obj_min, obj_max = min(obj_vals), max(obj_vals)
+    obj_vals = np.array([t.value for t in top])
+    obj_min, obj_max = obj_vals.min(), obj_vals.max()
     cmap = plt.cm.viridis_r
+    norm = plt.Normalize(vmin=obj_min, vmax=obj_max)
 
-    for trial_idx in range(len(top)):
-        color_val = (obj_vals[trial_idx] - obj_min) / (obj_max - obj_min + 1e-12)
-        color = cmap(color_val)
+    # Single-axes approach: x = axis index, y = normalised param value
+    fig, ax = plt.subplots(figsize=FIG_WIDE)
+
+    # Build line segments for LineCollection (much faster than individual plot calls)
+    # Draw worst trials first so best trials render on top
+    order = np.argsort(-obj_vals)  # worst first
+    for trial_idx in order:
         ys = [param_data[p]["norm"][trial_idx] for p in params_to_show]
-        for ax_idx in range(n_axes - 1):
-            axes[ax_idx].plot([ax_idx, ax_idx + 1], [ys[ax_idx], ys[ax_idx + 1]],
-                              color=color, alpha=0.35, lw=0.8)
+        xs = list(range(n_axes))
+        ax.plot(xs, ys, color=cmap(norm(obj_vals[trial_idx])),
+                alpha=0.35, lw=0.8, zorder=2)
 
-    # Style each axis
-    for ax_idx, ax in enumerate(axes):
-        ax.set_xlim(ax_idx - 0.05, ax_idx + 0.05)
-        ax.set_ylim(-0.05, 1.05)
-        ax.xaxis.set_major_locator(plt.FixedLocator([ax_idx]))
-        ax.set_xticklabels([params_to_show[ax_idx].replace("_", "\n")], fontsize=8)
-        ax.spines["top"].set_visible(False)
-        ax.spines["bottom"].set_visible(False)
-        ax.grid(False)
+    # Vertical axis lines and tick labels
+    for i, p in enumerate(params_to_show):
+        ax.axvline(i, color="black", lw=0.8, zorder=3)
+        # Min/max annotations beside each axis
+        ax.text(i, -0.08, f"{param_data[p]['min']:.4g}",
+                ha="center", va="top", fontsize=7, color="0.3")
+        ax.text(i, 1.08, f"{param_data[p]['max']:.4g}",
+                ha="center", va="bottom", fontsize=7, color="0.3")
 
-        # Show min/max values
-        p = params_to_show[ax_idx]
-        ax.set_yticks([0, 1])
-        ax.set_yticklabels([f"{param_data[p]['min']:.4g}",
-                            f"{param_data[p]['max']:.4g}"], fontsize=7)
-        if ax_idx > 0:
-            ax.spines["left"].set_visible(False)
-            ax.tick_params(left=False)
-            # Show right ticks for interior axes
-            ax.yaxis.set_label_position("right")
-            ax.yaxis.tick_right()
-
-        # Draw vertical axis line
-        ax.axvline(ax_idx, color="black", lw=0.8, zorder=0)
+    ax.set_xlim(-0.3, n_axes - 0.7)
+    ax.set_ylim(-0.15, 1.15)
+    ax.set_xticks(range(n_axes))
+    ax.set_xticklabels([p.replace("_", "\n") for p in params_to_show], fontsize=8)
+    ax.set_yticks([])
+    ax.spines["top"].set_visible(False)
+    ax.spines["bottom"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.grid(False)
 
     # Colorbar
-    sm = plt.cm.ScalarMappable(cmap=cmap,
-                               norm=plt.Normalize(vmin=obj_min, vmax=obj_max))
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])
-    cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.65])
-    cbar = fig.colorbar(sm, cax=cbar_ax)
+    cbar = fig.colorbar(sm, ax=ax, pad=0.02, fraction=0.04, aspect=30)
     cbar.set_label("Objective (val RMSE)", fontsize=9)
 
-    fig.suptitle(f"Parallel Coordinates \u2014 Top {top_n} Trials", fontsize=12)
-    fig.subplots_adjust(left=0.08, right=0.90, top=0.92, bottom=0.12, wspace=0)
+    ax.set_title(f"Parallel Coordinates \u2014 Top {top_n} Trials", fontsize=12)
+    fig.tight_layout()
     save_fig(fig, output_dir / "optuna_parallel_coordinate.png")
     print(f"  Saved: optuna_parallel_coordinate.png/pdf")
 

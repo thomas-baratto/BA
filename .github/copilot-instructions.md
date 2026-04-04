@@ -96,6 +96,22 @@ Two prediction tasks, configured in `config/datasets.py`:
 - **Scaling:** Data is scaled during training (stored in `scalers.pkl`); inference must use the
   same scalers — never fit new scalers at inference time.
 
+## Thesis Data Pipeline
+
+When BA produces new results (training runs, sweeps, benchmarks), the thesis workspace must be
+updated so the writer and reviewer agents have accurate data:
+
+1. **Run the experiment** — output lands in `artifacts/models/` or `runs/`.
+2. **Re-extract server data** — run the `/server-extract-ba-data` prompt (in the thesis workspace)
+   on the compute server. This reads gitignored dirs and writes everything to
+   `thesis/.github/skills/ba-data/references/server-data.md`.
+3. **Commit `server-data.md`** — this file is tracked in git and is the single source of truth
+   for all numeric claims in the thesis.
+
+The thesis agents (`@thesis-writer`, `@thesis-reviewer`) load the `ba-data` skill, which reads
+`server-data.md` to fact-check metrics. If you change artifacts without updating `server-data.md`,
+the thesis will contain stale numbers.
+
 ## Skills
 
 Load these skills when their domain applies:
