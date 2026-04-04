@@ -89,13 +89,13 @@ From [BA/Ausschreibung.pdf](../../Ausschreibung.pdf) — primary deliverables an
 
 ## Thesis Gap Tracker
 
-> Last updated: 2026-04-03. All thesis text is written (105 pages, zero warnings).
-> Remaining gaps are a few missing figures (appendix only) and final proofreading.
+> Last updated: 2026-04-04. All thesis text is written (111 pages, zero warnings).
+> Remaining gaps are 3 missing Optuna cone power plots (appendix only) and final proofreading.
 
 ### Thesis Content Status
 
 All chapters have complete prose — no stubs or placeholder text remain.
-The thesis compiles cleanly at 105 pages with no undefined references or warnings.
+The thesis compiles cleanly at 111 pages with no undefined references or warnings.
 
 ### Completed
 
@@ -118,15 +118,21 @@ The thesis compiles cleanly at 105 pages with no undefined references or warning
 | LaTeX comparison table | `docs/tables/model_comparison.tex` |
 | Limitations reduced to 4 | Removed stale items about missing baseline and inference data |
 | Future Work reduced to 4 | Removed completed items (baseline comparison, inference benchmarking) |
+| Critical numeric fixes (2026-04-04) | tab:results restructured to per-label format (11 rows) with 6dp precision from canonical JSONs; hidden layer counts corrected (5 iso, 2 cone) at 5 locations; training times reconciled (735s cone, 4572s iso); R²=0.995→0.991, KGE=0.991→0.993 |
+| Böttcher baseline + inference in Abstract | Two new sentences on baseline negative R² and MLP inference <3 µs/sample |
+| Böttcher baseline + inference in Contributions | New contribution item for baseline comparison; inference latency added to evaluation item |
+| Böttcher baseline + inference in Discussion | Two new paragraphs: "Analytical baseline" and "Inference latency" |
+| Böttcher baseline + inference in Summary | Two new enumerated findings: items 6 (baseline) and 7 (inference latency) |
+| Trial count clarification | Abstract: "thousands of trials per dataset"; Summary: explicit per-dataset counts (6,800 iso, 10,000 cone) |
+| Raw RVFL → \gls{rvfl} in edRVFL-SC caption | Style consistency fix |
+| generic_rvfl.pdf uncommented | Figure block fully uncommented with caption and label |
+| Parallel coordinate plots uncommented | Both cone and isotherm parallel coordinate figures uncommented (files existed) |
 
 ### Open — Actionable Locally
 
-| Priority | Gap | What to do | Target output |
-|----------|-----|------------|---------------|
-| ~~**MEDIUM**~~ | ~~`generic_rvfl.pdf` architecture diagram~~ — **Done** | Created in TikZ, exists in `BA/docs/plots/architecture/generic_rvfl.pdf`. Copy to `thesis/graphics/plots/architecture/` if not already there. | `thesis/graphics/plots/architecture/generic_rvfl.pdf` |
-| **MEDIUM** | 2 Optuna parallel coordinate plots commented out (files exist; thesis lines ~1968, ~1976) | Verify plots look correct, then uncomment the `\begin{figure}` blocks | Uncommented figures in thesis |
-| **MEDIUM** | 3 missing power/energy plots for Optuna cone search (Appendix G.2, lines ~2216–2252) | Regenerate from monitoring CSVs: `optuna_cone/{energy_breakdown,gpu_breakdown,worker_durations}` | 3 PDFs → uncomment figures in thesis |
-| **LOW** | Stale `% TODO` comments in Introduction | Remove planning comments — content already written beneath them | Cleaner LaTeX source |
+| Priority | Gap | Status |
+|----------|-----|--------|
+| *Resolved* | Optuna cone energy/gpu/worker plots | Intentionally skipped; only power_timeline and utilization_timeline included (exist in BA/docs/plots/power/optuna_cone/) |
 
 ### Open — Requires SLURM / Server
 
