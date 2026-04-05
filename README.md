@@ -1,60 +1,91 @@
 # Thermal Plume Prediction — Inference Package
 
 Predict thermal plume parameters (isotherm geometry or depression cone size)
-from hydrogeological inputs using pre-trained machine learning models.
+from hydrogeological inputs using pre-trained neural network models.
 
 **No GPU required** — all predictions run on CPU in under a second.
 
-> **This is the inference-only release package.**
-> It contains pre-trained model weights and the prediction CLI.
-> For the full source code (training scripts, data, tests), see the
-> [GitHub repository](https://github.com/thomas-baratto/BA).
+> **Companion code for the bachelor thesis:**
+> *Comparison of Neural Network Architectures on the Task of Modeling Heat Plume
+> Dimensions in Groundwater* — Thomas Baratto, University of Stuttgart (IPVS), 2026.
+>
+> Pre-trained model weights are distributed via DaRUS:
+> **[DOI: 10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)**
 
 ---
 
-## 1. Setup
+## Quick Start
 
-**Requirements:** Python ≥ 3.10
+### 1. Get the code
 
 ```bash
-# Extract the archive (if downloaded from DaRUS)
-tar xzf ba-thermal-plume-v1.0.0.tar.gz
-cd ba-thermal-plume-v1.0.0
+git clone -b release https://github.com/thomas-baratto/BA.git
+cd BA
+```
 
-# Create virtual environment and install
+### 2. Download model weights
+
+Download the model archive from [DaRUS (10.18419/DARUS-5815)](https://doi.org/10.18419/DARUS-5815)
+and extract the `artifacts/models/` directory into the repository root so the
+structure looks like:
+
+```
+BA/
+├── artifacts/models/
+│   ├── mlp/
+│   │   ├── cone/          (best_model.pt, scalers.pkl, model_config.json)
+│   │   └── isotherm/      (best_model.pt, scalers.pkl, model_config.json)
+│   └── random/
+│       ├── cone/winner/           (model.pkl, scalers.pkl, model_config.json)
+│       └── isotherm/
+│           ├── KGE_winner/        (model.pkl, scalers.pkl, model_config.json)
+│           └── nRMSE_winner/      (model.pkl, scalers.pkl, model_config.json)
+├── core/
+├── config/
+...
+```
+
+> **Alternatively**, if you downloaded the complete zip from DaRUS, the models
+> are already in place — just extract and continue with step 3.
+
+### 3. Install
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
 
-This installs the `ba-predict` command.
-For CPU-only PyTorch (smaller download), use:
+For CPU-only PyTorch (smaller download):
 
 ```bash
 pip install -e . --extra-index-url https://download.pytorch.org/whl/cpu
 ```
 
-### Docker alternative
+### 4. Run predictions
 
 ```bash
-docker build -t ba-predict .
-docker run --rm -v $(pwd):/data ba-predict \
-    -i /data/my_input.csv -d cone -m mlp -o /data/results/
+# Cone prediction with the MLP model
+ba-predict -i sample_cone.csv -d cone -m mlp
+
+# Isotherm prediction with the MLP model
+ba-predict -i sample_isotherm.csv -d isotherm -m mlp
+
+# Use a random-weight network model instead
+ba-predict -i sample_cone.csv -d cone -m random
 ```
 
 ---
 
-## 2. Running Predictions
+## Prediction Tasks
 
-### Isotherm prediction (thermal plume geometry)
+### Isotherm (thermal plume geometry)
 
 Predicts the shape of a thermal plume isotherm from 9 hydrogeological inputs.
 
 ```bash
 ba-predict -i your_data.csv -d isotherm -m mlp
 ```
-
-Required input columns:
 
 | Column                 | Description                  | Unit  |
 |------------------------|------------------------------|-------|
@@ -68,17 +99,15 @@ Required input columns:
 | `Trans_dispersivity`   | Transverse dispersivity      | m     |
 | `Isotherm`             | Target isotherm value        | K     |
 
-Outputs: `Area` (m²), `Iso_distance` (m), `Iso_width` (m)
+**Outputs:** `Area` (m²), `Iso_distance` (m), `Iso_width` (m)
 
-### Depression cone prediction
+### Depression cone
 
 Predicts the size of a hydraulic depression cone from 4 inputs.
 
 ```bash
 ba-predict -i your_data.csv -d cone -m mlp
 ```
-
-Required input columns:
 
 | Column              | Description              | Unit  |
 |---------------------|--------------------------|-------|
@@ -87,28 +116,11 @@ Required input columns:
 | `Hydr_conductivity` | Hydraulic conductivity   | m/s   |
 | `Aqu_thickness`     | Aquifer thickness        | m     |
 
-Output: `Cone` (m)
+**Output:** `Cone` (m)
 
 ---
 
-## 3. Quick Example
-
-Sample CSV files are included in the package.
-
-```bash
-# Cone prediction with the MLP model
-ba-predict -i sample_cone.csv -d cone -m mlp -o results_cone/
-
-# Isotherm prediction with the MLP model
-ba-predict -i sample_isotherm.csv -d isotherm -m mlp -o results_isotherm/
-
-# Use a random network model instead
-ba-predict -i sample_cone.csv -d cone -m random -o results_cone_random/
-```
-
----
-
-## 4. CLI Reference
+## CLI Reference
 
 ```
 ba-predict --help
@@ -118,7 +130,7 @@ Options:
   -d, --dataset    Prediction task: isotherm or cone (required)
   -m, --model      Model type (default: mlp)
                      mlp          — Optuna-tuned MLP neural network
-                     random       — Pareto-frontier winner (random network)
+                     random       — Pareto-frontier random-weight network winner
                      random:nRMSE — Best random model by nRMSE (isotherm only)
                      random:KGE   — Best random model by KGE (isotherm only)
   -o, --output     Output directory (default: predictions_<timestamp>)
@@ -128,26 +140,50 @@ Options:
 
 ### Output files
 
-Each prediction run creates a directory containing:
-- `predictions.csv` — predicted values in physical units
-- `report.md` — summary report with input/output statistics
+Each run creates a directory containing:
+
+| File              | Description                                       |
+|-------------------|---------------------------------------------------|
+| `predictions.csv` | Predicted values (one column per output variable)  |
+| `report.md`       | Summary with input/output statistics               |
 
 ---
 
-## 5. Included Models
+## Included Models
 
-All models are pre-trained and ready to use:
+| Model | Task | Architecture | KGE | nRMSE | R² |
+|-------|------|-------------|-----|-------|-----|
+| MLP | Cone | 2-hidden-layer MLP (244 neurons, LeakyReLU) | 0.993 | 0.015 | 0.991 |
+| MLP | Isotherm | 5-hidden-layer MLP (256 neurons, GELU) | 0.999 | 0.0002 | ≈1.0 |
+| Random | Cone | edRVFL-SC | 0.976 | 0.022 | 0.977 |
+| Random | Isotherm (nRMSE) | SResdRVFL | 0.900 | — | 0.900 |
+| Random | Isotherm (KGE) | dRVFL | 0.860 | — | 0.860 |
 
-| Model | Task | Architecture | R² |
-|-------|------|-------------|-----|
-| `artifacts/models/mlp/cone/` | Cone | Optuna-tuned MLP | 0.99 |
-| `artifacts/models/mlp/isotherm/` | Isotherm | Optuna-tuned MLP | ≈1.0 |
-| `artifacts/models/random/cone/winner/` | Cone | edRVFL-SC | 0.977 |
-| `artifacts/models/random/isotherm/nRMSE_winner/` | Isotherm | SResdRVFL | 0.900 |
-| `artifacts/models/random/isotherm/KGE_winner/` | Isotherm | dRVFL | 0.860 |
-
-Random models were selected as knee-point winners from Pareto frontiers
+MLP models were optimized with Optuna (200 trials each).
+Random-weight network winners were selected from Pareto frontiers
 (accuracy vs. training time) across 558 configurations.
+
+---
+
+## Docker
+
+```bash
+docker build -t ba-predict .
+docker run --rm -v $(pwd):/data ba-predict \
+    -i /data/my_input.csv -d cone -m mlp -o /data/results/
+```
+
+---
+
+## License & Citation
+
+Part of the bachelor thesis by Thomas Baratto, supervised by M.Sc. Julia Pelzer,
+examined by Prof. Dr. Miriam Schulte — University of Stuttgart, IPVS, 2026.
+
+For the full training pipeline, experiments, and analysis code, see the
+[`master` branch](https://github.com/thomas-baratto/BA/tree/master).
+
+**Model weights:** [DaRUS 10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)
 
 ---
 

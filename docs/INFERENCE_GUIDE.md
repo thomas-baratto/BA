@@ -1,8 +1,10 @@
 # Inference Guide — Thermal Plume Prediction
 
 This guide walks you through running predictions with the pre-trained neural
-network models shipped in this repository. No GPU required — inference runs on
-CPU in under a second.
+network models. No GPU required — inference runs on CPU in under a second.
+
+> Pre-trained model weights are distributed via DaRUS:
+> **[DOI: 10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)**
 
 Three installation methods are available — pick whichever suits you:
 
@@ -22,18 +24,43 @@ Three installation methods are available — pick whichever suits you:
 
 ---
 
-## 2. Clone & Install
+## 2. Get Models & Install
+
+### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/thomas-baratto/BA.git
+git clone -b release https://github.com/thomas-baratto/BA.git
 cd BA
 ```
 
-### Option A — pip install (recommended)
+### Step 2 — Download model weights
+
+If you downloaded the **complete zip from DaRUS**, the models are already
+included — skip to Step 3.
+
+Otherwise, download the model archive from
+[DaRUS (10.18419/DARUS-5815)](https://doi.org/10.18419/DARUS-5815) and place
+the contents into `artifacts/models/` so the structure looks like:
+
+```
+BA/artifacts/models/
+├── mlp/
+│   ├── cone/       (best_model.pt, scalers.pkl, model_config.json)
+│   └── isotherm/   (best_model.pt, scalers.pkl, model_config.json)
+└── random/
+    ├── cone/winner/            (model.pkl, scalers.pkl, model_config.json)
+    └── isotherm/
+        ├── KGE_winner/         (model.pkl, scalers.pkl, model_config.json)
+        └── nRMSE_winner/       (model.pkl, scalers.pkl, model_config.json)
+```
+
+### Step 3 — Install
+
+#### Option A — pip install (recommended)
 
 ```bash
-python3 -m venv .venv/env
-source .venv/env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -e .
 ```
 
@@ -43,11 +70,11 @@ This installs the `ba-predict` command that you can run from **any directory**:
 ba-predict --help
 ```
 
-### Option B — PYTHONPATH (no install)
+#### Option B — PYTHONPATH (no install)
 
 ```bash
-python3 -m venv .venv/env
-source .venv/env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -57,7 +84,7 @@ Run from the project root with:
 PYTHONPATH=. python scripts/deployment/predict.py --help
 ```
 
-### Option C — Docker (zero setup)
+#### Option C — Docker (zero setup)
 
 ```bash
 # Build the image (once)
@@ -70,21 +97,6 @@ docker run --rm ba-predict
 docker run --rm -v $(pwd):/data ba-predict \
     -i /data/my_input.csv -d cone -m mlp -o /data/results/
 ```
-
-### Retrain random model binaries (required for `--model random`)
-
-Random model binaries (`model.pkl`) are too large for git and are **not** included
-in the repository. Retrain them after cloning — it takes ~15 seconds total:
-
-```bash
-# With pip install:
-ba-retrain-random
-
-# Or with PYTHONPATH:
-PYTHONPATH=. python scripts/deployment/retrain_random_models.py
-```
-
-> MLP models (`--model mlp`) work out of the box without this step.
 
 ---
 
@@ -242,20 +254,17 @@ ba-predict -i my_cone_data.csv -d cone -m mlp --no-report
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/thomas-baratto/BA.git
+git clone -b release https://github.com/thomas-baratto/BA.git
 cd BA
-python3 -m venv .venv/env
-source .venv/env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -e .
 
-# 2. Create a sample input
-echo "Flow_well,Hydr_gradient,Hydr_conductivity,Aqu_thickness
-5.78705,0.008,0.007,10
-115.741,0.008,0.007,25
-0.4050935,0.0015,0.0035,16" > sample.csv
+# 2. Download models from DaRUS (https://doi.org/10.18419/DARUS-5815)
+#    and place them in artifacts/models/ (or use the complete DaRUS zip)
 
-# 3. Run prediction
-ba-predict -i sample.csv -d cone -m mlp -o results/
+# 3. Run prediction on included sample data
+ba-predict -i sample_cone.csv -d cone -m mlp -o results/
 
 # 4. View results
 cat results/predictions.csv
@@ -266,8 +275,9 @@ cat results/report.md
 
 ```bash
 # 1. Clone and build
-git clone https://github.com/thomas-baratto/BA.git
+git clone -b release https://github.com/thomas-baratto/BA.git
 cd BA
+# (place model weights in artifacts/models/ first)
 docker build -t ba-predict .
 
 # 2. Create a sample input

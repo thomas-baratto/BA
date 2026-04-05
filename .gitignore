@@ -30,20 +30,19 @@ texput.log
 runs/
 slurm_jobs/
 
-# Artifacts — ignore bulk experiment data, but track pre-trained models
+# Artifacts — ignore bulk experiment data, but track model configs (JSON only)
 artifacts/*
 !artifacts/models/
 artifacts/models/*
 !artifacts/models/mlp/
 !artifacts/models/random/
 !artifacts/models/baseline/
-!artifacts/models/benchmark_inference_results.json
-!artifacts/packages/
 
-# Random model binaries are too large for git (>200 MB).
-# They are deterministically reproducible via:
-#   PYTHONPATH=. python scripts/deployment/retrain_random_models.py
-artifacts/models/random/**/model.pkl
+# Model binaries are distributed via DaRUS (DOI: 10.18419/DARUS-5815), not git.
+# Only JSON configs and manifests are tracked for documentation.
+artifacts/models/**/*.pt
+artifacts/models/**/*.pkl
+artifacts/models/**/*.npz
 
 # TensorBoard/event logs (inside tracked artifact dirs too)
 events.out.tfevents.*
