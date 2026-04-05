@@ -1,11 +1,27 @@
-"""Core ML components for the BA project (inference-only)."""
+"""Core ML components for the BA project."""
 
 from .model import NeuralNetwork, get_activation
+from .data_loader import CSVDataset, load_data
+from .trainer import main_train, evaluate, train_epoch
+from .metrics import compute_regression_metrics
 from .inference import load_model_and_scalers, make_predictions
 from .model_wrapper import TrainedModel
+from .plotting import (
+    create_regression_plots,
+    create_qq_plots,
+    create_residual_plots,
+    create_scatter_plot,
+    ResourceLogger,
+)
 
 __all__ = [
     'NeuralNetwork', 'get_activation',
+    'CSVDataset', 'load_data',
+    'main_train', 'evaluate', 'train_epoch',
+    'compute_regression_metrics',
     'load_model_and_scalers', 'make_predictions',
     'TrainedModel',
+    'create_regression_plots',
+    'create_qq_plots', 'create_residual_plots', 'create_scatter_plot',
+    'ResourceLogger',
 ]

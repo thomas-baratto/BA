@@ -10,7 +10,6 @@ This module replaces duplicated logic in predict.py and isotherm_reverse/main.py
 and provides a consistent interface for model inference.
 """
 
-import pickle
 from pathlib import Path
 from typing import Optional, Tuple, Union
 

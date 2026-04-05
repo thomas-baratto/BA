@@ -6,7 +6,6 @@
 
 # AI assistant config files
 .claude/
-.github/copilot-instructions.md
 CLAUDE.md
 
 # Python cache/build artifacts
@@ -18,11 +17,18 @@ dist/
 build/
 .pytest_cache/
 
+# LaTeX build artifacts
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+texput.log
+
 # Experiment outputs and logs
 runs/
 slurm_jobs/
-results_*/
-predictions_*/
 
 # Artifacts — ignore bulk experiment data, but track pre-trained models
 artifacts/*
@@ -30,10 +36,12 @@ artifacts/*
 artifacts/models/*
 !artifacts/models/mlp/
 !artifacts/models/random/
+!artifacts/models/baseline/
+!artifacts/models/benchmark_inference_results.json
 !artifacts/packages/
 
-# Random model binaries: too large for git (up to 223 MB each).
-# Shipped via DaRUS archive instead. Reproducible on master via:
+# Random model binaries are too large for git (>200 MB).
+# They are deterministically reproducible via:
 #   PYTHONPATH=. python scripts/deployment/retrain_random_models.py
 artifacts/models/random/**/model.pkl
 
@@ -42,3 +50,11 @@ events.out.tfevents.*
 
 # Thesis description (local only)
 Ausschreibung.pdf
+
+#plots just save the summary .md files
+*.png
+*.pdf
+
+# Keep thesis plot exports under docs/plots versioned.
+!docs/plots/**/*.png
+!docs/plots/**/*.pdf

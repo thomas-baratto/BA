@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import math
 
 def get_activation(name: str) -> nn.Module:
     """Returns the activation function corresponding to the given name."""

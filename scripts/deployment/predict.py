@@ -25,22 +25,19 @@ Examples:
 """
 
 import argparse
-import json
 import os
-import pickle
 import sys
 from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import torch
 
 # Allow running as both a script (PYTHONPATH=.) and installed package (pip install .)
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from core.model import NeuralNetwork
 from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS
+from core.preprocessing import compute_engineered_features
 
 # Feature columns for each dataset (used for validation) - imported from centralized config
 DATASET_FEATURES = {dataset: cfg["features"] for dataset, cfg in DATASET_CONFIGS.items()}
@@ -236,6 +233,9 @@ def main():
 
     print(f"  Features: {feature_names}")
     print(f"  Outputs: {label_names}")
+
+    # Auto-compute engineered features if needed
+    df_input = compute_engineered_features(df_input, feature_names)
 
     # Validate input columns
     missing_cols = set(feature_names) - set(df_input.columns)
