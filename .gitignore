@@ -17,6 +17,14 @@ dist/
 build/
 .pytest_cache/
 
+# LaTeX build artifacts
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+texput.log
+
 # Experiment outputs and logs
 runs/
 slurm_jobs/
