@@ -23,6 +23,7 @@ build/
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.synctex(busy)
 texput.log
 
 # Experiment outputs and logs

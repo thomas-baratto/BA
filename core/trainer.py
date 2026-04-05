@@ -223,14 +223,18 @@ def main_train(config: Dict[str, Any],
     # Initialize ResourceLogger for saving GPU/CPU stats to files
     resource_logger = ResourceLogger(output_dir=os.path.join(rf, "resources"))
     
-    with open(os.path.join(rf, "model_summary.txt"), "w") as f:
+    with open(os.path.join(rf, "model_summary.md"), "w") as f:
+        f.write("# Model Summary\n\n")
+        f.write("## Architecture\n\n```\n")
         print(model, file=f)
+        f.write("```\n")
         try:
             summary_str = str(summary(model, input_size=(config["batch_size"], X_train.shape[1]), device=device))
-            f.write("\n\n--- Torchinfo Summary ---\n")
+            f.write("\n## Torchinfo Summary\n\n```\n")
             f.write(summary_str)
+            f.write("\n```\n")
         except Exception as e:
-            f.write(f"\n\n(Could not run torchinfo summary: {e})")
+            f.write(f"\n*(Could not run torchinfo summary: {e})*\n")
 
     train_losses = []
     val_losses = []
@@ -348,28 +352,29 @@ def main_train(config: Dict[str, Any],
     stats_dir = os.path.join(rf, "stats")
     os.makedirs(stats_dir, exist_ok=True)
 
-    metrics_txt_path = os.path.join(stats_dir, "metrics_summary.txt")
-    with open(metrics_txt_path, "w") as f:
+    metrics_md_path = os.path.join(stats_dir, "metrics_summary.md")
+    with open(metrics_md_path, "w") as f:
+        f.write("# Metrics Summary\n\n")
         for split_name in ("validation", "test"):
             if split_name not in split_metrics:
                 continue
             metrics = split_metrics[split_name]
-            header = f"{split_name.upper()} METRICS (Physical Units)"
-            f.write("=" * len(header) + "\n")
-            f.write(header + "\n")
-            f.write("=" * len(header) + "\n")
-            f.write(f"Samples: {metrics['sample_count']}\n")
-            f.write(f"Loss ({loss_name}): {metrics['loss']:.6f}\n")
-            f.write("Overall Metrics:\n")
+            f.write(f"## {split_name.title()} Metrics (Physical Units)\n\n")
+            f.write(f"- **Samples:** {metrics['sample_count']}\n")
+            f.write(f"- **Loss ({loss_name}):** {metrics['loss']:.6f}\n\n")
+            f.write("### Overall\n\n")
+            f.write("| Metric | Value |\n|---|---|\n")
             for key, value in metrics["overall"].items():
                 logging.info(f"{split_name.title()} {key.upper()}: {value:.6f}")
-                f.write(f"  {key}: {value:.6f}\n")
-            f.write("Per-Label Metrics:\n")
+                f.write(f"| {key} | {value:.6f} |\n")
+            f.write("\n### Per-Label\n\n")
             for label in original_label_cols:
-                f.write(f"  --- {label} ---\n")
+                f.write(f"#### {label}\n\n")
+                f.write("| Metric | Value |\n|---|---|\n")
                 feature_metrics = metrics["per_label"].get(label, {})
                 for key, value in feature_metrics.items():
-                    f.write(f"    {key}: {value:.6f}\n")
+                    f.write(f"| {key} | {value:.6f} |\n")
+                f.write("\n")
             f.write("\n")
 
     metrics_json_path = os.path.join(stats_dir, "metrics_summary.json")

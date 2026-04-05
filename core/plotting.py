@@ -377,24 +377,23 @@ class ResourceLogger:
             json.dump(self.logs, f, indent=2)
         logging.info(f"Saved resource usage logs to {json_path}")
 
-        # Save to text file with summary statistics
-        txt_path = os.path.join(self.output_dir, "resource_usage.txt")
-        with open(txt_path, "w") as f:
-            f.write("=" * 60 + "\n")
-            f.write("RESOURCE USAGE SUMMARY\n")
-            f.write("=" * 60 + "\n\n")
+        # Save to markdown file with summary statistics
+        md_path = os.path.join(self.output_dir, "resource_usage.md")
+        with open(md_path, "w") as f:
+            f.write("# Resource Usage Summary\n\n")
+            f.write(f"**Total steps logged:** {len(self.logs['step'])}\n\n")
 
-            f.write(f"Total steps logged: {len(self.logs['step'])}\n\n")
+            f.write("## CPU Usage (%)\n\n")
+            f.write(f"| Stat | Value |\n|---|---|\n")
+            f.write(f"| Mean | {np.mean(self.logs['cpu_percent']):.2f} |\n")
+            f.write(f"| Max | {np.max(self.logs['cpu_percent']):.2f} |\n")
+            f.write(f"| Min | {np.min(self.logs['cpu_percent']):.2f} |\n\n")
 
-            f.write("CPU Usage (%):\n")
-            f.write(f"  Mean: {np.mean(self.logs['cpu_percent']):.2f}\n")
-            f.write(f"  Max:  {np.max(self.logs['cpu_percent']):.2f}\n")
-            f.write(f"  Min:  {np.min(self.logs['cpu_percent']):.2f}\n\n")
-
-            f.write("RAM Usage (%):\n")
-            f.write(f"  Mean: {np.mean(self.logs['ram_percent']):.2f}\n")
-            f.write(f"  Max:  {np.max(self.logs['ram_percent']):.2f}\n")
-            f.write(f"  Min:  {np.min(self.logs['ram_percent']):.2f}\n\n")
+            f.write("## RAM Usage (%)\n\n")
+            f.write(f"| Stat | Value |\n|---|---|\n")
+            f.write(f"| Mean | {np.mean(self.logs['ram_percent']):.2f} |\n")
+            f.write(f"| Max | {np.max(self.logs['ram_percent']):.2f} |\n")
+            f.write(f"| Min | {np.min(self.logs['ram_percent']):.2f} |\n\n")
 
             if GPU_AVAILABLE and any(
                 x is not None for x in self.logs["gpu_memory_percent"]
@@ -404,24 +403,26 @@ class ResourceLogger:
                     for x in self.logs["gpu_memory_percent"]
                     if x is not None
                 ]
-                f.write("GPU Memory Usage (%):\n")
-                f.write(f"  Mean: {np.mean(gpu_data):.2f}\n")
-                f.write(f"  Max:  {np.max(gpu_data):.2f}\n")
-                f.write(f"  Min:  {np.min(gpu_data):.2f}\n\n")
+                f.write("## GPU Memory Usage (%)\n\n")
+                f.write("| Stat | Value |\n|---|---|\n")
+                f.write(f"| Mean | {np.mean(gpu_data):.2f} |\n")
+                f.write(f"| Max | {np.max(gpu_data):.2f} |\n")
+                f.write(f"| Min | {np.min(gpu_data):.2f} |\n\n")
 
                 gpu_allocated = [
                     x
                     for x in self.logs["gpu_memory_allocated_mib"]
                     if x is not None
                 ]
-                f.write("GPU Memory Allocated (MiB):\n")
-                f.write(f"  Mean: {np.mean(gpu_allocated):.2f}\n")
-                f.write(f"  Max:  {np.max(gpu_allocated):.2f}\n")
-                f.write(f"  Min:  {np.min(gpu_allocated):.2f}\n")
+                f.write("## GPU Memory Allocated (MiB)\n\n")
+                f.write("| Stat | Value |\n|---|---|\n")
+                f.write(f"| Mean | {np.mean(gpu_allocated):.2f} |\n")
+                f.write(f"| Max | {np.max(gpu_allocated):.2f} |\n")
+                f.write(f"| Min | {np.min(gpu_allocated):.2f} |\n")
             else:
-                f.write("GPU: Not available or not logged\n")
+                f.write("*GPU: Not available or not logged*\n")
 
-        logging.info(f"Saved resource usage summary to {txt_path}")
+        logging.info(f"Saved resource usage summary to {md_path}")
 
         # Create plots
         self._create_plots()

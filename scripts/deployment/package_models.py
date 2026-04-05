@@ -49,9 +49,9 @@ def _package_mlp(dataset: str, src_dir: Path, output_root: Path) -> tuple[bool, 
         "best_model.pt": _copy_if_exists(src_dir / "best_model.pt", dst_dir / "best_model.pt"),
         "model_config.json": _copy_if_exists(src_dir / "model_config.json", dst_dir / "model_config.json"),
         "results.json": _copy_if_exists(results_file, dst_dir / "results.json"),
-        "stats/metrics_summary.txt": _copy_if_exists(
-            src_dir / "stats" / "metrics_summary.txt",
-            dst_dir / "stats" / "metrics_summary.txt",
+        "stats/metrics_summary.md": _copy_if_exists(
+            src_dir / "stats" / "metrics_summary.md",
+            dst_dir / "stats" / "metrics_summary.md",
         ),
     }
 

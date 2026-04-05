@@ -199,5 +199,5 @@ class TestMainTrain:
         )
         stats = tmp_path / "stats"
         assert (stats / "metrics_summary.json").exists()
-        assert (stats / "metrics_summary.txt").exists()
+        assert (stats / "metrics_summary.md").exists()
         assert (tmp_path / "tensorboard_log").exists()
