@@ -27,6 +27,7 @@ Produce experimental results, plots, and analysis artifacts in `BA/` that the th
 | MLP training (GPU required) | **SLURM only** | `sbatch scripts/slurm/train_mlp_metrics.sbatch` |
 | Optuna HPO | **SLURM only** | `sbatch scripts/slurm/run_optuna_*.sbatch` |
 | Random model sweep (467 configs) | **SLURM only** | `sbatch scripts/slurm/sweep_random_params.sbatch` |
+| Seed sweep (100 seeds × 3 winners) | **SLURM only** | `sbatch scripts/slurm/seed_sweep.sbatch` |
 | Power monitoring | **SLURM only** | Integrated into SLURM scripts; requires nvidia-smi |
 
 **Server details:**
@@ -127,6 +128,7 @@ The thesis compiles cleanly at 111 pages with no undefined references or warning
 | Raw RVFL → \gls{rvfl} in edRVFL-SC caption | Style consistency fix |
 | generic_rvfl.pdf uncommented | Figure block fully uncommented with caption and label |
 | Parallel coordinate plots uncommented | Both cone and isotherm parallel coordinate figures uncommented (files existed) |
+| Seed sweep infrastructure | `scripts/slurm/seed_sweep.sbatch` + `scripts/analysis/analyze_seed_sweep.py` + `--n-seeds` flag in `train_random_models.py`; runs 100 seeds for 3 RaNN winners (cone/edRVFL-SC, iso/SResdRVFL, iso/dRVFL); produces `multi_seed_summary.json`, LaTeX table, box plots |
 
 ### Open — Actionable Locally
 
@@ -167,6 +169,7 @@ Acknowledged as future work in the thesis — not feasible before the April 14 d
 | `visualize_architecture.py` | TikZ neural network diagrams | Yes |
 | `select_knee_points.py` | Pareto knee-point model selection | Yes |
 | `pareto_manager.py` | Pareto frontier computation from sweep CSV | Yes |
+| `analyze_seed_sweep.py` | Multi-seed sweep LaTeX table + box plots | Yes (needs `multi_seed_summary.json`) |
 
 ## SLURM Job Patterns
 

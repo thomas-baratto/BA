@@ -59,6 +59,9 @@ PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
 - `config/datasets.py` — `DATASET_CONFIGS` — single source of truth for features/labels/paths
 - `scripts/` — CLI entry points (run with `PYTHONPATH=.`), organized into subdirectories:
   `training/`, `analysis/`, `deployment/`, `sweep/`, `slurm/`
+  Key scripts: `training/train_random_models.py` (`--n-seeds N` for multi-seed sweeps),
+  `analysis/analyze_seed_sweep.py` (LaTeX table + box plots from sweep results),
+  `slurm/seed_sweep.sbatch` (100 seeds × 3 RaNN winners on argon-gtx)
 - `optimization/` — Optuna integration
 - `tests/` — pytest test suite
 
