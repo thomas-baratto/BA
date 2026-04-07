@@ -340,6 +340,7 @@ def main():
     # --- Run over seeds (with optional power monitoring) ---
     seeds = [cfg.random_state + i for i in range(cfg.n_seeds)]
     all_test_metrics = []
+    all_per_target_metrics: dict[str, list[dict]] = {t: [] for t in label_cols}
 
     with power_monitor_session(args, base_output_dir):
         for idx, seed in enumerate(seeds, start=1):
@@ -359,14 +360,23 @@ def main():
             test_metrics['seed'] = seed
             all_test_metrics.append(test_metrics)
 
+            # Collect per-target test metrics for multi-seed aggregation
+            for target in label_cols:
+                if target in results['test']:
+                    target_m = dict(results['test'][target])
+                    target_m['seed'] = seed
+                    all_per_target_metrics[target].append(target_m)
+
     # --- Aggregate multi-seed results ---
     if cfg.n_seeds > 1:
         logging.info("%s", '=' * 70)
         logging.info("MULTI-SEED SUMMARY (%d seeds)", cfg.n_seeds)
         logging.info("%s", '=' * 70)
 
+        metric_keys = ['rmse', 'mae', 'r2', 'mape', 'mse', 'nrmse', 'kge']
+
         summary = {}
-        for key in ['rmse', 'mae', 'r2', 'mape', 'mse', 'nrmse', 'kge']:
+        for key in metric_keys:
             values = [m[key] for m in all_test_metrics if not np.isnan(m.get(key, float('nan')))]
             if values:
                 summary[key] = {
@@ -392,13 +402,44 @@ def main():
         }
         logging.info("  TIME:  %.2f +/- %.2fs", summary['train_time']['mean'], summary['train_time']['std'])
 
+        # --- Per-target aggregation ---
+        per_target_aggregated = {}
+        for target in label_cols:
+            target_summary = {}
+            for key in metric_keys:
+                values = [
+                    m[key] for m in all_per_target_metrics[target]
+                    if not np.isnan(m.get(key, float('nan')))
+                ]
+                if values:
+                    target_summary[key] = {
+                        'mean': float(np.mean(values)),
+                        'std': float(np.std(values)),
+                        'min': float(np.min(values)),
+                        'max': float(np.max(values)),
+                        'values': values
+                    }
+            per_target_aggregated[target] = target_summary
+            logging.info("  Target %s:", target)
+            for key in metric_keys:
+                if key in target_summary:
+                    s = target_summary[key]
+                    logging.info(
+                        "    %5s: %.4f +/- %.4f  (min=%.4f, max=%.4f)",
+                        key.upper(), s['mean'], s['std'], s['min'], s['max'],
+                    )
+
         # Save aggregated summary
         multi_seed_result = {
             'config': cfg.to_dict(),
             'seeds': seeds,
             'n_seeds': cfg.n_seeds,
             'per_seed_test_metrics': all_test_metrics,
-            'aggregated': summary
+            'per_seed_per_target_metrics': {
+                t: all_per_target_metrics[t] for t in label_cols
+            },
+            'aggregated': summary,
+            'per_target_aggregated': per_target_aggregated,
         }
         summary_file = os.path.join(base_output_dir, 'multi_seed_summary.json')
         with open(summary_file, 'w') as f:
