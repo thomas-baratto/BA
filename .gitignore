@@ -26,12 +26,10 @@ build/
 *.synctex(busy)
 texput.log
 
-# Experiment outputs and logs - ignore everything EXCEPT seed_sweep summary files
-!runs/
-runs/*
-!runs/seed_sweep_*/
-!runs/seed_sweep_*/**
-!runs/seed_sweep_*/**/multi_seed_summary.json
+# Experiment outputs - only track seed_sweep multi_seed_summary.json files
+runs/**
+!runs/**/
+!runs/seed_sweep_*/*/multi_seed_summary.json
 slurm_jobs/
 
 # Artifacts — ignore bulk experiment data, but track pre-trained models
