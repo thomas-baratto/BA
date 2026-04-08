@@ -61,7 +61,16 @@ PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
   `training/`, `analysis/`, `deployment/`, `sweep/`, `slurm/`
   Key scripts: `training/train_random_models.py` (`--n-seeds N` for multi-seed sweeps),
   `analysis/analyze_seed_sweep.py` (LaTeX table + box plots from sweep results),
-  `slurm/seed_sweep.sbatch` (100 seeds × 3 RaNN winners on argon-gtx)
+  `slurm/seed_sweep.sbatch` (N seeds × 3 RaNN winners on argon-gtx)
+
+### Active Experiment — 4096-Seed Sweep (PRIORITY)
+
+🚨 **Job 1069** is running on argon-gtx: 4096 seeds (1–4096) for 3 RaNN winners.
+Output: `runs/seed_sweep_1069/`. When it finishes:
+1. Run `PYTHONPATH=. .venv/env/bin/python scripts/analysis/analyze_seed_sweep.py` on the results
+2. Re-run `/server-extract-ba-data` to update `server-data.md`
+3. Add variance/box-plot results to thesis §5 (Results chapter)
+4. Commit `runs/seed_sweep_1069/` (tracked by .gitignore exception)
 - `optimization/` — Optuna integration
 - `tests/` — pytest test suite
 

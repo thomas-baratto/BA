@@ -27,7 +27,7 @@ Produce experimental results, plots, and analysis artifacts in `BA/` that the th
 | MLP training (GPU required) | **SLURM only** | `sbatch scripts/slurm/train_mlp_metrics.sbatch` |
 | Optuna HPO | **SLURM only** | `sbatch scripts/slurm/run_optuna_*.sbatch` |
 | Random model sweep (467 configs) | **SLURM only** | `sbatch scripts/slurm/sweep_random_params.sbatch` |
-| Seed sweep (100 seeds × 3 winners) | **SLURM only** | `sbatch scripts/slurm/seed_sweep.sbatch` |
+| Seed sweep (N seeds × 3 winners) | **SLURM only** | `sbatch scripts/slurm/seed_sweep.sbatch` (default 100; use `--export=N_SEEDS=4096`) |
 | Power monitoring | **SLURM only** | Integrated into SLURM scripts; requires nvidia-smi |
 
 **Server details:**
@@ -128,7 +128,8 @@ The thesis compiles cleanly at 111 pages with no undefined references or warning
 | Raw RVFL → \gls{rvfl} in edRVFL-SC caption | Style consistency fix |
 | generic_rvfl.pdf uncommented | Figure block fully uncommented with caption and label |
 | Parallel coordinate plots uncommented | Both cone and isotherm parallel coordinate figures uncommented (files existed) |
-| Seed sweep infrastructure | `scripts/slurm/seed_sweep.sbatch` + `scripts/analysis/analyze_seed_sweep.py` + `--n-seeds` flag in `train_random_models.py`; runs 100 seeds for 3 RaNN winners (cone/edRVFL-SC, iso/SResdRVFL, iso/dRVFL); produces `multi_seed_summary.json`, LaTeX table, box plots |
+| Seed sweep infrastructure | `scripts/slurm/seed_sweep.sbatch` + `scripts/analysis/analyze_seed_sweep.py` + `--n-seeds` flag in `train_random_models.py`; runs N seeds for 3 RaNN winners (cone/edRVFL-SC, iso/SResdRVFL, iso/dRVFL); produces `multi_seed_summary.json`, LaTeX table, box plots |
+| **4096-seed sweep (Job 1069)** | `runs/seed_sweep_1069/` — IN PROGRESS on argon-gtx, 4096 seeds (1–4096). isotherm_dRVFL done; others running. **PRIORITY: integrate results into thesis when complete.** |
 
 ### Open — Actionable Locally
 
@@ -140,6 +141,7 @@ The thesis compiles cleanly at 111 pages with no undefined references or warning
 
 | Priority | Gap | Notes |
 |----------|-----|-------|
+| **HIGH** | 4096-seed sweep results (Job 1069) | Running on argon-gtx. When done: (1) run `analyze_seed_sweep.py`, (2) update `server-data.md`, (3) add variance stats + box plots to §5.1, (4) revise §6.2 fourth limitation ("single seed" → now addressed with 4096 seeds) |
 | **LOW** | Continuous RaNN optimization (Future Work §6.3) | New Optuna study for RaNN hyperparameters — acknowledged as future work |
 
 ### Out of Scope
