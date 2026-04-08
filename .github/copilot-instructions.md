@@ -124,6 +124,16 @@ The thesis agents (`@thesis-writer`, `@thesis-reviewer`) load the `ba-data` skil
 `server-data.md` to fact-check metrics. If you change artifacts without updating `server-data.md`,
 the thesis will contain stale numbers.
 
+## DaRUS Packaging
+
+Model weights are distributed via DaRUS (DOI: 10.18419/DARUS-5815), not git.
+The `release` branch is the GitHub default branch (inference-only package).
+
+- **Packaging script:** `scripts/package_darus.sh` — run from master branch to build
+  `darus_upload/` with individually-zipped models and a code-only zip.
+- **Structure on DaRUS:** 5 individual model zips in a `models/` directory + 1 code zip + README.
+- **`darus_upload/`** is gitignored (build output).
+
 ## Skills
 
 Load these skills when their domain applies:

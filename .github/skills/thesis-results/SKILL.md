@@ -81,8 +81,8 @@ From [BA/Ausschreibung.pdf](../../Ausschreibung.pdf) — primary deliverables an
 | **Optimize hyperparameters** (Optuna suggested) | ✅ Done | 10k+ Optuna trials for MLP, 467-config grid search for RaNN |
 | **Baseline: Böttcher regression formula** for comparison | ✅ Done | `evaluate_boettcher_baseline.py` run; results in `artifacts/models/baseline/boettcher/results_boettcher_baseline.json`; thesis §5.2 has two quantitative tables |
 | **Submit code via git** | ✅ Done | Full repository on GitHub |
-| **Submit trained models via DaRUS** with DOI | ✅ Done | DOI: 10.18419/DARUS-5815, cited in thesis |
-| **Clean packaging** of best model for practitioners | ✅ Done | `ba-predict` CLI, `predict.py`, `INFERENCE_GUIDE.md` |
+| **Submit trained models via DaRUS** with DOI | ✅ Done | DOI: 10.18419/DARUS-5815, cited in thesis. 5 individually-zipped models + code zip uploaded to DaRUS with `models/` directory structure. Packaging script: `scripts/package_darus.sh`. |
+| **Clean packaging** of best model for practitioners | ✅ Done | `ba-predict` CLI, `predict.py`, `INFERENCE_GUIDE.md`. Release branch is GitHub default. DaRUS has individual model zips for selective download. |
 | **Clean, documented, reproducible code** with testing | ✅ Done | pytest suite, README, docstrings, type hints |
 | **Optional**: Compare against models in Maheshwari et al. [5] | ✅ Discussed | Qualitative comparison in §5.6 Discussion |
 | **Optional**: Compare against 1HP-CNN from Pelzer [3] | ✅ Discussed | Qualitative comparison in §5.6 Discussion |

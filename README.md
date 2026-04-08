@@ -7,9 +7,12 @@ Predict thermal plume parameters (isotherm geometry or depression cone size) fro
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone the repository (default branch is 'release' — inference only)
 git clone https://github.com/thomas-baratto/BA.git
 cd BA
+
+# For the full training pipeline, switch to master
+git checkout master
 
 # Create and activate virtual environment
 python3 -m venv .venv/env
@@ -275,10 +278,19 @@ See [docs/MODEL_COMPARISON.md](docs/MODEL_COMPARISON.md) for detailed plots and 
 
 ## Data & Models
 
-All trained model weights, scaler objects, Optuna study journals, and evaluation results are archived on DaRUS:
+All trained model weights, scaler objects, and evaluation results are archived on DaRUS.
+Each model can be downloaded individually, or use "Download All" for the complete set.
 
 > Baratto, Thomas (2026). *Trained Neural Networks on Simulated Data of Groundwater Heat Plume Characteristics*. DaRUS. <https://doi.org/10.18419/DARUS-5815>
 
-## License
+| DaRUS file | Contents |
+|------------|----------|
+| `mlp-cone.zip` | MLP cone model (best_model.pt, scalers.pkl, plots, power logs) |
+| `mlp-isotherm.zip` | MLP isotherm model (best_model.pt, scalers.pkl, plots, power logs) |
+| `random-cone-edRVFL-SC.zip` | edRVFL-SC cone winner (model.pkl, scalers.pkl) |
+| `random-isotherm-dRVFL-KGE.zip` | dRVFL isotherm KGE winner (model.pkl, scalers.pkl) |
+| `random-isotherm-SResdRVFL-nRMSE.zip` | SResdRVFL isotherm nRMSE winner (model.pkl, scalers.pkl) |
+| `ba-thermal-plume-v1.0.0-code.zip` | Release branch code (no model weights) |
 
-[Add license information]
+For the inference-only package (no training code), see the
+[`release` branch](https://github.com/thomas-baratto/BA) (default).
