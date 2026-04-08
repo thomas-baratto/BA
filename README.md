@@ -19,7 +19,7 @@ from hydrogeological inputs using pre-trained neural network models.
 ### 1. Get the code
 
 ```bash
-git clone -b release https://github.com/thomas-baratto/BA.git
+git clone https://github.com/thomas-baratto/BA.git
 cd BA
 ```
 
@@ -45,8 +45,8 @@ BA/
 ...
 ```
 
-> **Alternatively**, if you downloaded the complete zip from DaRUS, the models
-> are already in place — just extract and continue with step 3.
+> **Tip:** Each model can be downloaded individually from DaRUS.
+> Extract it into the repository root so the `artifacts/models/` path matches.
 
 ### 3. Install
 
@@ -187,7 +187,7 @@ For the full training pipeline, experiments, and analysis code, see the
 
 ---
 
-## 6. Package Contents
+## Package Contents
 
 ```
 ba-thermal-plume-v1.0.0/
@@ -215,7 +215,7 @@ ba-thermal-plume-v1.0.0/
 
 ---
 
-## 7. Troubleshooting
+## Troubleshooting
 
 **scikit-learn version warning:** If you see `InconsistentVersionWarning` when
 loading scalers, this is harmless — predictions remain correct.
@@ -231,9 +231,3 @@ pip install -r requirements.txt
 PYTHONPATH=. python scripts/deployment/predict.py -i data.csv -d cone -m mlp
 ```
 
----
-
-
-## License
-
-[Add license information]
