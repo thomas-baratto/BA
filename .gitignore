@@ -30,6 +30,9 @@ texput.log
 runs/
 slurm_jobs/
 
+# DaRUS upload staging (build output of scripts/package_darus.sh)
+darus_upload/
+
 # Artifacts — ignore bulk experiment data, but track model configs (JSON only)
 artifacts/*
 !artifacts/models/
