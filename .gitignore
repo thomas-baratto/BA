@@ -53,6 +53,10 @@ events.out.tfevents.*
 # Thesis description (local only)
 Ausschreibung.pdf
 
+# DaRUS upload zips (build output from scripts/package_darus.sh)
+darus_upload/**/*.zip
+darus_upload/*.zip
+
 #plots just save the summary .md files
 *.png
 *.pdf
