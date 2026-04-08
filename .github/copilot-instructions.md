@@ -63,14 +63,19 @@ PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
   `analysis/analyze_seed_sweep.py` (LaTeX table + box plots from sweep results),
   `slurm/seed_sweep.sbatch` (N seeds × 3 RaNN winners on argon-gtx)
 
-### Active Experiment — 4096-Seed Sweep (PRIORITY)
+### Completed Experiment — 4096-Seed Sweep
 
-🚨 **Job 1069** is running on argon-gtx: 4096 seeds (1–4096) for 3 RaNN winners.
-Output: `runs/seed_sweep_1069/`. When it finishes:
-1. Run `PYTHONPATH=. .venv/env/bin/python scripts/analysis/analyze_seed_sweep.py` on the results
-2. Re-run `/server-extract-ba-data` to update `server-data.md`
-3. Add variance/box-plot results to thesis §5 (Results chapter)
-4. Commit `runs/seed_sweep_1069/` (tracked by .gitignore exception)
+✅ **Job 1069** completed on argon-gtx: 4096 seeds (1–4096) for 3 RaNN winners.
+Output: `runs/seed_sweep_1069/`. Analysis artifacts:
+- `docs/tables/seed_sweep_summary.tex` — LaTeX table (mean ± std for KGE, nRMSE, MAE, R²)
+- `docs/plots/seed_sweep/` — 6 PDFs (box plots + seed-vs-metric scatter plots)
+- `thesis/graphics/plots/seed_sweep/` — copies for thesis `\includegraphics`
+- `server-data.md` updated with §10 (full sweep statistics)
+
+Remaining thesis integration:
+1. Add variance discussion + box-plot figures to thesis §5.1 Results
+2. Revise §6.2 "single seed" limitation → now addressed with 4096-seed evidence
+3. Commit `runs/seed_sweep_1069/` (tracked by .gitignore exception)
 - `optimization/` — Optuna integration
 - `tests/` — pytest test suite
 

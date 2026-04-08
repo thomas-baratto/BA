@@ -129,7 +129,7 @@ The thesis compiles cleanly at 111 pages with no undefined references or warning
 | generic_rvfl.pdf uncommented | Figure block fully uncommented with caption and label |
 | Parallel coordinate plots uncommented | Both cone and isotherm parallel coordinate figures uncommented (files existed) |
 | Seed sweep infrastructure | `scripts/slurm/seed_sweep.sbatch` + `scripts/analysis/analyze_seed_sweep.py` + `--n-seeds` flag in `train_random_models.py`; runs N seeds for 3 RaNN winners (cone/edRVFL-SC, iso/SResdRVFL, iso/dRVFL); produces `multi_seed_summary.json`, LaTeX table, box plots |
-| **4096-seed sweep (Job 1069)** | `runs/seed_sweep_1069/` — IN PROGRESS on argon-gtx, 4096 seeds (1–4096). isotherm_dRVFL done; others running. **PRIORITY: integrate results into thesis when complete.** |
+| **4096-seed sweep (Job 1069)** | `runs/seed_sweep_1069/` — COMPLETED. 4096 seeds × 3 winners. Analysis run: `docs/tables/seed_sweep_summary.tex` + 6 PDFs in `docs/plots/seed_sweep/` + `thesis/graphics/plots/seed_sweep/`. Summary JSONs reconstructed for isotherm_dRVFL. Key finding: RaNN performance is stable (KGE std 0.01–0.03) except for rare outlier seeds. |
 
 ### Open — Actionable Locally
 
@@ -141,7 +141,7 @@ The thesis compiles cleanly at 111 pages with no undefined references or warning
 
 | Priority | Gap | Notes |
 |----------|-----|-------|
-| **HIGH** | 4096-seed sweep results (Job 1069) | Running on argon-gtx. When done: (1) run `analyze_seed_sweep.py`, (2) update `server-data.md`, (3) add variance stats + box plots to §5.1, (4) revise §6.2 fourth limitation ("single seed" → now addressed with 4096 seeds) |
+| ~~HIGH~~ | ~~4096-seed sweep results (Job 1069)~~ | ✅ **DONE.** Analysis run, server-data.md updated, plots in thesis/graphics/plots/seed_sweep/. Remaining: add sweep discussion + box-plot figures to §5.1, revise §6.2 limitation. |
 | **LOW** | Continuous RaNN optimization (Future Work §6.3) | New Optuna study for RaNN hyperparameters — acknowledged as future work |
 
 ### Out of Scope
