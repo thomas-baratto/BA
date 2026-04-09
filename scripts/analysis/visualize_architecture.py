@@ -104,6 +104,9 @@ PREAMBLE = _build_preamble()
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def _esc(s: str) -> str:
+    # Don't escape inside $...$ math delimiters (preserves subscripts like $x_1$)
+    if s.startswith("$") and s.endswith("$"):
+        return s
     return s.replace("_", r"\_").replace("&", r"\&").replace("%", r"\%")
 
 

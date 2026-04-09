@@ -197,14 +197,14 @@ def generate_box_plots(summaries: list[dict], out_dir: Path) -> None:
         logger.info("Box plot saved: %s", out_dir / (fname + ".pdf"))
 
 
-# ── Seed-vs-metric scatter plots ─────────────────────────────────────────────
+# ── Seed metric distribution plots ───────────────────────────────────────────
 
-SCATTER_METRICS = ["kge", "nrmse", "r2"]
-SCATTER_METRIC_NAMES = {"kge": "KGE", "nrmse": "nRMSE", "r2": r"$R^2$"}
+DIST_METRICS = ["kge", "nrmse", "r2"]
+DIST_METRIC_NAMES = {"kge": "KGE", "nrmse": "nRMSE", "r2": r"$R^2$"}
 
 
-def generate_seed_scatter_plots(summaries: list[dict], out_dir: Path) -> None:
-    """One PDF per winner: seed on x-axis, metric on y-axis (subplots per target)."""
+def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> None:
+    """One PDF per winner: histogram + KDE for each metric, subplots per target."""
     out_dir.mkdir(parents=True, exist_ok=True)
     metric_colors = {
         "kge": COLORS["primary"],
@@ -223,48 +223,64 @@ def generate_seed_scatter_plots(summaries: list[dict], out_dir: Path) -> None:
         if not targets:
             continue
 
-        n_metrics = len(SCATTER_METRICS)
+        n_metrics = len(DIST_METRICS)
         n_targets = len(targets)
         fig, axes = plt.subplots(
             n_metrics, n_targets,
             figsize=(max(FIG_WIDE[0], 3.5 * n_targets), 2.2 * n_metrics),
             squeeze=False,
-            sharex=True,
         )
 
         for col, target in enumerate(targets):
             records = per_target_seeds[target]
-            seeds = [r["seed"] for r in records]
 
-            for row, m in enumerate(SCATTER_METRICS):
+            for row, m in enumerate(DIST_METRICS):
                 ax = axes[row][col]
-                vals = [r.get(m, float("nan")) for r in records]
-                ax.scatter(seeds, vals, s=4, alpha=0.5, color=metric_colors[m], edgecolors="none")
+                vals = np.array([
+                    r.get(m, float("nan")) for r in records
+                    if not np.isnan(r.get(m, float("nan")))
+                ])
+                if len(vals) == 0:
+                    continue
 
-                # Running mean (window=max(1, n//20))
-                if len(vals) > 20:
-                    window = max(1, len(vals) // 20)
-                    arr = np.array(vals)
-                    kernel = np.ones(window) / window
-                    smoothed = np.convolve(arr, kernel, mode="valid")
-                    ax.plot(
-                        seeds[window - 1 :], smoothed,
-                        color=metric_colors[m], linewidth=1.2, alpha=0.9,
-                    )
+                color = metric_colors[m]
+
+                # Histogram
+                ax.hist(
+                    vals, bins=min(80, max(20, len(vals) // 50)),
+                    density=True, alpha=0.5, color=color, edgecolor="none",
+                )
+
+                # KDE overlay
+                from scipy.stats import gaussian_kde
+                kde = gaussian_kde(vals, bw_method="scott")
+                x_grid = np.linspace(vals.min(), vals.max(), 300)
+                ax.plot(x_grid, kde(x_grid), color=color, linewidth=1.5)
+
+                # Mean + std lines
+                mean, std = vals.mean(), vals.std()
+                ymax = ax.get_ylim()[1]
+                ax.axvline(mean, color=COLORS["secondary"], linewidth=1.2,
+                           linestyle="--", label=f"mean={mean:.4f}")
+                ax.axvline(mean - std, color=COLORS["text"], linewidth=0.8,
+                           linestyle=":", alpha=0.6)
+                ax.axvline(mean + std, color=COLORS["text"], linewidth=0.8,
+                           linestyle=":", alpha=0.6)
+                ax.legend(fontsize=7, loc="upper left")
 
                 if row == 0:
                     ax.set_title(target)
                 if col == 0:
-                    ax.set_ylabel(SCATTER_METRIC_NAMES[m])
+                    ax.set_ylabel("Density")
                 if row == n_metrics - 1:
-                    ax.set_xlabel("Seed")
+                    ax.set_xlabel(DIST_METRIC_NAMES[m])
 
         fig.suptitle(f"{label}  (N={s['n_seeds']} seeds)", fontsize=11)
         fig.tight_layout(rect=[0, 0, 1, 0.94])
 
         fname = f"seed_vs_metric_{dataset}_{model_name}"
         save_fig(fig, out_dir / fname)
-        logger.info("Seed scatter plot saved: %s", out_dir / (fname + ".pdf"))
+        logger.info("Distribution plot saved: %s", out_dir / (fname + ".pdf"))
 
 
 # ── Aggregate stats printout ─────────────────────────────────────────────────
@@ -355,7 +371,7 @@ def main() -> None:
 
     if not args.no_plots:
         generate_box_plots(summaries, args.plot_dir)
-        generate_seed_scatter_plots(summaries, args.plot_dir)
+        generate_seed_distribution_plots(summaries, args.plot_dir)
 
     logger.info("Done.")
 
