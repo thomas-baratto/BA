@@ -1,36 +1,65 @@
-# Thermal Plume Prediction — Inference Package
+# Thermal Plume Prediction — Neural Network Models and Inference Package
 
 Predict thermal plume parameters (isotherm geometry or depression cone size)
 from hydrogeological inputs using pre-trained neural network models.
 
 **No GPU required** — all predictions run on CPU in under a second.
 
-> **Companion code for the bachelor thesis:**
+> **Companion dataset for the bachelor thesis:**
 > *Comparison of Neural Network Architectures on the Task of Modeling Heat Plume
 > Dimensions in Groundwater* — Thomas Baratto, University of Stuttgart (IPVS), 2026.
 >
-> Pre-trained model weights are distributed via DaRUS:
-> **[DOI: 10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)**
+> **DOI: [10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)**
+
+---
+
+## Dataset Contents
+
+This dataset contains pre-trained neural network models, the inference source
+code, and the training data used in the thesis. All files are available for
+individual download.
+
+### File Inventory
+
+| File | Category | Size | Description |
+|------|----------|------|-------------|
+| `README.md` | — | 2.8 KB | This file |
+| `ba-thermal-plume-v1.0.0-code.zip` | `code/` | 44.9 KB | Inference source code (Python package with CLI) |
+| `Clean_Results_Isotherm.tab` | `data/` | 7.7 MB | Isotherm training dataset (85 531 observations, 13 variables) |
+| `Depression_cones.tab` | `data/` | 436.7 KB | Depression cone training dataset (12 835 observations, 5 variables) |
+| `mlp-cone.zip` | `models/` | 562.0 KB | Pre-trained MLP for depression cone prediction |
+| `mlp-isotherm.zip` | `models/` | 4.0 MB | Pre-trained MLP for isotherm geometry prediction |
+| `random-cone-edRVFL-SC.zip` | `models/` | 221.3 MB | Pre-trained edRVFL-SC for depression cone prediction |
+| `random-isotherm-dRVFL-KGE.zip` | `models/` | 1.3 MB | Pre-trained dRVFL for isotherm prediction (best KGE) |
+| `random-isotherm-SResdRVFL-nRMSE.zip` | `models/` | 2.3 MB | Pre-trained SResdRVFL for isotherm prediction (best nRMSE) |
 
 ---
 
 ## Quick Start
 
-### 1. Get the code
+### 1. Download and extract the code
+
+Download `ba-thermal-plume-v1.0.0-code.zip` and extract it:
 
 ```bash
-git clone https://github.com/thomas-baratto/BA.git
-cd BA
+unzip ba-thermal-plume-v1.0.0-code.zip
+cd ba-thermal-plume-v1.0.0
 ```
 
-### 2. Download model weights
+### 2. Download and place model weights
 
-Download the model archive from [DaRUS (10.18419/DARUS-5815)](https://doi.org/10.18419/DARUS-5815)
-and extract the `artifacts/models/` directory into the repository root so the
-structure looks like:
+Download one or more model zip files and extract them into the code directory.
+Each model zip extracts into the correct `artifacts/models/` subdirectory:
+
+```bash
+# Example: download mlp-cone.zip and extract it
+unzip mlp-cone.zip -d .
+```
+
+After extracting, the directory should look like:
 
 ```
-BA/
+ba-thermal-plume-v1.0.0/
 ├── artifacts/models/
 │   ├── mlp/
 │   │   ├── cone/          (best_model.pt, scalers.pkl, model_config.json)
@@ -44,9 +73,6 @@ BA/
 ├── config/
 ...
 ```
-
-> **Tip:** Each model can be downloaded individually from DaRUS.
-> Extract it into the repository root so the `artifacts/models/` path matches.
 
 ### 3. Install
 
@@ -149,19 +175,40 @@ Each run creates a directory containing:
 
 ---
 
-## Included Models
+## Models
 
-| Model | Task | Architecture | KGE | nRMSE | R² |
-|-------|------|-------------|-----|-------|-----|
-| MLP | Cone | 2-hidden-layer MLP (244 neurons, LeakyReLU) | 0.993 | 0.015 | 0.991 |
-| MLP | Isotherm | 5-hidden-layer MLP (256 neurons, GELU) | 0.999 | 0.0002 | ≈1.0 |
-| Random | Cone | edRVFL-SC | 0.976 | 0.022 | 0.977 |
-| Random | Isotherm (nRMSE) | SResdRVFL | 0.900 | — | 0.900 |
-| Random | Isotherm (KGE) | dRVFL | 0.860 | — | 0.860 |
+Five pre-trained models are provided, covering two prediction tasks and two
+architecture families (MLP and random-weight networks).
+
+| Archive | Task | Architecture | KGE | nRMSE | R² |
+|---------|------|-------------|-----|-------|-----|
+| `mlp-cone.zip` | Cone | 2-hidden-layer MLP (244 neurons, LeakyReLU) | 0.993 | 0.015 | 0.991 |
+| `mlp-isotherm.zip` | Isotherm | 5-hidden-layer MLP (256 neurons, GELU) | 0.999 | 0.0002 | ≈1.0 |
+| `random-cone-edRVFL-SC.zip` | Cone | edRVFL-SC (1000 neurons, 3 layers, GELU, 10-member ensemble) | 0.976 | 0.022 | 0.977 |
+| `random-isotherm-dRVFL-KGE.zip` | Isotherm | dRVFL (1500 neurons, 1 layer, ELU) | 0.860 | — | 0.860 |
+| `random-isotherm-SResdRVFL-nRMSE.zip` | Isotherm | SResdRVFL (1500 neurons, 1 layer, GELU, 8 residual blocks) | 0.900 | — | 0.900 |
 
 MLP models were optimized with Optuna (200 trials each).
 Random-weight network winners were selected from Pareto frontiers
 (accuracy vs. training time) across 558 configurations.
+
+Each model archive contains the serialized model weights, input/output scalers,
+training diagnostics plots, power consumption logs, and evaluation metrics.
+
+---
+
+## Training Data
+
+The two `.tab` files contain the datasets used to train all models.
+
+- **`Clean_Results_Isotherm.tab`** — 85 531 numerical simulation results for
+  isotherm geometry (9 input features → 3 output labels: Area, Iso_distance,
+  Iso_width).
+- **`Depression_cones.tab`** — 12 835 numerical simulation results for
+  depression cone size (4 input features → 1 output label: Cone).
+
+Both datasets were split 56 % train / 14 % validation / 30 % test for model
+development.
 
 ---
 
@@ -175,19 +222,9 @@ docker run --rm -v $(pwd):/data ba-predict \
 
 ---
 
-## License & Citation
+## Code Package Contents
 
-Part of the bachelor thesis by Thomas Baratto, supervised by M.Sc. Julia Pelzer,
-examined by Prof. Dr. Miriam Schulte — University of Stuttgart, IPVS, 2026.
-
-For the full training pipeline, experiments, and analysis code, see the
-[`master` branch](https://github.com/thomas-baratto/BA/tree/master).
-
-**Model weights:** [DaRUS 10.18419/DARUS-5815](https://doi.org/10.18419/DARUS-5815)
-
----
-
-## Package Contents
+The `ba-thermal-plume-v1.0.0-code.zip` archive contains:
 
 ```
 ba-thermal-plume-v1.0.0/
@@ -200,9 +237,6 @@ ba-thermal-plume-v1.0.0/
 │   └── datasets.py              # Dataset and model path configuration
 ├── scripts/deployment/
 │   └── predict.py               # Prediction CLI entry point
-├── artifacts/models/            # Pre-trained model weights and scalers
-│   ├── mlp/                     #   MLP models (cone + isotherm)
-│   └── random/                  #   Random network models
 ├── docs/
 │   └── INFERENCE_GUIDE.md       # Detailed inference guide
 ├── sample_cone.csv              # Example input (cone)
@@ -212,6 +246,19 @@ ba-thermal-plume-v1.0.0/
 ├── Dockerfile                   # Container build file
 └── README.md                    # This file
 ```
+
+No model weights are included in the code archive — download the model zip
+files separately and extract them into the code directory.
+
+---
+
+## License & Citation
+
+Part of the bachelor thesis by Thomas Baratto, supervised by M.Sc. Julia Pelzer,
+examined by Prof. Dr. Miriam Schulte — University of Stuttgart, IPVS, 2026.
+
+For the full training pipeline, experiments, and analysis code, see the
+companion GitHub repository.
 
 ---
 
