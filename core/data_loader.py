@@ -11,7 +11,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, Qu
 import warnings
 from sklearn.exceptions import DataConversionWarning
 
-from core.thesis_style import apply_thesis_style, save_fig
+from core.thesis_style import apply_thesis_style, save_fig, FIG_SINGLE
 
 warnings.filterwarnings(action='ignore', category=DataConversionWarning)
 
@@ -86,12 +86,17 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
         os.makedirs(plot_dir, exist_ok=True)
 
         # "Before Transformation" Plot
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=FIG_SINGLE)
         for label_idx in range(y.shape[1]):
             ax.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_title("Label Distribution (Before Transformation)")
+        ax.set_xlabel("Value")
+        ax.set_ylabel("Count")
         ax.legend()
         save_fig(fig, os.path.join(plot_dir, "before_transform.pdf"))
+        np.savez_compressed(
+            os.path.join(plot_dir, "data_before_transform.npz"),
+            y=y, label_cols=np.array(label_cols),
+        )
 
     # Log-transform (always applied prior to scaling; helps compress heavy-tail)
     if use_log:
@@ -100,12 +105,17 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
 
     if plots:
         # "After Log-Transformation" Plot
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=FIG_SINGLE)
         for label_idx in range(y.shape[1]):
             ax.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_title("Label Distribution (After Log-Transformation)")
+        ax.set_xlabel("Value [log-transformed]")
+        ax.set_ylabel("Count")
         ax.legend()
         save_fig(fig, os.path.join(plot_dir, "after_log_transform.pdf"))
+        np.savez_compressed(
+            os.path.join(plot_dir, "data_after_log.npz"),
+            X=X, y=y, label_cols=np.array(label_cols),
+        )
 
     # Train-test split before scaling
     X_train, X_test, y_train, y_test = train_test_split(
@@ -146,12 +156,17 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
     
     if plots and y_scaler is not None:
         # "After Standardization" Plot (training data only)
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=FIG_SINGLE)
         for label_idx in range(y_train.shape[1]):
             ax.hist(y_train[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_title("Label Distribution (After Scaling - Training Data)")
+        ax.set_xlabel("Value [scaled]")
+        ax.set_ylabel("Count")
         ax.legend()
         save_fig(fig, os.path.join(plot_dir, "after_scaling.pdf"))
+        np.savez_compressed(
+            os.path.join(plot_dir, "data_after_scaling.npz"),
+            y_train=y_train, label_cols=np.array(label_cols),
+        )
     if return_meta:
         scaler_meta = {
             'feature_scaler_type': feature_scaler_type,

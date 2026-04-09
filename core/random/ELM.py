@@ -79,11 +79,16 @@ class ELM:
         # Compute hidden layer output
         H = self._compute_hidden(X_t)  # (N, n_hidden)
         
-        # Solve: W_out = (H^T H + alpha I)^(-1) H^T Y
-        L = self.n_hidden
-        A = H.T.matmul(H) + self.alpha * torch.eye(L, dtype=torch.float64, device=self.device)
-        B = H.T.matmul(Y_t)
-        self.W_out = torch.linalg.solve(A, B)  # (n_hidden, n_outputs)
+        if self.alpha == 0:
+            # Minimum-norm least-squares via pseudoinverse (exact interpolation
+            # when N <= n_hidden and H has full row rank)
+            self.W_out = torch.linalg.pinv(H).matmul(Y_t)  # (n_hidden, n_outputs)
+        else:
+            # Ridge regression: W_out = (H^T H + alpha I)^(-1) H^T Y
+            L = self.n_hidden
+            A = H.T.matmul(H) + self.alpha * torch.eye(L, dtype=torch.float64, device=self.device)
+            B = H.T.matmul(Y_t)
+            self.W_out = torch.linalg.solve(A, B)  # (n_hidden, n_outputs)
 
         return self
 

@@ -28,8 +28,8 @@ from core.metrics import LABEL_UNITS, compute_regression_metrics
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
+    FIG_SINGLE,
     FIG_SQUARE,
-    FIG_WIDE,
     label_with_unit,
     save_fig,
 )
@@ -195,10 +195,6 @@ def plot_regression(y_true, y_pred, label_name, model_key, label_idx=0):
     rmse = float(np.sqrt(np.mean((yt - yp) ** 2)))
     ax.set_xlabel(label_with_unit(f"True {label_name}"))
     ax.set_ylabel(label_with_unit(f"Predicted {label_name}"))
-    ax.set_title(
-        f"{MODELS[model_key]['name']} — {label_name}\n"
-        f"$R^2 = {r2:.4f}$,  RMSE $= {rmse:.2f}${unit_suffix}",
-    )
     ax.legend()
     ax.set_xlim(lo, hi)
     ax.set_ylim(lo, hi)
@@ -216,15 +212,12 @@ def plot_residuals(y_true, y_pred, label_name, model_key, label_idx=0):
     yp = y_pred[:, label_idx] if y_pred.ndim > 1 else y_pred
     residuals = yp - yt
 
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     ax.scatter(yt, residuals, alpha=0.4, s=12, color=COLORS["accent1"],
                edgecolors="none")
     ax.axhline(0, color=COLORS["secondary"], ls="--", lw=1.5)
     ax.set_xlabel(label_with_unit(f"True {label_name}"))
     ax.set_ylabel(label_with_unit("Residuals", LABEL_UNITS.get(label_name)))
-    ax.set_title(
-        f"{MODELS[model_key]['name']} — Residuals for {label_name}",
-    )
     fig.tight_layout()
 
     fname = f"residuals_{model_key}_{label_name}.png"

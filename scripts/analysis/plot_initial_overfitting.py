@@ -31,7 +31,8 @@ from core.random.ELM import ELM
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    FIG_WIDE,
+    FIG_SINGLE,
+    FIG_SQUARE,
     label_with_unit,
     save_fig,
 )
@@ -132,7 +133,7 @@ def train_elm_overfit(
     X_n = (X - X_mean) / X_std
     y_n = (y - y_mean) / y_std
 
-    model = ELM(n_hidden=256, activation="ReLU", alpha=1e-6, random_state=42)
+    model = ELM(n_hidden=256, activation="ReLU", alpha=0, random_state=42)
     model.fit(X_n, y_n)
     norm_stats = {"X_mean": X_mean, "X_std": X_std, "y_mean": y_mean, "y_std": y_std}
     return model, norm_stats
@@ -157,15 +158,12 @@ def plot_pred_vs_true(
     title: str,
     out_path: Path,
 ) -> None:
-    """Predicted vs True scatter — one subplot per label."""
-    n_labels = len(label_names)
-    fig, axes = plt.subplots(1, n_labels, figsize=(5.5 * n_labels, 5.0), squeeze=False)
-
+    """Predicted vs True scatter — one PDF per label."""
     for i, lbl in enumerate(label_names):
-        ax = axes[0, i]
         yt = y_true[:, i] if y_true.ndim > 1 else y_true
         yp = y_pred[:, i] if y_pred.ndim > 1 else y_pred
 
+        fig, ax = plt.subplots(figsize=FIG_SQUARE)
         ax.scatter(yt, yp, s=80, color=COLORS["primary"], edgecolors="white",
                    linewidths=0.5, zorder=3)
 
@@ -179,15 +177,17 @@ def plot_pred_vs_true(
 
         ax.set_xlabel(label_with_unit(f"True {lbl}"))
         ax.set_ylabel(label_with_unit(f"Predicted {lbl}"))
-        ax.set_title(lbl)
         ax.legend(fontsize=8)
         ax.set_xlim(lo, hi)
         ax.set_ylim(lo, hi)
         ax.set_aspect("equal", adjustable="box")
+        fig.tight_layout()
 
-    fig.suptitle(title, fontsize=13, y=1.02)
-    fig.tight_layout()
-    save_fig(fig, out_path)
+        # For single-label datasets, keep original filename; for multi-label, append label
+        if len(label_names) == 1:
+            save_fig(fig, out_path)
+        else:
+            save_fig(fig, out_path.parent / f"{out_path.stem}_{lbl}")
 
 
 def plot_loss_curve(
@@ -196,13 +196,12 @@ def plot_loss_curve(
     out_path: Path,
 ) -> None:
     """Training loss over epochs (log scale)."""
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     epochs = np.arange(1, len(losses) + 1)
 
     ax.semilogy(epochs, losses, linewidth=1.2, color=COLORS["primary"])
     ax.set_xlabel("Epoch")
-    ax.set_ylabel("MSE Loss")
-    ax.set_title(title)
+    ax.set_ylabel("MSE loss")
     fig.tight_layout()
     save_fig(fig, out_path)
 

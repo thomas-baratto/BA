@@ -34,8 +34,8 @@ import matplotlib.pyplot as plt
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
+    FIG_SINGLE,
     MODEL_COLORS,
-    FIG_WIDE,
     save_fig,
 )
 
@@ -138,7 +138,7 @@ def generate_latex_table(summaries: list[dict], out_path: Path) -> None:
 # ── Box plots ────────────────────────────────────────────────────────────────
 
 def generate_box_plots(summaries: list[dict], out_dir: Path) -> None:
-    """Generate one box-plot PDF per winner, with subplots per target."""
+    """Generate one box-plot PDF per (winner, target) pair."""
     out_dir.mkdir(parents=True, exist_ok=True)
     palette = [COLORS["primary"], COLORS["accent3"], COLORS["accent1"], COLORS["secondary"]]
 
@@ -154,15 +154,7 @@ def generate_box_plots(summaries: list[dict], out_dir: Path) -> None:
             logger.warning("No per-target seed data for %s, skipping plot.", label)
             continue
 
-        n_targets = len(targets)
-        fig, axes = plt.subplots(
-            1, n_targets,
-            figsize=(max(FIG_WIDE[0], 3.5 * n_targets), FIG_WIDE[1]),
-            squeeze=False,
-        )
-        axes = axes.flatten()
-
-        for ax, target in zip(axes, targets):
+        for target in targets:
             seed_records = per_target_seeds[target]
             box_data = []
             box_labels = []
@@ -175,6 +167,7 @@ def generate_box_plots(summaries: list[dict], out_dir: Path) -> None:
             if not box_data:
                 continue
 
+            fig, ax = plt.subplots(figsize=FIG_SINGLE)
             bp = ax.boxplot(
                 box_data,
                 patch_artist=True,
@@ -186,15 +179,13 @@ def generate_box_plots(summaries: list[dict], out_dir: Path) -> None:
                 patch.set_facecolor(colour)
                 patch.set_alpha(0.7)
 
-            ax.set_title(target)
+            ax.set_ylabel("Metric value")
             ax.tick_params(axis="x", rotation=30)
+            fig.tight_layout()
 
-        fig.suptitle(f"{label}  (N={s['n_seeds']} seeds)", fontsize=11)
-        fig.tight_layout(rect=[0, 0, 1, 0.94])
-
-        fname = f"seed_sweep_{dataset}_{model_name}"
-        save_fig(fig, out_dir / fname)
-        logger.info("Box plot saved: %s", out_dir / (fname + ".pdf"))
+            fname = f"seed_sweep_{dataset}_{model_name}_{target}"
+            save_fig(fig, out_dir / fname)
+            logger.info("Box plot saved: %s", out_dir / (fname + ".pdf"))
 
 
 # ── Seed metric distribution plots ───────────────────────────────────────────
@@ -204,7 +195,7 @@ DIST_METRIC_NAMES = {"kge": "KGE", "nrmse": "nRMSE", "r2": r"$R^2$"}
 
 
 def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> None:
-    """One PDF per winner: histogram + KDE for each metric, subplots per target."""
+    """One PDF per (winner, metric, target): histogram + KDE."""
     out_dir.mkdir(parents=True, exist_ok=True)
     metric_colors = {
         "kge": COLORS["primary"],
@@ -214,7 +205,6 @@ def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> No
 
     for s in summaries:
         cfg = s["config"]
-        label = _label_from_config(cfg)
         model_name = cfg["model"]
         dataset = cfg["dataset"]
         per_target_seeds = s.get("per_seed_per_target_metrics", {})
@@ -223,19 +213,10 @@ def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> No
         if not targets:
             continue
 
-        n_metrics = len(DIST_METRICS)
-        n_targets = len(targets)
-        fig, axes = plt.subplots(
-            n_metrics, n_targets,
-            figsize=(max(FIG_WIDE[0], 3.5 * n_targets), 2.2 * n_metrics),
-            squeeze=False,
-        )
-
-        for col, target in enumerate(targets):
+        for target in targets:
             records = per_target_seeds[target]
 
-            for row, m in enumerate(DIST_METRICS):
-                ax = axes[row][col]
+            for m in DIST_METRICS:
                 vals = np.array([
                     r.get(m, float("nan")) for r in records
                     if not np.isnan(r.get(m, float("nan")))
@@ -244,6 +225,7 @@ def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> No
                     continue
 
                 color = metric_colors[m]
+                fig, ax = plt.subplots(figsize=FIG_SINGLE)
 
                 # Histogram
                 ax.hist(
@@ -259,7 +241,6 @@ def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> No
 
                 # Mean + std lines
                 mean, std = vals.mean(), vals.std()
-                ymax = ax.get_ylim()[1]
                 ax.axvline(mean, color=COLORS["secondary"], linewidth=1.2,
                            linestyle="--", label=f"mean={mean:.4f}")
                 ax.axvline(mean - std, color=COLORS["text"], linewidth=0.8,
@@ -268,19 +249,13 @@ def generate_seed_distribution_plots(summaries: list[dict], out_dir: Path) -> No
                            linestyle=":", alpha=0.6)
                 ax.legend(fontsize=7, loc="upper left")
 
-                if row == 0:
-                    ax.set_title(target)
-                if col == 0:
-                    ax.set_ylabel("Density")
-                if row == n_metrics - 1:
-                    ax.set_xlabel(DIST_METRIC_NAMES[m])
+                ax.set_ylabel("Density")
+                ax.set_xlabel(DIST_METRIC_NAMES[m])
+                fig.tight_layout()
 
-        fig.suptitle(f"{label}  (N={s['n_seeds']} seeds)", fontsize=11)
-        fig.tight_layout(rect=[0, 0, 1, 0.94])
-
-        fname = f"seed_vs_metric_{dataset}_{model_name}"
-        save_fig(fig, out_dir / fname)
-        logger.info("Distribution plot saved: %s", out_dir / (fname + ".pdf"))
+                fname = f"seed_vs_metric_{dataset}_{model_name}_{m}_{target}"
+                save_fig(fig, out_dir / fname)
+                logger.info("Distribution plot saved: %s", out_dir / (fname + ".pdf"))
 
 
 # ── Aggregate stats printout ─────────────────────────────────────────────────

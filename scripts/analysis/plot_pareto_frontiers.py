@@ -30,7 +30,7 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from core.thesis_style import apply_thesis_style, FIG_WIDE, save_fig
+from core.thesis_style import apply_thesis_style, FIG_SINGLE, save_fig
 from scripts.analysis.pareto_manager import is_pareto_efficient
 
 apply_thesis_style()
@@ -177,7 +177,7 @@ def plot_pareto_frontier(
     stair_y.append(frontier_sorted[-1, 1])
 
     # ── Create figure ──
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     ax.set_xscale("log")
     ax.set_yscale("log")
 
@@ -218,11 +218,8 @@ def plot_pareto_frontier(
                 linewidths=1.2, zorder=5, label="Knee Point",
             )
 
-    ax.set_xlabel("Time (s)")
+    ax.set_xlabel("Time [s]")
     ax.set_ylabel(error_label)
-    ax.set_title(
-        f"{error_label} vs. Training Time — {dataset.capitalize()}",
-    )
     ax.set_xlim(x_range)
     ax.set_ylim(y_range)
 

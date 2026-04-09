@@ -31,7 +31,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    FIG_WIDE,
     FIG_SINGLE,
     save_fig,
 )
@@ -87,7 +86,7 @@ def plot_optimization_history(study, output_dir: Path):
     q99 = np.percentile(ys_all, 99)
     y_upper = min(q99 * 1.5, max(ys_all))
 
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     ax.scatter(xs, ys_all, s=5, alpha=0.20, color=COLORS["primary"],
                label="Completed trials", zorder=2, rasterized=True)
 
@@ -96,8 +95,7 @@ def plot_optimization_history(study, output_dir: Path):
             label="Best so far", zorder=3)
 
     ax.set_xlabel("Trial number")
-    ax.set_ylabel("Objective (val RMSE)")
-    ax.set_title("Optimization History")
+    ax.set_ylabel("Objective [val RMSE]")
     ax.set_yscale("log")
     ax.set_ylim(bottom=min(ys_best) * 0.8, top=y_upper)
     ax.legend(loc="upper right")
@@ -119,15 +117,14 @@ def plot_param_importance(study, output_dir: Path):
     names = list(importances.keys())
     values = list(importances.values())
 
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     y_pos = np.arange(len(names))
     bars = ax.barh(y_pos, values, color=COLORS["primary"], edgecolor="white", height=0.7)
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(names)
     ax.invert_yaxis()
-    ax.set_xlabel("Importance (fANOVA)")
-    ax.set_title("Hyperparameter Importance")
+    ax.set_xlabel("Importance [fANOVA]")
 
     # Value labels
     for bar, val in zip(bars, values):
@@ -150,7 +147,7 @@ CONTINUOUS_PARAMS = [
 
 
 def plot_slices(study, output_dir: Path):
-    """Objective vs. each continuous hyperparameter (marginal views)."""
+    """Objective vs. each continuous hyperparameter — one PDF per parameter."""
     trials = completed_trials(study)
     # Only plot params that exist and have variance
     available = []
@@ -164,20 +161,14 @@ def plot_slices(study, output_dir: Path):
     y_upper = np.percentile(all_obj, 99) * 1.2
     y_lower = min(all_obj) * 0.8
 
-    n = len(available)
-    ncols = 3
-    nrows = (n + ncols - 1) // ncols
-    fig, axes = plt.subplots(nrows, ncols, figsize=(7.2, 3.0 * nrows))
-    axes = np.array(axes).flatten()
-
-    for i, param in enumerate(available):
-        ax = axes[i]
+    for param in available:
+        fig, ax = plt.subplots(figsize=FIG_SINGLE)
         xs = [t.params[param] for t in trials]
         ys = [t.value for t in trials]
 
         ax.scatter(xs, ys, s=5, alpha=0.25, color=COLORS["primary"], rasterized=True)
-        ax.set_xlabel(param.replace("_", " "), fontsize=9)
-        ax.set_ylabel("Objective", fontsize=9)
+        ax.set_xlabel(param.replace("_", " "))
+        ax.set_ylabel("Objective")
         ax.set_yscale("log")
         ax.set_ylim(y_lower, y_upper)
 
@@ -187,14 +178,9 @@ def plot_slices(study, output_dir: Path):
             ax.axvline(best_val, color=COLORS["secondary"], ls="--", lw=1.2,
                        alpha=0.7, label="Best")
 
-    # Hide unused axes
-    for j in range(n, len(axes)):
-        axes[j].set_visible(False)
-
-    fig.suptitle("Objective vs. Hyperparameter (slice plots)", fontsize=12)
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
-    save_fig(fig, output_dir / "optuna_slices.png")
-    print(f"  Saved: optuna_slices.png/pdf")
+        fname = f"optuna_slice_{param}.pdf"
+        save_fig(fig, output_dir / fname)
+        print(f"  Saved: {fname}")
 
 
 # ── Plot 4: Parallel Coordinate ──────────────────────────────────────────────
@@ -235,7 +221,7 @@ def plot_parallel_coordinate(study, output_dir: Path):
     norm = plt.Normalize(vmin=obj_min, vmax=obj_max)
 
     # Single-axes approach: x = axis index, y = normalised param value
-    fig, ax = plt.subplots(figsize=FIG_WIDE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
 
     # Build line segments for LineCollection (much faster than individual plot calls)
     # Draw worst trials first so best trials render on top
@@ -270,9 +256,8 @@ def plot_parallel_coordinate(study, output_dir: Path):
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])
     cbar = fig.colorbar(sm, ax=ax, pad=0.02, fraction=0.04, aspect=30)
-    cbar.set_label("Objective (val RMSE)", fontsize=9)
+    cbar.set_label("Objective [val RMSE]", fontsize=9)
 
-    ax.set_title(f"Parallel Coordinates \u2014 Top {top_n} Trials", fontsize=12)
     fig.tight_layout()
     save_fig(fig, output_dir / "optuna_parallel_coordinate.png")
     print(f"  Saved: optuna_parallel_coordinate.png/pdf")
@@ -281,7 +266,7 @@ def plot_parallel_coordinate(study, output_dir: Path):
 # ── Plot 5: Contour Plots ───────────────────────────────────────────────────
 
 def plot_contours(study, output_dir: Path):
-    """Pairwise contour plots for key HP interactions."""
+    """Pairwise contour plots for key HP interactions — one PDF per pair."""
     pairs = [
         ("learning_rate", "weight_decay"),
         ("nr_neurons", "nr_hidden_layers"),
@@ -294,26 +279,21 @@ def plot_contours(study, output_dir: Path):
     cutoff = len(trials) // 2
     top_half = trials[:cutoff]
 
-    fig, axes = plt.subplots(1, len(pairs), figsize=(7.2, 3.5))
-    if len(pairs) == 1:
-        axes = [axes]
-
     cmap = plt.cm.viridis_r
-    # Shared colour norm across all panels
     all_cs = [t.value for t in top_half]
     vmin_c, vmax_c = min(all_cs), max(all_cs)
     norm = plt.Normalize(vmin=vmin_c, vmax=vmax_c)
 
-    for idx, (px, py) in enumerate(pairs):
-        ax = axes[idx]
+    for px, py in pairs:
+        fig, ax = plt.subplots(figsize=FIG_SINGLE)
         xs = [t.params[px] for t in top_half if px in t.params and py in t.params]
         ys = [t.params[py] for t in top_half if px in t.params and py in t.params]
         cs = [t.value for t in top_half if px in t.params and py in t.params]
 
         sc = ax.scatter(xs, ys, c=cs, cmap=cmap, norm=norm,
                         s=10, alpha=0.6, rasterized=True)
-        ax.set_xlabel(px.replace("_", " "), fontsize=9)
-        ax.set_ylabel(py.replace("_", " "), fontsize=9)
+        ax.set_xlabel(px.replace("_", " "))
+        ax.set_ylabel(py.replace("_", " "))
 
         # Mark best trial
         bx = study.best_trial.params.get(px)
@@ -322,16 +302,15 @@ def plot_contours(study, output_dir: Path):
             ax.scatter([bx], [by], marker="*", s=150, color=COLORS["accent1"],
                        edgecolors="black", zorder=5, linewidths=0.8,
                        label="Best trial")
+            ax.legend(fontsize=8, loc="upper left")
 
-    axes[0].legend(fontsize=8, loc="upper left")
+        cbar = fig.colorbar(sc, ax=ax, pad=0.02, fraction=0.04, aspect=30)
+        cbar.set_label("Objective")
+        fig.tight_layout()
 
-    fig.suptitle("Hyperparameter Interactions (top 50% trials)", fontsize=12)
-    fig.tight_layout(rect=[0, 0, 0.88, 0.95])
-    cbar_ax = fig.add_axes([0.90, 0.15, 0.02, 0.70])
-    cbar = fig.colorbar(plt.cm.ScalarMappable(cmap=cmap, norm=norm), cax=cbar_ax)
-    cbar.set_label("Objective", fontsize=9)
-    save_fig(fig, output_dir / "optuna_contours.png")
-    print(f"  Saved: optuna_contours.png/pdf")
+        fname = f"optuna_contour_{px}_{py}.pdf"
+        save_fig(fig, output_dir / fname)
+        print(f"  Saved: {fname}")
 
 
 # ── Plot 6: Trial Duration Distribution ─────────────────────────────────────
@@ -355,9 +334,8 @@ def plot_trial_durations(study, output_dir: Path):
     ax.hist(durations, bins=40, color=COLORS["primary"], edgecolor="white", alpha=0.85)
     ax.axvline(np.median(durations), color=COLORS["secondary"], ls="--", lw=1.5,
                label=f"Median: {np.median(durations):.0f} s")
-    ax.set_xlabel("Trial duration (s)")
+    ax.set_xlabel("Trial duration [s]")
     ax.set_ylabel("Count")
-    ax.set_title("Completed Trial Durations")
     ax.legend()
 
     save_fig(fig, output_dir / "optuna_trial_durations.png")
