@@ -1,0 +1,107 @@
+{
+  "monitoring_info": {
+    "start_time": "2026-04-11T18:39:06.699345",
+    "end_time": "2026-04-11T19:55:47.063992",
+    "duration_seconds": 4600.364646911621,
+    "duration_hours": 1.2778790685865613,
+    "num_samples": 2799,
+    "sample_interval": 1.0
+  },
+  "power_statistics": {
+    "avg_total_power_w": 138.61933855841372,
+    "max_total_power_w": 154.36675,
+    "min_total_power_w": 88.9125,
+    "avg_gpu_power_w": 103.38903536977492,
+    "avg_cpu_power_w": 35.2303031886388
+  },
+  "energy_consumption": {
+    "total_energy_wh": 177.1387512451109,
+    "total_energy_kwh": 0.17713875124511091,
+    "gpu_energy_wh": 132.11868422039103,
+    "cpu_energy_wh": 45.020067024719914,
+    "gpu_percentage": 74.58485695068235,
+    "cpu_percentage": 25.415143049317663
+  },
+  "cost_estimate": {
+    "energy_kwh": 0.17713875124511091,
+    "cost_usd_at_0_10_per_kwh": 0.017713875124511093,
+    "cost_usd_at_0_15_per_kwh": 0.026570812686766636,
+    "cost_usd_at_0_20_per_kwh": 0.035427750249022186
+  },
+  "gpu_statistics": {
+    "gpu_0": {
+      "avg_power": 56.033887102536625,
+      "max_power": 58.28,
+      "min_power": 8.83,
+      "avg_utilization": 6.19221150410861,
+      "max_utilization": 11.0,
+      "avg_temperature": 30.92997499106824,
+      "max_temperature": 32.0,
+      "energy_wh": 71.60453145987404
+    },
+    "gpu_1": {
+      "avg_power": 8.418199356913183,
+      "max_power": 10.95,
+      "min_power": 7.93,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 24.000714540907467,
+      "max_temperature": 25.0,
+      "energy_wh": 10.757440753388208
+    },
+    "gpu_2": {
+      "avg_power": 8.060235798499464,
+      "max_power": 10.49,
+      "min_power": 7.56,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 22.000714540907467,
+      "max_temperature": 23.0,
+      "energy_wh": 10.300006614774555
+    },
+    "gpu_3": {
+      "avg_power": 7.635891389782065,
+      "max_power": 10.0,
+      "min_power": 7.26,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 16.012147195426937,
+      "max_temperature": 17.0,
+      "energy_wh": 9.75774577700285
+    },
+    "gpu_4": {
+      "avg_power": 7.315730618077885,
+      "max_power": 11.36,
+      "min_power": 6.96,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 18.420864594498035,
+      "max_temperature": 19.0,
+      "energy_wh": 9.348619028259558
+    },
+    "gpu_5": {
+      "avg_power": 8.407981421936405,
+      "max_power": 10.58,
+      "min_power": 8.04,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 20.063236870310824,
+      "max_temperature": 21.0,
+      "energy_wh": 10.744383468157206
+    },
+    "gpu_6": {
+      "avg_power": 7.517109682029296,
+      "max_power": 11.95,
+      "min_power": 7.15,
+      "avg_utilization": 0.0,
+      "max_utilization": 0.0,
+      "avg_temperature": 18.18292247231154,
+      "max_temperature": 19.0,
+      "energy_wh": 9.605957118934619
+    }
+  },
+  "process_statistics": {
+    "avg_num_processes": 1.0,
+    "max_num_processes": 1
+  }
+}
