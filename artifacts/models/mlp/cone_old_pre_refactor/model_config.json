@@ -1,0 +1,22 @@
+{
+  "input_size": 4,
+  "output_size": 1,
+  "nr_hidden_layers": 1,
+  "nr_neurons": 244,
+  "activation_name": "LeakyReLU",
+  "dropout_rate": 0.009364659319868551,
+  "use_batchnorm": false,
+  "feature_scaler_type": "robust",
+  "label_scaler_type": "minmax",
+  "use_log": true,
+  "use_area_root": false,
+  "feature_names": [
+    "Flow_well",
+    "Hydr_gradient",
+    "Hydr_conductivity",
+    "Aqu_thickness"
+  ],
+  "label_names": [
+    "Cone"
+  ]
+}

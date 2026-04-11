@@ -1,20 +1,20 @@
 # Resource Usage Summary
 
-**Total steps logged:** 873
+**Total steps logged:** 632
 
 ## CPU Usage (%)
 
 | Stat | Value |
 |---|---|
-| Mean | 4.56 |
-| Max | 5.00 |
+| Mean | 4.66 |
+| Max | 5.20 |
 | Min | 2.50 |
 
 ## RAM Usage (%)
 
 | Stat | Value |
 |---|---|
-| Mean | 1.04 |
+| Mean | 1.03 |
 | Max | 1.10 |
 | Min | 1.00 |
 

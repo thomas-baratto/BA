@@ -20,25 +20,29 @@ NeuralNetwork(
 ## Torchinfo Summary
 
 ```
+==========================================================================================
 Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
 NeuralNetwork                            [64, 1]                   --
-  ModuleList: 1-5                        --                        (recursive)
-    Linear: 2-1                          [64, 244]                 1,220
-    LeakyReLU: 2-2                       [64, 244]                 --
-  Dropout: 1-2                           [64, 244]                 --
-  ModuleList: 1-5                        --                        (recursive)
-    Linear: 2-3                          [64, 244]                 59,780
-    LeakyReLU: 2-4                       [64, 244]                 --
-  Dropout: 1-4                           [64, 244]                 --
-  ModuleList: 1-5                        --                        (recursive)
-    Linear: 2-5                          [64, 1]                   245
-
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-1                       [64, 244]                 1,220
+│    └─LeakyReLU: 2-2                    [64, 244]                 --
+├─Dropout: 1-2                           [64, 244]                 --
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-3                       [64, 244]                 59,780
+│    └─LeakyReLU: 2-4                    [64, 244]                 --
+├─Dropout: 1-4                           [64, 244]                 --
+├─ModuleList: 1-5                        --                        (recursive)
+│    └─Linear: 2-5                       [64, 1]                   245
+==========================================================================================
 Total params: 61,245
 Trainable params: 61,245
 Non-trainable params: 0
-Total mult-adds (MB): 3.92
+Total mult-adds (Units.MEGABYTES): 3.92
+==========================================================================================
 Input size (MB): 0.00
 Forward/backward pass size (MB): 0.25
 Params size (MB): 0.24
 Estimated Total Size (MB): 0.50
+==========================================================================================
 ```
