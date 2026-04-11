@@ -26,6 +26,7 @@ from core.thesis_style import (
     apply_thesis_style,
     COLORS,
     FIG_SINGLE,
+    FIG_WIDE,
     save_fig,
 )
 
@@ -64,7 +65,7 @@ def _make_time_axis(n_epochs: int, total_seconds: float | None) -> tuple[np.ndar
     if total_seconds is not None and total_seconds > 0:
         time_per_epoch = total_seconds / n_epochs
         x = np.arange(n_epochs) * time_per_epoch / 60.0
-        return x, "Time [min]"
+        return x, "Time (min)"
     return np.arange(n_epochs, dtype=float), "Epoch"
 
 
@@ -83,7 +84,7 @@ def plot_gpu_memory(data: dict, dataset: str, out: Path,
     allocated = np.array(data["gpu_memory_allocated_mib"], dtype=float)
     reserved = np.array(data["gpu_memory_reserved_mib"], dtype=float)
 
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax = plt.subplots(figsize=FIG_WIDE)
 
     ax.plot(x, allocated, linewidth=1.2, color=COLORS["primary"],
             label="Allocated", alpha=0.85)
@@ -91,7 +92,7 @@ def plot_gpu_memory(data: dict, dataset: str, out: Path,
             label="Reserved", alpha=0.85)
 
     ax.set_xlabel(xlabel)
-    ax.set_ylabel("GPU memory [MiB]")
+    ax.set_ylabel("GPU Memory [MiB]")
     ax.legend()
     fig.tight_layout()
 
@@ -104,7 +105,7 @@ def plot_cpu_ram(data: dict, dataset: str, out: Path,
     cpu = np.array(data["cpu_percent"])
     ram = np.array(data["ram_percent"])
 
-    fig, ax1 = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax1 = plt.subplots(figsize=FIG_WIDE)
 
     color_cpu = COLORS["accent1"]
     color_ram = COLORS["primary"]
@@ -121,13 +122,13 @@ def plot_cpu_ram(data: dict, dataset: str, out: Path,
         ax1.plot(x, cpu, linewidth=1.5, color=color_cpu, label="CPU util.")
 
     ax1.set_xlabel(xlabel)
-    ax1.set_ylabel("CPU utilization [%]")
+    ax1.set_ylabel("CPU Utilization [%]")
     ax1.set_ylim(0, max(cpu.max() * 1.15, 10))
     ax1.tick_params(axis="y", labelcolor=color_cpu)
 
     ax2 = ax1.twinx()
     ax2.plot(x, ram, linewidth=1.2, color=color_ram, alpha=0.85, label="RAM usage")
-    ax2.set_ylabel("RAM usage [%]")
+    ax2.set_ylabel("RAM Usage [%]")
     ax2.set_ylim(0, max(ram.max() * 1.5, 5))
     ax2.tick_params(axis="y", labelcolor=color_ram)
 
@@ -156,7 +157,7 @@ def plot_gpu_utilization(data: dict, dataset: str, out: Path,
                label=f"Mean: {gpu_pct.mean():.2f}%")
 
     ax.set_xlabel(xlabel)
-    ax.set_ylabel("GPU memory [%]")
+    ax.set_ylabel("GPU Memory [%]")
     ax.legend()
     fig.tight_layout()
 
@@ -171,7 +172,7 @@ def plot_utilization_timeline(data: dict, dataset: str, out: Path,
     cpu = np.array(data["cpu_percent"], dtype=float)
     has_gpu = _has_gpu_data(data)
 
-    fig, ax1 = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax1 = plt.subplots(figsize=FIG_WIDE)
 
     # Adaptive rolling window — short runs need smaller windows
     window = max(3, min(30, len(x) // 10))
@@ -185,7 +186,7 @@ def plot_utilization_timeline(data: dict, dataset: str, out: Path,
                  label=f"CPU util. ({window}-epoch avg)")
     else:
         ax1.plot(x, cpu, linewidth=1.5, color=color_cpu, label="CPU util.")
-    ax1.set_ylabel("CPU utilization [%]")
+    ax1.set_ylabel("CPU Utilization [%]")
     ax1.set_ylim(0, max(cpu.max() * 1.15, 10))
     ax1.tick_params(axis="y", labelcolor=color_cpu)
     ax1.set_xlabel(xlabel)
@@ -202,7 +203,7 @@ def plot_utilization_timeline(data: dict, dataset: str, out: Path,
                      label=f"GPU mem. ({window}-epoch avg)")
         else:
             ax2.plot(x, gpu_pct, linewidth=1.5, color=color_gpu, label="GPU mem.")
-        ax2.set_ylabel("GPU memory [%]")
+        ax2.set_ylabel("GPU Memory [%]")
         ax2.set_ylim(0, max(gpu_pct.max() * 1.15, 5))
         ax2.tick_params(axis="y", labelcolor=color_gpu)
 

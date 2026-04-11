@@ -40,6 +40,7 @@ from core.thesis_style import (
     apply_thesis_style,
     COLORS,
     FIG_SINGLE,
+    FIG_WIDE,
     save_fig,
 )
 
@@ -123,7 +124,7 @@ def _elapsed_hours(df: pd.DataFrame) -> np.ndarray:
 def plot_power_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO Sweep",
                         prefix: str = "") -> None:
     """Stacked area: GPU and CPU power over time."""
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax = plt.subplots(figsize=FIG_WIDE)
 
     t = _elapsed_hours(df)
     gpu = df["total_gpu_power_w"]
@@ -134,7 +135,7 @@ def plot_power_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO Sweep
     ax.plot(t, gpu + cpu, linewidth=0.6, color=COLORS["text"], alpha=0.5)
 
     ax.set_ylabel("Power [W]")
-    ax.set_xlabel("Elapsed time [h]")
+    ax.set_xlabel("Elapsed time [hours]")
     ax.legend(loc="lower left")
 
     save_fig(fig, out / f"{prefix}power_timeline")
@@ -152,43 +153,55 @@ def plot_power_distribution(df: pd.DataFrame, out: Path, prefix: str = "") -> No
                label=f"Median: {total.median():.0f} W")
 
     ax.set_xlabel("Total power [W]")
-    ax.set_ylabel("Count [1 s samples]")
+    ax.set_ylabel("Count (1-second samples)")
     ax.legend()
 
     save_fig(fig, out / f"{prefix}power_distribution")
 
 
 def plot_gpu_breakdown(summaries: list[dict], out: Path, prefix: str = "") -> None:
-    """Per-GPU bar charts — one PDF each for power, utilization, temperature."""
+    """Per-GPU bar chart: avg power, utilization, temperature."""
+    # Use the longest-running summary (most representative)
     longest = max(summaries, key=lambda s: s["monitoring_info"]["duration_seconds"])
     gpu_stats = longest["gpu_statistics"]
 
     gpu_names = sorted(gpu_stats.keys())
     n = len(gpu_names)
     x = np.arange(n)
+
+    avg_power = [gpu_stats[g]["avg_power"] for g in gpu_names]
+    avg_util = [gpu_stats[g]["avg_utilization"] for g in gpu_names]
+    avg_temp = [gpu_stats[g]["avg_temperature"] for g in gpu_names]
+
+    fig, axes = plt.subplots(1, 3, figsize=FIG_WIDE, sharey=False)
     labels = [f"GPU {i}" for i in range(n)]
 
-    specs = [
-        ("avg_power", "Avg power [W]", COLORS["primary"], "gpu_avg_power", None),
-        ("avg_utilization", "Avg utilization [%]", COLORS["accent3"], "gpu_avg_utilization", (0, 100)),
-        ("avg_temperature", "Avg temperature [°C]", COLORS["accent1"], "gpu_avg_temperature", None),
-    ]
+    # Power
+    axes[0].barh(x, avg_power, color=COLORS["primary"], height=0.6)
+    axes[0].set_xlabel("Avg power [W]")
+    axes[0].set_yticks(x)
+    axes[0].set_yticklabels(labels)
 
-    for key, xlabel, color, fname, xlim in specs:
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        vals = [gpu_stats[g][key] for g in gpu_names]
-        ax.barh(x, vals, color=color, height=0.6)
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel("GPU")
-        ax.set_yticks(x)
-        ax.set_yticklabels(labels)
-        if xlim:
-            ax.set_xlim(*xlim)
-        save_fig(fig, out / f"{prefix}{fname}")
+    # Utilization
+    axes[1].barh(x, avg_util, color=COLORS["accent3"], height=0.6)
+    axes[1].set_xlabel("Avg utilization [%]")
+    axes[1].set_xlim(0, 100)
+    axes[1].set_yticks(x)
+    axes[1].set_yticklabels([])
+
+    # Temperature
+    axes[2].barh(x, avg_temp, color=COLORS["accent1"], height=0.6)
+    axes[2].set_xlabel("Avg temperature [°C]")
+    axes[2].set_yticks(x)
+    axes[2].set_yticklabels([])
+
+    fig.tight_layout()
+    save_fig(fig, out / f"{prefix}gpu_breakdown")
 
 
 def plot_energy_breakdown(summaries: list[dict], out: Path, prefix: str = "") -> None:
-    """Energy split pie and cost bar — one PDF each."""
+    """Pie + summary bar: GPU vs CPU energy and cost."""
+    # All workers monitor the same node; use the longest for the definitive numbers
     longest = max(summaries, key=lambda s: s["monitoring_info"]["duration_seconds"])
     energy = longest["energy_consumption"]
 
@@ -197,43 +210,47 @@ def plot_energy_breakdown(summaries: list[dict], out: Path, prefix: str = "") ->
     total_kwh = energy["total_energy_kwh"]
     duration_h = longest["monitoring_info"]["duration_hours"]
 
-    # --- Energy split pie ---
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    fig, axes = plt.subplots(1, 2, figsize=FIG_WIDE)
+
+    # Pie chart
     sizes = [gpu_kwh, cpu_kwh]
     labels = [f"GPU\n{gpu_kwh:.2f} kWh", f"CPU\n{cpu_kwh:.2f} kWh"]
     colors = [COLORS["primary"], COLORS["accent1"]]
-    wedges, texts, autotexts = ax.pie(
+    wedges, texts, autotexts = axes[0].pie(
         sizes, labels=labels, colors=colors, autopct="%1.1f%%",
         startangle=90, textprops={"fontsize": 9},
     )
     for at in autotexts:
         at.set_fontsize(9)
-    save_fig(fig, out / f"{prefix}energy_split")
+    axes[0].set_title("")
 
-    # --- Cost bar ---
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    # Summary bar
     cost_rates = {"$0.10/kWh": 0.10, "$0.15/kWh": 0.15, "$0.20/kWh": 0.20}
     rate_labels = list(cost_rates.keys())
     costs = [total_kwh * r for r in cost_rates.values()]
 
-    bars = ax.bar(rate_labels, costs, color=COLORS["primary"], width=0.5)
+    bars = axes[1].bar(rate_labels, costs, color=COLORS["primary"], width=0.5)
     for bar, cost in zip(bars, costs):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
-                f"${cost:.2f}", ha="center", va="bottom", fontsize=9)
+        axes[1].text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
+                     f"${cost:.2f}", ha="center", va="bottom", fontsize=9)
 
-    ax.set_ylabel("Cost [USD]")
+    axes[1].set_ylabel("Cost [USD]")
 
+    # Add annotation with total stats
     stats_text = (
         f"Total: {total_kwh:.2f} kWh\n"
         f"Duration: {duration_h:.1f} h\n"
-        f"CO₂: ~{total_kwh * 0.4:.2f} kg"
+        f"CO$_2$: ~{total_kwh * 0.4:.2f} kg"
     )
-    ax.annotate(
+    axes[1].annotate(
         stats_text, xy=(0.98, 0.95), xycoords="axes fraction",
         ha="right", va="top", fontsize=8,
         bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=COLORS["grid"], alpha=0.9),
     )
-    save_fig(fig, out / f"{prefix}energy_cost")
+
+    fig.suptitle("", y=1.02)
+    fig.tight_layout()
+    save_fig(fig, out / f"{prefix}energy_breakdown")
 
 
 def plot_worker_durations(summaries: list[dict], out: Path, run_label: str = "HPO",
@@ -244,7 +261,7 @@ def plot_worker_durations(summaries: list[dict], out: Path, run_label: str = "HP
         reverse=True,
     )
     n = len(durations)
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax = plt.subplots(figsize=(FIG_SINGLE[0], max(4.0, n * 0.14)))
 
     y = np.arange(n)
     ax.barh(y, durations, color=COLORS["primary"], height=0.7, alpha=0.8)
@@ -254,7 +271,7 @@ def plot_worker_durations(summaries: list[dict], out: Path, run_label: str = "HP
     ax.axvline(np.median(durations), ls=":", lw=1.2, color=COLORS["accent3"],
                label=f"Median: {np.median(durations):.1f} h")
 
-    ax.set_xlabel("Duration [h]")
+    ax.set_xlabel("Duration [hours]")
     ax.set_ylabel("Worker")
     ax.set_yticks(y[::5])
     ax.set_yticklabels([f"W{i}" for i in y[::5]])
@@ -267,7 +284,7 @@ def plot_worker_durations(summaries: list[dict], out: Path, run_label: str = "HP
 def plot_utilization_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO Sweep",
                               prefix: str = "") -> None:
     """CPU utilization and active GPU count over time."""
-    fig, ax1 = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax1 = plt.subplots(figsize=FIG_WIDE)
 
     t = _elapsed_hours(df)
 
@@ -297,7 +314,7 @@ def plot_utilization_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO
     h2, l2 = ax2.get_legend_handles_labels()
     ax1.legend(h1 + h2, l1 + l2, loc="upper right")
 
-    ax1.set_xlabel("Elapsed time [h]")
+    ax1.set_xlabel("Elapsed time [hours]")
 
     save_fig(fig, out / f"{prefix}utilization_timeline")
 

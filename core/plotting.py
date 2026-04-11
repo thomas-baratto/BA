@@ -17,8 +17,8 @@ from core.metrics import LABEL_UNITS
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    FIG_SINGLE,
     FIG_SQUARE,
+    FIG_WIDE,
     label_with_unit,
     save_fig,
 )
@@ -44,7 +44,7 @@ def create_residual_plots(
         predictions = predictions.reshape(-1, 1)
 
     for label_idx in range(true_values.shape[1]):
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
+        fig, ax = plt.subplots(figsize=FIG_SQUARE)
 
         true_col = true_values[:, label_idx]
         pred_col = predictions[:, label_idx]
@@ -216,23 +216,10 @@ def plot_results(
     plot_dir_name = "_".join(labels).replace(" ", "_").replace("/", "_")
     plot_dir = os.path.join(rf, "plots", plot_dir_name)
     os.makedirs(plot_dir, exist_ok=True)
-
-    # Persist plot data for offline regeneration
-    np.savez_compressed(
-        os.path.join(plot_dir, "training_data.npz"),
-        x_loss=np.asarray(x_loss),
-        train_losses=np.asarray(train_losses),
-        val_losses=np.asarray(val_losses),
-        true_values=np.asarray(true_values),
-        predictions=np.asarray(predictions),
-        labels=np.array(labels),
-        epoch_times=np.asarray(epoch_times) if epoch_times is not None else np.array([]),
-    )
-
-    fig_loss, ax = plt.subplots(figsize=FIG_SINGLE)
-    ax.semilogy(x_loss, train_losses, label="Training Loss",
+    fig_loss, ax = plt.subplots(figsize=FIG_SQUARE)
+    ax.semilogy(x_loss, train_losses, label="Training",
                 color=COLORS["primary"])
-    ax.semilogy(x_loss, val_losses, label="Validation Loss",
+    ax.semilogy(x_loss, val_losses, label="Validation",
                 color=COLORS["accent1"], ls="--")
     ax.set_xlabel("Epoch")
     ax.set_ylabel(loss_fn_name)
@@ -289,7 +276,7 @@ def plot_split_metric_bars(
     bar_width = 0.75 / max(1, len(splits))
 
     for metric in metric_keys:
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
+        fig, ax = plt.subplots(figsize=FIG_WIDE)
         for idx, split in enumerate(splits):
             per_label_values = [
                 split_metrics[split]["per_label"]
@@ -437,30 +424,42 @@ class ResourceLogger:
 
         steps = self.logs["step"]
 
-        # Plot 1: CPU usage
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        ax.plot(steps, self.logs["cpu_percent"],
-                label="CPU usage [%]", color=COLORS["primary"])
-        ax.set_xlabel("Epoch")
-        ax.set_ylabel("CPU usage [%]")
-        ax.legend()
-        save_fig(fig, os.path.join(self.output_dir, "cpu_usage.pdf"))
-        logging.info("Saved CPU usage plot")
+        # Plot 1: CPU and RAM usage
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 
-        # Plot 2: RAM usage
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        ax.plot(steps, self.logs["ram_percent"],
-                label="RAM usage [%]", color=COLORS["accent3"])
-        ax.set_xlabel("Epoch")
-        ax.set_ylabel("RAM usage [%]")
-        ax.legend()
-        save_fig(fig, os.path.join(self.output_dir, "ram_usage.pdf"))
-        logging.info("Saved RAM usage plot")
+        ax1.plot(
+            steps,
+            self.logs["cpu_percent"],
+            label="CPU Usage (%)",
+            color="blue",
+        )
+        ax1.set_xlabel("Step/Epoch")
+        ax1.set_ylabel("CPU Usage [%]")
+        ax1.grid(True, alpha=0.3)
+        ax1.legend()
 
-        # Plot 3+4: GPU usage (if available)
+        ax2.plot(
+            steps,
+            self.logs["ram_percent"],
+            label="RAM Usage [%]",
+            color="green",
+        )
+        ax2.set_xlabel("Step/Epoch")
+        ax2.set_ylabel("RAM Usage [%]")
+        ax2.grid(True, alpha=0.3)
+        ax2.legend()
+
+        plt.tight_layout()
+        cpu_ram_path = os.path.join(self.output_dir, "cpu_ram_usage.pdf")
+        save_fig(fig, cpu_ram_path)
+        logging.info(f"Saved CPU/RAM usage plot to {cpu_ram_path}")
+
+        # Plot 2: GPU usage (if available)
         if GPU_AVAILABLE and any(
             x is not None for x in self.logs["gpu_memory_percent"]
         ):
+            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
             valid_indices = [
                 i
                 for i, x in enumerate(self.logs["gpu_memory_percent"])
@@ -475,20 +474,29 @@ class ResourceLogger:
                 for i in valid_indices
             ]
 
-            fig, ax = plt.subplots(figsize=FIG_SINGLE)
-            ax.plot(valid_steps, valid_percent,
-                    label="GPU memory [%]", color=COLORS["secondary"])
-            ax.set_xlabel("Epoch")
-            ax.set_ylabel("GPU memory usage [%]")
-            ax.legend()
-            save_fig(fig, os.path.join(self.output_dir, "gpu_memory_pct.pdf"))
-            logging.info("Saved GPU memory % plot")
+            ax1.plot(
+                valid_steps,
+                valid_percent,
+                label="GPU Memory (%)",
+                color="red",
+            )
+            ax1.set_xlabel("Step/Epoch")
+            ax1.set_ylabel("GPU Memory Usage [%]")
+            ax1.grid(True, alpha=0.3)
+            ax1.legend()
 
-            fig, ax = plt.subplots(figsize=FIG_SINGLE)
-            ax.plot(valid_steps, valid_allocated,
-                    label="GPU memory allocated [MiB]", color=COLORS["accent1"])
-            ax.set_xlabel("Epoch")
-            ax.set_ylabel("Memory [MiB]")
-            ax.legend()
-            save_fig(fig, os.path.join(self.output_dir, "gpu_memory_allocated.pdf"))
-            logging.info("Saved GPU memory allocated plot")
+            ax2.plot(
+                valid_steps,
+                valid_allocated,
+                label="GPU Memory Allocated [MiB]",
+                color="orange",
+            )
+            ax2.set_xlabel("Step/Epoch")
+            ax2.set_ylabel("Memory [MiB]")
+            ax2.grid(True, alpha=0.3)
+            ax2.legend()
+
+            plt.tight_layout()
+            gpu_path = os.path.join(self.output_dir, "gpu_usage.pdf")
+            save_fig(fig, gpu_path)
+            logging.info(f"Saved GPU usage plot to {gpu_path}")

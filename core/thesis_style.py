@@ -104,7 +104,7 @@ def apply_thesis_style() -> None:
 
 
 def label_with_unit(name: str, unit: str | None = None) -> str:
-    """Build an axis label like ``'True Area [m²]'``.
+    """Build an axis label like ``'True Area ($\\mathrm{m^2}$)'``.
 
     Looks up the unit from ``LABEL_UNITS`` by trying the full *name* first,
     then each word in *name* (so ``"True Area"`` finds the unit for ``"Area"``).
@@ -123,7 +123,9 @@ def label_with_unit(name: str, unit: str | None = None) -> str:
 
     if not unit:
         return name
-    return f"{name} [{unit}]"
+    # Convert plain text units to LaTeX-friendly math
+    latex_unit = unit.replace("²", "^2").replace("³", "^3")
+    return f"{name} [$\\mathrm{{{latex_unit}}}$]"
 
 
 def save_fig(

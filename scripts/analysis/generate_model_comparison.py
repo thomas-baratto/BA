@@ -28,8 +28,8 @@ from core.metrics import LABEL_UNITS, compute_regression_metrics
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
-    FIG_SINGLE,
     FIG_SQUARE,
+    FIG_WIDE,
     label_with_unit,
     save_fig,
 )
@@ -212,7 +212,7 @@ def plot_residuals(y_true, y_pred, label_name, model_key, label_idx=0):
     yp = y_pred[:, label_idx] if y_pred.ndim > 1 else y_pred
     residuals = yp - yt
 
-    fig, ax = plt.subplots(figsize=FIG_SINGLE)
+    fig, ax = plt.subplots(figsize=FIG_SQUARE)
     ax.scatter(yt, residuals, alpha=0.4, s=12, color=COLORS["accent1"],
                edgecolors="none")
     ax.axhline(0, color=COLORS["secondary"], ls="--", lw=1.5)
