@@ -2,6 +2,34 @@
 
 Predict thermal plume parameters (isotherm geometry or depression cone size) from hydrogeological inputs using trained neural networks.
 
+## Changelog
+
+### 2026-04-11 — Plot uniformity & resource logging refactor
+
+**`core/plotting.py`**
+- All regression/residual scatter plots now use `FIG_SQUARE` (5.5 × 5.5) instead of `FIG_SINGLE` for consistent aspect ratio
+- Loss curve label shortened from `"Training Loss"` / `"Validation Loss"` to `"Training"` / `"Validation"`
+- Loss plots now use `FIG_SQUARE`
+- `ResourceLogger.generate_plots()` merges the old separate CPU and RAM plots into a single combined `cpu_ram_usage.pdf` subplot (CPU on top, RAM below); GPU memory % and allocated MiB similarly merged into one `gpu_usage.pdf` subplot
+- Removed the `training_data.npz` data-persistence step that was previously saved alongside every plot run
+
+**`core/thesis_style.py`**
+- `label_with_unit()` now renders units in LaTeX math mode (`$\mathrm{…}$`) and converts Unicode superscripts (`²` → `^2`, `³` → `^3`) for proper rendering in saved PDFs
+
+**`scripts/analysis/analyze_seed_sweep.py`**
+- Box plots: all targets for a given winner are now combined into a single multi-subplot PDF (`seed_sweep_{dataset}_{model}.pdf`) instead of one file per target
+- Seed distribution plots: all metrics × targets for a winner are combined in a grid subplot PDF (`seed_vs_metric_{dataset}_{model}.pdf`) instead of one file per metric × target
+
+**`scripts/analysis/generate_model_comparison.py`**
+- Residual scatter plots switched from `FIG_SINGLE` to `FIG_SQUARE`
+
+**`scripts/analysis/plot_initial_overfitting.py`**
+- ELM regularisation parameter corrected from `alpha=0` to `alpha=1e-6` (prevents degenerate solutions)
+- Predicted-vs-true plots for multi-output models now rendered as a single multi-subplot PDF instead of one file per label
+
+**`scripts/analysis/plot_mlp_resources.py`**, **`plot_optuna_study.py`**, **`plot_pareto_frontiers.py`**, **`plot_power_analysis.py`**
+- Switched figure size constants from `FIG_SINGLE` to `FIG_SQUARE` / `FIG_WIDE` as appropriate for uniform thesis output
+
 ## Quick Start
 
 ### Installation
