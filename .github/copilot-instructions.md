@@ -43,14 +43,14 @@ PYTHONPATH=. .venv/env/bin/python scripts/deployment/predict.py --help
 - `core/model.py` — `NeuralNetwork` (MLP), PyTorch `nn.Module`
 - `core/trainer.py` — Training loop, early stopping, LR scheduling
 - `core/training_utils.py` — Training helper functions
-- `core/data_loader.py` — CSV loading, train/val/test splits, scaling
+- `core/data_loader.py` — CSV loading, train/val/test splits, scaling; saves `.npz` distribution data when `plots=True`
 - `core/preprocessing.py` — Feature engineering, data transforms
 - `core/inference.py` — Load saved model + scalers → predict
 - `core/model_wrapper.py` — Unified interface for MLP and random models
 - `core/metrics.py` — MAE, MSE, RMSE, R², MAPE, nRMSE, KGE
 - `core/utils.py` — Seed setting, logging, metric computation
 - `core/runtime.py` — Runtime/timing utilities
-- `core/plotting.py` — Visualization helpers
+- `core/plotting.py` — Visualization helpers (used by analysis pipeline, not called during training)
 - `core/thesis_style.py` — Thesis-quality plot styling (SciencePlots, colours, `save_fig()`)
 - `core/args.py` — Shared argparse definitions
 - `core/artifacts.py` — Model artifact path resolution
@@ -107,7 +107,9 @@ Two prediction tasks, configured in `config/datasets.py`:
 - **Inference pipeline:** `core/inference.py` loads `best_model.pt` + `model_config.json` +
   `scalers.pkl` from a model directory, reconstructs the network, and runs predictions.
 - **Training artifacts:** Each run produces `best_model.pt`, `model_config.json`, `scalers.pkl`,
-  and `results_*.json` in a timestamped directory.
+  `results_*.json`, and `.npz` data files (`training_curves.npz`, `prediction_data.npz`,
+  distribution snapshots) in a timestamped directory. Plots are **not** generated during training;
+  use `scripts/analysis/generate_all_plots.py` to produce thesis-quality plots from the saved data.
 - **Optuna:** Hyperparameters optimized via `scripts/training/run_optuna.py` → stored in journal logs →
   best params extracted to `config/best_params_*.json` → used by `train_mlp_with_metrics.py`.
 - **Scaling:** Data is scaled during training (stored in `scalers.pkl`); inference must use the

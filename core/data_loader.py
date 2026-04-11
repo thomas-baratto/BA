@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import logging
 import os
-import matplotlib.pyplot as plt
 from typing import List, Tuple
 from torch.utils.data import Dataset
 import torch
@@ -11,11 +10,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, Qu
 import warnings
 from sklearn.exceptions import DataConversionWarning
 
-from core.thesis_style import apply_thesis_style, save_fig, FIG_SINGLE
-
 warnings.filterwarnings(action='ignore', category=DataConversionWarning)
-
-apply_thesis_style()
 
 class CSVDataset(Dataset):
     """
@@ -84,15 +79,6 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
     
     if plots:
         os.makedirs(plot_dir, exist_ok=True)
-
-        # "Before Transformation" Plot
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        for label_idx in range(y.shape[1]):
-            ax.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_xlabel("Value")
-        ax.set_ylabel("Count")
-        ax.legend()
-        save_fig(fig, os.path.join(plot_dir, "before_transform.pdf"))
         np.savez_compressed(
             os.path.join(plot_dir, "data_before_transform.npz"),
             y=y, label_cols=np.array(label_cols),
@@ -104,14 +90,6 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
         y = np.log1p(y)
 
     if plots:
-        # "After Log-Transformation" Plot
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        for label_idx in range(y.shape[1]):
-            ax.hist(y[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_xlabel("Value [log-transformed]")
-        ax.set_ylabel("Count")
-        ax.legend()
-        save_fig(fig, os.path.join(plot_dir, "after_log_transform.pdf"))
         np.savez_compressed(
             os.path.join(plot_dir, "data_after_log.npz"),
             X=X, y=y, label_cols=np.array(label_cols),
@@ -155,14 +133,6 @@ def load_data(csv_file: str = "data/Clean_Results_Isotherm.csv",
         y_test = y_scaler.transform(y_test)
     
     if plots and y_scaler is not None:
-        # "After Standardization" Plot (training data only)
-        fig, ax = plt.subplots(figsize=FIG_SINGLE)
-        for label_idx in range(y_train.shape[1]):
-            ax.hist(y_train[:, label_idx], bins=200, label=f'Label: {label_cols[label_idx]}')
-        ax.set_xlabel("Value [scaled]")
-        ax.set_ylabel("Count")
-        ax.legend()
-        save_fig(fig, os.path.join(plot_dir, "after_scaling.pdf"))
         np.savez_compressed(
             os.path.join(plot_dir, "data_after_scaling.npz"),
             y_train=y_train, label_cols=np.array(label_cols),

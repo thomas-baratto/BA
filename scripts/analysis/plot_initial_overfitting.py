@@ -31,6 +31,7 @@ from core.random.ELM import ELM
 from core.thesis_style import (
     apply_thesis_style,
     COLORS,
+    FIG_SINGLE,
     FIG_SQUARE,
     label_with_unit,
     save_fig,
@@ -132,7 +133,7 @@ def train_elm_overfit(
     X_n = (X - X_mean) / X_std
     y_n = (y - y_mean) / y_std
 
-    model = ELM(n_hidden=256, activation="ReLU", alpha=1e-6, random_state=42)
+    model = ELM(n_hidden=256, activation="ReLU", alpha=0, random_state=42)
     model.fit(X_n, y_n)
     norm_stats = {"X_mean": X_mean, "X_std": X_std, "y_mean": y_mean, "y_std": y_std}
     return model, norm_stats
@@ -157,12 +158,9 @@ def plot_pred_vs_true(
     title: str,
     out_path: Path,
 ) -> None:
-    """Predicted vs True scatter — one subplot per label."""
-    n_labels = len(label_names)
-    fig, axes = plt.subplots(1, n_labels, figsize=(5.5 * n_labels, 5.5), squeeze=False)
-
+    """Predicted vs True scatter — one figure per label."""
     for i, lbl in enumerate(label_names):
-        ax = axes[0, i]
+        fig, ax = plt.subplots(figsize=FIG_SQUARE)
         yt = y_true[:, i] if y_true.ndim > 1 else y_true
         yp = y_pred[:, i] if y_pred.ndim > 1 else y_pred
 
@@ -183,9 +181,10 @@ def plot_pred_vs_true(
         ax.set_xlim(lo, hi)
         ax.set_ylim(lo, hi)
         ax.set_aspect("equal", adjustable="box")
+        fig.tight_layout()
 
-    fig.tight_layout()
-    save_fig(fig, out_path)
+        suffix = f"_{lbl}" if len(label_names) > 1 else ""
+        save_fig(fig, Path(f"{out_path}{suffix}"))
 
 
 def plot_loss_curve(
@@ -194,12 +193,12 @@ def plot_loss_curve(
     out_path: Path,
 ) -> None:
     """Training loss over epochs (log scale)."""
-    fig, ax = plt.subplots(figsize=FIG_SQUARE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     epochs = np.arange(1, len(losses) + 1)
 
     ax.semilogy(epochs, losses, linewidth=1.2, color=COLORS["primary"])
     ax.set_xlabel("Epoch")
-    ax.set_ylabel("MSE")
+    ax.set_ylabel("MSE Loss")
     fig.tight_layout()
     save_fig(fig, out_path)
 

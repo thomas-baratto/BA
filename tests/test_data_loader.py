@@ -226,6 +226,6 @@ class TestPlotGeneration:
         )
         plot_dir = tmp_path / "plots" / "Area"
         assert plot_dir.exists()
-        assert (plot_dir / "before_transform.pdf").exists()
-        assert (plot_dir / "after_log_transform.pdf").exists()
-        assert (plot_dir / "after_scaling.pdf").exists()
+        assert (plot_dir / "data_before_transform.npz").exists()
+        assert (plot_dir / "data_after_log.npz").exists()
+        assert (plot_dir / "data_after_scaling.npz").exists()

@@ -42,7 +42,7 @@ MODEL_STYLE = {
     "SResdRVFL": {"color": "#bcbd22", "marker": "D", "label": "SResdRVFL"},
     "dRVFL": {"color": "#2ca02c", "marker": "^", "label": "dRVFL"},
     "edRVFL": {"color": "#00bfff", "marker": "+", "label": "edRVFL"},
-    "edRVFL-SC": {"color": "#1f77b4", "marker": "X", "label": "edRVFL-SC"},
+    "edRVFL-SC": {"color": "#9467bd", "marker": "x", "label": "edRVFL-SC"},
     "esc-edRVFL": {"color": "#e377c2", "marker": "p", "label": "esc-edRVFL"},
 }
 
@@ -160,8 +160,8 @@ def plot_pareto_frontier(
     frontier_sorted = frontier_costs[sort_idx]
 
     # Axis ranges (with padding) — computed early so staircase can use x_range
-    x_range = (time_vals.min() * 0.7, time_vals.max() * 1.5)
-    y_range = (error_vals.min() * 0.85, error_vals.max() * 1.2)
+    x_range = (time_vals.min() * 0.4, time_vals.max() * 2.5)
+    y_range = (error_vals.min() * 0.75, error_vals.max() * 2.0)
 
     # Build staircase (orthogonal segments) for the Pareto frontier
     stair_x, stair_y = [], []
@@ -214,7 +214,7 @@ def plot_pareto_frontier(
             kr = knee_rows.iloc[0]
             ax.scatter(
                 [kr["Time(s)"]], [kr[error_col]],
-                marker="*", s=350, c="gold", edgecolors="black",
+                marker="*", s=200, c="gold", edgecolors="black",
                 linewidths=1.2, zorder=5, label="Knee Point",
             )
 
@@ -225,7 +225,9 @@ def plot_pareto_frontier(
 
     ax.legend(
         title="Model Type",
-        loc="upper right", framealpha=0.9,
+        loc="upper right",
+        framealpha=0.9,
+        fontsize=8,
     )
     ax.grid(True, which="both", alpha=0.2)
     fig.tight_layout()

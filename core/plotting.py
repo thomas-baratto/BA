@@ -415,9 +415,6 @@ class ResourceLogger:
 
         logging.info(f"Saved resource usage summary to {md_path}")
 
-        # Create plots
-        self._create_plots()
-
     def _create_plots(self):
         if not self.output_dir or len(self.logs["step"]) == 0:
             return

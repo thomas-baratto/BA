@@ -34,7 +34,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from scripts.analysis.plot_config import PLOT_GROUPS, PlotGroup
+from scripts.analysis.plot_config import PLOT_GROUPS, PlotGroup, _copy_to_thesis
 
 
 # ── Staleness logic ─────────────────────────────────────────────────────────
@@ -154,6 +154,7 @@ def run(
         print(f"\n  [{_YELLOW}{tag}{_RESET}] Generating {name}...")
         t0 = time.time()
         group.generate(root)
+        _copy_to_thesis(group, root)
         dt = time.time() - t0
         print(f"  Done in {dt:.1f}s")
         generated += 1

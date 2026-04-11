@@ -8,6 +8,8 @@ Each group declares:
 
 from __future__ import annotations
 
+import glob
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -16,6 +18,9 @@ from typing import Callable
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 _PY = str(PROJECT_ROOT / ".venv" / "env" / "bin" / "python")
+
+# Thesis graphics mirror — generated plots are copied here automatically.
+THESIS_PLOTS = PROJECT_ROOT.parent / "thesis" / "graphics" / "plots"
 
 
 @dataclass
@@ -27,11 +32,38 @@ class PlotGroup:
     outputs: list[str]
     dependencies: list[str]
     generate: Callable[[Path], None]
+    # Subdirectory under thesis/graphics/plots/ to mirror outputs into.
+    # Set to "" to copy into the root, or None to skip thesis copy.
+    thesis_subdir: str | None = None
     # Extra CLI args the user might want to override
     extra_args: dict[str, str] = field(default_factory=dict)
 
 
 # ── Generator helpers ───────────────────────────────────────────────────────
+
+
+def _copy_to_thesis(group: PlotGroup, root: Path) -> None:
+    """Copy generated plot files into the thesis graphics tree."""
+    if group.thesis_subdir is None:
+        return
+    for pattern in group.outputs:
+        # Try the pattern as-is, and also with .pdf extension (save_fig defaults to PDF)
+        patterns_to_try = [pattern]
+        if pattern.endswith(".png"):
+            patterns_to_try.append(pattern.rsplit(".", 1)[0] + ".pdf")
+        for p in patterns_to_try:
+            for src in glob.glob(str(root / p)):
+                src_path = Path(src)
+                if not src_path.is_file():
+                    continue
+                try:
+                    rel = src_path.relative_to(root / "docs" / "plots")
+                except ValueError:
+                    continue
+                dst = THESIS_PLOTS / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src_path, dst)
+                print(f"    → {dst.relative_to(root.parent)}")
 
 
 def _run_script(script: str, *args: str) -> None:
@@ -132,6 +164,28 @@ def _gen_initial_overfitting(root: Path) -> None:
     _run_script("scripts.analysis.plot_initial_overfitting")
 
 
+def _gen_distributions(root: Path) -> None:
+    """Generate distribution histograms for both MLP models."""
+    for ds, model_dir in [("cone", "artifacts/models/mlp/cone"),
+                          ("isotherm", "artifacts/models/mlp/isotherm")]:
+        _run_script(
+            "scripts.analysis.plot_distributions",
+            "--model-dir", model_dir,
+            "--output-dir", f"docs/plots/distributions/{ds}",
+        )
+
+
+def _gen_training_curves(root: Path) -> None:
+    """Generate loss curves, QQ plots, and metric bars for both MLP models."""
+    for ds, model_dir in [("cone", "artifacts/models/mlp/cone"),
+                          ("isotherm", "artifacts/models/mlp/isotherm")]:
+        _run_script(
+            "scripts.analysis.plot_training_curves",
+            "--model-dir", model_dir,
+            "--output-dir", f"docs/plots/training/{ds}",
+        )
+
+
 # ── Registry ────────────────────────────────────────────────────────────────
 
 PLOT_GROUPS: dict[str, PlotGroup] = {
@@ -156,6 +210,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/run_sweep_random_1053/summary_table.csv",
         ],
         generate=_gen_model_comparison,
+        thesis_subdir="",
     ),
     "pareto": PlotGroup(
         name="pareto",
@@ -168,6 +223,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/run_sweep_random_1053/knee_point_winners.csv",
         ],
         generate=_gen_pareto,
+        thesis_subdir="",
     ),
     "mlp_resources": PlotGroup(
         name="mlp_resources",
@@ -181,6 +237,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "artifacts/models/mlp/isotherm/resources/resource_usage.json",
         ],
         generate=_gen_mlp_resources,
+        thesis_subdir="",
     ),
     "optuna_isotherm": PlotGroup(
         name="optuna_isotherm",
@@ -192,6 +249,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/global_run_1049/optuna_journal_storage/journal.log",
         ],
         generate=_gen_optuna_isotherm,
+        thesis_subdir="",
     ),
     "optuna_cone": PlotGroup(
         name="optuna_cone",
@@ -203,6 +261,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/global_run_1054/optuna_journal_storage/journal.log",
         ],
         generate=_gen_optuna_cone,
+        thesis_subdir="",
     ),
     "power_optuna": PlotGroup(
         name="power_optuna",
@@ -214,6 +273,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/run_20260325-19291*/power_monitor/power_log_*.csv",
         ],
         generate=_gen_power_optuna,
+        thesis_subdir="",
     ),
     "power_optuna_cone": PlotGroup(
         name="power_optuna_cone",
@@ -225,6 +285,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/run_20260328-19265*_Cone_worker*/power_monitor/power_log_*.csv",
         ],
         generate=_gen_power_optuna_cone,
+        thesis_subdir="",
     ),
     "power_random": PlotGroup(
         name="power_random",
@@ -236,6 +297,7 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "runs/run_sweep_random_*/power_monitor/power_log_*.csv",
         ],
         generate=_gen_power_random,
+        thesis_subdir="",
     ),
     "initial_overfitting": PlotGroup(
         name="initial_overfitting",
@@ -249,5 +311,38 @@ PLOT_GROUPS: dict[str, PlotGroup] = {
             "data/Depression_cones.csv",
         ],
         generate=_gen_initial_overfitting,
+        thesis_subdir="",
+    ),
+    "distributions": PlotGroup(
+        name="distributions",
+        description="Label distribution histograms (before/after transform/scaling)",
+        outputs=[
+            "docs/plots/distributions/cone/*.png",
+            "docs/plots/distributions/isotherm/*.png",
+        ],
+        dependencies=[
+            "artifacts/models/mlp/cone/plots/*/data_*.npz",
+            "artifacts/models/mlp/isotherm/plots/*/data_*.npz",
+        ],
+        generate=_gen_distributions,
+        thesis_subdir="",
+    ),
+    "training_curves": PlotGroup(
+        name="training_curves",
+        description="Loss curves, QQ plots, metric bars for MLP training",
+        outputs=[
+            "docs/plots/training/cone/*.png",
+            "docs/plots/training/isotherm/*.png",
+        ],
+        dependencies=[
+            "artifacts/models/mlp/cone/plots/*/training_curves.npz",
+            "artifacts/models/mlp/cone/plots/*/prediction_data.npz",
+            "artifacts/models/mlp/cone/stats/metrics_summary.json",
+            "artifacts/models/mlp/isotherm/plots/*/training_curves.npz",
+            "artifacts/models/mlp/isotherm/plots/*/prediction_data.npz",
+            "artifacts/models/mlp/isotherm/stats/metrics_summary.json",
+        ],
+        generate=_gen_training_curves,
+        thesis_subdir="",
     ),
 }

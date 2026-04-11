@@ -167,6 +167,8 @@ Acknowledged as future work in the thesis — not feasible before the April 14 d
 | `plot_power_analysis.py` | Power timelines, distributions, utilization | Yes (needs power_log CSVs) |
 | `plot_mlp_resources.py` | CPU/RAM/GPU memory from resource_usage.json | Yes |
 | `plot_initial_overfitting.py` | Overfitting study learning curves | Yes |
+| `plot_distributions.py` | Feature/label distribution histograms from `.npz` data | Yes (needs training run `.npz` files) |
+| `plot_training_curves.py` | Loss curves, QQ plots, metric bars from `.npz` data | Yes (needs training run `.npz` files) |
 | `summarize_results.py` | Aggregate results JSONs → summary_table.csv | Yes |
 | `visualize_architecture.py` | TikZ neural network diagrams | Yes |
 | `select_knee_points.py` | Pareto knee-point model selection | Yes |

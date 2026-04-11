@@ -18,11 +18,7 @@ from sklearn.model_selection import train_test_split
 from core.model import NeuralNetwork
 from core.data_loader import CSVDataset, load_data
 from core.metrics import compute_regression_metrics
-from core.plotting import (
-    plot_results,
-    plot_split_metric_bars,
-    ResourceLogger,
-)
+from core.plotting import ResourceLogger
 from core.training_utils import to_physical_units
 
 def train_epoch(model: nn.Module,
@@ -401,22 +397,27 @@ def main_train(config: Dict[str, Any],
             writer.add_text("Metrics/Validation_vs_Test", "\n".join(summary_lines))
 
     if config["plots"]:
-        logging.info("Generating plots and logging to TensorBoard...")
-        test_true_physical = split_plot_data["test"]["true"]
-        test_pred_physical = split_plot_data["test"]["pred"]
-        plot_results(
-            rf,
-            np.array(x_loss_epochs),
-            train_losses,
-            val_losses,
-            test_true_physical,
-            test_pred_physical,
-            original_label_cols,
-            writer=writer,
-            epoch_times=epoch_times,
-            loss_fn_name=loss_name,
+        logging.info("Saving plot data for analysis pipeline...")
+        plot_dir_name = "_".join(original_label_cols).replace(" ", "_").replace("/", "_")
+        plot_dir = os.path.join(rf, "plots", plot_dir_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        np.savez_compressed(
+            os.path.join(plot_dir, "training_curves.npz"),
+            epochs=np.array(x_loss_epochs),
+            train_losses=np.array(train_losses),
+            val_losses=np.array(val_losses),
+            epoch_times=np.array(epoch_times),
+            label_cols=np.array(original_label_cols),
+            loss_fn_name=np.array(loss_name),
         )
-        plot_split_metric_bars(rf, original_label_cols, split_metrics, writer=writer)
+        np.savez_compressed(
+            os.path.join(plot_dir, "prediction_data.npz"),
+            test_true=split_plot_data["test"]["true"],
+            test_pred=split_plot_data["test"]["pred"],
+            val_true=split_plot_data["validation"]["true"],
+            val_pred=split_plot_data["validation"]["pred"],
+            label_cols=np.array(original_label_cols),
+        )
             
     writer.close()
 

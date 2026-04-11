@@ -87,7 +87,7 @@ def plot_optimization_history(study, output_dir: Path):
     q99 = np.percentile(ys_all, 99)
     y_upper = min(q99 * 1.5, max(ys_all))
 
-    fig, ax = plt.subplots(figsize=FIG_SQUARE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     ax.scatter(xs, ys_all, s=5, alpha=0.20, color=COLORS["primary"],
                label="Completed trials", zorder=2, rasterized=True)
 
@@ -100,6 +100,7 @@ def plot_optimization_history(study, output_dir: Path):
     ax.set_yscale("log")
     ax.set_ylim(bottom=min(ys_best) * 0.8, top=y_upper)
     ax.legend(loc="upper right")
+    fig.tight_layout()
 
     save_fig(fig, output_dir / "optuna_history.png")
     print(f"  Saved: optuna_history.png/pdf")
@@ -118,7 +119,7 @@ def plot_param_importance(study, output_dir: Path):
     names = list(importances.keys())
     values = list(importances.values())
 
-    fig, ax = plt.subplots(figsize=FIG_SQUARE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     y_pos = np.arange(len(names))
     bars = ax.barh(y_pos, values, color=COLORS["primary"], edgecolor="white", height=0.7)
 
@@ -346,13 +347,14 @@ def plot_trial_durations(study, output_dir: Path):
         print("  Skipping duration plot: no duration data available.")
         return
 
-    fig, ax = plt.subplots(figsize=FIG_SQUARE)
+    fig, ax = plt.subplots(figsize=FIG_SINGLE)
     ax.hist(durations, bins=40, color=COLORS["primary"], edgecolor="white", alpha=0.85)
     ax.axvline(np.median(durations), color=COLORS["secondary"], ls="--", lw=1.5,
                label=f"Median: {np.median(durations):.0f} s")
     ax.set_xlabel("Trial duration [s]")
     ax.set_ylabel("Count")
     ax.legend()
+    fig.tight_layout()
 
     save_fig(fig, output_dir / "optuna_trial_durations.png")
     print(f"  Saved: optuna_trial_durations.png/pdf")

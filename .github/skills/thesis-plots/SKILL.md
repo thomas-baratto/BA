@@ -201,7 +201,7 @@ Key rules for loss plots:
 - Use `semilogy` for loss (values span orders of magnitude)
 - Use `COLORS["primary"]` for train, `COLORS["accent1"]` (dashed) for val, `COLORS["secondary"]` (dotted) for test
 - When test loss has a very different scale, use `ax.twinx()` for a right y-axis
-- Add a secondary x-axis for wall-clock time when `epoch_times` are available (see `plot_results()` in `core/plotting.py`)
+- Add a secondary x-axis for wall-clock time when `epoch_times` are available (see `plot_training_curves.py` in `scripts/analysis/`)
 
 ### Bar Chart Comparing Models
 
@@ -287,7 +287,21 @@ Before writing a new plot from scratch, check if `core/plotting.py` already has 
 | `create_residual_plots()` | Residuals vs true values |
 | `create_qq_plots()` | Q-Q normality check on residuals |
 | `create_scatter_plot()` | Simple scatter with ideal line |
-| `plot_results()` | Full training summary: loss curve + all diagnostic plots |
-| `plot_split_metric_bars()` | Per-label metric comparison across train/val/test splits |
+
+> **Note:** `plot_results()` and `plot_split_metric_bars()` still exist in `core/plotting.py`
+> but are **no longer called during training**. Training now saves `.npz` data files;
+> all plot generation happens in the analysis pipeline (`scripts/analysis/`).
+
+Dedicated analysis scripts (in `scripts/analysis/`):
+
+| Script | Purpose |
+|--------|----------|
+| `plot_training_curves.py` | Loss curves, QQ plots, metric bar charts from `.npz` data |
+| `plot_distributions.py` | Feature/label distribution histograms from `.npz` data |
+| `plot_initial_overfitting.py` | ELM/MLP overfitting study learning curves |
+| `plot_pareto_frontiers.py` | Pareto efficiency plots (accuracy vs. training time) |
+| `plot_optuna_study.py` | Hyperparameter optimization visualizations |
+| `plot_mlp_resources.py` | GPU/CPU resource consumption plots |
+| `plot_power_analysis.py` | Energy/power consumption plots |
 
 These already follow all conventions and call `save_fig()`.

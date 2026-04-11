@@ -137,6 +137,7 @@ def plot_power_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO Sweep
     ax.set_ylabel("Power [W]")
     ax.set_xlabel("Elapsed time [hours]")
     ax.legend(loc="lower left")
+    fig.tight_layout()
 
     save_fig(fig, out / f"{prefix}power_timeline")
 
@@ -153,8 +154,9 @@ def plot_power_distribution(df: pd.DataFrame, out: Path, prefix: str = "") -> No
                label=f"Median: {total.median():.0f} W")
 
     ax.set_xlabel("Total power [W]")
-    ax.set_ylabel("Count (1-second samples)")
+    ax.set_ylabel("Count")
     ax.legend()
+    fig.tight_layout()
 
     save_fig(fig, out / f"{prefix}power_distribution")
 
@@ -222,7 +224,6 @@ def plot_energy_breakdown(summaries: list[dict], out: Path, prefix: str = "") ->
     )
     for at in autotexts:
         at.set_fontsize(9)
-    axes[0].set_title("")
 
     # Summary bar
     cost_rates = {"$0.10/kWh": 0.10, "$0.15/kWh": 0.15, "$0.20/kWh": 0.20}
@@ -248,7 +249,6 @@ def plot_energy_breakdown(summaries: list[dict], out: Path, prefix: str = "") ->
         bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=COLORS["grid"], alpha=0.9),
     )
 
-    fig.suptitle("", y=1.02)
     fig.tight_layout()
     save_fig(fig, out / f"{prefix}energy_breakdown")
 
@@ -277,6 +277,7 @@ def plot_worker_durations(summaries: list[dict], out: Path, run_label: str = "HP
     ax.set_yticklabels([f"W{i}" for i in y[::5]])
     ax.invert_yaxis()
     ax.legend(loc="lower right")
+    fig.tight_layout()
 
     save_fig(fig, out / f"{prefix}worker_durations")
 
@@ -315,6 +316,7 @@ def plot_utilization_timeline(df: pd.DataFrame, out: Path, run_label: str = "HPO
     ax1.legend(h1 + h2, l1 + l2, loc="upper right")
 
     ax1.set_xlabel("Elapsed time [hours]")
+    fig.tight_layout()
 
     save_fig(fig, out / f"{prefix}utilization_timeline")
 
