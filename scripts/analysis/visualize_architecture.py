@@ -180,12 +180,15 @@ def _col_header(lines: list[str], x: float, top_y: float, text: str):
     )
 
 
+_SUPPRESS_LEGEND = False
+
+
 def _draw_legend(lines: list[str], entries: list[tuple[str, str]]) -> None:
     """Append a compact legend box anchored below-right of the diagram.
 
     *entries*: list of (tikz_arrow_style, label_text) pairs.
     """
-    if not entries:
+    if not entries or _SUPPRESS_LEGEND:
         return
     lines.append("")
     lines.append("    % legend")
@@ -837,6 +840,7 @@ def find_winner_hparams(
 
 RANDOM_RENDERERS = {
     "ELM": render_elm,
+    "RVFL": render_drvfl,
     "dRVFL": render_drvfl,
     "edRVFL": render_edrvfl,
     "edRVFL-SC": render_edrvfl,
@@ -875,10 +879,17 @@ GENERIC_CONFIGS: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {
         {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "ELM"},
         {"n_hidden": 100, "activation": "ReLU"},
     ),
+    "RVFL": (
+        {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "RVFL"},
+        {
+            "n_hidden": 100, "n_layers": 1, "activation": "ReLU",
+            "direct_link": True,
+        },
+    ),
     "dRVFL": (
         {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "dRVFL"},
         {
-            "n_hidden": 100, "n_layers": 3, "activation": "ReLU",
+            "n_hidden": 100, "n_layers": 2, "activation": "ReLU",
             "direct_link": True,
         },
     ),
@@ -909,7 +920,7 @@ GENERIC_CONFIGS: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {
     "SResdRVFL": (
         {**_GENERIC_CFG_BASE, "model_type": "random", "model_name": "SResdRVFL"},
         {
-            "n_hidden": 100, "n_layers": 2, "n_blocks": 3,
+            "n_hidden": 100, "n_layers": 2, "n_blocks": 2,
             "activation": "ReLU", "direct_link": True,
         },
     ),
@@ -995,12 +1006,26 @@ def main():
         "--compile", action="store_true",
         help="Run pdflatex on generated .tex files",
     )
+    parser.add_argument(
+        "--no-legend", action="store_true",
+        help="Suppress per-diagram legend boxes",
+    )
+    parser.add_argument(
+        "--legend-only", action="store_true",
+        help="Generate a standalone legend PDF (combine with --generic)",
+    )
     args = parser.parse_args()
+
+    global _SUPPRESS_LEGEND
+    _SUPPRESS_LEGEND = args.no_legend or args.legend_only
 
     winners = load_winners(args.winners_config)
 
     if args.generic:
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        if args.legend_only:
+            _generate_legend_only(OUTPUT_DIR, compile_pdf=args.compile)
+            return
         for model_key, (cfg, hp) in GENERIC_CONFIGS.items():
             stem = "generic_" + model_key.lower().replace("-", "_")
             out = OUTPUT_DIR / (stem + ".tex")
@@ -1062,6 +1087,56 @@ def _compile_tex(tex_path: Path):
         print("  pdflatex not found")
     except subprocess.TimeoutExpired:
         print("  pdflatex timed out for " + str(tex_path))
+
+
+def _generate_legend_only(output_dir: Path, *, compile_pdf: bool) -> None:
+    """Generate a standalone legend PDF with all arrow styles."""
+    entries = [
+        ("random arr", "Random frozen weights"),
+        ("learned arr", "Learned weights (Ridge)"),
+        ("direct arr", "Direct link"),
+        ("arr", "Data flow"),
+        ("-{Stealth[length=2.5pt]}, residualcol!80, line width=0.5pt",
+         "Residual connection"),
+    ]
+    row_h = 0.45
+    pad = 0.2
+    h = len(entries) * row_h + 2 * pad
+    w = 4.0
+
+    lines: list[str] = []
+    lines.append(r"\fill[white, rounded corners=2pt, draw=black!25,"
+                 r" line width=0.35pt]"
+                 f" (0,0) rectangle ({w:.1f},-{h:.2f});")
+    for i, (style, label) in enumerate(entries):
+        y = -(pad + row_h * i + row_h / 2)
+        x0 = pad
+        x1 = x0 + 0.8
+        xt = x1 + 0.2
+        lines.append(
+            r"\draw[" + style + "] ("
+            + f"{x0:.2f},{y:.2f}) -- ({x1:.2f},{y:.2f});"
+        )
+        lines.append(
+            r"\node[anchor=west, font=\scriptsize] at ("
+            + f"{xt:.2f},{y:.2f}" + ") {" + label + "};"
+        )
+
+    body = "\n    ".join(lines)
+    tex = (
+        PREAMBLE + "\n"
+        + r"\begin{document}" + "\n"
+        + r"\begin{tikzpicture}" + "\n"
+        + "    " + body + "\n"
+        + r"\end{tikzpicture}" + "\n"
+        + r"\end{document}" + "\n"
+    )
+    out = output_dir / "generic_legend.tex"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(tex)
+    print("  legend -> " + str(out))
+    if compile_pdf:
+        _compile_tex(out)
 
 
 if __name__ == "__main__":

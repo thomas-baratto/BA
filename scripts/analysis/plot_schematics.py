@@ -276,11 +276,12 @@ def plot_depression_cone() -> None:
     cone_depth = y_plot.min()
 
     # Extension lines from water table and cone bottom out to dimension line
-    dim_x = 1.5
+    dim_x = -width - 0.8  # place to the LEFT of the diagram
     ext_gap = 0.12
-    ax.plot([ext_gap, dim_x + 0.1], [water_table_y, water_table_y],
+    # Left edge of the drawdown curve at water table and at cone bottom
+    ax.plot([dim_x - 0.1, -ext_gap], [water_table_y, water_table_y],
             ls="-", color=COLORS["text"], lw=0.5, zorder=3)
-    ax.plot([ext_gap, dim_x + 0.1], [cone_depth, cone_depth],
+    ax.plot([dim_x - 0.1, -ext_gap], [cone_depth, cone_depth],
             ls="-", color=COLORS["text"], lw=0.5, zorder=3)
 
     ax.annotate(
@@ -292,10 +293,10 @@ def plot_depression_cone() -> None:
         zorder=6,
     )
     ax.text(
-        dim_x + 0.3,
+        dim_x - 0.3,
         (water_table_y + cone_depth) / 2,
         "Cone",
-        ha="left",
+        ha="right",
         va="center",
         fontsize=10,
         fontstyle="italic",
@@ -304,9 +305,8 @@ def plot_depression_cone() -> None:
     )
 
     # ── Axes — minimal, schematic (matching thermal plume style) ──
-    ax.set_aspect("equal")
     ax.grid(False)
-    ax.set_xlim(-width - 1.5, width + 5.0)
+    ax.set_xlim(-width - 2.5, width + 5.0)
     ax.set_ylim(max_depth - 1.0, 2.8)
     ax.set_xticks([])
     ax.set_yticks([])

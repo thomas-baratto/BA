@@ -66,13 +66,6 @@
     \node[annot] at (7.10,-0.65) {Ridge};
     \node[sum node] (sum1) at (7.10,-2.30) {$+$};
     \draw[arr] (7.10,-1.4) -- (sum1);
-    \draw[resbox] (9.50,-1.4) rectangle (11.70,1.4);
-    \node[lbl] at (10.60,0.90) {Block 3};
-    \node[annot] at (10.60,0.15) {2$\times$100, DL};
-    \node[annot] at (10.60,-0.25) {ReLU};
-    \node[annot] at (10.60,-0.65) {Ridge};
-    \node[sum node] (sum2) at (10.60,-2.30) {$+$};
-    \draw[arr] (10.60,-1.4) -- (sum2);
 
     % input to block 1
     \draw[arr] (in_0) -- (2.50,0);
@@ -82,30 +75,19 @@
 
     % residual flow
     \draw[-{Stealth[length=2.5pt]}, residualcol!80, line width=0.5pt] (4.70,0) -- ++(0.15,0) |- (4.85,1.90) -- (5.85,1.90) |- (6.00,0);
-    \draw[-{Stealth[length=2.5pt]}, residualcol!80, line width=0.5pt] (8.20,0) -- ++(0.15,0) |- (8.35,1.90) -- (9.35,1.90) |- (9.50,0);
     \node[annot, above=1pt] at (5.35,1.90) {\textit{residual}};
-    \node[sum node, minimum size=8mm] (sigma) at (12.90,-2.30) {$\Sigma$};
+    \node[sum node, minimum size=8mm] (sigma) at (9.40,-2.30) {$\Sigma$};
     \draw[arr] (sum0) -- (sigma);
     \draw[arr] (sum1) -- (sigma);
-    \draw[arr] (sum2) -- (sigma);
-    \node[output node] (out_0) at (15.40,0.75) {};
+    \node[output node] (out_0) at (11.90,0.75) {};
     \node[annot, right=2.5mm of out_0] {$y_1$};
-    \node[output node] (out_1) at (15.40,0.00) {};
+    \node[output node] (out_1) at (11.90,0.00) {};
     \node[annot, right=2.5mm of out_1] {$y_2$};
-    \node[output node] (out_2) at (15.40,-0.75) {};
+    \node[output node] (out_2) at (11.90,-0.75) {};
     \node[annot, right=2.5mm of out_2] {$y_3$};
-    \node[lbl, above=5mm] at (15.40,0.75) {Output\\3};
+    \node[lbl, above=5mm] at (11.90,0.75) {Output\\3};
     \draw[arr] (sigma) -- (out_0);
     \draw[arr] (sigma) -- (out_1);
     \draw[arr] (sigma) -- (out_2);
-
-    % legend
-    \begin{scope}[shift={($(current bounding box.south east)+(0.3,-0.6)$)}]
-    \fill[white, rounded corners=2pt, draw=black!25, line width=0.35pt] (0,0) rectangle (-3.6,-1.10);
-    \draw[arr] (-3.45,-0.35) -- (-2.75,-0.35);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.35) {Data flow};
-    \draw[-{Stealth[length=2.5pt]}, residualcol!80, line width=0.5pt] (-3.45,-0.75) -- (-2.75,-0.75);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.75) {Residual connection};
-    \end{scope}
 \end{tikzpicture}
 \end{document}

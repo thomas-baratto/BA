@@ -43,43 +43,16 @@
 
 \begin{document}
 \begin{tikzpicture}
-    \node[input node] (in_0) at (0.00,1.35) {};
-    \node[annot, left=2.5mm of in_0] {$x_1$};
-    \node[input node] (in_1) at (0.00,0.45) {};
-    \node[annot, left=2.5mm of in_1] {$x_2$};
-    \node[input node] (in_2) at (0.00,-0.45) {};
-    \node[annot, left=2.5mm of in_2] {$x_3$};
-    \node[input node] (in_3) at (0.00,-1.35) {};
-    \node[annot, left=2.5mm of in_3] {$x_4$};
-    \node[lbl, above=5mm] at (0.00,1.35) {Input\\4};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (3.66,0.54) {};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (6.66,0.54) {};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (3.44,0.36) {};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (6.44,0.36) {};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (3.22,0.18) {};
-    \node[frozen block, opacity=0.25, fill opacity=0.25] at (6.22,0.18) {};
-    \node[frozen block] (H0) at (3.00,0) {100\\ReLU};
-    \node[lbl, above=5mm] at (H0.north) {Random layer 1};
-    \node[frozen block] (H1) at (6.00,0) {100\\ReLU};
-    \node[lbl, above=5mm] at (H1.north) {Random layer 2};
-    \node[lbl, above=8mm] at (4.50,2.04) {$\times$5 ensemble, 5-fold CV};
-    \node[avg node] (avg) at (8.40,0) {\tiny avg};
-    \node[output node] (out_0) at (10.40,0.90) {};
-    \node[annot, right=2.5mm of out_0] {$y_1$};
-    \node[output node] (out_1) at (10.40,0.00) {};
-    \node[annot, right=2.5mm of out_1] {$y_2$};
-    \node[output node] (out_2) at (10.40,-0.90) {};
-    \node[annot, right=2.5mm of out_2] {$y_3$};
-    \node[lbl, above=5mm] at (10.40,0.90) {Output\\3};
-
-    \draw[random arr] (in_0) -- (H0.west);
-    \draw[random arr] (in_1) -- (H0.west);
-    \draw[random arr] (in_2) -- (H0.west);
-    \draw[random arr] (in_3) -- (H0.west);
-    \draw[random arr] (H0.east) -- (H1.west);
-    \draw[learned arr] (H1.east) -- (avg);
-    \draw[arr] (avg) -- (out_0);
-    \draw[arr] (avg) -- (out_1);
-    \draw[arr] (avg) -- (out_2);
+    \fill[white, rounded corners=2pt, draw=black!25, line width=0.35pt] (0,0) rectangle (4.0,-2.65);
+    \draw[random arr] (0.20,-0.43) -- (1.00,-0.43);
+    \node[anchor=west, font=\scriptsize] at (1.20,-0.43) {Random frozen weights};
+    \draw[learned arr] (0.20,-0.88) -- (1.00,-0.88);
+    \node[anchor=west, font=\scriptsize] at (1.20,-0.88) {Learned weights (Ridge)};
+    \draw[direct arr] (0.20,-1.33) -- (1.00,-1.33);
+    \node[anchor=west, font=\scriptsize] at (1.20,-1.33) {Direct link};
+    \draw[arr] (0.20,-1.78) -- (1.00,-1.78);
+    \node[anchor=west, font=\scriptsize] at (1.20,-1.78) {Data flow};
+    \draw[-{Stealth[length=2.5pt]}, residualcol!80, line width=0.5pt] (0.20,-2.23) -- (1.00,-2.23);
+    \node[anchor=west, font=\scriptsize] at (1.20,-2.23) {Residual connection};
 \end{tikzpicture}
 \end{document}

@@ -56,16 +56,14 @@
     \node[lbl, above=5mm] at (H0.north) {Random layer 1};
     \node[frozen block] (H1) at (6.00,0) {100\\ReLU};
     \node[lbl, above=5mm] at (H1.north) {Random layer 2};
-    \node[frozen block] (H2) at (9.00,0) {100\\ReLU};
-    \node[lbl, above=5mm] at (H2.north) {Random layer 3};
-    \node[sum node, diamond, minimum size=5mm, inner sep=0pt, font=\tiny] (cat) at (11.00,0) {cat};
-    \node[output node] (out_0) at (12.50,0.90) {};
+    \node[sum node, diamond, minimum size=5mm, inner sep=0pt, font=\tiny] (cat) at (8.00,0) {cat};
+    \node[output node] (out_0) at (9.50,0.90) {};
     \node[annot, right=2.5mm of out_0] {$y_1$};
-    \node[output node] (out_1) at (12.50,0.00) {};
+    \node[output node] (out_1) at (9.50,0.00) {};
     \node[annot, right=2.5mm of out_1] {$y_2$};
-    \node[output node] (out_2) at (12.50,-0.90) {};
+    \node[output node] (out_2) at (9.50,-0.90) {};
     \node[annot, right=2.5mm of out_2] {$y_3$};
-    \node[lbl, above=5mm] at (12.50,0.90) {Output\\3};
+    \node[lbl, above=5mm] at (9.50,0.90) {Output\\3};
     \node[annot, below=3mm] at (cat.south) {Ridge regression};
 
     \draw[random arr] (in_0) -- (H0.west);
@@ -73,25 +71,13 @@
     \draw[random arr] (in_2) -- (H0.west);
     \draw[random arr] (in_3) -- (H0.west);
     \draw[random arr] (H0.east) -- (H1.west);
-    \draw[random arr] (H1.east) -- (H2.west);
-    \draw[random arr] (H2.east) -- (cat.west);
+    \draw[random arr] (H1.east) -- (cat.west);
     \draw[learned arr] (cat.east) -- (out_0);
     \draw[learned arr] (cat.east) -- (out_1);
     \draw[learned arr] (cat.east) -- (out_2);
 
     % direct link (input bypass)
     \draw[direct arr] (in_0.north) to[out=70, in=110] (cat.north);
-    \node[annot, above=1mm] at ($0.5*(in_0.north)+0.5*(cat.north)+(0,1.85)$) {\textit{direct link}};
-
-    % legend
-    \begin{scope}[shift={($(current bounding box.south east)+(0.3,-0.6)$)}]
-    \fill[white, rounded corners=2pt, draw=black!25, line width=0.35pt] (0,0) rectangle (-3.6,-1.50);
-    \draw[random arr] (-3.45,-0.35) -- (-2.75,-0.35);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.35) {Random frozen};
-    \draw[learned arr] (-3.45,-0.75) -- (-2.75,-0.75);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.75) {Learned (Ridge)};
-    \draw[direct arr] (-3.45,-1.15) -- (-2.75,-1.15);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-1.15) {Direct link};
-    \end{scope}
+    \node[annot, above=1mm] at ($0.5*(in_0.north)+0.5*(cat.north)+(0,1.50)$) {\textit{direct link}};
 \end{tikzpicture}
 \end{document}

@@ -81,14 +81,5 @@
     \draw[arr] (avg) -- (out_0);
     \draw[arr] (avg) -- (out_1);
     \draw[arr] (avg) -- (out_2);
-
-    % legend
-    \begin{scope}[shift={($(current bounding box.south east)+(0.3,-0.6)$)}]
-    \fill[white, rounded corners=2pt, draw=black!25, line width=0.35pt] (0,0) rectangle (-3.6,-1.10);
-    \draw[random arr] (-3.45,-0.35) -- (-2.75,-0.35);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.35) {Random frozen};
-    \draw[learned arr] (-3.45,-0.75) -- (-2.75,-0.75);
-    \node[anchor=west, font=\scriptsize] at (-2.55,-0.75) {Learned (Ridge)};
-    \end{scope}
 \end{tikzpicture}
 \end{document}
