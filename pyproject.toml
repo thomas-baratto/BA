@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Thomas Baratto", email = "thomas.baratto@ipvs.uni-stuttgart.de"},
+    {name = "Thomas Baratto", email = "st168502@stud.uni-stuttgart.de"},
 ]
 classifiers = [
     "License :: OSI Approved :: MIT License",

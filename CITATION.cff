@@ -9,7 +9,7 @@ type: software
 authors:
   - given-names: Thomas
     family-names: Baratto
-    email: thomas.baratto@ipvs.uni-stuttgart.de
+    email: st168502@stud.uni-stuttgart.de
     affiliation: University of Stuttgart, IPVS
 repository-code: https://github.com/thomas-baratto/BA
 url: https://doi.org/10.18419/DARUS-5815
