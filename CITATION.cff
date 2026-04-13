@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+title: >-
+  Thermal Plume Prediction — Neural Network Models and Inference
+  Package
+message: >-
+  If you use this software, please cite it using the metadata from
+  this file.
+type: software
+authors:
+  - given-names: Thomas
+    family-names: Baratto
+    email: thomas.baratto@ipvs.uni-stuttgart.de
+    affiliation: University of Stuttgart, IPVS
+repository-code: https://github.com/thomas-baratto/BA
+url: https://doi.org/10.18419/DARUS-5815
+abstract: >-
+  Pre-trained neural network models (MLP and random-weight
+  architectures) for predicting thermal plume dimensions in
+  groundwater from hydrogeological input parameters. Companion
+  software for the bachelor thesis "Comparison of Neural Network
+  Architectures on the Task of Modeling Heat Plume Dimensions in
+  Groundwater".
+keywords:
+  - neural networks
+  - groundwater
+  - thermal plumes
+  - machine learning
+  - random vector functional link
+  - geothermal energy
+license: MIT
+version: 1.0.0
+date-released: "2026-04-13"
+identifiers:
+  - type: doi
+    value: 10.18419/DARUS-5815
+    description: DaRUS dataset (models, data, and code)

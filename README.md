@@ -1,5 +1,7 @@
 # Thermal Plume Prediction — Neural Network Models and Inference Package
 
+[![Identifier](https://img.shields.io/badge/doi-10.18419%2Fdarus--5815-d45815.svg)](https://doi.org/10.18419/darus-5815)
+
 Predict thermal plume parameters (isotherm geometry or depression cone size)
 from hydrogeological inputs using pre-trained neural network models.
 
@@ -254,8 +256,23 @@ files separately and extract them into the code directory.
 
 ## License & Citation
 
+This project is released under the [MIT License](LICENSE).
+
 Part of the bachelor thesis by Thomas Baratto, supervised by M.Sc. Julia Pelzer,
 examined by Prof. Dr. Miriam Schulte — University of Stuttgart, IPVS, 2026.
+
+If you use this software, please cite:
+
+```bibtex
+@misc{baratto2026thermal,
+  author    = {Baratto, Thomas},
+  title     = {Thermal Plume Prediction --- Neural Network Models and Inference Package},
+  year      = {2026},
+  version   = {1.0.0},
+  doi       = {10.18419/DARUS-5815},
+  url       = {https://doi.org/10.18419/DARUS-5815}
+}
+```
 
 For the full training pipeline, experiments, and analysis code, see the
 companion GitHub repository.

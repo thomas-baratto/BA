@@ -1,0 +1,47 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "ba-thermal-plume",
+  "description": "Pre-trained neural network models (MLP and random-weight architectures) for predicting thermal plume dimensions in groundwater from hydrogeological input parameters.",
+  "version": "1.0.0",
+  "dateCreated": "2026-04-13",
+  "datePublished": "2026-04-13",
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/thomas-baratto/BA",
+  "issueTracker": "https://github.com/thomas-baratto/BA/issues",
+  "programmingLanguage": [
+    "Python"
+  ],
+  "runtimePlatform": "Python >= 3.10",
+  "operatingSystem": "Linux, macOS, Windows",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Thomas",
+      "familyName": "Baratto",
+      "email": "thomas.baratto@ipvs.uni-stuttgart.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Stuttgart, IPVS"
+      }
+    }
+  ],
+  "keywords": [
+    "neural networks",
+    "groundwater",
+    "thermal plumes",
+    "machine learning",
+    "random vector functional link",
+    "geothermal energy"
+  ],
+  "identifier": "https://doi.org/10.18419/DARUS-5815",
+  "relatedLink": [
+    "https://doi.org/10.18419/DARUS-5815"
+  ],
+  "softwareRequirements": [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "torch"
+  ]
+}
