@@ -38,6 +38,18 @@
   "relatedLink": [
     "https://doi.org/10.18419/DARUS-5815"
   ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Fabian",
+      "familyName": "Böttcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Technical University of Munich, Chair of Hydrogeology"
+      },
+      "description": "Generated the FEFLOW simulation datasets used for model training"
+    }
+  ],
   "softwareRequirements": [
     "numpy",
     "pandas",

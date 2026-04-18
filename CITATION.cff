@@ -11,6 +11,22 @@ authors:
     family-names: Baratto
     email: st168502@stud.uni-stuttgart.de
     affiliation: University of Stuttgart, IPVS
+contact:
+  - given-names: Thomas
+    family-names: Baratto
+    email: st168502@stud.uni-stuttgart.de
+preferred-citation:
+  type: software
+  authors:
+    - given-names: Thomas
+      family-names: Baratto
+      affiliation: University of Stuttgart, IPVS
+  title: >-
+    Thermal Plume Prediction — Neural Network Models and Inference
+    Package
+  version: 1.0.0
+  doi: 10.18419/DARUS-5815
+  year: 2026
 repository-code: https://github.com/thomas-baratto/BA
 url: https://doi.org/10.18419/DARUS-5815
 abstract: >-
