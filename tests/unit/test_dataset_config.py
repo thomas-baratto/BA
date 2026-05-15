@@ -26,7 +26,7 @@ class TestDatasetConfigs:
     @pytest.mark.parametrize("name", ["isotherm", "cone"])
     def test_required_keys(self, name: str):
         cfg = DATASET_CONFIGS[name]
-        for key in ("csv_file", "features", "labels"):
+        for key in ("features", "labels", "models"):
             assert key in cfg, f"Missing key '{key}' in {name} config"
 
     def test_isotherm_features_and_labels(self):
@@ -71,6 +71,27 @@ class TestDetectFeaturesAndLabels:
         features, labels = detect_features_and_labels(str(cone_csv))
         assert "Hydr_conductivity" in features
         assert "Cone" in labels
+
+    def test_extra_columns_are_ignored(self, tmp_path: Path):
+        """Unknown columns in CSV should be filtered out."""
+        p = tmp_path / "extra.csv"
+        # CSV contains 'Unknown_Col' and 'Real_Temp'
+        p.write_text("Flow_well,Unknown_Col,Cone,Real_Temp\n100,abc,0.5,20.0")
+        
+        features, labels = detect_features_and_labels(str(p))
+        assert features == ["Flow_well"]
+        assert labels == ["Cone"]
+        assert "Unknown_Col" not in features
+        assert "Real_Temp" not in features
+
+    def test_partial_columns_detection(self, tmp_path: Path):
+        """Should still detect what is present even if some features are missing."""
+        p = tmp_path / "partial.csv"
+        p.write_text("Flow_well,Cone\n100,0.5")  # Missing Hydr_gradient etc.
+        
+        features, labels = detect_features_and_labels(str(p))
+        assert features == ["Flow_well"]
+        assert labels == ["Cone"]
 
 
 class TestKnownSets:

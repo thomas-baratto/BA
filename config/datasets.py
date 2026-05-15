@@ -8,34 +8,35 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Root directory for trained model artifacts and Optuna studies.
 # Override via environment variable BA_ARTIFACTS_ROOT if needed.
-ARTIFACTS_ROOT = os.environ.get(
-    "BA_ARTIFACTS_ROOT", str(_PROJECT_ROOT / "artifacts")
-)
+_artifacts_env = os.environ.get("BA_ARTIFACTS_ROOT")
+ARTIFACTS_ROOT = Path(_artifacts_env) if _artifacts_env else _PROJECT_ROOT / "artifacts"
 
 # Root directory for data files.
-_DATA_ROOT = str(_PROJECT_ROOT / "data")
+_DATA_ROOT = _PROJECT_ROOT / "data"
 
-# Dataset configurations: features, labels, CSV paths, and Optuna journal info
+# Dataset configurations: features, labels, and default model paths
 DATASET_CONFIGS = {
     "isotherm": {
-        "csv_file": os.path.join(_DATA_ROOT, "Clean_Results_Isotherm.csv"),
         "features": [
             "Flow_well", "Temp_diff", "kW_well", "Hydr_gradient",
             "Hydr_conductivity", "Aqu_thickness", "Long_dispersivity",
             "Trans_dispersivity", "Isotherm"
         ],
         "labels": ["Area", "Iso_distance", "Iso_width"],
-        "journal_path": os.path.join(ARTIFACTS_ROOT, "optuna_studies", "isotherm", "journal.log"),
-        "study_name": "nn_study_isotherm_journal",
-        "best_params_file": str(_PROJECT_ROOT / "config" / "best_params_isotherm.json"),
+        "models": {
+            "mlp": ".",
+            "randomized": ".",
+            "randomized:nRMSE": ".",
+            "randomized:KGE": ".",
+        }
     },
     "cone": {
-        "csv_file": os.path.join(_DATA_ROOT, "Depression_cones.csv"),
         "features": ["Flow_well", "Hydr_gradient", "Hydr_conductivity", "Aqu_thickness"],
         "labels": ["Cone"],
-        "journal_path": os.path.join(ARTIFACTS_ROOT, "optuna_studies", "cone", "journal.log"),
-        "study_name": "depression_cones_mlp_journal_study",
-        "best_params_file": str(_PROJECT_ROOT / "config" / "best_params_cone.json"),
+        "models": {
+            "mlp": ".",
+            "randomized": ".",
+        }
     },
 }
 
@@ -52,19 +53,8 @@ for _cfg in DATASET_CONFIGS.values():
 KNOWN_FEATURES = sorted(list(KNOWN_FEATURES))
 KNOWN_LABELS = sorted(list(KNOWN_LABELS))
 
-# Default model directories for prediction
-DEFAULT_MODEL_DIRS = {
-    "isotherm": {
-        "mlp": os.path.join(ARTIFACTS_ROOT, "models", "mlp", "isotherm"),
-        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "nRMSE_winner"),
-        "random:nRMSE": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "nRMSE_winner"),
-        "random:KGE": os.path.join(ARTIFACTS_ROOT, "models", "random", "isotherm", "KGE_winner"),
-    },
-    "cone": {
-        "mlp": os.path.join(ARTIFACTS_ROOT, "models", "mlp", "cone"),
-        "random": os.path.join(ARTIFACTS_ROOT, "models", "random", "cone", "winner"),
-    },
-}
+# All default model directories for prediction
+DEFAULT_MODEL_DIRS = {dataset: cfg["models"] for dataset, cfg in DATASET_CONFIGS.items()}
 
 
 def get_dataset_config(dataset: str) -> dict:
@@ -102,3 +92,31 @@ def detect_features_and_labels(csv_file: str) -> tuple:
     labels = [col for col in columns if col in KNOWN_LABELS]
 
     return features, labels
+
+
+def detect_dataset_type(csv_file: str) -> str:
+    """Automatically detect dataset type from CSV headers.
+
+    Args:
+        csv_file: Path to CSV file
+
+    Returns:
+        Dataset name ('isotherm' or 'cone') or None if ambiguous
+    """
+    import pandas as pd
+    try:
+        df = pd.read_csv(csv_file, nrows=0)
+        cols = set(df.columns)
+        
+        # Check for isotherm-specific markers
+        if any(c in cols for c in ["kW_well", "Temp_diff", "Isotherm", "Long_dispersivity"]):
+            return "isotherm"
+        
+        # Check for cone-specific markers (subset of isotherm, so check absence of isotherm ones)
+        cone_features = set(DATASET_CONFIGS["cone"]["features"])
+        if all(c in cols for c in cone_features):
+            return "cone"
+            
+        return None
+    except Exception:
+        return None

@@ -12,7 +12,7 @@
   "programmingLanguage": [
     "Python"
   ],
-  "runtimePlatform": "Python >= 3.10",
+  "runtimePlatform": "Python >= 3.9",
   "operatingSystem": "Linux, macOS, Windows",
   "author": [
     {
@@ -31,7 +31,8 @@
     "groundwater",
     "thermal plumes",
     "machine learning",
-    "random vector functional link",
+    "RaNN",
+    "randomized neural networks",
     "geothermal energy"
   ],
   "identifier": "https://doi.org/10.18419/DARUS-5815",
@@ -53,7 +54,8 @@
   "softwareRequirements": [
     "numpy",
     "pandas",
-    "scikit-learn",
-    "torch"
+    "scikit-learn>=1.6.0",
+    "tabulate",
+    "torch>=2.2.0"
   ]
 }

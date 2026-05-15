@@ -13,13 +13,90 @@ Key Features:
 import json
 import gzip
 import pickle
+import warnings
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
+import pandas as pd
 import torch
+from sklearn.exceptions import InconsistentVersionWarning
 
 from core.model import NeuralNetwork
+
+# Silencing scikit-learn version mismatch warnings globally for this module
+# These are harmless for inference and unavoidable on Python 3.9
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+
+
+def preprocess_features(
+    X: Union[np.ndarray, pd.DataFrame],
+    feature_scaler: Any,
+    apply_log: bool = True,
+) -> np.ndarray:
+    """
+    Preprocess input features for model prediction.
+    
+    Args:
+        X: Input features, shape (n_samples, n_features) or DataFrame
+        feature_scaler: Fitted feature scaler (e.g., MinMaxScaler)
+        apply_log: Whether to apply log1p transform first
+    
+    Returns:
+        Preprocessed features ready for model input
+    """
+    # Convert DataFrame to numpy
+    if isinstance(X, pd.DataFrame):
+        X = X.values
+    
+    # Ensure 2D
+    if len(X.shape) == 1:
+        X = X.reshape(1, -1)
+    
+    # Apply log transform
+    if apply_log:
+        X = np.log1p(X)
+    
+    # Apply feature scaling
+    if feature_scaler is not None:
+        X = feature_scaler.transform(X)
+    
+    return X
+
+
+def postprocess_predictions(
+    y_pred: np.ndarray,
+    label_scaler: Any,
+    inverse_transform: bool = True,
+    apply_expm1: bool = True,
+) -> np.ndarray:
+    """
+    Postprocess model predictions to original scale and units.
+    
+    Args:
+        y_pred: Raw predictions from model
+        label_scaler: Fitted label scaler
+        inverse_transform: Whether to apply inverse scaling
+        apply_expm1: Whether to apply inverse log transform (expm1)
+    
+    Returns:
+        Predictions in original units
+    """
+    # Ensure 2D
+    if len(y_pred.shape) == 1:
+        y_pred = y_pred.reshape(-1, 1)
+    
+    # Apply inverse scaling
+    if inverse_transform and label_scaler is not None:
+        y_pred = label_scaler.inverse_transform(y_pred)
+    
+    # Apply inverse log transform
+    if apply_expm1:
+        # Clip to prevent extreme negative values that would cause issues with expm1
+        y_pred = np.maximum(y_pred, -10)
+        y_pred = np.expm1(y_pred)
+    
+    return y_pred
 
 
 def _load_pickle(path: Path):
@@ -41,16 +118,29 @@ def _load_pickle(path: Path):
         """
         import torch.storage as _ts
 
-        _original = _ts._load_from_bytes
+        if hasattr(_ts, "_load_from_bytes"):
+            _original = _ts._load_from_bytes
 
-        def _cpu_load_from_bytes(b):
-            return torch.load(io.BytesIO(b), map_location="cpu", weights_only=False)
+            def _cpu_load_from_bytes(b):
+                # Use a temporary flag or restore original to avoid infinite recursion
+                # since torch.load itself calls _load_from_bytes
+                _ts._load_from_bytes = _original
+                try:
+                    return torch.load(io.BytesIO(b), map_location="cpu", weights_only=False)
+                finally:
+                    _ts._load_from_bytes = _cpu_load_from_bytes
 
-        _ts._load_from_bytes = _cpu_load_from_bytes
-        try:
-            return pickle.loads(data)
-        finally:
-            _ts._load_from_bytes = _original
+            _ts._load_from_bytes = _cpu_load_from_bytes
+            try:
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+                    return pickle.loads(data)
+            finally:
+                _ts._load_from_bytes = _original
+        else:
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+                return pickle.loads(data)
 
     try:
         with gzip.open(path, "rb") as f:
@@ -105,8 +195,8 @@ class TrainedModel:
         
         if self.model_type == "mlp":
             self._load_mlp()
-        elif self.model_type == "random":
-            self._load_random()
+        elif self.model_type == "randomized":
+            self._load_randomized()
         else:
             raise ValueError(f"Unknown model type: {model_type}")
         
@@ -128,17 +218,18 @@ class TrainedModel:
         if (self.model_dir / "best_model.pt").exists():
             return "mlp"
         
-        # Check if random model exists
+        # Check if randomized model exists
         if (self.model_dir / "model.pkl").exists():
-            return "random"
+            return "randomized"
         
         # Check config field
         if "model_type" in self.config:
-            return self.config["model_type"]
+            mtype = self.config["model_type"].lower()
+            return "randomized" if mtype == "random" else mtype
         
         if "model_name" in self.config:
-            # Random models (ELM, dRVFL, etc.)
-            return "random"
+            # Randomized models (ELM, dRVFL, etc.)
+            return "randomized"
         
         raise ValueError(f"Cannot detect model type in {self.model_dir}")
 
@@ -165,16 +256,16 @@ class TrainedModel:
         self.model.to(self.device)
         self.model.eval()
 
-    def _load_random(self):
-        """Load random model (ELM, RVFL, etc.)."""
+    def _load_randomized(self):
+        """Load randomized model (ELM, RVFL, etc.)."""
         model_path = self.model_dir / "model.pkl"
         if not model_path.exists():
-            raise FileNotFoundError(f"Random model not found: {model_path}")
+            raise FileNotFoundError(f"Randomized model not found: {model_path}")
         
         self.model = _load_pickle(model_path)
-        self._relocate_random_to_device()
+        self._relocate_randomized_to_device()
 
-    def _relocate_random_to_device(self):
+    def _relocate_randomized_to_device(self):
         """Ensure a deserialized random model's tensors live on ``self.device``.
 
         When a model is trained on CUDA and loaded on a CPU-only machine,
@@ -189,7 +280,7 @@ class TrainedModel:
                 return obj.to(target)
             return obj
 
-        # Fix top-level model(s) — random wrappers may contain sub-models
+        # Fix top-level model(s) — randomized wrappers may contain sub-models
         models_to_fix = [self.model]
         if hasattr(self.model, "models"):
             models_to_fix.extend(self.model.models)
@@ -275,19 +366,18 @@ class TrainedModel:
                 y_pred = self.model(X_torch)
             y_pred = y_pred.cpu().numpy()
         else:
-            # Random model prediction
+            # Randomized model prediction
             y_pred = self.model.predict(X)
             if len(y_pred.shape) == 1:
                 y_pred = y_pred.reshape(-1, 1)
         
         # Apply inverse transformations
-        if inverse_transform and self.label_scaler is not None:
-            y_pred = self.label_scaler.inverse_transform(y_pred)
-        
-        if apply_log:
-            y_pred = np.expm1(y_pred)
-        
-        return y_pred
+        return postprocess_predictions(
+            y_pred,
+            label_scaler=self.label_scaler,
+            inverse_transform=inverse_transform,
+            apply_expm1=apply_log
+        )
 
     def get_config(self, key: Optional[str] = None) -> Union[Dict, Any]:
         """

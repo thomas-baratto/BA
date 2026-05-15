@@ -3,7 +3,7 @@ name = "ba-thermal-plume"
 version = "1.0.0"
 description = "Machine learning models for thermal plume prediction (Bachelor Thesis)"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
     {name = "Thomas Baratto", email = "st168502@stud.uni-stuttgart.de"},
@@ -27,8 +27,11 @@ dependencies = [
 requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+py-modules = ["predict"]
+
 [tool.setuptools.packages.find]
-include = ["core*", "config*", "scripts*"]
+include = ["core*", "config*"]
 
 [tool.setuptools.package-data]
 "*" = [
@@ -36,7 +39,7 @@ include = ["core*", "config*", "scripts*"]
 ]
 
 [project.scripts]
-ba-predict = "scripts.deployment.predict:main"
+ba-predict = "predict:main"
 
 [project.optional-dependencies]
 dev = ["pytest"]
@@ -52,7 +55,6 @@ addopts = """
     -v
     --tb=short
     --strict-markers
-    --disable-warnings
 """
 markers = [
     "fast: marks a fast smoke/unit test subset",

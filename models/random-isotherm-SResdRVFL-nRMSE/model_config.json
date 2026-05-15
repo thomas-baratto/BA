@@ -1,0 +1,27 @@
+{
+  "model_type": "random",
+  "model_name": "SResdRVFL",
+  "dataset": "isotherm",
+  "input_size": 9,
+  "output_size": 3,
+  "feature_scaler_type": "robust",
+  "label_scaler_type": "robust",
+  "use_log": false,
+  "use_area_root": true,
+  "feature_names": [
+    "Flow_well",
+    "Temp_diff",
+    "kW_well",
+    "Hydr_gradient",
+    "Hydr_conductivity",
+    "Aqu_thickness",
+    "Long_dispersivity",
+    "Trans_dispersivity",
+    "Isotherm"
+  ],
+  "label_names": [
+    "Area",
+    "Iso_distance",
+    "Iso_width"
+  ]
+}

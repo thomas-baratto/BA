@@ -1,10 +1,8 @@
 .venv/
+.DS_Store
 
 # Editor and OS files
 .vscode/
-.DS_Store
-
-# AI assistant config files
 .claude/
 CLAUDE.md
 
@@ -17,46 +15,31 @@ dist/
 build/
 .pytest_cache/
 
+# Experiment outputs and logs
+runs/
+slurm_jobs/
+outputs/
+outputs_docker/
+
+# Models are distributed via DaRUS, only JSON configs and md filesare tracked for documentation
+models/**/*.pt
+models/**/*.pkl
+models/**/*.npz
+models/**/plots/
+models/**/stats/
+
+
+
 # LaTeX build artifacts
 *.aux
 *.log
 *.fls
 *.fdb_latexmk
 *.synctex.gz
-*.synctex(busy)
 texput.log
 
-# Experiment outputs and logs
-runs/
-slurm_jobs/
-
-# DaRUS upload staging (build output of scripts/package_darus.sh)
-darus_upload/
-
-# Artifacts — ignore bulk experiment data, but track model configs (JSON only)
-artifacts/*
-!artifacts/models/
-artifacts/models/*
-!artifacts/models/mlp/
-!artifacts/models/random/
-!artifacts/models/baseline/
-
-# Model binaries are distributed via DaRUS (DOI: 10.18419/DARUS-5815), not git.
-# Only JSON configs and manifests are tracked for documentation.
-artifacts/models/**/*.pt
-artifacts/models/**/*.pkl
-artifacts/models/**/*.npz
-
-# TensorBoard/event logs (inside tracked artifact dirs too)
-events.out.tfevents.*
-
-# Thesis description (local only)
-Ausschreibung.pdf
-
-#plots just save the summary .md files
+# Plots
 *.png
 *.pdf
-
-# Keep thesis plot exports under docs/plots versioned.
 !docs/plots/**/*.png
 !docs/plots/**/*.pdf

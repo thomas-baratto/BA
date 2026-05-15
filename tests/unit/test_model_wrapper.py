@@ -97,7 +97,7 @@ class TestTrainedModelRandom:
 
     def test_load_and_predict(self, random_artifact_dir: Path):
         tm = TrainedModel(str(random_artifact_dir))
-        assert tm.model_type == "random"
+        assert tm.model_type == "randomized"
 
         X = np.random.randn(5, 3).astype(np.float32)
         y = tm.predict(X, inverse_transform=False)

@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from core.model_wrapper import TrainedModel
+from core.model_wrapper import TrainedModel, postprocess_predictions, preprocess_features
 
 
 def load_model_and_scalers(
@@ -41,74 +41,7 @@ def load_model_and_scalers(
     )
 
 
-def preprocess_features(
-    X: Union[np.ndarray, pd.DataFrame],
-    feature_scaler,
-    apply_log: bool = True,
-) -> np.ndarray:
-    """
-    Preprocess input features for model prediction.
-    
-    Args:
-        X: Input features, shape (n_samples, n_features) or DataFrame
-        feature_scaler: Fitted feature scaler (e.g., MinMaxScaler)
-        apply_log: Whether to apply log1p transform first
-    
-    Returns:
-        Preprocessed features ready for model input
-    """
-    # Convert DataFrame to numpy
-    if isinstance(X, pd.DataFrame):
-        X = X.values
-    
-    # Ensure 2D
-    if len(X.shape) == 1:
-        X = X.reshape(1, -1)
-    
-    # Apply log transform
-    if apply_log:
-        X = np.log1p(X)
-    
-    # Apply feature scaling
-    if feature_scaler is not None:
-        X = feature_scaler.transform(X)
-    
-    return X
 
-
-def postprocess_predictions(
-    y_pred: np.ndarray,
-    label_scaler,
-    inverse_transform: bool = True,
-    apply_expm1: bool = True,
-) -> np.ndarray:
-    """
-    Postprocess model predictions to original scale and units.
-    
-    Args:
-        y_pred: Raw predictions from model
-        label_scaler: Fitted label scaler
-        inverse_transform: Whether to apply inverse scaling
-        apply_expm1: Whether to apply inverse log transform (expm1)
-    
-    Returns:
-        Predictions in original units
-    """
-    # Ensure 2D
-    if len(y_pred.shape) == 1:
-        y_pred = y_pred.reshape(-1, 1)
-    
-    # Apply inverse scaling
-    if inverse_transform and label_scaler is not None:
-        y_pred = label_scaler.inverse_transform(y_pred)
-    
-    # Apply inverse log transform
-    if apply_expm1:
-        # Clip to prevent extreme negative values that would cause issues with expm1
-        y_pred = np.maximum(y_pred, -10)
-        y_pred = np.expm1(y_pred)
-    
-    return y_pred
 
 
 def make_predictions(

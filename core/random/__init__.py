@@ -1,4 +1,4 @@
-"""Public exports for random-network model implementations."""
+"""Public exports for randomized-network model implementations."""
 
 from .ELM import ELM
 from .SResdRVFL import SResdRVFL

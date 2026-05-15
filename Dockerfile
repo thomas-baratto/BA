@@ -1,25 +1,36 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    BA_ARTIFACTS_ROOT=/app
 
 WORKDIR /app
 
-# Install CPU-only dependencies (no GPU needed for inference)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/cpu
+# Install system dependencies if needed (none currently required for inference)
+# RUN apt-get update && apt-get install -y --no-install-recommends gcc && rm -rf /var/lib/apt/lists/*
 
-# Copy inference-only project files
-COPY core/__init__.py core/model.py core/model_wrapper.py core/inference.py  core/
-COPY core/random/ core/random/
-COPY config/__init__.py config/datasets.py config/
-COPY scripts/__init__.py scripts/
-COPY scripts/deployment/__init__.py scripts/deployment/predict.py scripts/deployment/
-COPY artifacts/models/ artifacts/models/
-COPY sample_cone.csv sample_isotherm.csv ./
+# Install Python dependencies
+# We install the package dependencies first to leverage Docker layer caching
 COPY pyproject.toml README.md ./
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir . --extra-index-url https://download.pytorch.org/whl/cpu
 
-# Install package (no-deps: requirements already installed above)
-RUN pip install --no-cache-dir --no-deps -e .
+# Copy project files
+COPY predict.py ./
+COPY core/ core/
+COPY config/ config/
+COPY models/ models/
+COPY data/ data/
 
-# Default entrypoint
+# Final install to ensure entrypoints and latest changes are registered
+RUN pip install --no-cache-dir --no-deps .
+
+# Create directory for outputs
+RUN mkdir -p /app/outputs
+
+# Default entrypoint using the registered ba-predict command
 ENTRYPOINT ["ba-predict"]
+
+# Default to showing help
 CMD ["--help"]

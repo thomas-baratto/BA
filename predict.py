@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Unified prediction CLI for thermal plume models.
 
-Predicts isotherm or cone values from input CSV using trained MLP or random models.
+Predicts isotherm or cone values from input CSV using trained MLP or randomized models (RVFL).
+
+The dataset type (isotherm/cone) is automatically detected from CSV headers if omitted.
 
 Usage:
-  # Predict isotherm using MLP
-  python scripts/deployment/predict.py --input data/new_samples.csv --dataset isotherm --model mlp
+  # Predict with auto-detection (recommended)
+  ba-predict --input data/sample_cone.csv
 
-  # Predict cone using random model (ELM)
-  python scripts/deployment/predict.py --input data/new_samples.csv --dataset cone --model random
+  # Explicitly specify model and dataset
+  ba-predict --input data/sample_isotherm.csv --dataset isotherm --model randomized:nRMSE
 
   # Specify output location
-  python scripts/deployment/predict.py --input data.csv --dataset isotherm --model mlp --output results/
+  ba-predict --input data.csv --output results/
 
 Examples:
   # Isotherm prediction - expects columns:
@@ -25,8 +27,8 @@ Examples:
 """
 
 import argparse
-import os
 import sys
+from typing import Optional
 from datetime import datetime
 from pathlib import Path
 
@@ -34,35 +36,75 @@ import numpy as np
 import pandas as pd
 
 # Allow running as both a script (PYTHONPATH=.) and installed package (pip install .)
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS
-from core.preprocessing import compute_engineered_features
+from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS, detect_dataset_type
+
 
 # Feature columns for each dataset (used for validation) - imported from centralized config
 DATASET_FEATURES = {dataset: cfg["features"] for dataset, cfg in DATASET_CONFIGS.items()}
 from core.model_wrapper import TrainedModel
 from core.inference import make_predictions
 
-def find_model_dir(base_dir: str) -> str:
+def find_model_dir(base_dir: str, expected_type: Optional[str] = None, expected_dataset: Optional[str] = None, variant_hint: Optional[str] = None) -> str:
     """Find model directory containing model_config.json.
 
-    Checks base_dir itself first, then looks for subdirectories
-    (e.g. timestamped run directories).
+    Searches recursively but ignores hidden directories for performance.
+    If expected_type/dataset/variant are provided, it verifies them in the config or path.
     """
-    import glob
+    import json
+    base_path = Path(base_dir)
+    
+    # Search recursively for model_config.json, skipping hidden directories
+    for path in base_path.rglob("model_config.json"):
+        if any(part.startswith('.') for part in path.parts):
+            continue
+        
+        try:
+            with open(path, "r") as f:
+                cfg = json.load(f)
+            
+            # 1. Check Model Type
+            actual_type = cfg.get("model_type")
+            if actual_type is None:
+                if "nr_hidden_layers" in cfg:
+                    actual_type = "mlp"
+            
+            if actual_type == "random":
+                actual_type = "randomized"
+            
+            if expected_type and actual_type != expected_type:
+                continue
 
-    # Check if the base directory itself contains model artifacts
-    if os.path.isfile(os.path.join(base_dir, "model_config.json")):
-        return base_dir
+            # 2. Check Dataset
+            actual_dataset = cfg.get("dataset")
+            if actual_dataset is None:
+                input_size = cfg.get("input_size")
+                if input_size == 9:
+                    actual_dataset = "isotherm"
+                elif input_size == 4:
+                    actual_dataset = "cone"
+            
+            if expected_dataset and actual_dataset != expected_dataset:
+                continue
 
-    # Otherwise look for subdirectories with model artifacts
-    pattern = os.path.join(base_dir, "*", "model_config.json")
-    matches = sorted(glob.glob(pattern))
-    if not matches:
-        raise FileNotFoundError(f"No model found in: {base_dir}")
-    # Return parent dir of most recent match
-    return os.path.dirname(matches[-1])
+            # 3. Check Variant Hint (e.g. nRMSE, KGE, or a specific model name)
+            if variant_hint:
+                vh = variant_hint.lower()
+                # Check config keys
+                config_str = json.dumps(cfg).lower()
+                # Check path parts (folder names)
+                path_str = str(path).lower()
+                
+                if vh not in config_str and vh not in path_str:
+                    continue
+
+            return str(path.parent)
+
+        except Exception:
+            continue
+
+    raise FileNotFoundError(f"No model artifacts found in: {base_dir}")
 
 
 def predict_with_model(trained_model: TrainedModel, config: dict, features: np.ndarray) -> np.ndarray:
@@ -84,7 +126,6 @@ def predict_with_model(trained_model: TrainedModel, config: dict, features: np.n
 
 def generate_report(
     input_file: str,
-    output_dir: str,
     dataset: str,
     model_type: str,
     model_dir: str,
@@ -92,50 +133,87 @@ def generate_report(
     df_input: pd.DataFrame,
     df_predictions: pd.DataFrame,
 ) -> str:
-    """Generate markdown report with prediction details."""
+    """Generate professional markdown report with prediction details."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    report = f"""# Prediction Report
+    # Determine architecture name
+    arch = config.get('model_name', 'MLP')
+    if model_type == 'mlp':
+        arch = f"MLP ({config.get('nr_neurons', 128)} neurons, {config.get('nr_hidden_layers', 5)} layers)"
+    
+    report = f"""# Inference Report - {dataset.capitalize()} Dataset
 
-**Generated:** {timestamp}
+**Run Date:** {timestamp}
+**Source File:** `{input_file}`
 
-## Configuration
+---
+
+## 🛠 Model Configuration
 
 | Parameter | Value |
-|-----------|-------|
-| Input File | `{input_file}` |
-| Dataset Type | {dataset} |
-| Model Type | {model_type.upper()} |
-| Model Directory | `{model_dir}` |
-| Samples | {len(df_predictions)} |
+|:---|:---|
+| **Architecture** | {arch} |
+| **Model Family** | {model_type.upper()} |
+| **Discovery Path** | `{model_dir}` |
+| **Sample Count** | {len(df_predictions)} |
 
-## Model Details
+### Preprocessing Settings
+- **Log Transform applied:** `{config.get('use_log', False)}`
+- **Area square-root used:** `{config.get('use_area_root', False)}`
+- **Feature Scaler:** `{config.get('feature_scaler_type', 'robust')}`
 
-- **Model Name:** {config.get('model_name', config.get('activation_name', 'MLP'))}
-- **Features ({len(config.get('feature_names', []))}):** {', '.join(config.get('feature_names', []))}
-- **Outputs ({len(config.get('label_names', []))}):** {', '.join(config.get('label_names', []))}
-- **Log Transform:** {config.get('use_log', False)}
+---
 
-## Input Summary
+## 📊 Statistics Summary
 
+### Input Features
 {df_input.describe().round(4).to_markdown()}
 
-## Prediction Summary
-
+### Predicted Values
 {df_predictions.describe().round(4).to_markdown()}
 
-## Output Files
+---
 
-- `predictions.csv` - Raw prediction values
-- `report.md` - This report
+## 📂 Output Files
 
-## Usage Notes
+All results are saved in the output directory:
+- `predictions.csv`: Full prediction matrix in physical units.
+- `report.md`: This summary report.
 
-- Predictions are in physical units (not scaled/transformed)
-- For isotherm: Area (m²), Iso_distance (m), Iso_width (m)
-- For cone: Cone (m)
+## 💡 Technical Notes
+
+- **Units:** All outputs are restored to their physical units (m, m², etc.) and are NOT scaled.
+- **Isotherm targets:** Area (m²), Iso_distance (m), Iso_width (m)
+- **Cone targets:** Cone (m)
+- **Inference Hardware:** CPU (portability mode enabled)
 """
     return report
+
+
+def run_tests():
+    """Run pytest on the local tests directory."""
+    try:
+        import pytest
+        print("\n" + "="*60)
+        print("RUNNING VERIFICATION SUITE")
+        print("="*60 + "\n")
+        exit_code = pytest.main(["tests", "-v"])
+        if exit_code == 0:
+            print("\n" + "="*60)
+            print("VERIFICATION SUCCESSFUL: All tests passed!")
+            print("="*60 + "\n")
+        else:
+            print("\n" + "!"*60)
+            print(f"VERIFICATION FAILED: Exit code {exit_code}")
+            print("Please check your environment and dependencies.")
+            print("!"*60 + "\n")
+        return exit_code
+    except ImportError:
+        print("\n" + "!"*60)
+        print("Error: 'pytest' not found.")
+        print("Please install development dependencies: pip install '.[dev]'")
+        print("!"*60 + "\n")
+        return 1
 
 
 def main():
@@ -145,28 +223,25 @@ def main():
         epilog=__doc__
     )
     parser.add_argument(
-        "--input", "-i",
-        type=str,
-        required=True,
-        help="Input CSV file with feature columns"
+        "--test", action="store_true", help="Run the test suite to verify installation"
     )
     parser.add_argument(
-        "--dataset", "-d",
+        "--input", "-i",
         type=str,
-        required=True,
-        choices=["isotherm", "cone"],
-        help="Dataset type (determines features and outputs)"
+        required=False,
+        help="Input CSV file with feature columns"
     )
+    parser.add_argument("--dataset", "-d", choices=["isotherm", "cone"], help="Dataset type (auto-detected if omitted)")
     parser.add_argument(
         "--model", "-m",
         type=str,
         default="mlp",
-        choices=["mlp", "random", "random:nRMSE", "random:KGE"],
+        choices=["mlp", "randomized", "randomized:nRMSE", "randomized:KGE"],
         help=(
             "Model type to use (default: mlp). "
-            "'random' uses the Pareto-frontier winner. "
-            "For isotherm, 'random:nRMSE' and 'random:KGE' select different winners. "
-            "For cone, all random variants use the same model."
+            "'randomized' uses an optimized randomized neural network (RVFL). "
+            "For isotherm, 'randomized:nRMSE' and 'randomized:KGE' select models optimized for different metrics. "
+            "For cone, all randomized variants use the same model."
         ),
     )
     parser.add_argument(
@@ -188,8 +263,15 @@ def main():
     )
     args = parser.parse_args()
 
-    # Validate input file
-    if not os.path.exists(args.input):
+    # Run tests and exit if requested
+    if args.test:
+        sys.exit(run_tests())
+
+    # Validate input file (required for prediction)
+    if not args.input:
+        parser.error("the following arguments are required: --input/-i (unless --test is used)")
+
+    if not Path(args.input).exists():
         print(f"Error: Input file not found: {args.input}")
         sys.exit(1)
 
@@ -198,23 +280,45 @@ def main():
     df_input = pd.read_csv(args.input)
     print(f"  Loaded {len(df_input)} samples")
 
+    # Auto-detect dataset if not provided
+    dataset = args.dataset
+    if not dataset:
+        print("Auto-detecting dataset type...")
+        dataset = detect_dataset_type(args.input)
+        if dataset:
+            print(f"  Detected dataset: {dataset}")
+        else:
+            print(f"Error: Could not automatically detect dataset type for {args.input}")
+            print("Please specify manually using --dataset {isotherm,cone}")
+            sys.exit(1)
+
     # Find model directory
     if args.model_dir:
         model_dir = args.model_dir
     else:
         model_key = args.model
-        dataset_dirs = DEFAULT_MODEL_DIRS[args.dataset]
-        # Fall back to "random" if the specific variant isn't available
-        # (e.g. cone has only one random winner)
-        if model_key not in dataset_dirs and model_key.startswith("random"):
-            model_key = "random"
+        dataset_dirs = DEFAULT_MODEL_DIRS[dataset]
+        # Fall back to "randomized" if the specific variant isn't available
+        # (e.g. cone has only one optimized randomized model)
+        if model_key not in dataset_dirs and model_key.startswith("randomized"):
+            model_key = "randomized"
         base_dir = dataset_dirs[model_key]
+        # Extract variant hint if present (e.g. "randomized:nRMSE" -> "nRMSE")
+        parts = model_key.split(":")
+        expected_type = parts[0]
+        variant_hint = parts[1] if len(parts) > 1 else None
+
         try:
-            model_dir = find_model_dir(base_dir)
+            model_dir = find_model_dir(
+                base_dir, 
+                expected_type=expected_type,
+                expected_dataset=dataset,
+                variant_hint=variant_hint
+            )
         except FileNotFoundError:
             print(f"Error: No model found in {base_dir}")
-            print(f"\nMake sure you have trained the {args.model} model for {args.dataset}.")
-            print(f"Run: sbatch scripts/slurm/train_mlp_metrics.sbatch")
+            print(f"\nMake sure the DaRUS archive is fully extracted and the")
+            print(f"models/ folder is present next to predict.py.")
             sys.exit(1)
 
     print(f"Using model: {model_dir}")
@@ -228,14 +332,13 @@ def main():
         sys.exit(1)
 
     # Get feature and label names
-    feature_names = config.get("feature_names", DATASET_FEATURES[args.dataset])
+    feature_names = config.get("feature_names", DATASET_FEATURES[dataset])
     label_names = config.get("label_names", [])
 
     print(f"  Features: {feature_names}")
     print(f"  Outputs: {label_names}")
 
-    # Auto-compute engineered features if needed
-    df_input = compute_engineered_features(df_input, feature_names)
+
 
     # Validate input columns
     missing_cols = set(feature_names) - set(df_input.columns)
@@ -259,13 +362,14 @@ def main():
     if args.output:
         output_dir = args.output
     else:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_dir = f"predictions_{args.dataset}_{timestamp}"
-
-    os.makedirs(output_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
+        output_dir = f"outputs/{dataset}_{trained_model.model_type}_{timestamp}"
+    
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
 
     # Save predictions
-    predictions_file = os.path.join(output_dir, "predictions.csv")
+    predictions_file = out_path / "predictions.csv"
     df_predictions.to_csv(predictions_file, index=False)
     print(f"\nPredictions saved: {predictions_file}")
 
@@ -273,15 +377,14 @@ def main():
     if not args.no_report:
         report = generate_report(
             input_file=args.input,
-            output_dir=output_dir,
-            dataset=args.dataset,
+            dataset=dataset,
             model_type=args.model,
             model_dir=model_dir,
             config=config,
             df_input=df_input[feature_names],
             df_predictions=df_predictions,
         )
-        report_file = os.path.join(output_dir, "report.md")
+        report_file = out_path / "report.md"
         with open(report_file, "w") as f:
             f.write(report)
         print(f"Report saved: {report_file}")

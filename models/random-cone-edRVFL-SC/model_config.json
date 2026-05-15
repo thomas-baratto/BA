@@ -1,0 +1,20 @@
+{
+  "model_type": "random",
+  "model_name": "edRVFL-SC",
+  "dataset": "cone",
+  "input_size": 4,
+  "output_size": 1,
+  "feature_scaler_type": "robust",
+  "label_scaler_type": "robust",
+  "use_log": false,
+  "use_area_root": false,
+  "feature_names": [
+    "Flow_well",
+    "Hydr_gradient",
+    "Hydr_conductivity",
+    "Aqu_thickness"
+  ],
+  "label_names": [
+    "Cone"
+  ]
+}
