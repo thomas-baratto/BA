@@ -63,7 +63,7 @@ class TestTrainedModelRandom:
 
     @pytest.fixture()
     def random_artifact_dir(self, tmp_path: Path) -> Path:
-        from core.random.ELM import ELM
+        from core.randomized.ELM import ELM
         from sklearn.preprocessing import MinMaxScaler
 
         d = tmp_path / "random_model"
@@ -78,7 +78,7 @@ class TestTrainedModelRandom:
             pickle.dump(elm, f)
 
         config = {
-            "model_type": "random",
+            "model_type": "randomized",
             "model_name": "ELM",
             "input_size": 3,
             "output_size": 1,
@@ -103,3 +103,41 @@ class TestTrainedModelRandom:
         y = tm.predict(X, inverse_transform=False)
         assert y.shape == (5, 1)
         assert np.isfinite(y).all()
+
+
+def test_auto_extract_zip_files(tmp_path: Path):
+    """Test that auto_extract_zip_files automatically detects and extracts zipped model files."""
+    import zipfile
+    from core.model_wrapper import auto_extract_zip_files
+
+    # 1. Create a dummy model directory with model_config.json
+    model_dir = tmp_path / "test-model"
+    model_dir.mkdir()
+    config_file = model_dir / "model_config.json"
+    with open(config_file, "w") as f:
+        json.dump({"model_type": "mlp"}, f)
+
+    # 2. Package it into a zip file inside the tmp_path directory
+    zip_file_path = tmp_path / "test-model-zipped.zip"
+    with zipfile.ZipFile(zip_file_path, "w") as zip_ref:
+        # Save config file inside a nested folder matching zip name
+        zip_ref.write(config_file, arcname="test-model-zipped/model_config.json")
+
+    # 3. Delete the original dummy directory so only the zip exists
+    import shutil
+    shutil.rmtree(model_dir)
+
+    # Verify original folder doesn't exist
+    extracted_dir = tmp_path / "test-model-zipped"
+    assert not extracted_dir.exists()
+
+    # 4. Trigger auto-extraction
+    auto_extract_zip_files(tmp_path)
+
+    # 5. Assert that the directory was automatically unzipped and contains the config file
+    assert extracted_dir.exists()
+    assert (extracted_dir / "model_config.json").exists()
+    with open(extracted_dir / "model_config.json", "r") as f:
+        cfg = json.load(f)
+    assert cfg["model_type"] == "mlp"
+

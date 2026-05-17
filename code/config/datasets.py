@@ -1,15 +1,17 @@
 """Centralized dataset configuration - single source of truth."""
 
-import os
 from pathlib import Path
 
 # Project root — works both for PYTHONPATH=. usage and pip-installed packages.
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-# Root directory for trained model artifacts and Optuna studies.
-# Override via environment variable BA_ARTIFACTS_ROOT if needed.
-_artifacts_env = os.environ.get("BA_ARTIFACTS_ROOT")
-ARTIFACTS_ROOT = Path(_artifacts_env) if _artifacts_env else _PROJECT_ROOT / "artifacts"
+# In pip-installed environments, _PROJECT_ROOT resides in site-packages which does not contain the models/ directory.
+# We fall back to the current working directory or standard locations (/app) if models/ is not found inside _PROJECT_ROOT.
+if not (_PROJECT_ROOT / "models").is_dir():
+    if Path("models").is_dir():
+        _PROJECT_ROOT = Path.cwd()
+    elif Path("/app/models").is_dir():
+        _PROJECT_ROOT = Path("/app")
 
 # Root directory for data files.
 _DATA_ROOT = _PROJECT_ROOT / "data"
@@ -24,18 +26,18 @@ DATASET_CONFIGS = {
         ],
         "labels": ["Area", "Iso_distance", "Iso_width"],
         "models": {
-            "mlp": ".",
-            "randomized": ".",
-            "randomized:nRMSE": ".",
-            "randomized:KGE": ".",
+            "mlp": str(_PROJECT_ROOT),
+            "randomized": str(_PROJECT_ROOT),
+            "randomized:nRMSE": str(_PROJECT_ROOT),
+            "randomized:KGE": str(_PROJECT_ROOT),
         }
     },
     "cone": {
         "features": ["Flow_well", "Hydr_gradient", "Hydr_conductivity", "Aqu_thickness"],
         "labels": ["Cone"],
         "models": {
-            "mlp": ".",
-            "randomized": ".",
+            "mlp": str(_PROJECT_ROOT),
+            "randomized": str(_PROJECT_ROOT),
         }
     },
 }

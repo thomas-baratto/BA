@@ -1,4 +1,4 @@
-"""Tests for core/random/ submodules used at inference time.
+"""Tests for core/randomized/ submodules used at inference time.
 
 Covers the randomized network family that TrainedModel can load:
 - utils: torch_activation, ensure_tensor
@@ -19,14 +19,14 @@ import numpy as np
 import pytest
 import torch
 
-from core.random.utils import torch_activation, ensure_tensor
-from core.random.RBF import RBFHiddenLayer
-from core.random.ELM import ELM
-from core.random.dRVFL import dRVFL
-from core.random.edRVFL import edRVFL
-from core.random.edRVFL_SC import edRVFL_SC
-from core.random.SResdRVFL import SResdRVFL
-from core.random.esc_edRVFL import esc_edRVFL
+from core.randomized.utils import torch_activation, ensure_tensor
+from core.randomized.RBF import RBFHiddenLayer
+from core.randomized.ELM import ELM
+from core.randomized.dRVFL import dRVFL
+from core.randomized.edRVFL import edRVFL
+from core.randomized.edRVFL_SC import edRVFL_SC
+from core.randomized.SResdRVFL import SResdRVFL
+from core.randomized.esc_edRVFL import esc_edRVFL
 
 
 # ---------------------------------------------------------------------------

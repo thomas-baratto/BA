@@ -1,5 +1,5 @@
 {
-  "model_type": "random",
+  "model_type": "randomized",
   "model_name": "edRVFL-SC",
   "dataset": "cone",
   "input_size": 4,

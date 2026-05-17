@@ -6,40 +6,49 @@ Predict thermal plume parameters (isotherm geometry or depression cone size) fro
 
 ## 1. Quick Start
 
-### Installation
+### 1. Extract Archive (If downloaded from DaRUS)
+If you downloaded this project as a compressed research archive from **DaRUS**, the source code will be packaged as `code.zip`. First, extract it:
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install .
+unzip code.zip
 ```
+*(Note: Pretrained model files under `models/` do not need to be unzipped manually; they are automatically extracted on-the-fly when you run predictions!)*
 
-### Model Setup
-If you downloaded this archive from DaRUS, the model artifacts (found in the `models/` directory) might be individually zipped. **You must unzip the model folders** before use:
+### 2. Installation
+Set up your virtual environment and install the package:
 ```bash
-# Example: Ensure the directory structure looks like this:
-# models/
-# └── mlp-cone/
-#     ├── model_config.json
-#     └── best_model.pt
+python3 -m venv .venv && source .venv/bin/activate && pip install ./code
 ```
 
 ### Usage
 The `ba-predict` command automatically detects the dataset type from your CSV headers.
+
+Run prediction using auto-detection (recommended):
 ```bash
-# Predict using auto-detection (recommended)
 ba-predict -i data/sample_cone.csv
+```
 
-# Predict using a specific architecture
+Run prediction with a specific model variant:
+```bash
 ba-predict -i data/sample_isotherm.csv -m randomized
+```
 
-# Run verification suite (verify installation & model integrity)
+### Verify Installation
+Run the automated validation suite to verify the package installation and model weights integrity:
+```bash
 ba-predict --test
 ```
 
 ### Docker Alternative
-If you prefer not to install Python dependencies locally:
+If you prefer not to install Python dependencies locally, you can run the entire inference suite in Docker. 
+
+> [!IMPORTANT]
+> You **must** run these commands from the **repository root directory** (which contains the `models/` and `data/` directories) so the build context has access to all weights and inputs:
+
 ```bash
-docker build -t ba-predict .
+# Build the image using the nested Dockerfile
+docker build -t ba-predict -f code/Dockerfile .
+
+# Run predictions by mounting the current directory
 docker run --rm -v $(pwd):/app/host ba-predict -i /app/host/data/sample_cone.csv -o /app/host/outputs/
 ```
 
@@ -60,12 +69,13 @@ This repository contains the inference engine and pre-trained artifacts for the 
 .
 ├── models/             # Pre-trained MLP and Randomized weights
 ├── data/               # Sample inputs and full simulation datasets
-├── core/               # Unified inference logic
-├── config/             # Dataset metadata and column mappings
-├── tests/              # Unit and validation test suites
-├── predict.py          # Main CLI entry point
-├── pyproject.toml      # Package configuration
-└── Dockerfile          # Containerized environment
+└── code/               # Software and packaging workspace
+    ├── pyproject.toml  # Package configuration
+    ├── Dockerfile      # Containerized environment
+    ├── predict.py      # Main CLI entry point
+    ├── core/           # Unified inference logic
+    ├── config/         # Dataset metadata and column mappings
+    └── tests/          # Unit and validation test suites
 ```
 
 ---

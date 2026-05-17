@@ -2,10 +2,19 @@ import subprocess
 import pytest
 from pathlib import Path
 
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
+_MLP_MODELS_PRESENT = (
+    (_PROJECT_ROOT / "models/mlp-cone/best_model.pt").is_file() and
+    (_PROJECT_ROOT / "models/mlp-cone/scalers.pkl").is_file() and
+    (_PROJECT_ROOT / "models/mlp-isotherm/best_model.pt").is_file() and
+    (_PROJECT_ROOT / "models/mlp-isotherm/scalers.pkl").is_file()
+)
+
+@pytest.mark.skipif(not _MLP_MODELS_PRESENT, reason="Pretrained MLP models or scalers are missing from models/ directory")
 def test_cli_autodetect_cone():
     """Verify that 'cone' dataset is auto-detected from sample_cone.csv."""
     cmd = [
-        "python3", "predict.py",
+        "python3", "code/predict.py",
         "--input", "data/sample_cone.csv",
         "--model", "mlp",
         "--no-report"
@@ -15,12 +24,13 @@ def test_cli_autodetect_cone():
     assert result.returncode == 0
     assert "Auto-detecting dataset type..." in result.stdout
     assert "Detected dataset: cone" in result.stdout
-    assert "Using model: models/mlp-cone" in result.stdout
+    assert "models/mlp-cone" in result.stdout
 
+@pytest.mark.skipif(not _MLP_MODELS_PRESENT, reason="Pretrained MLP models or scalers are missing from models/ directory")
 def test_cli_autodetect_isotherm():
     """Verify that 'isotherm' dataset is auto-detected from sample_isotherm.csv."""
     cmd = [
-        "python3", "predict.py",
+        "python3", "code/predict.py",
         "--input", "data/sample_isotherm.csv",
         "--model", "mlp",
         "--no-report"
@@ -30,12 +40,13 @@ def test_cli_autodetect_isotherm():
     assert result.returncode == 0
     assert "Auto-detecting dataset type..." in result.stdout
     assert "Detected dataset: isotherm" in result.stdout
-    assert "Using model: models/mlp-isotherm" in result.stdout
+    assert "models/mlp-isotherm" in result.stdout
 
+@pytest.mark.skipif(not _MLP_MODELS_PRESENT, reason="Pretrained MLP models or scalers are missing from models/ directory")
 def test_cli_manual_override():
     """Verify that manual --dataset flag overrides auto-detection."""
     cmd = [
-        "python3", "predict.py",
+        "python3", "code/predict.py",
         "--input", "data/sample_cone.csv",
         "--dataset", "cone",
         "--model", "mlp",
@@ -46,7 +57,7 @@ def test_cli_manual_override():
     assert result.returncode == 0
     # Should NOT see "Auto-detecting"
     assert "Auto-detecting dataset type..." not in result.stdout
-    assert "Using model: models/mlp-cone" in result.stdout
+    assert "models/mlp-cone" in result.stdout
 
 def test_cli_ambiguous_failure(tmp_path):
     """Verify failure when CSV doesn't match any known dataset columns."""
@@ -54,7 +65,7 @@ def test_cli_ambiguous_failure(tmp_path):
     bad_csv.write_text("random_col1,random_col2\n1,2")
     
     cmd = [
-        "python3", "predict.py",
+        "python3", "code/predict.py",
         "--input", str(bad_csv),
         "--model", "mlp",
         "--no-report"

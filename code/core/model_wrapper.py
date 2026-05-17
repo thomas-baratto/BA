@@ -25,8 +25,41 @@ from sklearn.exceptions import InconsistentVersionWarning
 from core.model import NeuralNetwork
 
 # Silencing scikit-learn version mismatch warnings globally for this module
-# These are harmless for inference and unavoidable on Python 3.9
+# These are harmless for inference and unavoidable across different environment setups
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+
+
+def auto_extract_zip_files(base_path: Path) -> None:
+    """Find any .zip files in base_path recursively and extract them if not already extracted."""
+    import zipfile
+    if not base_path.exists():
+        return
+    for zip_path in base_path.rglob("*.zip"):
+        if any(part.startswith('.') for part in zip_path.parts):
+            continue
+        # Restrict extraction strictly to 'models/' subdirectories and ignore temporary or upload packages like darus_upload
+        parts_lower = [p.lower() for p in zip_path.parts]
+        if "models" not in parts_lower or "darus_upload" in parts_lower:
+            continue
+        # Target extraction folder: parent directory / name of the zip without .zip
+        target_dir = zip_path.parent / zip_path.stem
+        
+        # Check if already extracted (i.e. target directory exists and contains model_config.json)
+        if target_dir.exists() and (target_dir / "model_config.json").exists():
+            continue
+            
+        print(f"Auto-detect: Found zipped model package {zip_path.name}")
+        print(f"Extracting to {target_dir}...")
+        try:
+            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                names = zip_ref.namelist()
+                is_nested = all(name.startswith(zip_path.stem + "/") or name.startswith("./" + zip_path.stem + "/") for name in names if name.strip())
+                
+                extract_to = zip_path.parent if is_nested else target_dir
+                zip_ref.extractall(extract_to)
+            print(f"Extraction successful: {zip_path.name} extracted to {extract_to.name}/")
+        except Exception as e:
+            print(f"Warning: Failed to auto-extract {zip_path.name}: {e}")
 
 
 def preprocess_features(
@@ -108,6 +141,14 @@ def _load_pickle(path: Path):
     """
     import io
 
+    class RandomizedUnpickler(pickle.Unpickler):
+        def find_class(self, module, name):
+            if module.startswith("core.random."):
+                module = module.replace("core.random.", "core.randomized.")
+            elif module == "core.random":
+                module = "core.randomized"
+            return super().find_class(module, name)
+
     def _unpickle_bytes(data: bytes):
         """Unpickle bytes, remapping CUDA tensors to CPU.
 
@@ -134,13 +175,13 @@ def _load_pickle(path: Path):
             try:
                 with warnings.catch_warnings():
                     warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-                    return pickle.loads(data)
+                    return RandomizedUnpickler(io.BytesIO(data)).load()
             finally:
                 _ts._load_from_bytes = _original
         else:
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-                return pickle.loads(data)
+                return RandomizedUnpickler(io.BytesIO(data)).load()
 
     try:
         with gzip.open(path, "rb") as f:

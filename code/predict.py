@@ -43,7 +43,7 @@ from config.datasets import DATASET_CONFIGS, DEFAULT_MODEL_DIRS, detect_dataset_
 
 # Feature columns for each dataset (used for validation) - imported from centralized config
 DATASET_FEATURES = {dataset: cfg["features"] for dataset, cfg in DATASET_CONFIGS.items()}
-from core.model_wrapper import TrainedModel
+from core.model_wrapper import TrainedModel, auto_extract_zip_files
 from core.inference import make_predictions
 
 def find_model_dir(base_dir: str, expected_type: Optional[str] = None, expected_dataset: Optional[str] = None, variant_hint: Optional[str] = None) -> str:
@@ -54,6 +54,9 @@ def find_model_dir(base_dir: str, expected_type: Optional[str] = None, expected_
     """
     import json
     base_path = Path(base_dir)
+    
+    # 1. On-the-fly zip extraction if model files are compressed
+    auto_extract_zip_files(base_path)
     
     # Search recursively for model_config.json, skipping hidden directories
     for path in base_path.rglob("model_config.json"):
@@ -197,7 +200,8 @@ def run_tests():
         print("\n" + "="*60)
         print("RUNNING VERIFICATION SUITE")
         print("="*60 + "\n")
-        exit_code = pytest.main(["tests", "-v"])
+        tests_dir = str(Path(__file__).resolve().parent / "tests")
+        exit_code = pytest.main([tests_dir, "-v"])
         if exit_code == 0:
             print("\n" + "="*60)
             print("VERIFICATION SUCCESSFUL: All tests passed!")
@@ -318,7 +322,7 @@ def main():
         except FileNotFoundError:
             print(f"Error: No model found in {base_dir}")
             print(f"\nMake sure the DaRUS archive is fully extracted and the")
-            print(f"models/ folder is present next to predict.py.")
+            print(f"models/ folder is present in the repository root.")
             sys.exit(1)
 
     print(f"Using model: {model_dir}")

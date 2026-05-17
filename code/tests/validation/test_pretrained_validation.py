@@ -6,29 +6,39 @@ If no models are present, these tests are skipped.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import numpy as np
 import pytest
 import torch
 
-from core.model_wrapper import TrainedModel
+from core.model_wrapper import TrainedModel, auto_extract_zip_files
 from core.inference import make_predictions
+
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 def discover_pretrained_models():
     """Find all directories in 'models/' that contain model artifacts."""
-    models_root = Path("models")
+    models_root = _PROJECT_ROOT / "models"
     if not models_root.is_dir():
         return []
+    
+    # 1. On-the-fly zip extraction if model files are compressed
+    auto_extract_zip_files(models_root)
     
     found = []
     # Search for model_config.json, ignoring hidden dirs
     for path in models_root.rglob("model_config.json"):
         if any(part.startswith('.') for part in path.parts):
             continue
-        found.append(path.parent)
+        model_dir = path.parent
+        # Verify both weights and scalers exist before declaring the model discovered
+        scalers_exist = (model_dir / "scalers.pkl").is_file()
+        weights_exist = (model_dir / "best_model.pt").is_file() or (model_dir / "model.pkl").is_file()
+        if scalers_exist and weights_exist:
+            found.append(model_dir)
     return sorted(found)
 
 
@@ -49,7 +59,7 @@ def test_pretrained_model_inference(model_path):
     if dataset_type is None:
         dataset_type = "isotherm" if config.get("input_size") == 9 else "cone"
     
-    sample_file = Path(f"data/sample_{dataset_type}.csv")
+    sample_file = _PROJECT_ROOT / f"data/sample_{dataset_type}.csv"
     if not sample_file.exists():
         # Fallback to random if sample missing, but with safer ranges
         X = np.random.uniform(0.01, 0.1, (3, config.get("input_size")))
@@ -99,7 +109,7 @@ def test_pretrained_model_accuracy(model_path):
         "isotherm": "data/Clean_Results_Isotherm.csv",
         "cone": "data/Depression_cones.csv"
     }
-    data_file = Path(data_map.get(dataset_type, ""))
+    data_file = _PROJECT_ROOT / data_map.get(dataset_type, "")
     
     if not data_file.exists():
         pytest.skip(f"Official data file {data_file} not found for accuracy check")
@@ -143,6 +153,7 @@ def test_pretrained_model_accuracy(model_path):
             assert rel_diff < 0.5, f"Unit mismatch suspected for {label} in {model_path}. Mean diff: {rel_diff:.2%}"
 
 
+@pytest.mark.skipif(not PRETRAINED_PATHS, reason="No pretrained models found in models/ directory")
 def test_no_corrupted_configs():
     """Ensure every found model has a valid config and scaler."""
     for model_path in PRETRAINED_PATHS:

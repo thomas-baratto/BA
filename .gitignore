@@ -43,3 +43,7 @@ texput.log
 *.pdf
 !docs/plots/**/*.png
 !docs/plots/**/*.pdf
+
+# DaRUS upload assembly folder and temporary zip files
+darus_upload/
+/*.zip
