@@ -6,18 +6,12 @@ Predict thermal plume parameters (isotherm geometry or depression cone size) fro
 
 ## 1. Quick Start
 
-### 1. Extract Archive (If downloaded from DaRUS)
-If you downloaded this project as a compressed research archive from **DaRUS**, the source code will be packaged as `code.zip`. First, extract it:
-```bash
-unzip code.zip
-```
-*(Note: Pretrained model files under `models/` do not need to be unzipped manually; they are automatically extracted on-the-fly when you run predictions!)*
-
-### 2. Installation
+### 1. Installation
 Set up your virtual environment and install the package:
 ```bash
 python3 -m venv .venv && source .venv/bin/activate && pip install ./code
 ```
+*(Note: Pretrained model files under `models/` are packaged as compressed .zip archives for archive compliance and do not need to be unzipped manually; they are automatically extracted on-the-fly when you run predictions!)*
 
 ### Usage
 The `ba-predict` command automatically detects the dataset type from your CSV headers.
