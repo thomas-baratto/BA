@@ -19,6 +19,7 @@ classifiers = [
 dependencies = [
     "numpy",
     "pandas",
+    "pytest",
     "scikit-learn",
     "tabulate",
     "torch",
@@ -41,9 +42,6 @@ include = ["core*", "config*"]
 
 [project.scripts]
 ba-predict = "predict:main"
-
-[project.optional-dependencies]
-dev = ["pytest"]
 
 [tool.pytest.ini_options]
 testpaths = [

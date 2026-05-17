@@ -99,6 +99,9 @@ def find_model_dir(base_dir: str, expected_type: Optional[str] = None, expected_
                 # Check path parts (folder names)
                 path_str = str(path).lower()
                 
+                # Safeguard: prevent 'drvfl' from matching 'sresdrvfl' recursively
+                if vh == "drvfl" and "sresdrvfl" in path_str:
+                    continue
                 if vh not in config_str and vh not in path_str:
                     continue
 
@@ -200,8 +203,17 @@ def run_tests():
         print("\n" + "="*60)
         print("RUNNING VERIFICATION SUITE")
         print("="*60 + "\n")
-        tests_dir = str(Path(__file__).resolve().parent / "tests")
-        exit_code = pytest.main([tests_dir, "-v"])
+        # Find the tests directory using centralized project path configurations
+        from config.datasets import _PROJECT_ROOT
+        tests_dir = _PROJECT_ROOT / "code" / "tests"
+        if not tests_dir.is_dir():
+            tests_dir = _PROJECT_ROOT / "tests"
+        if not tests_dir.is_dir():
+            tests_dir = Path("code/tests").resolve()
+        if not tests_dir.is_dir():
+            tests_dir = Path("tests").resolve()
+            
+        exit_code = pytest.main([str(tests_dir), "-v"])
         if exit_code == 0:
             print("\n" + "="*60)
             print("VERIFICATION SUCCESSFUL: All tests passed!")
@@ -215,7 +227,7 @@ def run_tests():
     except ImportError:
         print("\n" + "!"*60)
         print("Error: 'pytest' not found.")
-        print("Please install development dependencies: pip install '.[dev]'")
+        print("Please ensure you have installed the package dependencies: pip install ./code")
         print("!"*60 + "\n")
         return 1
 
@@ -240,12 +252,13 @@ def main():
         "--model", "-m",
         type=str,
         default="mlp",
-        choices=["mlp", "randomized", "randomized:nRMSE", "randomized:KGE"],
+        choices=["mlp", "randomized", "randomized:SResdRVFL", "randomized:dRVFL", "randomized:edRVFL_SC"],
         help=(
             "Model type to use (default: mlp). "
-            "'randomized' uses an optimized randomized neural network (RVFL). "
-            "For isotherm, 'randomized:nRMSE' and 'randomized:KGE' select models optimized for different metrics. "
-            "For cone, all randomized variants use the same model."
+            "'randomized' selects the default optimized randomized model. "
+            "Specific architectures can be requested: "
+            "'randomized:SResdRVFL' or 'randomized:dRVFL' for isotherm, and "
+            "'randomized:edRVFL_SC' for depression cone."
         ),
     )
     parser.add_argument(

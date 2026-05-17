@@ -28,8 +28,8 @@ DATASET_CONFIGS = {
         "models": {
             "mlp": str(_PROJECT_ROOT),
             "randomized": str(_PROJECT_ROOT),
-            "randomized:nRMSE": str(_PROJECT_ROOT),
-            "randomized:KGE": str(_PROJECT_ROOT),
+            "randomized:SResdRVFL": str(_PROJECT_ROOT),
+            "randomized:dRVFL": str(_PROJECT_ROOT),
         }
     },
     "cone": {
@@ -38,6 +38,7 @@ DATASET_CONFIGS = {
         "models": {
             "mlp": str(_PROJECT_ROOT),
             "randomized": str(_PROJECT_ROOT),
+            "randomized:edRVFL_SC": str(_PROJECT_ROOT),
         }
     },
 }
