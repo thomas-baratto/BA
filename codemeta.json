@@ -2,7 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "ba-thermal-plume",
-  "description": "Pre-trained neural network models (MLP and random-weight architectures) for predicting thermal plume dimensions in groundwater from hydrogeological input parameters.",
+  "description": "Pre-trained neural network models (MLP and randomized architectures) for predicting thermal plume dimensions in groundwater from hydrogeological input parameters.",
   "version": "1.0.0",
   "dateCreated": "2026-04-13",
   "datePublished": "2026-04-13",
@@ -54,6 +54,7 @@
   "softwareRequirements": [
     "numpy",
     "pandas",
+    "pytest",
     "scikit-learn>=1.6.0",
     "tabulate",
     "torch>=2.2.0"

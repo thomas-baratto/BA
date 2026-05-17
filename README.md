@@ -32,7 +32,7 @@ ba-predict -i data/sample_isotherm.csv -m randomized:SResdRVFL
 
 The following **5 pre-trained models** are distributed inside the `models/` directory. You can specify a model explicitly using the `-m` / `--model` option flag:
 
-| Task / Dataset | Model Architecture | CLI Selection Flag | Validation Accuracy ($R^2$) |
+| Task / Dataset | Model Architecture | CLI Selection Flag | Validation Accuracy (R²) |
 |:---|:---|:---|:---|
 | **Isotherm Plume** | Multi-Layer Perceptron (MLP) | `-m mlp` | **≈1.000** |
 | **Isotherm Plume** | Optimized SResdRVFL (Randomized) | `-m randomized:SResdRVFL` *(default)* | **0.900** |
@@ -138,7 +138,7 @@ If you use this software or the models, please cite:
 ```bibtex
 @misc{baratto2026thermal,
   author    = {Baratto, Thomas},
-  title     = {Thermal Plume Prediction --- Neural Network Models and Pre-trained Artifacts},
+  title     = {Trained Neural Networks on Simulated Data of Groundwater Heat Plume Characteristics},
   year      = {2026},
   doi       = {10.18419/DARUS-5815},
   url       = {https://doi.org/10.18419/DARUS-5815}
